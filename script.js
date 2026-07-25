@@ -4,7 +4,7 @@ document.querySelector("button").addEventListener("click", function() {
     let sifre = document.querySelectorAll("input")[1].value;
 
     if(kullanici == "admin" && sifre == "1234") {
-        alert("Giriş başarılı!");
+        window.location.href = "panel.html";
     }
     else {
         alert("Kullanıcı adı veya şifre hatalı!");
