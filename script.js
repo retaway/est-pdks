@@ -1,70 +1,55 @@
-document.querySelector("button").addEventListener("click", function() {
+const button = document.querySelector("button");
 
-    let kullanici = document.querySelectorAll("input")[0].value;
-    let sifre = document.querySelectorAll("input")[1].value;
+if (button) {
+    button.addEventListener("click", function () {
 
-    if(kullanici == "admin" && sifre == "1234") {
-        window.location.href = "panel.html";
-    }
-    else {
-        alert("Kullanıcı adı veya şifre hatalı!");
-    }
+        let kullanici = document.querySelectorAll("input")[0].value;
+        let sifre = document.querySelectorAll("input")[1].value;
 
-});
-function surucuSefligi(){
+        if (kullanici === "admin" && sifre === "1234") {
+            window.location.href = "panel.html";
+        } else {
+            alert("Kullanıcı adı veya şifre hatalı!");
+        }
 
-document.getElementById("icerik").innerHTML=`
+    });
+}
 
-<h2>👷 Sürücü Şefliği</h2>
+function surucuSefligi() {
 
-<input type="text" placeholder="Personel Ara">
+    document.getElementById("icerik").innerHTML = `
+        <h2>👷 Sürücü Şefliği</h2>
 
-<br><br>
+        <input type="text" placeholder="Personel Ara">
 
-<table border="1" width="100%" cellspacing="0" cellpadding="10">
+        <br><br>
 
-<tr>
+        <table border="1" width="100%" cellspacing="0" cellpadding="10">
 
-<th>Ad Soyad</th>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>Görev No</th>
+                <th>Durum</th>
+            </tr>
 
-<th>Görev No</th>
+            <tr>
+                <td>Ahmet Yılmaz</td>
+                <td>204</td>
+                <td>Görevde</td>
+            </tr>
 
-<th>Durum</th>
+            <tr>
+                <td>Mehmet Kaya</td>
+                <td>315</td>
+                <td>İzinli</td>
+            </tr>
 
-</tr>
+            <tr>
+                <td>Ali Demir</td>
+                <td>118</td>
+                <td>Yedek</td>
+            </tr>
 
-<tr>
-
-<td>Ahmet Yılmaz</td>
-
-<td>204</td>
-
-<td>Görevde</td>
-
-</tr>
-
-<tr>
-
-<td>Mehmet Kaya</td>
-
-<td>315</td>
-
-<td>İzinli</td>
-
-</tr>
-
-<tr>
-
-<td>Ali Demir</td>
-
-<td>118</td>
-
-<td>Yedek</td>
-
-</tr>
-
-</table>
-
-`;
-
+        </table>
+    `;
 }
