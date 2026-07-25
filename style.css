@@ -53,3 +53,52 @@ button {
 button:hover {
     background: #003f7f;
 }
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:240px;
+    height:100%;
+    background:#005baa;
+    color:white;
+    padding-top:25px;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:15px 25px;
+}
+
+.sidebar a:hover{
+    background:#004080;
+}
+
+.content{
+    margin-left:260px;
+    padding:30px;
+}
+
+.cards{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:220px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.card h3{
+    margin-top:0;
+}
