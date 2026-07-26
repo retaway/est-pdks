@@ -211,3 +211,98 @@ alert("Tarife başarıyla kaydedildi.");
 tarifeler();
 
 }
+function calismaPlanlari() {
+
+document.getElementById("icerik").innerHTML = `
+
+<h2>📅 Çalışma Planları</h2>
+
+<div class="kartlar">
+
+<div class="kart" onclick="planAc('yaz')">
+☀️
+<h3>Yaz Çalışma Planı</h3>
+<p>Hafta İçi - Cumartesi - Pazar</p>
+</div>
+
+<div class="kart" onclick="planAc('kis')">
+❄️
+<h3>Kış Çalışma Planı</h3>
+<p>Hafta İçi - Cumartesi - Pazar</p>
+</div>
+
+</div>
+
+`;
+
+}
+function planAc(plan){
+
+document.getElementById("icerik").innerHTML=`
+
+<h2>${plan=="yaz"?"☀️ Yaz":"❄️ Kış"} Çalışma Planı</h2>
+
+<div class="toolbar">
+
+<button onclick="gunSec('haftaici')">Hafta İçi</button>
+
+<button onclick="gunSec('cumartesi')">Cumartesi</button>
+
+<button onclick="gunSec('pazar')">Pazar</button>
+
+</div>
+
+<div id="planIcerik">
+
+<h3>Lütfen gün seçiniz.</h3>
+
+</div>
+
+`;
+
+}
+function gunSec(gun){
+
+document.getElementById("planIcerik").innerHTML=`
+
+<h2>${gun.toUpperCase()}</h2>
+
+<button onclick="yeniDegisimKodu()">
+➕ Yeni Değişim Kodu
+</button>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Değişim Kodu</th>
+
+<th>Açıklama</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>01011</td>
+
+<td>Sabah Görevi</td>
+
+<td>✏️</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+`;
+
+}
