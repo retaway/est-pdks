@@ -66,7 +66,7 @@ function degisimKodlari() {
 
     let satirlar = "";
 
-    degisimKodlariListesi.forEach(function(kod){
+    degisimKodlariListesi.forEach(function(kod, index){
 
         satirlar += `
       <tr>
