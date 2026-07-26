@@ -190,32 +190,44 @@ Henüz tarife yüklenmedi.
 
 }
 let tarifeDosyasi = null;
+let tarifeVerileri = [];
+function excelSec() {
 
-function excelSec(){
+    document.getElementById("excelDosya").click();
 
-document.getElementById("excelDosya").click();
+    document.getElementById("excelDosya").onchange = function () {
 
-document.getElementById("excelDosya").onchange=function(){
+        const dosya = this.files[0];
 
-const dosya=this.files[0];
+        if (!dosya) return;
 
-if(!dosya) return;
+        tarifeDosyasi = dosya;
 
-tarifeDosyasi=dosya;
+        const reader = new FileReader();
 
-document.getElementById("tarifeListe").innerHTML=`
+        reader.onload = function (e) {
 
-<tr>
+            const data = new Uint8Array(e.target.result);
 
-<td>${dosya.name}</td>
+            const workbook = XLSX.read(data, { type: "array" });
 
-<td>${new Date().toLocaleString()}</td>
+            const sayfa = workbook.Sheets[workbook.SheetNames[0]];
 
-<td>✅ Aktif</td>
+            tarifeVerileri = XLSX.utils.sheet_to_json(sayfa, { header: 1 });
 
-</tr>
+            document.getElementById("tarifeListe").innerHTML = `
+                <tr>
+                    <td>${dosya.name}</td>
+                    <td>${new Date().toLocaleString()}</td>
+                    <td>✅ Aktif</td>
+                </tr>
+            `;
 
-`;
+        };
+
+        reader.readAsArrayBuffer(dosya);
+
+    };
 
 }
 
