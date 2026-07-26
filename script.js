@@ -161,7 +161,7 @@ document.getElementById("icerik").innerHTML = `
 `;
 
 }
-```javascript
+
 function personelKaydet(){
 
     const personel = {
