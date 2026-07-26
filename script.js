@@ -53,3 +53,80 @@ function surucuSefligi() {
         </table>
     `;
 }
+function degisimKodlari() {
+
+document.getElementById("icerik").innerHTML = `
+
+<h2>🔄 Değişim Kodları</h2>
+
+<div class="toolbar">
+
+<button>➕ Yeni Kod</button>
+
+<button>✏️ Düzenle</button>
+
+<button>🗑️ Sil</button>
+
+<button>📥 Excel Aktar</button>
+
+<button>📤 Excel Dışa Aktar</button>
+
+</div>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Değişim Kodu</th>
+
+<th>İlk Görev</th>
+
+<th>Başlangıç</th>
+
+<th>Bitiş</th>
+
+<th>Durum</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>01011</td>
+
+<td>1013</td>
+
+<td>05:30</td>
+
+<td>20:21</td>
+
+<td>Aktif</td>
+
+</tr>
+
+<tr>
+
+<td>01012</td>
+
+<td>1015</td>
+
+<td>05:45</td>
+
+<td>20:35</td>
+
+<td>Aktif</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+`;
+
+}
