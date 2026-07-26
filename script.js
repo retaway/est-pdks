@@ -187,7 +187,6 @@ function personelKaydet(){
     alert("Personel kaydedildi.");
 
     surucuSefligi();
-
 }
 ```
 
