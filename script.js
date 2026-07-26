@@ -103,8 +103,8 @@ function yeniPersonel(index = null) {
     <select id="gorev">
         <option ${p.gorev === "Vatman" ? "selected" : ""}>Vatman</option>
         <option ${p.gorev === "İdari Personel" ? "selected" : ""}>Denetçi</option>
-        <option ${p.gorev === "Vardiya Amiri" ? "selected" : ""}>Amir</option>
-          <option ${p.gorev === "Sürücü Şefi" ? "selected" : ""}>Amir</option>
+        <option ${p.gorev === "Vardiya Amiri" ? "selected" : ""}>Vardiya Amiri</option>
+          <option ${p.gorev === "Sürücü Şefi" ? "selected" : ""}>Sürücü Şefi</option>
 
     </select>
 
