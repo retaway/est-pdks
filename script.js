@@ -65,31 +65,77 @@ function surucuSefligi() {
 }
 function degisimKodlari() {
 
-    document.getElementById("icerik").innerHTML = `
+    let satirlar = "";
+
+    degisimKodlariListesi.forEach(function(kayit, index){
+
+        satirlar += `
+        <tr>
+
+            <td>${kayit.kod}</td>
+
+            <td>${kayit.aciklama}</td>
+
+            <td>${kayit.gorevler ? kayit.gorevler.length : 0}</td>
+
+            <td>
+
+                <button onclick="degisimDetay(${index})">📂</button>
+
+                <button onclick="degisimSil(${index})">🗑️</button>
+
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    if(satirlar==""){
+
+        satirlar=`
+        <tr>
+            <td colspan="4" style="text-align:center;">
+                Henüz değişim kodu eklenmedi.
+            </td>
+        </tr>
+        `;
+
+    }
+
+    document.getElementById("icerik").innerHTML=`
 
     <h2>🔄 Değişim Kodları</h2>
 
     <div class="toolbar">
-        <button onclick="yeniDegisimKodu()">➕ Yeni Değişim Kodu</button>
+
+        <button onclick="yeniDegisimKodu()">
+            ➕ Yeni Değişim Kodu
+        </button>
+
     </div>
 
     <table class="tablo">
 
         <thead>
+
             <tr>
-                <th>Değişim Kodu</th>
+
+                <th>Kod</th>
+
                 <th>Açıklama</th>
+
+                <th>Görev</th>
+
                 <th>İşlem</th>
+
             </tr>
+
         </thead>
 
         <tbody>
 
-            <tr>
-                <td colspan="3" style="text-align:center;">
-                    Henüz değişim kodu eklenmedi.
-                </td>
-            </tr>
+            ${satirlar}
 
         </tbody>
 
