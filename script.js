@@ -158,8 +158,42 @@ function tarifeler() {
         </table>
     `;
 }
-function yeniTarife(){
-    alert("Yeni Tarife ekranı bir sonraki adımda açılacak.");
+function yeniTarife() {
+
+document.getElementById("icerik").innerHTML = `
+
+<h2>🚋 Yeni Tarife Oluştur</h2>
+
+<div class="form-kart">
+
+<label>Görev No</label>
+<input type="text" id="gorevNo">
+
+<label>Platform</label>
+<input type="text" id="platform">
+
+<label>Tarife</label>
+<input type="text" id="tarife">
+
+<label>Başlangıç Saati</label>
+<input type="time" id="baslangic">
+
+<label>Bitiş Saati</label>
+<input type="time" id="bitis">
+
+<label>Açıklama</label>
+<textarea id="aciklama"></textarea>
+
+<br><br>
+
+<button onclick="tarifeKaydet()">💾 Kaydet</button>
+
+<button onclick="tarifeler()">⬅ Geri Dön</button>
+
+</div>
+
+`;
+
 }
 
 function excelAktar(){
