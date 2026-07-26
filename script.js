@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const kullanici = kullaniciInput.value.trim();
             const sifre = sifreInput.value.trim();
 
-            if (kullanici === "admin" && sifre === "") {
+            if (kullanici === "admin" && sifre === "1234") {
                 window.location.href = "panel.html";
             } else {
                 alert("Kullanıcı adı veya şifre hatalı!");
