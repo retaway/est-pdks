@@ -158,3 +158,14 @@ function tarifeler() {
         </table>
     `;
 }
+function yeniTarife(){
+    alert("Yeni Tarife ekranı bir sonraki adımda açılacak.");
+}
+
+function excelAktar(){
+    alert("Excel içe aktarma daha sonra eklenecek.");
+}
+
+function excelDisaAktar(){
+    alert("Excel dışa aktarma daha sonra eklenecek.");
+}
