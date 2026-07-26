@@ -525,12 +525,11 @@ tbody.insertAdjacentHTML("beforeend",satir);
 }
 
 
-// Tarayıcıya kaydet
 function degisimKaydet() {
 
-    const kod = document.getElementById("degisimKodu").value;
-    const aciklama = document.getElementById("degisimAdi").value;
-}
+    const kod = document.getElementById("degisimKodu").value.trim();
+    const aciklama = document.getElementById("degisimAdi").value.trim();
+
     if (kod === "" || aciklama === "") {
         alert("Lütfen tüm alanları doldurun.");
         return;
@@ -549,22 +548,6 @@ function degisimKaydet() {
     alert("Değişim kodu kaydedildi.");
 
     degisimKodlari();
-}
-
-    // Tarayıcıya kaydet
-    localStorage.setItem(
-        "degisimKodlari",
-        JSON.stringify(degisimKodlariListesi)
-    );
-
-    alert("Değişim kodu kaydedildi.");
-
-    degisimKodlari();
-}
-
-alert("Değişim kodu kaydedildi.");
-
-degisimKodlari();
 
 }
 function sayfaGoster(sayfa) {
