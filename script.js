@@ -40,73 +40,23 @@ function surucuSefligi() {
 
             <td>${personel.ad} ${personel.soyad}</td>
 
+            <td>${personel.telefon}</td>
+
+            <td>${personel.email}</td>
+
             <td>${personel.gorev}</td>
 
             <td>${personel.durum=="Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
 
             <td>
-
                 <button onclick="personelDuzenle(${index})">✏️</button>
-
                 <button onclick="personelDurum(${index})">🔄</button>
-
                 <button onclick="personelSil(${index})">🗑️</button>
-
             </td>
 
         </tr>
         `;
 
-    });
-
-    if(satirlar==""){
-
-        satirlar=`
-        <tr>
-            <td colspan="5" style="text-align:center;">
-                Henüz personel eklenmedi.
-            </td>
-        </tr>
-        `;
-
-    }
-document.getElementById("icerik").innerHTML = `
-
-<h2>👷 Personeller</h2>
-
-<div class="toolbar">
-
-<button onclick="yeniPersonel()">
-➕ Yeni Personel
-</button>
-
-</div>
-
-<table class="tablo">
-
-<thead>
-
-<tr>
-satirlar += `
-<tr>
-
-<td>${personel.sicil}</td>
-<td>${personel.ad} ${personel.soyad}</td>
-<td>${personel.telefon}</td>
-<td>${personel.email}</td>
-<td>${personel.gorev}</td>
-<td>${personel.durum=="Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
-
-<td>
-<button onclick="personelDuzenle(${index})">✏️</button>
-<button onclick="personelDurum(${index})">🔄</button>
-<button onclick="personelSil(${index})">🗑️</button>
-</td>
-
-</tr>
-`;
-        </tr>
-        `;
     });
 
     if (satirlar == "") {
