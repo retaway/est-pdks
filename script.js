@@ -69,13 +69,14 @@ function degisimKodlari() {
     degisimKodlariListesi.forEach(function(kod){
 
         satirlar += `
-        <tr>
-            <td>${kod.kod}</td>
-            <td>${kod.aciklama}</td>
-            <td>-</td>
-            <td>-</td>
-            <td>🟢 Aktif</td>
-        </tr>
+      <tr>
+    <td>${kod.kod}</td>
+    <td>${kod.aciklama}</td>
+    <td>🟢 Aktif</td>
+    <td>
+        <button>👁️ Aç</button>
+    </td>
+</tr>
         `;
 
     });
@@ -116,15 +117,10 @@ function degisimKodlari() {
 
             <tr>
 
-                <th>Değişim Kodu</th>
-
-                <th>Açıklama</th>
-
-                <th>Başlangıç</th>
-
-                <th>Bitiş</th>
-
-                <th>Durum</th>
+                   <th>Değişim Kodu</th>
+                    <th>Açıklama</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
 
             </tr>
 
