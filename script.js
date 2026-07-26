@@ -76,13 +76,18 @@ function degisimKodlari() {
 
             <td>${kayit.aciklama}</td>
 
-            <td>${kayit.gorevler ? kayit.gorevler.length : 0}</td>
-
-            <td>
-            <button onclick="degisimDuzenle(${index})">✏️</button>
-            <button onclick="degisimSil(${index})">🗑️</button>
-
+          <td>
+            ${kayit.durum=="Aktif" ? "🟢 Aktif" : "🔴 Pasif"}
             </td>
+           <td>
+
+        <button onclick="degisimDuzenle(${index})">✏️</button>
+
+        <button onclick="degisimDurum(${index})">🔄</button>
+
+        <button onclick="degisimSil(${index})">🗑️</button>
+
+</td>
 
         </tr>
         `;
@@ -123,7 +128,7 @@ function degisimKodlari() {
 
                 <th>Açıklama</th>
 
-                <th>Görev</th>
+                <th>Durum</th>
 
                 <th>İşlem</th>
 
@@ -511,7 +516,7 @@ function degisimKaydet() {
     degisimKodlariListesi.push({
     kod: kod,
     aciklama: aciklama,
-    gorevler: []
+    durum: "Aktif"
 });
 
     localStorage.setItem(
@@ -610,6 +615,26 @@ function degisimGuncelle(index){
     );
 
     alert("Güncellendi.");
+
+    degisimKodlari();
+
+}
+function degisimDurum(index){
+
+    if(degisimKodlariListesi[index].durum=="Aktif"){
+
+        degisimKodlariListesi[index].durum="Pasif";
+
+    }else{
+
+        degisimKodlariListesi[index].durum="Aktif";
+
+    }
+
+    localStorage.setItem(
+        "degisimKodlari",
+        JSON.stringify(degisimKodlariListesi)
+    );
 
     degisimKodlari();
 
