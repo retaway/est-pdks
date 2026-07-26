@@ -306,3 +306,98 @@ document.getElementById("planIcerik").innerHTML=`
 `;
 
 }
+function yeniDegisimKodu(){
+
+document.getElementById("icerik").innerHTML=`
+
+<h2>🔄 Yeni Değişim Kodu</h2>
+
+<div class="form-kart">
+
+<label>Değişim Kodu</label>
+<input id="degisimKodu" type="text" placeholder="Örn: 01011">
+
+<label>Açıklama</label>
+<input id="degisimAdi" type="text" placeholder="Sabah Görevi">
+
+<br><br>
+
+<button onclick="satirEkle()">➕ Satır Ekle</button>
+
+<table class="tablo" id="degisimTablosu">
+
+<thead>
+
+<tr>
+
+<th>Görev No</th>
+
+<th>Platform</th>
+
+<th>Tarife</th>
+
+<th>Başlangıç</th>
+
+<th>Bitiş</th>
+
+<th>Süre</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+<br>
+
+<button onclick="degisimKaydet()">💾 Kaydet</button>
+
+</div>
+
+`;
+
+}
+function satirEkle(){
+
+let tbody=document.querySelector("#degisimTablosu tbody");
+
+let satir=`
+
+<tr>
+
+<td><input type="text"></td>
+
+<td><input type="text"></td>
+
+<td><input type="text"></td>
+
+<td><input type="time"></td>
+
+<td><input type="time"></td>
+
+<td><input type="text" readonly></td>
+
+<td>
+
+<button>🗑</button>
+
+</td>
+
+</tr>
+
+`;
+
+tbody.insertAdjacentHTML("beforeend",satir);
+
+}
+function degisimKaydet(){
+
+alert("Değişim kodu kaydedildi.");
+
+}
