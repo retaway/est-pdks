@@ -130,3 +130,31 @@ document.getElementById("icerik").innerHTML = `
 `;
 
 }
+function tarifeler() {
+    document.getElementById("icerik").innerHTML = `
+        <h2>🚋 Tarife Yönetimi</h2>
+
+        <div class="ust-menu">
+            <button onclick="yeniTarife()">➕ Yeni Tarife</button>
+            <button onclick="excelAktar()">📥 Excel'den Aktar</button>
+            <button onclick="excelDisaAktar()">📤 Excel'e Aktar</button>
+        </div>
+
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Görev No</th>
+                    <th>Platform</th>
+                    <th>Tarife</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+
+            <tbody id="tarifeTablosu">
+
+            </tbody>
+        </table>
+    `;
+}
