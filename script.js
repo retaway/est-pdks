@@ -70,10 +70,9 @@ function surucuSefligi() {
         `;
 
     }
-
-    document.getElementById("icerik").innerHTML = `
-
-<h2>👷 Personeller</h2>
+document.getElementById("icerik").innerHTML = `
+<h2>Personeller</h2>
+`;
 
 <div class="toolbar">
 
