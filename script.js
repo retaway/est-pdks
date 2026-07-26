@@ -424,3 +424,51 @@ function degisimKaydet(){
 alert("Değişim kodu kaydedildi.");
 
 }
+function sayfaGoster(sayfa) {
+
+    switch (sayfa) {
+
+        case "anasayfa":
+            document.getElementById("icerik").innerHTML = `
+                <h2>🏠 Ana Sayfa</h2>
+                <p>ESTRAM Personel ve Vardiya Yönetim Sistemine hoş geldiniz.</p>
+            `;
+            break;
+
+        case "personeller":
+            surucuSefligi();
+            break;
+
+        case "degisimKodlari":
+            degisimKodlari();
+            break;
+
+        case "tarifeler":
+            calismaPlanlari();
+            break;
+
+        case "gunlukVardiya":
+            alert("Henüz geliştiriliyor");
+            break;
+
+        case "izinler":
+            alert("Henüz geliştiriliyor");
+            break;
+
+        case "puantaj":
+            alert("Henüz geliştiriliyor");
+            break;
+
+        case "bildirimler":
+            alert("Henüz geliştiriliyor");
+            break;
+
+        case "raporlar":
+            alert("Henüz geliştiriliyor");
+            break;
+
+        case "ayarlar":
+            alert("Henüz geliştiriliyor");
+            break;
+    }
+}
