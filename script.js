@@ -596,4 +596,21 @@ function degisimSil(index){
 
     
 }
-function degisimGuncelle(index)
+function degisimGuncelle(index){
+
+    const kod = document.getElementById("degisimKodu").value.trim();
+    const aciklama = document.getElementById("degisimAdi").value.trim();
+
+    degisimKodlariListesi[index].kod = kod;
+    degisimKodlariListesi[index].aciklama = aciklama;
+
+    localStorage.setItem(
+        "degisimKodlari",
+        JSON.stringify(degisimKodlariListesi)
+    );
+
+    alert("Güncellendi.");
+
+    degisimKodlari();
+
+}
