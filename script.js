@@ -132,26 +132,23 @@ document.getElementById("icerik").innerHTML = `
 <label>Soyad</label>
 <input id="soyad" type="text" placeholder="Yılmaz">
 
+<label>Telefon</label>
+<input id="telefon" type="tel" placeholder="05xxxxxxxxx">
+
+<label>E-Posta</label>
+<input id="email" type="email" placeholder="ornek@estram.com.tr">
+
 <label>Görev</label>
-
 <select id="gorev">
-
-<option>Vardiya Amiri</option>
-
-<option>Vatman</option>
-
-<option>Personel</option>
-
+    <option>Vatman</option>
+    <option>Denetçi</option>
+    <option>Amir</option>
 </select>
 
 <label>Durum</label>
-
 <select id="durum">
-
-<option>Aktif</option>
-
-<option>Pasif</option>
-
+    <option>Aktif</option>
+    <option>Pasif</option>
 </select>
 
 <br><br>
@@ -165,30 +162,34 @@ document.getElementById("icerik").innerHTML = `
 `;
 
 }
+```javascript
 function personelKaydet(){
 
-const personel={
+    const personel = {
 
-sicil:document.getElementById("sicil").value,
-ad:document.getElementById("ad").value,
-soyad:document.getElementById("soyad").value,
-gorev:document.getElementById("gorev").value,
-durum:document.getElementById("durum").value
+        sicil: document.getElementById("sicil").value,
+        ad: document.getElementById("ad").value,
+        soyad: document.getElementById("soyad").value,
+        telefon: document.getElementById("telefon").value,
+        email: document.getElementById("email").value,
+        gorev: document.getElementById("gorev").value,
+        durum: document.getElementById("durum").value
 
-};
+    };
 
-personelListesi.push(personel);
+    personelListesi.push(personel);
 
-localStorage.setItem(
-"personeller",
-JSON.stringify(personelListesi)
-);
+    localStorage.setItem(
+        "personeller",
+        JSON.stringify(personelListesi)
+    );
 
-alert("Personel kaydedildi.");
+    alert("Personel kaydedildi.");
 
-surucuSefligi();
+    surucuSefligi();
 
 }
+```
 
 function degisimKodlari() {
 
