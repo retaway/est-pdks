@@ -614,9 +614,18 @@ function degisimSil(index){
 
     if(confirm("Bu değişim kodu silinsin mi?")){
 
-        function degisimSil(index){
+        degisimKodlariListesi.splice(index, 1);
 
-    if(confirm("Bu değişim kodu silinsin mi?")){
+        localStorage.setItem(
+            "degisimKodlari",
+            JSON.stringify(degisimKodlariListesi)
+        );
+
+        degisimKodlari();
+
+    }
+
+}
 
         degisimKodlariListesi.splice(index, 1);
 
