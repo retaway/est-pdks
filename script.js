@@ -462,7 +462,10 @@ function sayfaGoster(sayfa) {
         case "personeller":
             surucuSefligi();
             break;
-
+            
+        case "degisimKodlari":
+            degisimKodlari();
+            break;
         
 
        case "tarifeler":
