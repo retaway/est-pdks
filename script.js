@@ -425,10 +425,10 @@ document.getElementById("icerik").innerHTML = `
 <div class="form-kart">
 
 <label>Değişim Kodu</label>
-<input id="degisimKodu" type="text">
+<input id="degisimKodu" type="text" placeholder="Örn: 01011">
 
 <label>Açıklama</label>
-<input id="degisimAdi" type="text">
+<input id="degisimAdi" type="text" placeholder="Örn: Sabah Vardiyası">
 
 <hr>
 
@@ -444,12 +444,15 @@ document.getElementById("icerik").innerHTML = `
 
 <tr>
 
-<th>Görev No</th>
-<th>Platform</th>
-<th>Tarife</th>
-<th>Başlangıç</th>
-<th>Bitiş</th>
-<th>İşlem</th>
+<td><input type="text" placeholder="Görev No"></td>
+
+<td><input type="text" placeholder="Platform"></td>
+
+<td><input type="text" placeholder="Tarife"></td>
+
+<td><input type="time"></td>
+
+<td><input type="time"></td>
 
 </tr>
 
