@@ -105,19 +105,51 @@ satirlar += `
 
 </tr>
 `;
-</tr>
+        </tr>
+        `;
+    });
 
-</thead>
+    if (satirlar == "") {
 
-<tbody>
+        satirlar = `
+        <tr>
+            <td colspan="7" style="text-align:center;">
+                Henüz personel eklenmedi.
+            </td>
+        </tr>
+        `;
 
-${satirlar}
+    }
 
-</tbody>
+    document.getElementById("icerik").innerHTML = `
 
-</table>
+    <h2>👷 Personeller</h2>
 
-`;
+    <div class="toolbar">
+        <button onclick="yeniPersonel()">➕ Yeni Personel</button>
+    </div>
+
+    <table class="tablo">
+
+        <thead>
+            <tr>
+                <th>Sicil</th>
+                <th>Ad Soyad</th>
+                <th>Telefon</th>
+                <th>E-Posta</th>
+                <th>Görev</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            ${satirlar}
+        </tbody>
+
+    </table>
+
+    `;
 
 }
 
