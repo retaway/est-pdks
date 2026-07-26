@@ -1,3 +1,5 @@
+let degisimKodlariListesi =
+JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 document.addEventListener("DOMContentLoaded", function () {
 
     const kullaniciInput = document.querySelector('input[type="text"]');
