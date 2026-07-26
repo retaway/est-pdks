@@ -1,3 +1,5 @@
+let personelListesi =
+JSON.parse(localStorage.getItem("personeller")) || [];
 let degisimKodlariListesi =
 JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 document.addEventListener("DOMContentLoaded", function () {
@@ -27,42 +29,167 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function surucuSefligi() {
 
+    let satirlar = "";
+
+    personelListesi.forEach(function(personel, index){
+
+        satirlar += `
+        <tr>
+
+            <td>${personel.sicil}</td>
+
+            <td>${personel.ad} ${personel.soyad}</td>
+
+            <td>${personel.gorev}</td>
+
+            <td>${personel.durum=="Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
+
+            <td>
+
+                <button onclick="personelDuzenle(${index})">✏️</button>
+
+                <button onclick="personelDurum(${index})">🔄</button>
+
+                <button onclick="personelSil(${index})">🗑️</button>
+
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    if(satirlar==""){
+
+        satirlar=`
+        <tr>
+            <td colspan="5" style="text-align:center;">
+                Henüz personel eklenmedi.
+            </td>
+        </tr>
+        `;
+
+    }
+
     document.getElementById("icerik").innerHTML = `
-        <h2>👷 Sürücü Şefliği</h2>
 
-        <input type="text" placeholder="Personel Ara">
+<h2>👷 Personeller</h2>
 
-        <br><br>
+<div class="toolbar">
 
-        <table border="1" width="100%" cellspacing="0" cellpadding="10">
+<button onclick="yeniPersonel()">
+➕ Yeni Personel
+</button>
 
-            <tr>
-                <th>Ad Soyad</th>
-                <th>Görev No</th>
-                <th>Durum</th>
-            </tr>
+</div>
 
-            <tr>
-                <td>Ahmet Yılmaz</td>
-                <td>204</td>
-                <td>Görevde</td>
-            </tr>
+<table class="tablo">
 
-            <tr>
-                <td>Mehmet Kaya</td>
-                <td>315</td>
-                <td>İzinli</td>
-            </tr>
+<thead>
 
-            <tr>
-                <td>Ali Demir</td>
-                <td>118</td>
-                <td>Yedek</td>
-            </tr>
+<tr>
 
-        </table>
-    `;
+<th>Sicil</th>
+
+<th>Ad Soyad</th>
+
+<th>Görev</th>
+
+<th>Durum</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
+
 }
+
+function yeniPersonel(){
+
+document.getElementById("icerik").innerHTML = `
+
+<h2>➕ Yeni Personel</h2>
+
+<div class="form-kart">
+
+<label>Sicil No</label>
+<input id="sicil" type="text" placeholder="Örn: 2045">
+
+<label>Ad</label>
+<input id="ad" type="text" placeholder="Ahmet">
+
+<label>Soyad</label>
+<input id="soyad" type="text" placeholder="Yılmaz">
+
+<label>Görev</label>
+
+<select id="gorev">
+
+<option>Vatman</option>
+
+<option>Denetçi</option>
+
+<option>Amir</option>
+
+</select>
+
+<label>Durum</label>
+
+<select id="durum">
+
+<option>Aktif</option>
+
+<option>Pasif</option>
+
+</select>
+
+<br><br>
+
+<button onclick="personelKaydet()">💾 Kaydet</button>
+
+<button onclick="surucuSefligi()">⬅ Geri</button>
+
+</div>
+
+`;
+
+}
+function personelKaydet(){
+
+const personel={
+
+sicil:document.getElementById("sicil").value,
+ad:document.getElementById("ad").value,
+soyad:document.getElementById("soyad").value,
+gorev:document.getElementById("gorev").value,
+durum:document.getElementById("durum").value
+
+};
+
+personelListesi.push(personel);
+
+localStorage.setItem(
+"personeller",
+JSON.stringify(personelListesi)
+);
+
+alert("Personel kaydedildi.");
+
+surucuSefligi();
+
+}
+
 function degisimKodlari() {
 
     let satirlar = "";
