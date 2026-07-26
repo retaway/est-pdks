@@ -139,32 +139,120 @@ document.getElementById("icerik").innerHTML = `
 
 }
 function tarifeler() {
-    document.getElementById("icerik").innerHTML = `
-        <h2>🚋 Tarife Yönetimi</h2>
 
-        <div class="ust-menu">
-            <button onclick="yeniTarife()">➕ Yeni Tarife</button>
-            <button onclick="excelAktar()">📥 Excel'den Aktar</button>
-            <button onclick="excelDisaAktar()">📤 Excel'e Aktar</button>
-        </div>
+document.getElementById("icerik").innerHTML = `
 
-        <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Görev No</th>
-                    <th>Platform</th>
-                    <th>Tarife</th>
-                    <th>Başlangıç</th>
-                    <th>Bitiş</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
+<h2>🚋 Tarifeler</h2>
 
-            <tbody id="tarifeTablosu">
+<div class="toolbar">
 
-            </tbody>
-        </table>
-    `;
+<button onclick="excelSec()">📥 Excel Yükle</button>
+
+<button onclick="tarifeAc()">👁️ Aç</button>
+
+<button onclick="tarifeSil()">🗑️ Kaldır</button>
+
+</div>
+
+<input type="file" id="excelDosya" accept=".xlsx,.xls" style="display:none">
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Dosya Adı</th>
+
+<th>Yüklenme Tarihi</th>
+
+<th>Durum</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tarifeListe">
+
+<tr>
+
+<td colspan="3" style="text-align:center">
+Henüz tarife yüklenmedi.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+`;
+
+}
+let tarifeDosyasi = null;
+
+function excelSec(){
+
+document.getElementById("excelDosya").click();
+
+document.getElementById("excelDosya").onchange=function(){
+
+const dosya=this.files[0];
+
+if(!dosya) return;
+
+tarifeDosyasi=dosya;
+
+document.getElementById("tarifeListe").innerHTML=`
+
+<tr>
+
+<td>${dosya.name}</td>
+
+<td>${new Date().toLocaleString()}</td>
+
+<td>✅ Aktif</td>
+
+</tr>
+
+`;
+
+}
+
+}
+
+function tarifeAc(){
+
+if(!tarifeDosyasi){
+
+alert("Önce bir Excel yükleyiniz.");
+
+return;
+
+}
+
+alert("Bir sonraki aşamada Excel tablo olarak açılacak.");
+
+}
+
+function tarifeSil(){
+
+tarifeDosyasi=null;
+
+document.getElementById("tarifeListe").innerHTML=`
+
+<tr>
+
+<td colspan="3">
+
+Henüz tarife yüklenmedi.
+
+</td>
+
+</tr>
+
+`;
+
 }
 function yeniTarife() {
 
