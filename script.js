@@ -1,3 +1,4 @@
+let degisimKodlariListesi = [];
 document.addEventListener("DOMContentLoaded", function () {
 
     const kullaniciInput = document.querySelector('input[type="text"]');
@@ -63,79 +64,81 @@ function surucuSefligi() {
 }
 function degisimKodlari() {
 
-document.getElementById("icerik").innerHTML = `
+    let satirlar = "";
 
-<h2>🔄 Değişim Kodları</h2>
+    degisimKodlariListesi.forEach(function(kod){
 
-<div class="toolbar">
+        satirlar += `
+        <tr>
+            <td>${kod.kod}</td>
+            <td>${kod.aciklama}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>🟢 Aktif</td>
+        </tr>
+        `;
 
-<button>➕ Yeni Kod</button>
+    });
 
-<button>✏️ Düzenle</button>
+    if(satirlar === ""){
 
-<button>🗑️ Sil</button>
+        satirlar = `
+        <tr>
+            <td colspan="5" style="text-align:center;">
+                Henüz değişim kodu eklenmedi.
+            </td>
+        </tr>
+        `;
 
-<button>📥 Excel Aktar</button>
+    }
 
-<button>📤 Excel Dışa Aktar</button>
+    document.getElementById("icerik").innerHTML = `
 
-</div>
+    <h2>🔄 Değişim Kodları</h2>
 
-<table class="tablo">
+    <div class="toolbar">
 
-<thead>
+        <button onclick="yeniDegisimKodu()">➕ Yeni Kod</button>
 
-<tr>
+        <button>✏️ Düzenle</button>
 
-<th>Değişim Kodu</th>
+        <button>🗑️ Sil</button>
 
-<th>İlk Görev</th>
+        <button>📥 Excel Aktar</button>
 
-<th>Başlangıç</th>
+        <button>📤 Excel Dışa Aktar</button>
 
-<th>Bitiş</th>
+    </div>
 
-<th>Durum</th>
+    <table class="tablo">
 
-</tr>
+        <thead>
 
-</thead>
+            <tr>
 
-<tbody>
+                <th>Değişim Kodu</th>
 
-<tr>
+                <th>Açıklama</th>
 
-<td>01011</td>
+                <th>Başlangıç</th>
 
-<td>1013</td>
+                <th>Bitiş</th>
 
-<td>05:30</td>
+                <th>Durum</th>
 
-<td>20:21</td>
+            </tr>
 
-<td>Aktif</td>
+        </thead>
 
-</tr>
+        <tbody>
 
-<tr>
+            ${satirlar}
 
-<td>01012</td>
+        </tbody>
 
-<td>1015</td>
+    </table>
 
-<td>05:45</td>
-
-<td>20:35</td>
-
-<td>Aktif</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-`;
+    `;
 
 }
 function tarifeler() {
@@ -272,8 +275,6 @@ function tarifeAc() {
 
 function tarifeSil(){
 
-tarifeDosyasi = null;
-tarifeVerileri = [];
 
 document.getElementById("tarifeListe").innerHTML=`
 
@@ -528,9 +529,24 @@ let satir=`
 tbody.insertAdjacentHTML("beforeend",satir);
 
 }
-function degisimKaydet(){
+function degisimKaydet() {
 
-alert("Değişim kodu kaydedildi.");
+    const kod = document.getElementById("degisimKodu").value;
+    const aciklama = document.getElementById("degisimAdi").value;
+
+    if (kod === "" || aciklama === "") {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+    }
+
+    degisimKodlariListesi.push({
+        kod: kod,
+        aciklama: aciklama
+    });
+
+    alert("Değişim kodu kaydedildi.");
+
+    degisimKodlari();
 
 }
 function sayfaGoster(sayfa) {
