@@ -631,10 +631,21 @@ function degisimSil(index){
 
     if(confirm("Bu değişim kodu silinsin mi?")){
 
-        .splice(index,1);
+        function degisimSil(index){
+
+    if(confirm("Bu değişim kodu silinsin mi?")){
+
+        degisimKodlariListesi.splice(index, 1);
+
+        localStorage.setItem(
+            "degisimKodlari",
+            JSON.stringify(degisimKodlariListesi)
+        );
 
         degisimKodlari();
 
     }
 
 }
+
+     
