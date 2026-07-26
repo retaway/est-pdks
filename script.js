@@ -231,9 +231,45 @@ function excelSec() {
 
 }
 
-}
+function tarifeAc() {
 
-function tarifeAc(){
+    if (tarifeVerileri.length === 0) {
+        alert("Önce bir Excel yükleyiniz.");
+        return;
+    }
+
+    let html = `
+        <h2>🚋 Güncel Tarife</h2>
+
+        <button onclick="tarifeler()">⬅ Geri Dön</button>
+
+        <br><br>
+
+        <table class="tablo">
+    `;
+
+    tarifeVerileri.forEach(function(satir, index){
+
+        html += "<tr>";
+
+        satir.forEach(function(hucre){
+
+            if(index === 0){
+                html += "<th>" + hucre + "</th>";
+            } else {
+                html += "<td>" + hucre + "</td>";
+            }
+
+        });
+
+        html += "</tr>";
+
+    });
+
+    html += "</table>";
+
+    document.getElementById("icerik").innerHTML = html;
+}
 
 if(!tarifeDosyasi){
 
