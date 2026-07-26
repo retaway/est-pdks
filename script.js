@@ -654,7 +654,6 @@ function degisimDetay(index){
 
 }
 
-}
 function degisimDuzenle(index){
     alert("Düzenleme ekranı yakında eklenecek.");
 }
