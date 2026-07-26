@@ -200,7 +200,6 @@ function degisimKodlari() {
 
     });
 
-}
 
     if(satirlar==""){
 
