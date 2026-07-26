@@ -1,4 +1,5 @@
-let degisimKodlariListesi = [];
+let degisimKodlariListesi =
+JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 document.addEventListener("DOMContentLoaded", function () {
 
     const kullaniciInput = document.querySelector('input[type="text"]');
@@ -532,14 +533,41 @@ function degisimKaydet() {
         return;
     }
 
+  degisimKodlariListesi.push({
+    kod: kod,
+    aciklama: aciklama
+});
+
+// Tarayıcıya kaydet
+function degisimKaydet() {
+
+    const kod = document.getElementById("degisimKodu").value;
+    const aciklama = document.getElementById("degisimAdi").value;
+
+    if (kod === "" || aciklama === "") {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+    }
+
     degisimKodlariListesi.push({
         kod: kod,
         aciklama: aciklama
     });
 
+    // Tarayıcıya kaydet
+    localStorage.setItem(
+        "degisimKodlari",
+        JSON.stringify(degisimKodlariListesi)
+    );
+
     alert("Değişim kodu kaydedildi.");
 
     degisimKodlari();
+}
+
+alert("Değişim kodu kaydedildi.");
+
+degisimKodlari();
 
 }
 function sayfaGoster(sayfa) {
@@ -591,7 +619,7 @@ function sayfaGoster(sayfa) {
     }
 }
 function degisimDetay(index){
-    alert("Detay ekranı yakında eklenecek.\nSeçilen kayıt: " + degisimKodlariListesi[index].kod);
+    alert("Detay ekranı yakında eklenecek.\nSeçilen kayıt: " + [index].kod);
 }
 
 function degisimDuzenle(index){
@@ -602,7 +630,7 @@ function degisimSil(index){
 
     if(confirm("Bu değişim kodu silinsin mi?")){
 
-        degisimKodlariListesi.splice(index,1);
+        .splice(index,1);
 
         degisimKodlari();
 
