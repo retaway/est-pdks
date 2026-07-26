@@ -428,9 +428,9 @@ function sayfaGoster(sayfa) {
             degisimKodlari();
             break;
 
-        case "tarifeler":
-            calismaPlanlari();
-            break;
+       case "tarifeler":
+    tarifeler();
+    break;
 
         case "gunlukVardiya":
             alert("Henüz geliştiriliyor");
