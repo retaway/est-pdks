@@ -627,17 +627,4 @@ function degisimSil(index){
 
 }
 
-        degisimKodlariListesi.splice(index, 1);
-
-        localStorage.setItem(
-            "degisimKodlari",
-            JSON.stringify(degisimKodlariListesi)
-        );
-
-        degisimKodlari();
-
-    }
-
-}
-
      
