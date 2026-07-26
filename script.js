@@ -176,7 +176,6 @@ function personelKaydet(){
 
     surucuSefligi();
 }
-```
 
 function degisimKodlari() {
 
@@ -859,24 +858,6 @@ function degisimDurum(index){
         "degisimKodlari",
         JSON.stringify(degisimKodlariListesi)
     );
-
-    degisimKodlari();
-
-}
-function degisimGuncelle(index){
-
-    degisimKodlariListesi[index].kod =
-        document.getElementById("degisimKodu").value.trim();
-
-    degisimKodlariListesi[index].aciklama =
-        document.getElementById("degisimAdi").value.trim();
-
-    localStorage.setItem(
-        "degisimKodlari",
-        JSON.stringify(degisimKodlariListesi)
-    );
-
-    alert("Değişim kodu güncellendi.");
 
     degisimKodlari();
 
