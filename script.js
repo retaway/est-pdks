@@ -530,7 +530,7 @@ function degisimKaydet() {
 
     const kod = document.getElementById("degisimKodu").value;
     const aciklama = document.getElementById("degisimAdi").value;
-
+}
     if (kod === "" || aciklama === "") {
         alert("Lütfen tüm alanları doldurun.");
         return;
