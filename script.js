@@ -1,5 +1,3 @@
-let degisimKodlariListesi =
-JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 document.addEventListener("DOMContentLoaded", function () {
 
     const kullaniciInput = document.querySelector('input[type="text"]');
@@ -63,78 +61,7 @@ function surucuSefligi() {
         </table>
     `;
 }
-function degisimKodlari() {
 
-    let satirlar = "";
-
-    degisimKodlariListesi.forEach(function(kod, index){
-
-        satirlar += `
-      <tr>
-    <td>${kod.kod}</td>
-    <td>${kod.aciklama}</td>
-    <td>🟢 Aktif</td>
-   <td>
-
-<button onclick="degisimDetay(${index})">📂</button>
-
-<button onclick="degisimDuzenle(${index})">✏️</button>
-
-<button onclick="degisimSil(${index})">🗑️</button>
-
-</td>
-</tr>
-        `;
-
-    });
-
-    if(satirlar === ""){
-
-        satirlar = `
-        <tr>
-            <td colspan="5" style="text-align:center;">
-                Henüz değişim kodu eklenmedi.
-            </td>
-        </tr>
-        `;
-
-    }
-
-    document.getElementById("icerik").innerHTML = `
-
-    <h2>🔄 Değişim Kodları</h2>
-
- <div class="toolbar">
-
-<button onclick="yeniDegisimKodu()">➕ Yeni Değişim Kodu</button>
-
-</div>
-    <table class="tablo">
-
-        <thead>
-
-            <tr>
-
-                   <th>Değişim Kodu</th>
-                    <th>Açıklama</th>
-                    <th>Durum</th>
-                    <th>İşlem</th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            ${satirlar}
-
-        </tbody>
-
-    </table>
-
-    `;
-
-}
 function tarifeler() {
 
 document.getElementById("icerik").innerHTML = `
@@ -394,42 +321,13 @@ document.getElementById("planIcerik").innerHTML=`
 
 <h2>${gun.toUpperCase()}</h2>
 
-<button onclick="yeniDegisimKodu()">
-➕ Yeni Değişim Kodu
+<h3>Bu gün için henüz çalışma planı oluşturulmadı.</h3>
+
+<br>
+
+<button onclick="alert('Yakında eklenecek')">
+➕ Yeni Çalışma Planı
 </button>
-
-<table class="tablo">
-
-<thead>
-
-<tr>
-
-<th>Değişim Kodu</th>
-
-<th>Açıklama</th>
-
-<th>İşlem</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td>01011</td>
-
-<td>Sabah Görevi</td>
-
-<td>✏️</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
 `;
 
 }
@@ -565,9 +463,7 @@ function sayfaGoster(sayfa) {
             surucuSefligi();
             break;
 
-        case "degisimKodlari":
-            degisimKodlari();
-            break;
+        
 
        case "tarifeler":
     tarifeler();
@@ -679,37 +575,5 @@ function degisimSil(index){
 
     }
 
-}
-     function gorevEkle(){
-
-    const gorevNo = prompt("Görev No:");
-    if(gorevNo == null || gorevNo == "") return;
-
-    const platform = prompt("Platform:");
-    if(platform == null) return;
-
-    const tarife = prompt("Tarife:");
-    if(tarife == null) return;
-
-    const baslangic = prompt("Başlangıç Saati:");
-    if(baslangic == null) return;
-
-    const bitis = prompt("Bitiş Saati:");
-    if(bitis == null) return;
-
-    const tablo = document.getElementById("detayTablo");
-
-    if(tablo.innerHTML.includes("Henüz görev eklenmedi")){
-        tablo.innerHTML = "";
-    }
-
-    tablo.innerHTML += `
-        <tr>
-            <td>${gorevNo}</td>
-            <td>${platform}</td>
-            <td>${tarife}</td>
-            <td>${baslangic}</td>
-            <td>${bitis}</td>
-        </tr>
-    `;
+    
 }
