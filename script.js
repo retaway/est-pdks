@@ -624,7 +624,4 @@ function degisimSil(index){
         degisimKodlari();
 
     }
-
-}
-
      
