@@ -798,51 +798,53 @@ function degisimSil(index){
 
     
 }
-function degisimGuncelle(index){
+// ... önceki kodlarınız ...
 
-const gorevler=[];
+function degisimGuncelle(index) {
+    if (!degisimKodlariListesi[index]) return;
 
-document.querySelectorAll("#degisimTablosu tbody tr").forEach(function(tr){
+    const gorevler = [];
 
-const inputlar=tr.querySelectorAll("input");
+    document.querySelectorAll("#degisimTablosu tbody tr").forEach(function(tr) {
+        const inputlar = tr.querySelectorAll("input");
 
-gorevler.push({
+        if (inputlar.length >= 5) {
+            gorevler.push({
+                gorevNo: inputlar[0].value,
+                platform: inputlar[1].value,
+                tarife: inputlar[2].value,
+                baslangic: inputlar[3].value,
+                bitis: inputlar[4].value
+            });
+        }
+    });
 
-gorevNo:inputlar[0].value,
-platform:inputlar[1].value,
-tarife:inputlar[2].value,
-baslangic:inputlar[3].value,
-bitis:inputlar[4].value
+    degisimKodlariListesi[index].kod = document.getElementById("degisimKodu").value;
+    degisimKodlariListesi[index].aciklama = document.getElementById("degisimAdi").value;
+    degisimKodlariListesi[index].gorevler = gorevler;
 
-});
+    localStorage.setItem(
+        "degisimKodlari",
+        JSON.stringify(degisimKodlariListesi)
+    );
 
-});
+    alert("Güncellendi.");
+    degisimKodlari();
+} // <- degisimGuncelle fonksiyonu kapandı
 
-degisimKodlariListesi[index].kod=document.getElementById("degisimKodu").value;
-
-degisimKodlariListesi[index].aciklama=document.getElementById("degisimAdi").value;
-
-degisimKodlariListesi[index].gorevler=gorevler;
-
-localStorage.setItem(
-"degisimKodlari",
-JSON.stringify(degisimKodlariListesi)
-);
-
-alert("Güncellendi.");
-
-degisimKodlari();
-
-}
-// Değişim kodunun durumunu (Aktif/Pasif) değiştirir
 function degisimDurum(index) {
     if (!degisimKodlariListesi[index]) return;
 
-    // Ternary operator ile daha temiz toggle işlemi
-    const mevcutDurum = degisimKodlariListesi[index].durum;
-    degisimKodlariListesi[index].durum = mevcutDurum === "Aktif" ? "Pasif" : "Aktif";
+    if (degisimKodlariListesi[index].durum === "Aktif") {
+        degisimKodlariListesi[index].durum = "Pasif";
+    } else {
+        degisimKodlariListesi[index].durum = "Aktif";
+    }
 
-    // Veriyi kaydet ve tabloyu yenile
-    localStorage.setItem("degisimKodlari", JSON.stringify(degisimKodlariListesi));
+    localStorage.setItem(
+        "degisimKodlari",
+        JSON.stringify(degisimKodlariListesi)
+    );
+
     degisimKodlari();
-}
+} // <- Dosya tamamen sorunsuz kapandı.
