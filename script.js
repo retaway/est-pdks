@@ -136,11 +136,11 @@ document.getElementById("icerik").innerHTML = `
 
 <select id="gorev">
 
+<option>Vardiya Amiri</option>
+
 <option>Vatman</option>
 
-<option>Denetçi</option>
-
-<option>Amir</option>
+<option>Personel</option>
 
 </select>
 
