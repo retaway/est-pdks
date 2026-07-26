@@ -79,10 +79,8 @@ function degisimKodlari() {
             <td>${kayit.gorevler ? kayit.gorevler.length : 0}</td>
 
             <td>
-
-                <button onclick="degisimDetay(${index})">📂</button>
-
-                <button onclick="degisimSil(${index})">🗑️</button>
+            <button onclick="degisimDuzenle(${index})">✏️</button>
+            <button onclick="degisimSil(${index})">🗑️</button>
 
             </td>
 
@@ -575,67 +573,7 @@ function sayfaGoster(sayfa) {
             break;
     }
 }
-function degisimDetay(index){
 
-    const kayit = degisimKodlariListesi[index];
-
-    document.getElementById("icerik").innerHTML = `
-
-    <h2>📂 Değişim Kodu Detayı</h2>
-
-    <div class="form-kart">
-
-        <p><b>Değişim Kodu:</b> ${kayit.kod}</p>
-
-       <p><b>Değişim Kodu:</b> ${kayit.kod}</p>
-
-<p><b>Açıklama:</b> ${kayit.aciklama}</p>
-
-<br>
-
-<button onclick="gorevEkle()">➕ Görev Ekle</button>
-
-<br><br>
-
-<table class="tablo">
-
-            <thead>
-
-                <tr>
-
-                    <th>Görev No</th>
-                    <th>Platform</th>
-                    <th>Tarife</th>
-                    <th>Başlangıç</th>
-                    <th>Bitiş</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="detayTablo">
-
-                <tr>
-
-                    <td colspan="5">
-                    Henüz görev eklenmedi.
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-        <br>
-
-        <button onclick="degisimKodlari()">⬅ Geri Dön</button>
-
-    </div>
-
-    `;
-
-}
 
 function degisimDuzenle(index){
     alert("Düzenleme ekranı yakında eklenecek.");
@@ -658,3 +596,4 @@ function degisimSil(index){
 
     
 }
+function degisimGuncelle(index)
