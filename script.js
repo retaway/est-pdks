@@ -670,6 +670,8 @@ function degisimSil(index){
         );
 
         degisimKodlari();
-  }
+
     }
+
+}
      
