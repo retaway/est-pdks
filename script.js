@@ -259,7 +259,7 @@ function tarifeAc() {
             } else {
                 html += "<td>" + hucre + "</td>";
             }
-
+}
         });
 
         html += "</tr>";
