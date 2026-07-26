@@ -253,7 +253,6 @@ function degisimKodlari() {
 
     `;
 
-}
 function tarifeler() {
 
 document.getElementById("icerik").innerHTML = `
