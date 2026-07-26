@@ -186,3 +186,16 @@ select{
 .toolbar{
     margin-bottom:20px;
 }
+.sidebar-logo{
+    text-align: center;
+    padding: 20px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    margin-bottom: 15px;
+}
+
+.sidebar-logo img{
+    width: 90px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
