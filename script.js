@@ -610,11 +610,17 @@ function degisimDetay(index){
 
         <p><b>Değişim Kodu:</b> ${kayit.kod}</p>
 
-        <p><b>Açıklama:</b> ${kayit.aciklama}</p>
+       <p><b>Değişim Kodu:</b> ${kayit.kod}</p>
 
-        <br>
+<p><b>Açıklama:</b> ${kayit.aciklama}</p>
 
-        <table class="tablo">
+<br>
+
+<button onclick="gorevEkle()">➕ Görev Ekle</button>
+
+<br><br>
+
+<table class="tablo">
 
             <thead>
 
