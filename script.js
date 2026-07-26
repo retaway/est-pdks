@@ -270,15 +270,10 @@ function tarifeAc() {
     document.getElementById("icerik").innerHTML = html;
 }
 
-
-
-alert("Bir sonraki aşamada Excel tablo olarak açılacak.");
-
-}
-
 function tarifeSil(){
 
-tarifeDosyasi=null;
+tarifeDosyasi = null;
+tarifeVerileri = [];
 
 document.getElementById("tarifeListe").innerHTML=`
 
