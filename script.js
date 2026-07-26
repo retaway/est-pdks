@@ -61,7 +61,41 @@ function surucuSefligi() {
         </table>
     `;
 }
+function degisimKodlari() {
 
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>🔄 Değişim Kodları</h2>
+
+    <div class="toolbar">
+        <button onclick="yeniDegisimKodu()">➕ Yeni Değişim Kodu</button>
+    </div>
+
+    <table class="tablo">
+
+        <thead>
+            <tr>
+                <th>Değişim Kodu</th>
+                <th>Açıklama</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+
+        <tbody id="degisimListe">
+
+            <tr>
+                <td colspan="3" style="text-align:center">
+                    Henüz değişim kodu eklenmedi.
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    `;
+
+}
 function tarifeler() {
 
 document.getElementById("icerik").innerHTML = `
@@ -333,21 +367,25 @@ document.getElementById("planIcerik").innerHTML=`
 }
 function yeniDegisimKodu(){
 
-document.getElementById("icerik").innerHTML=`
+document.getElementById("icerik").innerHTML = `
 
 <h2>🔄 Yeni Değişim Kodu</h2>
 
 <div class="form-kart">
 
 <label>Değişim Kodu</label>
-<input id="degisimKodu" type="text" placeholder="Örn: 01011">
+<input id="degisimKodu" type="text">
 
 <label>Açıklama</label>
-<input id="degisimAdi" type="text" placeholder="Sabah Görevi">
+<input id="degisimAdi" type="text">
 
-<br><br>
+<hr>
 
-<button onclick="satirEkle()">➕ Satır Ekle</button>
+<h3>Görevler</h3>
+
+<div class="toolbar">
+<button onclick="satirEkle()">➕ Görev Ekle</button>
+</div>
 
 <table class="tablo" id="degisimTablosu">
 
@@ -356,17 +394,10 @@ document.getElementById("icerik").innerHTML=`
 <tr>
 
 <th>Görev No</th>
-
 <th>Platform</th>
-
 <th>Tarife</th>
-
 <th>Başlangıç</th>
-
 <th>Bitiş</th>
-
-<th>Süre</th>
-
 <th>İşlem</th>
 
 </tr>
@@ -383,6 +414,8 @@ document.getElementById("icerik").innerHTML=`
 
 <button onclick="degisimKaydet()">💾 Kaydet</button>
 
+<button onclick="degisimKodlari()">⬅ Geri</button>
+
 </div>
 
 `;
@@ -390,13 +423,13 @@ document.getElementById("icerik").innerHTML=`
 }
 function satirEkle(){
 
-let tbody=document.querySelector("#degisimTablosu tbody");
+const tbody=document.querySelector("#degisimTablosu tbody");
 
-let satir=`
+tbody.insertAdjacentHTML("beforeend",`
 
 <tr>
 
-<td><input type="text"></td>
+<td><input type="text" placeholder="1013"></td>
 
 <td><input type="text"></td>
 
@@ -405,24 +438,20 @@ let satir=`
 <td><input type="time"></td>
 
 <td><input type="time"></td>
-
-<td><input type="text" readonly></td>
 
 <td>
 
-<button>🗑</button>
+<button onclick="this.parentElement.parentElement.remove()">
+🗑️
+</button>
 
 </td>
 
 </tr>
 
-`;
-
-tbody.insertAdjacentHTML("beforeend",satir);
+`);
 
 }
-
-
 function degisimKaydet() {
 
     const kod = document.getElementById("degisimKodu").value.trim();
