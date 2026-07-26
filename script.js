@@ -830,7 +830,7 @@ function degisimGuncelle(index) {
 
     alert("Güncellendi.");
     degisimKodlari();
-} // <- degisimGuncelle fonksiyonu kapandı
+}
 
 function degisimDurum(index) {
     if (!degisimKodlariListesi[index]) return;
@@ -847,4 +847,4 @@ function degisimDurum(index) {
     );
 
     degisimKodlari();
-} // <- Dosya tamamen sorunsuz kapandı.
+}
