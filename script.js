@@ -581,7 +581,35 @@ function sayfaGoster(sayfa) {
 
 
 function degisimDuzenle(index){
-    alert("Düzenleme ekranı yakında eklenecek.");
+
+    const kayit = degisimKodlariListesi[index];
+
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>✏️ Değişim Kodu Düzenle</h2>
+
+    <div class="form-kart">
+
+        <label>Değişim Kodu</label>
+        <input id="degisimKodu" type="text" value="${kayit.kod}">
+
+        <label>Açıklama</label>
+        <input id="degisimAdi" type="text" value="${kayit.aciklama}">
+
+        <br><br>
+
+        <button onclick="degisimGuncelle(${index})">
+            💾 Güncelle
+        </button>
+
+        <button onclick="degisimKodlari()">
+            ⬅ Geri
+        </button>
+
+    </div>
+
+    `;
+
 }
 
 function degisimSil(index){
