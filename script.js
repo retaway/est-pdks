@@ -97,20 +97,11 @@ function degisimKodlari() {
 
     <h2>🔄 Değişim Kodları</h2>
 
-    <div class="toolbar">
+ <div class="toolbar">
 
-        <button onclick="yeniDegisimKodu()">➕ Yeni Kod</button>
+<button onclick="yeniDegisimKodu()">➕ Yeni Değişim Kodu</button>
 
-        <button>✏️ Düzenle</button>
-
-        <button>🗑️ Sil</button>
-
-        <button>📥 Excel Aktar</button>
-
-        <button>📤 Excel Dışa Aktar</button>
-
-    </div>
-
+</div>
     <table class="tablo">
 
         <thead>
