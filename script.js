@@ -259,7 +259,6 @@ function tarifeAc() {
             } else {
                 html += "<td>" + hucre + "</td>";
             }
-}
         });
 
         html += "</tr>";
@@ -271,13 +270,7 @@ function tarifeAc() {
     document.getElementById("icerik").innerHTML = html;
 }
 
-if(!tarifeDosyasi){
 
-alert("Önce bir Excel yükleyiniz.");
-
-return;
-
-}
 
 alert("Bir sonraki aşamada Excel tablo olarak açılacak.");
 
