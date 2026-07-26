@@ -680,4 +680,36 @@ function degisimSil(index){
     }
 
 }
-     
+     function gorevEkle(){
+
+    const gorevNo = prompt("Görev No:");
+    if(gorevNo == null || gorevNo == "") return;
+
+    const platform = prompt("Platform:");
+    if(platform == null) return;
+
+    const tarife = prompt("Tarife:");
+    if(tarife == null) return;
+
+    const baslangic = prompt("Başlangıç Saati:");
+    if(baslangic == null) return;
+
+    const bitis = prompt("Bitiş Saati:");
+    if(bitis == null) return;
+
+    const tablo = document.getElementById("detayTablo");
+
+    if(tablo.innerHTML.includes("Henüz görev eklenmedi")){
+        tablo.innerHTML = "";
+    }
+
+    tablo.innerHTML += `
+        <tr>
+            <td>${gorevNo}</td>
+            <td>${platform}</td>
+            <td>${tarife}</td>
+            <td>${baslangic}</td>
+            <td>${bitis}</td>
+        </tr>
+    `;
+}
