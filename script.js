@@ -87,41 +87,24 @@ document.getElementById("icerik").innerHTML = `
 <thead>
 
 <tr>
-<th>Sicil</th>
-<th>Ad Soyad</th>
-<th>Telefon</th>
-<th>E-Posta</th>
-<th>Görev</th>
-<th>Durum</th>
-<th>İşlem</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-${satirlar}
-
-</tbody>
-
-</table>
-
-`;
-
-<thead>
-
+satirlar += `
 <tr>
 
-<th>Sicil</th>
+<td>${personel.sicil}</td>
+<td>${personel.ad} ${personel.soyad}</td>
+<td>${personel.telefon}</td>
+<td>${personel.email}</td>
+<td>${personel.gorev}</td>
+<td>${personel.durum=="Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
 
-<th>Ad Soyad</th>
+<td>
+<button onclick="personelDuzenle(${index})">✏️</button>
+<button onclick="personelDurum(${index})">🔄</button>
+<button onclick="personelSil(${index})">🗑️</button>
+</td>
 
-<th>Görev</th>
-
-<th>Durum</th>
-
-<th>İşlem</th>
-
+</tr>
+`;
 </tr>
 
 </thead>
