@@ -604,4 +604,3 @@ function degisimDurum(index){
 
     localStorage.setItem("degisimKodlari", JSON.stringify(degisimKodlariListesi));
     degisimKodlari();
-}
