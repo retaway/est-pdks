@@ -87,7 +87,6 @@ document.getElementById("icerik").innerHTML = `
 <thead>
 
 <tr>
-
 <th>Sicil</th>
 <th>Ad Soyad</th>
 <th>Telefon</th>
@@ -95,7 +94,6 @@ document.getElementById("icerik").innerHTML = `
 <th>Görev</th>
 <th>Durum</th>
 <th>İşlem</th>
-
 </tr>
 
 </thead>
