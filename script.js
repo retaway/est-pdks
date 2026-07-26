@@ -73,9 +73,15 @@ function degisimKodlari() {
     <td>${kod.kod}</td>
     <td>${kod.aciklama}</td>
     <td>🟢 Aktif</td>
-    <td>
-        <button>👁️ Aç</button>
-    </td>
+   <td>
+
+<button onclick="degisimDetay(${index})">📂</button>
+
+<button onclick="degisimDuzenle(${index})">✏️</button>
+
+<button onclick="degisimSil(${index})">🗑️</button>
+
+</td>
 </tr>
         `;
 
@@ -583,4 +589,23 @@ function sayfaGoster(sayfa) {
             alert("Henüz geliştiriliyor");
             break;
     }
+}
+function degisimDetay(index){
+    alert("Detay ekranı yakında eklenecek.\nSeçilen kayıt: " + degisimKodlariListesi[index].kod);
+}
+
+function degisimDuzenle(index){
+    alert("Düzenleme ekranı yakında eklenecek.");
+}
+
+function degisimSil(index){
+
+    if(confirm("Bu değişim kodu silinsin mi?")){
+
+        degisimKodlariListesi.splice(index,1);
+
+        degisimKodlari();
+
+    }
+
 }
