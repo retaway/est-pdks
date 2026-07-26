@@ -511,9 +511,10 @@ function degisimKaydet() {
     }
 
     degisimKodlariListesi.push({
-        kod: kod,
-        aciklama: aciklama
-    });
+    kod: kod,
+    aciklama: aciklama,
+    gorevler: []
+});
 
     localStorage.setItem(
         "degisimKodlari",
