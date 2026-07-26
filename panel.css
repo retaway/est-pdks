@@ -147,3 +147,60 @@ body{
 <p>ESTRAM Personel ve Vardiya Yönetim Sistemine hoş geldiniz.</p>
 
 </div>
+
+.toolbar{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.toolbar button{
+
+background:#0b6efd;
+
+color:white;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+.toolbar button:hover{
+
+background:#084298;
+
+}
+
+.tablo{
+
+width:100%;
+
+border-collapse:collapse;
+
+background:white;
+
+}
+
+.tablo th{
+
+background:#0b6efd;
+
+color:white;
+
+padding:12px;
+
+}
+
+.tablo td{
+
+padding:10px;
+
+border-bottom:1px solid #ddd;
+
+}
