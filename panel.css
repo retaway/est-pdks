@@ -199,3 +199,10 @@ select{
     display: block;
     margin: 0 auto;
 }
+.sidebar-logo h3{
+    color: white;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
