@@ -600,10 +600,59 @@ function sayfaGoster(sayfa) {
 }
 function degisimDetay(index){
 
-    alert(
-        "Detay ekranı yakında eklenecek.\nSeçilen kayıt: " +
-        degisimKodlariListesi[index].kod
-    );
+    const kayit = degisimKodlariListesi[index];
+
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>📂 Değişim Kodu Detayı</h2>
+
+    <div class="form-kart">
+
+        <p><b>Değişim Kodu:</b> ${kayit.kod}</p>
+
+        <p><b>Açıklama:</b> ${kayit.aciklama}</p>
+
+        <br>
+
+        <table class="tablo">
+
+            <thead>
+
+                <tr>
+
+                    <th>Görev No</th>
+                    <th>Platform</th>
+                    <th>Tarife</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="detayTablo">
+
+                <tr>
+
+                    <td colspan="5">
+                    Henüz görev eklenmedi.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <br>
+
+        <button onclick="degisimKodlari()">⬅ Geri Dön</button>
+
+    </div>
+
+    `;
+
+}
 
 }
 function degisimDuzenle(index){
