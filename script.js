@@ -203,3 +203,11 @@ function excelAktar(){
 function excelDisaAktar(){
     alert("Excel dışa aktarma daha sonra eklenecek.");
 }
+
+function tarifeKaydet(){
+
+alert("Tarife başarıyla kaydedildi.");
+
+tarifeler();
+
+}
