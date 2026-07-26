@@ -81,10 +81,10 @@ function degisimKodlari() {
             </tr>
         </thead>
 
-        <tbody id="degisimListe">
+        <tbody>
 
             <tr>
-                <td colspan="3" style="text-align:center">
+                <td colspan="3" style="text-align:center;">
                     Henüz değişim kodu eklenmedi.
                 </td>
             </tr>
