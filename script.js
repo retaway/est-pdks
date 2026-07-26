@@ -185,28 +185,22 @@ function degisimKodlari() {
 
         satirlar += `
         <tr>
- `;
             <td>${kayit.kod}</td>
-
             <td>${kayit.aciklama}</td>
-
-          <td>
-            ${kayit.durum=="Aktif" ? "🟢 Aktif" : "🔴 Pasif"}
+            <td>
+                ${kayit.durum == "Aktif" ? "🟢 Aktif" : "🔴 Pasif"}
             </td>
-           <td>
-
-        <button onclick="degisimDuzenle(${index})">✏️</button>
-
-        <button onclick="degisimDurum(${index})">🔄</button>
-
-        <button onclick="degisimSil(${index})">🗑️</button>
-
-</td>
-
+            <td>
+                <button onclick="degisimDuzenle(${index})">✏️</button>
+                <button onclick="degisimDurum(${index})">🔄</button>
+                <button onclick="degisimSil(${index})">🗑️</button>
+            </td>
         </tr>
         `;
 
     });
+
+}
 
     if(satirlar==""){
 
