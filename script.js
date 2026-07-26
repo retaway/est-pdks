@@ -1,4 +1,27 @@
-const button = document.querySelector("button");
+document.addEventListener("DOMContentLoaded", function () {
+
+    const kullaniciInput = document.querySelector('input[type="text"]');
+    const sifreInput = document.querySelector('input[type="password"]');
+    const girisButonu = document.querySelector(".login-container button");
+
+    if (kullaniciInput && sifreInput && girisButonu) {
+
+        girisButonu.addEventListener("click", function () {
+
+            const kullanici = kullaniciInput.value.trim();
+            const sifre = sifreInput.value.trim();
+
+            if (kullanici === "admin" && sifre === "1234") {
+                window.location.href = "panel.html";
+            } else {
+                alert("Kullanıcı adı veya şifre hatalı!");
+            }
+
+        });
+
+    }
+
+});
 
 if (button) {
     button.addEventListener("click", function () {
