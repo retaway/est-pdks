@@ -523,20 +523,7 @@ let satir=`
 tbody.insertAdjacentHTML("beforeend",satir);
 
 }
-function degisimKaydet() {
 
-    const kod = document.getElementById("degisimKodu").value;
-    const aciklama = document.getElementById("degisimAdi").value;
-
-    if (kod === "" || aciklama === "") {
-        alert("Lütfen tüm alanları doldurun.");
-        return;
-    }
-
-  degisimKodlariListesi.push({
-    kod: kod,
-    aciklama: aciklama
-});
 
 // Tarayıcıya kaydet
 function degisimKaydet() {
@@ -553,6 +540,16 @@ function degisimKaydet() {
         kod: kod,
         aciklama: aciklama
     });
+
+    localStorage.setItem(
+        "degisimKodlari",
+        JSON.stringify(degisimKodlariListesi)
+    );
+
+    alert("Değişim kodu kaydedildi.");
+
+    degisimKodlari();
+}
 
     // Tarayıcıya kaydet
     localStorage.setItem(
@@ -619,9 +616,13 @@ function sayfaGoster(sayfa) {
     }
 }
 function degisimDetay(index){
-    alert("Detay ekranı yakında eklenecek.\nSeçilen kayıt: " + [index].kod);
-}
 
+    alert(
+        "Detay ekranı yakında eklenecek.\nSeçilen kayıt: " +
+        degisimKodlariListesi[index].kod
+    );
+
+}
 function degisimDuzenle(index){
     alert("Düzenleme ekranı yakında eklenecek.");
 }
