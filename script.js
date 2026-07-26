@@ -71,8 +71,8 @@ function surucuSefligi() {
 
     }
 document.getElementById("icerik").innerHTML = `
-<h2>Personeller</h2>
-`;
+
+<h2>👷 Personeller</h2>
 
 <div class="toolbar">
 
@@ -83,6 +83,32 @@ document.getElementById("icerik").innerHTML = `
 </div>
 
 <table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Sicil</th>
+<th>Ad Soyad</th>
+<th>Telefon</th>
+<th>E-Posta</th>
+<th>Görev</th>
+<th>Durum</th>
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
 
 <thead>
 
