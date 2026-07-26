@@ -185,7 +185,7 @@ function degisimKodlari() {
 
         satirlar += `
         <tr>
-
+ `;
             <td>${kayit.kod}</td>
 
             <td>${kayit.aciklama}</td>
