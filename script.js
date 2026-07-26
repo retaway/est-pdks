@@ -834,24 +834,15 @@ alert("Güncellendi.");
 degisimKodlari();
 
 }
-function degisimDurum(index){
+// Değişim kodunun durumunu (Aktif/Pasif) değiştirir
+function degisimDurum(index) {
+    if (!degisimKodlariListesi[index]) return;
 
-    if(degisimKodlariListesi[index].durum=="Aktif"){
+    // Ternary operator ile daha temiz toggle işlemi
+    const mevcutDurum = degisimKodlariListesi[index].durum;
+    degisimKodlariListesi[index].durum = mevcutDurum === "Aktif" ? "Pasif" : "Aktif";
 
-        degisimKodlariListesi[index].durum="Pasif";
-
-    }else{
-
-        degisimKodlariListesi[index].durum="Aktif";
-
-    }
-
-    localStorage.setItem(
-        "degisimKodlari",
-        JSON.stringify(degisimKodlariListesi)
-    );
-
+    // Veriyi kaydet ve tabloyu yenile
+    localStorage.setItem("degisimKodlari", JSON.stringify(degisimKodlariListesi));
     degisimKodlari();
-
-    
 }
