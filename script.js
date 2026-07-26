@@ -472,7 +472,7 @@ document.getElementById("icerik").innerHTML = `
 `;
 
 }
-function satirEkle(){
+function satirEkle(gorev = {}){
 
 const tbody=document.querySelector("#degisimTablosu tbody");
 
@@ -480,19 +480,19 @@ tbody.insertAdjacentHTML("beforeend",`
 
 <tr>
 
-<td><input type="text" placeholder="1013"></td>
+<td><input type="text" value="${gorev.gorevNo || ""}"></td>
 
-<td><input type="text"></td>
+<td><input type="text" value="${gorev.platform || ""}"></td>
 
-<td><input type="text"></td>
+<td><input type="text" value="${gorev.tarife || ""}"></td>
 
-<td><input type="time"></td>
+<td><input type="time" value="${gorev.baslangic || ""}"></td>
 
-<td><input type="time"></td>
+<td><input type="time" value="${gorev.bitis || ""}"></td>
 
 <td>
 
-<button onclick="this.parentElement.parentElement.remove()">
+<button onclick="this.closest('tr').remove()">
 🗑️
 </button>
 
@@ -513,10 +513,31 @@ function degisimKaydet() {
         return;
     }
 
-    degisimKodlariListesi.push({
+   const gorevler = [];
+
+document.querySelectorAll("#degisimTablosu tbody tr").forEach(function(tr){
+
+    const inputlar = tr.querySelectorAll("input");
+
+    gorevler.push({
+
+        gorevNo: inputlar[0].value,
+        platform: inputlar[1].value,
+        tarife: inputlar[2].value,
+        baslangic: inputlar[3].value,
+        bitis: inputlar[4].value
+
+    });
+
+});
+
+degisimKodlariListesi.push({
+
     kod: kod,
     aciklama: aciklama,
-    durum: "Aktif"
+    durum: "Aktif",
+    gorevler: gorevler
+
 });
 
     localStorage.setItem(
@@ -582,33 +603,72 @@ function sayfaGoster(sayfa) {
 
 function degisimDuzenle(index){
 
-    const kayit = degisimKodlariListesi[index];
+const kayit = degisimKodlariListesi[index];
 
-    document.getElementById("icerik").innerHTML = `
+document.getElementById("icerik").innerHTML=`
 
-    <h2>✏️ Değişim Kodu Düzenle</h2>
+<h2>✏️ Değişim Kodu Düzenle</h2>
 
-    <div class="form-kart">
+<div class="form-kart">
 
-        <label>Değişim Kodu</label>
-        <input id="degisimKodu" type="text" value="${kayit.kod}">
+<label>Değişim Kodu</label>
+<input id="degisimKodu" value="${kayit.kod}">
 
-        <label>Açıklama</label>
-        <input id="degisimAdi" type="text" value="${kayit.aciklama}">
+<label>Açıklama</label>
+<input id="degisimAdi" value="${kayit.aciklama}">
 
-        <br><br>
+<hr>
 
-        <button onclick="degisimGuncelle(${index})">
-            💾 Güncelle
-        </button>
+<h3>Görevler</h3>
 
-        <button onclick="degisimKodlari()">
-            ⬅ Geri
-        </button>
+<button onclick="satirEkle()">➕ Görev Ekle</button>
 
-    </div>
+<table class="tablo" id="degisimTablosu">
 
-    `;
+<thead>
+
+<tr>
+
+<th>Görev No</th>
+<th>Platform</th>
+<th>Tarife</th>
+<th>Başlangıç</th>
+<th>Bitiş</th>
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+<br>
+
+<button onclick="degisimGuncelle(${index})">
+💾 Güncelle
+</button>
+
+<button onclick="degisimKodlari()">
+⬅ Geri
+</button>
+
+</div>
+
+`;
+
+if(kayit.gorevler){
+
+kayit.gorevler.forEach(function(gorev){
+
+satirEkle(gorev);
+
+});
+
+}
 
 }
 
@@ -631,20 +691,38 @@ function degisimSil(index){
 }
 function degisimGuncelle(index){
 
-    const kod = document.getElementById("degisimKodu").value.trim();
-    const aciklama = document.getElementById("degisimAdi").value.trim();
+const gorevler=[];
 
-    degisimKodlariListesi[index].kod = kod;
-    degisimKodlariListesi[index].aciklama = aciklama;
+document.querySelectorAll("#degisimTablosu tbody tr").forEach(function(tr){
 
-    localStorage.setItem(
-        "degisimKodlari",
-        JSON.stringify(degisimKodlariListesi)
-    );
+const inputlar=tr.querySelectorAll("input");
 
-    alert("Güncellendi.");
+gorevler.push({
 
-    degisimKodlari();
+gorevNo:inputlar[0].value,
+platform:inputlar[1].value,
+tarife:inputlar[2].value,
+baslangic:inputlar[3].value,
+bitis:inputlar[4].value
+
+});
+
+});
+
+degisimKodlariListesi[index].kod=document.getElementById("degisimKodu").value;
+
+degisimKodlariListesi[index].aciklama=document.getElementById("degisimAdi").value;
+
+degisimKodlariListesi[index].gorevler=gorevler;
+
+localStorage.setItem(
+"degisimKodlari",
+JSON.stringify(degisimKodlariListesi)
+);
+
+alert("Güncellendi.");
+
+degisimKodlari();
 
 }
 function degisimDurum(index){
