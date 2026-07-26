@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const kullanici = kullaniciInput.value.trim();
             const sifre = sifreInput.value.trim();
 
-            if (kullanici === "admin" && sifre === "1234") {
+            if (kullanici === "admin" && sifre === "") {
                 window.location.href = "panel.html";
             } else {
                 alert("Kullanıcı adı veya şifre hatalı!");
@@ -22,21 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
-
-if (button) {
-    button.addEventListener("click", function () {
-
-        let kullanici = document.querySelectorAll("input")[0].value;
-        let sifre = document.querySelectorAll("input")[1].value;
-
-        if (kullanici === "admin" && sifre === "1234") {
-            window.location.href = "panel.html";
-        } else {
-            alert("Kullanıcı adı veya şifre hatalı!");
-        }
-
-    });
-}
 
 function surucuSefligi() {
 
