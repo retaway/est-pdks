@@ -852,5 +852,3 @@ function degisimDurum(index){
     );
 
     degisimKodlari();
-
-}
