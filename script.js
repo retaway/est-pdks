@@ -823,7 +823,7 @@ function gunlukVardiya() {
             <button onclick="vardiyaFiltreDegistir('ÜCRETSİZ İZİN')">Ücretsiz İzin</button>
             <button onclick="vardiyaFiltreDegistir('DOĞUM İZNİ')">Doğum İzni</button>
             <button onclick="vardiyaFiltreDegistir('RAPOR')">Rapor</button>
-            <button onclick="vardiyaFiltreDegistir('İSTİRAHAT')">İstirahat</button>
+            <button onclick="vardiyaFiltreDegistir('HAFTA TATİLİ')">Hafta Tatili</button>
             <button onclick="vardiyaFiltreDegistir('GÖREVE GELMEDİ')">Göreve Gelmedi</button>
         </div>
 
@@ -1164,7 +1164,7 @@ function gunSonuRaporu() {
             case "RAPOR":
                 raporSayisi++;
                 break;
-            case "İSTİRAHAT":
+            case "HAFTA TATİLİ":
                 istirahatSayisi++;
                 break;
             case "GÖREVE GELMEDİ":
@@ -1243,7 +1243,7 @@ function gunSonuRaporu() {
             <div class="kart"><h3>${dogumIzniSayisi}</h3><p>Doğum İzni</p></div>
             <div class="kart"><h3>${raporSayisi}</h3><p>Rapor</p></div>
 
-            <div class="kart"><h3>${istirahatSayisi}</h3><p>İstirahat</p></div>
+            <div class="kart"><h3>${istirahatSayisi}</h3><p>Hafta Tatili</p></div>
             <div class="kart"><h3>${goreveGelmediSayisi}</h3><p>Göreve Gelmedi</p></div>
 
             <div class="kart" style="grid-column:1 / -1;">
