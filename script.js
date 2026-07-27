@@ -31,14 +31,6 @@ function surucuSefligi() {
     let satirlar = "";
 
     personelListesi.forEach(function(personel, index){
-        const metin =
-    (personel.sicil + " " +
-     personel.ad + " " +
-     personel.soyad).toLowerCase();
-
-if (arama !== "" && !metin.includes(arama)) {
-    return;
-}
         satirlar += `
         <tr>
             <td>${personel.sicil}</td>
@@ -47,10 +39,10 @@ if (arama !== "" && !metin.includes(arama)) {
             <td>${personel.email}</td>
             <td>${personel.gorev}</td>
             <td>${personel.durum === "Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
-           <td>
-            <button onclick="personelDetay(${index})">👁️</button>
-            <button onclick="personelAta(${index})">📋</button>
-        </td>
+            <td>
+                <button onclick="personelDetay(${index})">👁️</button>
+                <button onclick="personelAta(${index})">📋</button>
+            </td>
         </tr>
         `;
     });
@@ -65,30 +57,31 @@ if (arama !== "" && !metin.includes(arama)) {
         `;
     }
 
-   document.getElementById("icerik").innerHTML = `
-    <h2>🔄 Görev / Tarife Değişimleri</h2>
-
-    <div class="toolbar">
-        <button onclick="yeniGorevTarifeDegisimi()">➕ Yeni Değişim</button>
-    </div>
-
-    <table class="tablo">
-        <thead>
-            <tr>
-                <th>Tarih</th>
-                <th>Değişim Talep Eden Personel</th>
-                <th>Tarifesi</th>
-                <th>Değişen Personel</th>
-                <th>Tarifesi</th>
-                <th>Neden</th>
-                <th>İşlem</th>
-            </tr>
-        </thead>
-        <tbody>
-            ${satirlar}
-        </tbody>
-    </table>
-`;
+    document.getElementById("icerik").innerHTML = `
+        <h2>👷 Personeller</h2>
+        <div class="toolbar">
+            <button disabled title="Personel kayıtları İnsan Kaynakları tarafından yönetilir.">
+                👥 Personeller İK Modülünden Yönetilir
+            </button>
+        </div>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Telefon</th>
+                    <th>E-Posta</th>
+                    <th>Görev</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${satirlar}
+            </tbody>
+        </table>
+    `;
+}
 function personelDetay(index) {
     const p = personelListesi[index];
     if (!p) return;
