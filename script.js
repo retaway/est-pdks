@@ -3,9 +3,10 @@ let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) |
 let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
-
+let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let gunlukVardiyaFiltre = "HEPSI";
+let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 
 document.addEventListener("DOMContentLoaded", function () {
     const kullaniciInput = document.querySelector('input[type="text"]');
@@ -506,7 +507,7 @@ function satirEkle(gorev = {}){
     `);
 }
 
-function degisimKaydet() {
+{
     const kod = document.getElementById("degisimKodu").value.trim();
     const aciklama = document.getElementById("degisimAdi").value.trim();
 
@@ -566,15 +567,25 @@ function sayfaGoster(sayfa) {
             calismaPlanlari();
             break;
 
+            case "personelDegisimi":
+            personelDegisimi();
+            break;
+
         case "gunlukVardiya":
              gunlukVardiya();
+            break;
+            
+        case "raporlar":
+             gunSonuRaporu();
+            break;
+
+        case "ayarlar":
+            alert("Henüz geliştiriliyor");
             break;
             
         case "izinler":
         case "puantaj":
         case "bildirimler":
-        case "raporlar":
-        case "ayarlar":
             alert("Henüz geliştiriliyor");
             break;
     }
@@ -731,6 +742,7 @@ function gunlukVardiya() {
 
         let gorev = bilgi.gorevKodu;
         let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
+        const degisim = degisimEtiketiBul(personel.sicil, bugun);
 
         switch (bilgi.durum) {
             case "ATANDI":
@@ -777,6 +789,7 @@ function gunlukVardiya() {
             <td>${personel.ad} ${personel.soyad}</td>
             <td>${gorev}</td>
             <td>${durum}</td>
+            <td>${degisim}</td>
             <td>${duzenleButonu}</td>
         </tr>
         `;
@@ -785,7 +798,7 @@ function gunlukVardiya() {
     if (satirlar === "") {
         satirlar = `
         <tr>
-            <td colspan="5" style="text-align:center;">
+            <td colspan="6" style="text-align:center;">
                 Kayıt bulunamadı.
             </td>
         </tr>
@@ -823,6 +836,7 @@ function gunlukVardiya() {
                     <th>Ad Soyad</th>
                     <th>Görev Kodu</th>
                     <th>Durum</th>
+                    <th>Değişim</th>
                     <th>İşlem</th>
                 </tr>
             </thead>
@@ -958,4 +972,384 @@ function personelDurumuKaydet(sicil, baslangic, bitis, durum, not = "") {
     });
 
     localStorage.setItem("personelDurumlari", JSON.stringify(personelDurumlari));
+}
+function personelDegisimi() {
+    let satirlar = "";
+
+    personelDegisimleri.forEach(function(kayit, index) {
+        satirlar += `
+        <tr>
+            <td>${kayit.tarih}</td>
+            <td>${kayit.eskiSicil}</td>
+            <td>${kayit.eskiAdSoyad}</td>
+            <td>${kayit.yeniSicil}</td>
+            <td>${kayit.yeniAdSoyad}</td>
+            <td>${kayit.neden}</td>
+            <td>
+                <button onclick="degisimSil(${index})">🗑️</button>
+            </td>
+        </tr>
+        `;
+    });
+
+    if (satirlar === "") {
+        satirlar = `
+        <tr>
+            <td colspan="7" style="text-align:center;">
+                Henüz personel değişimi yapılmadı.
+            </td>
+        </tr>
+        `;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>🔁 Personel Değişimi</h2>
+
+        <div class="toolbar">
+            <button onclick="yeniDegisim()">➕ Yeni Değişim</button>
+        </div>
+
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Eski Sicil</th>
+                    <th>Eski Personel</th>
+                    <th>Yeni Sicil</th>
+                    <th>Yeni Personel</th>
+                    <th>Neden</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${satirlar}
+            </tbody>
+        </table>
+    `;
+}
+
+function yeniDegisim() {
+    let personelSecenekleri = '<option value="">Personel seçiniz</option>';
+
+    personelListesi.forEach(function(p) {
+        personelSecenekleri += `
+            <option value="${p.sicil}">${p.sicil} - ${p.ad} ${p.soyad}</option>
+        `;
+    });
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>➕ Yeni Personel Değişimi</h2>
+
+        <div class="form-kart">
+            <label>Değişim Tarihi</label>
+            <input id="degisimTarihi" type="date" value="${new Date().toISOString().split("T")[0]}">
+
+            <label>Yerine Geçen Personel</label>
+            <select id="yeniPersonelSicil">
+                ${personelSecenekleri}
+            </select>
+
+            <label>Yerine Geçilen Personel</label>
+            <select id="eskiPersonelSicil">
+                ${personelSecenekleri}
+            </select>
+
+            <label>Neden</label>
+            <textarea id="degisimNeden" rows="3" placeholder="Örn: Rahatsızlandı, izinli, görev değişimi"></textarea>
+
+            <br><br>
+            <button onclick="degisimKaydet()">💾 Kaydet</button>
+            <button onclick="personelDegisimi()">⬅ Geri</button>
+        </div>
+    `;
+}
+
+{
+    const tarih = document.getElementById("degisimTarihi").value;
+    const yeniSicil = document.getElementById("yeniPersonelSicil").value;
+    const eskiSicil = document.getElementById("eskiPersonelSicil").value;
+    const neden = document.getElementById("degisimNeden").value.trim();
+
+    if (!tarih || !yeniSicil || !eskiSicil || !neden) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+    }
+
+    if (yeniSicil === eskiSicil) {
+        alert("Eski ve yeni personel aynı olamaz.");
+        return;
+    }
+
+    const yeniPersonel = personelListesi.find(p => String(p.sicil) === String(yeniSicil));
+    const eskiPersonel = personelListesi.find(p => String(p.sicil) === String(eskiSicil));
+
+    if (!yeniPersonel || !eskiPersonel) {
+        alert("Personel bulunamadı.");
+        return;
+    }
+
+    personelDegisimleri.push({
+        tarih: tarih,
+        eskiSicil: eskiPersonel.sicil,
+        eskiAdSoyad: `${eskiPersonel.ad} ${eskiPersonel.soyad}`,
+        yeniSicil: yeniPersonel.sicil,
+        yeniAdSoyad: `${yeniPersonel.ad} ${yeniPersonel.soyad}`,
+        neden: neden
+    });
+
+    // Aynı tarihte eski personele atanmış vardiya varsa yeni personele taşı
+    const eskiVardiya = gunlukVardiyalar.find(v =>
+        String(v.sicil) === String(eskiSicil) && v.tarih === tarih
+    );
+
+    if (eskiVardiya) {
+        const yeniVardiyaVarMi = gunlukVardiyalar.find(v =>
+            String(v.sicil) === String(yeniSicil) && v.tarih === tarih
+        );
+
+        if (yeniVardiyaVarMi) {
+            alert("Yeni personelin bu tarihte zaten vardiya kaydı var. Değişim kaydedildi, vardiya taşınmadı.");
+        } else {
+            eskiVardiya.sicil = String(yeniSicil);
+            eskiVardiya.not = (eskiVardiya.not ? eskiVardiya.not + " | " : "") + `Personel değişimi: ${neden}`;
+        }
+    }
+
+    localStorage.setItem("personelDegisimleri", JSON.stringify(personelDegisimleri));
+    localStorage.setItem("gunlukVardiyalar", JSON.stringify(gunlukVardiyalar));
+
+    alert("Personel değişimi kaydedildi.");
+    personelDegisimi();
+}
+
+function degisimSil(index) {
+    if (confirm("Bu değişim kaydı silinsin mi?")) {
+        personelDegisimleri.splice(index, 1);
+        localStorage.setItem("personelDegisimleri", JSON.stringify(personelDegisimleri));
+        personelDegisimi();
+    }
+}
+{
+    const tarih = document.getElementById("degisimTarihi").value;
+    const yeniSicil = document.getElementById("yeniPersonelSicil").value;
+    const eskiSicil = document.getElementById("eskiPersonelSicil").value;
+    const neden = document.getElementById("degisimNeden").value.trim();
+
+    if (!tarih || !yeniSicil || !eskiSicil || !neden) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+    }
+
+    if (yeniSicil === eskiSicil) {
+        alert("Eski ve yeni personel aynı olamaz.");
+        return;
+    }
+
+    const yeniPersonel = personelListesi.find(p => String(p.sicil) === String(yeniSicil));
+    const eskiPersonel = personelListesi.find(p => String(p.sicil) === String(eskiSicil));
+
+    if (!yeniPersonel || !eskiPersonel) {
+        alert("Personel bulunamadı.");
+        return;
+    }
+
+    personelDegisimleri.push({
+        tarih: tarih,
+        eskiSicil: eskiPersonel.sicil,
+        eskiAdSoyad: `${eskiPersonel.ad} ${eskiPersonel.soyad}`,
+        yeniSicil: yeniPersonel.sicil,
+        yeniAdSoyad: `${yeniPersonel.ad} ${yeniPersonel.soyad}`,
+        neden: neden
+    });
+
+    // Aynı tarihte eski personele atanmış vardiya varsa yeni personele taşı
+    const eskiVardiya = gunlukVardiyalar.find(v =>
+        String(v.sicil) === String(eskiSicil) && v.tarih === tarih
+    );
+
+    if (eskiVardiya) {
+        const yeniVardiyaVarMi = gunlukVardiyalar.find(v =>
+            String(v.sicil) === String(yeniSicil) && v.tarih === tarih
+        );
+
+        if (yeniVardiyaVarMi) {
+            alert("Yeni personelin bu tarihte zaten vardiya kaydı var. Değişim kaydedildi, vardiya taşınmadı.");
+        } else {
+            eskiVardiya.sicil = String(yeniSicil);
+            eskiVardiya.not = (eskiVardiya.not ? eskiVardiya.not + " | " : "") + `Personel değişimi: ${neden}`;
+        }
+    }
+
+    localStorage.setItem("personelDegisimleri", JSON.stringify(personelDegisimleri));
+    localStorage.setItem("gunlukVardiyalar", JSON.stringify(gunlukVardiyalar));
+
+    alert("Personel değişimi kaydedildi.");
+    personelDegisimi();
+}
+function gunSonuRaporu() {
+    const bugun = new Date().toISOString().split("T")[0];
+
+    const toplamPersonel = personelListesi.length;
+
+    let atandiSayisi = 0;
+    let atanmadiSayisi = 0;
+    let yillikIzinSayisi = 0;
+    let ucretliIzinSayisi = 0;
+    let ucretsizIzinSayisi = 0;
+    let dogumIzniSayisi = 0;
+    let raporSayisi = 0;
+    let istirahatSayisi = 0;
+    let goreveGelmediSayisi = 0;
+
+    personelListesi.forEach(function (personel) {
+        const bilgi = vardiyaDurumuBul(personel, bugun);
+
+        switch (bilgi.durum) {
+            case "ATANDI":
+                atandiSayisi++;
+                break;
+            case "YILLIK İZİN":
+                yillikIzinSayisi++;
+                break;
+            case "ÜCRETLİ İZİN":
+                ucretliIzinSayisi++;
+                break;
+            case "ÜCRETSİZ İZİN":
+                ucretsizIzinSayisi++;
+                break;
+            case "DOĞUM İZNİ":
+                dogumIzniSayisi++;
+                break;
+            case "RAPOR":
+                raporSayisi++;
+                break;
+            case "İSTİRAHAT":
+                istirahatSayisi++;
+                break;
+            case "GÖREVE GELMEDİ":
+                goreveGelmediSayisi++;
+                break;
+            default:
+                atanmadiSayisi++;
+                break;
+        }
+    });
+
+    const bugunkuDegisimler = personelDegisimleri.filter(function (k) {
+        return String(k.tarih) === String(bugun);
+    });
+
+    const bugunkuVardiyaKayitlari = gunlukVardiyalar.filter(function (v) {
+        return String(v.tarih) === String(bugun);
+    });
+
+    const degisimSatirlari = bugunkuDegisimler.length > 0
+        ? bugunkuDegisimler.map(function (k) {
+            return `
+            <tr>
+                <td>${k.eskiSicil}</td>
+                <td>${k.eskiAdSoyad}</td>
+                <td>${k.yeniSicil}</td>
+                <td>${k.yeniAdSoyad}</td>
+                <td>${k.neden}</td>
+            </tr>
+            `;
+        }).join("")
+        : `
+        <tr>
+            <td colspan="5" style="text-align:center;">Bugün personel değişimi yok.</td>
+        </tr>
+        `;
+
+    const vardiyaNotSatirlari = bugunkuVardiyaKayitlari.filter(function (v) {
+        return v.not && v.not.trim() !== "";
+    }).map(function (v) {
+        const personel = personelListesi.find(p => String(p.sicil) === String(v.sicil));
+        const adSoyad = personel ? `${personel.ad} ${personel.soyad}` : v.sicil;
+
+        return `
+        <tr>
+            <td>${v.sicil}</td>
+            <td>${adSoyad}</td>
+            <td>${v.gorevKodu || "-"}</td>
+            <td>${v.not}</td>
+        </tr>
+        `;
+    }).join("") || `
+        <tr>
+            <td colspan="4" style="text-align:center;">Bugün vardiya notu yok.</td>
+        </tr>
+    `;
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>📄 Gün Sonu Raporu</h2>
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(2, minmax(0, 1fr));
+            gap:12px;
+            margin-bottom:16px;
+        ">
+            <div class="kart"><h3>${toplamPersonel}</h3><p>Toplam Personel</p></div>
+            <div class="kart"><h3>${atandiSayisi}</h3><p>Atanan</p></div>
+
+            <div class="kart"><h3>${atanmadiSayisi}</h3><p>Atanmayan</p></div>
+            <div class="kart"><h3>${yillikIzinSayisi}</h3><p>Yıllık İzin</p></div>
+
+            <div class="kart"><h3>${ucretliIzinSayisi}</h3><p>Ücretli İzin</p></div>
+            <div class="kart"><h3>${ucretsizIzinSayisi}</h3><p>Ücretsiz İzin</p></div>
+
+            <div class="kart"><h3>${dogumIzniSayisi}</h3><p>Doğum İzni</p></div>
+            <div class="kart"><h3>${raporSayisi}</h3><p>Rapor</p></div>
+
+            <div class="kart"><h3>${istirahatSayisi}</h3><p>İstirahat</p></div>
+            <div class="kart"><h3>${goreveGelmediSayisi}</h3><p>Göreve Gelmedi</p></div>
+
+            <div class="kart" style="grid-column:1 / -1;">
+                <h3>${bugunkuDegisimler.length}</h3>
+                <p>Değişim</p>
+            </div>
+        </div>
+
+        <div class="form-kart">
+            <p><b>Tarih:</b> ${bugun}</p>
+        </div>
+
+        <h3>🔁 Personel Değişimleri</h3>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Eski Sicil</th>
+                    <th>Eski Personel</th>
+                    <th>Yeni Sicil</th>
+                    <th>Yeni Personel</th>
+                    <th>Neden</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${degisimSatirlari}
+            </tbody>
+        </table>
+
+        <br>
+
+        <h3>📝 Vardiya Notları</h3>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Görev Kodu</th>
+                    <th>Not</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${vardiyaNotSatirlari}
+            </tbody>
+        </table>
+
+        <br>
+
+        <button onclick="gunlukVardiya()">⬅ Günlük Vardiya</button>
+    `;
 }
