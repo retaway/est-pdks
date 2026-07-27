@@ -34,11 +34,10 @@ function surucuSefligi() {
             <td>${personel.email}</td>
             <td>${personel.gorev}</td>
             <td>${personel.durum === "Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
-            <td>
-                <button onclick="personelDuzenle(${index})">✏️</button>
-                <button onclick="personelDurum(${index})">🔄</button>
-                <button onclick="personelSil(${index})">🗑️</button>
-            </td>
+           <td>
+            <button onclick="personelDetay(${index})">👁️</button>
+            <button onclick="personelAta(${index})">📋</button>
+        </td>
         </tr>
         `;
     });
@@ -55,9 +54,11 @@ function surucuSefligi() {
 
     document.getElementById("icerik").innerHTML = `
     <h2>👷 Personeller</h2>
-    <div class="toolbar">
-        <button onclick="yeniPersonel()">➕ Yeni Personel</button>
-    </div>
+  <div class="toolbar">
+    <button disabled title="Personel kayıtları İnsan Kaynakları tarafından yönetilir.">
+        👥 Personeller İK Modülünden Yönetilir
+    </button>
+</div>
     <table class="tablo">
         <thead>
             <tr>
@@ -76,7 +77,37 @@ function surucuSefligi() {
     </table>
     `;
 }
+function personelDetay(index) {
+    const p = personelListesi[index];
+    if (!p) return;
 
+    document.getElementById("icerik").innerHTML = `
+        <h2>👤 Personel Bilgileri</h2>
+
+        <div class="form-kart">
+            <p><b>Sicil:</b> ${p.sicil}</p>
+            <p><b>Ad Soyad:</b> ${p.ad} ${p.soyad}</p>
+            <p><b>Telefon:</b> ${p.telefon}</p>
+            <p><b>E-Posta:</b> ${p.email}</p>
+            <p><b>Görev:</b> ${p.gorev}</p>
+            <p><b>Durum:</b> ${p.durum}</p>
+
+            <br>
+
+            <button onclick="surucuSefligi()">⬅ Geri</button>
+        </div>
+    `;
+}
+
+function personelAta(index){
+    const p = personelListesi[index];
+    if(!p) return;
+
+    alert(
+        p.ad + " " + p.soyad +
+        " için vardiya / araç / hat atama ekranı burada açılacak."
+    );
+}
 function yeniPersonel(index = null) {
     const isEdit = index !== null;
     const p = isEdit ? personelListesi[index] : { sicil: "", ad: "", soyad: "", telefon: "", email: "", gorev: "Vatman", durum: "Aktif" };
