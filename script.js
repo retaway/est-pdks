@@ -662,15 +662,10 @@ function gunlukVardiya() {
 
         let gorev = "-";
         let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
-    let hat = "-";
-    let arac = "-";
+   
       if(kayit){
 
     gorev = kayit.gorevKodu;
-
-    hat = kayit.hat || "-";
-
-    arac = kayit.arac || "-";
 
     durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
 
@@ -684,9 +679,7 @@ function gunlukVardiya() {
             <td>${personel.ad} ${personel.soyad}</td>
 
            <td>${gorev}</td>
-            <td>${hat}</td>
-            <td>${arac}</td>
-             <td>${durum}</td>
+           <td>${durum}</td>
 
             <td>
                 <button onclick="vardiyaDuzenle(${index})">
@@ -725,8 +718,6 @@ function gunlukVardiya() {
                     <th>Ad Soyad</th>
 
                   <th>Görev Kodu</th>
-                    <th>Hat</th>
-                    <th>Araç</th>
                     <th>Durum</th>
                     <th>İşlem</th>
 
@@ -776,24 +767,6 @@ function vardiyaDuzenle(index){
     <select id="gorevKodu">
         ${secenekler}
     </select>
-
-    <label>Hat</label>
-    <input
-        id="hat"
-        type="text"
-        placeholder="Örn: SSK - OGÜ">
-
-    <label>Araç No</label>
-    <input
-        id="arac"
-        type="text"
-        placeholder="Örn: 31">
-
-    <label>Platform</label>
-    <input
-        id="platform"
-        type="text"
-        placeholder="Örn: P2">
 
     <label>Not</label>
     <textarea
@@ -874,11 +847,13 @@ function vardiyaKaydet(index){
 
     gorevKodu: gorevKodu,
 
-    hat: document.getElementById("hat").value,
+    gunlukVardiyalar.push({
 
-    arac: document.getElementById("arac").value,
+    tarih: bugun,
 
-    platform: document.getElementById("platform").value,
+    sicil: personel.sicil,
+
+    gorevKodu: gorevKodu,
 
     not: document.getElementById("not").value
 
