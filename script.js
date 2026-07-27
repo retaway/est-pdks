@@ -979,10 +979,10 @@ function gorevTarifeDegisimleri() {
         satirlar += `
         <tr>
             <td>${kayit.tarih}</td>
-            <td>${kayit.sicil}</td>
-            <td>${kayit.adSoyad}</td>
-            <td>${kayit.eskiGorevKodu}</td>
-            <td>${kayit.yeniGorevKodu}</td>
+            <td>${kayit.talepEdenPersonel}</td>
+            <td>${kayit.talepEdenTarife}</td>
+            <td>${kayit.degisenPersonel}</td>
+            <td>${kayit.degisenTarife}</td>
             <td>${kayit.neden}</td>
             <td>
                 <button onclick="gorevTarifeDegisimiSil(${index})">🗑️</button>
@@ -1012,10 +1012,10 @@ function gorevTarifeDegisimleri() {
             <thead>
                 <tr>
                     <th>Tarih</th>
-                    <th>Sicil</th>
-                    <th>Ad Soyad</th>
-                    <th>Eski Görev Kodu</th>
-                    <th>Yeni Görev Kodu</th>
+                    <th>Değişim Talep Eden Personel</th>
+                    <th>Tarifesi</th>
+                    <th>Değişen Personel</th>
+                    <th>Tarifesi</th>
                     <th>Neden</th>
                     <th>İşlem</th>
                 </tr>
@@ -1036,14 +1036,6 @@ function yeniGorevTarifeDegisimi() {
         `;
     });
 
-    let gorevSecenekleri = '<option value="">Görev kodu seçiniz</option>';
-
-    degisimKodlariListesi.forEach(function (kod) {
-        gorevSecenekleri += `
-            <option value="${kod.kod}">${kod.kod} - ${kod.aciklama}</option>
-        `;
-    });
-
     document.getElementById("icerik").innerHTML = `
         <h2>➕ Yeni Görev / Tarife Değişimi</h2>
 
@@ -1051,23 +1043,24 @@ function yeniGorevTarifeDegisimi() {
             <label>Tarih</label>
             <input id="degisimTarihi" type="date" value="${new Date().toISOString().split("T")[0]}">
 
-            <label>Personel</label>
-            <select id="degisimPersonelSicil">
+            <label>Değişim Talep Eden Personel</label>
+            <select id="talepEdenPersonelSicil">
                 ${personelSecenekleri}
             </select>
 
-            <label>Eski Görev Kodu</label>
-            <select id="eskiGorevKodu">
-                ${gorevSecenekleri}
+            <label>Tarifesi</label>
+            <input id="talepEdenTarife" type="text" placeholder="Örn: 01011 / Sabah / A Hat">
+
+            <label>Değişen Personel</label>
+            <select id="degisenPersonelSicil">
+                ${personelSecenekleri}
             </select>
 
-            <label>Yeni Görev Kodu</label>
-            <select id="yeniGorevKodu">
-                ${gorevSecenekleri}
-            </select>
+            <label>Tarifesi</label>
+            <input id="degisenTarife" type="text" placeholder="Örn: 02015 / Öğle / B Hat">
 
             <label>Neden</label>
-            <textarea id="degisimNeden" rows="3" placeholder="Örn: Operasyon ihtiyacı, keyfi tarife değişimi, yoğunluk"></textarea>
+            <textarea id="degisimNeden" rows="3" placeholder="Örn: Operasyon ihtiyacı, keyfi değişim, yoğunluk"></textarea>
 
             <br><br>
             <button onclick="gorevTarifeDegisimiKaydet()">💾 Kaydet</button>
@@ -1078,61 +1071,43 @@ function yeniGorevTarifeDegisimi() {
 
 function gorevTarifeDegisimiKaydet() {
     const tarih = document.getElementById("degisimTarihi").value;
-    const sicil = document.getElementById("degisimPersonelSicil").value;
-    const eskiGorevKodu = document.getElementById("eskiGorevKodu").value;
-    const yeniGorevKodu = document.getElementById("yeniGorevKodu").value;
+    const talepEdenSicil = document.getElementById("talepEdenPersonelSicil").value;
+    const talepEdenTarife = document.getElementById("talepEdenTarife").value.trim();
+    const degisenSicil = document.getElementById("degisenPersonelSicil").value;
+    const degisenTarife = document.getElementById("degisenTarife").value.trim();
     const neden = document.getElementById("degisimNeden").value.trim();
 
-    if (!tarih || !sicil || !eskiGorevKodu || !yeniGorevKodu || !neden) {
+    if (!tarih || !talepEdenSicil || !talepEdenTarife || !degisenSicil || !degisenTarife || !neden) {
         alert("Lütfen tüm alanları doldurun.");
         return;
     }
 
-    if (eskiGorevKodu === yeniGorevKodu) {
-        alert("Eski ve yeni görev kodu aynı olamaz.");
+    if (talepEdenSicil === degisenSicil) {
+        alert("Değişim talep eden ve değişen personel aynı olamaz.");
         return;
     }
 
-    const personel = personelListesi.find(p => String(p.sicil) === String(sicil));
-    if (!personel) {
+    const talepEdenPersonel = personelListesi.find(p => String(p.sicil) === String(talepEdenSicil));
+    const degisenPersonel = personelListesi.find(p => String(p.sicil) === String(degisenSicil));
+
+    if (!talepEdenPersonel || !degisenPersonel) {
         alert("Personel bulunamadı.");
         return;
     }
 
-    const kayit = {
+    gorevTarifeDegisiklikleri.push({
         tarih: tarih,
-        sicil: String(personel.sicil),
-        adSoyad: `${personel.ad} ${personel.soyad}`,
-        eskiGorevKodu: eskiGorevKodu,
-        yeniGorevKodu: yeniGorevKodu,
+        talepEdenPersonel: `${talepEdenPersonel.ad} ${talepEdenPersonel.soyad}`,
+        talepEdenTarife: talepEdenTarife,
+        degisenPersonel: `${degisenPersonel.ad} ${degisenPersonel.soyad}`,
+        degisenTarife: degisenTarife,
         neden: neden
-    };
-
-    gorevTarifeDegisiklikleri.push(kayit);
-
-    // O tarihteki vardiya kaydını da güncelle
-    const vardiya = gunlukVardiyalar.find(v =>
-        String(v.sicil) === String(sicil) && String(v.tarih) === String(tarih)
-    );
-
-    if (vardiya) {
-        vardiya.gorevKodu = yeniGorevKodu;
-        vardiya.not = (vardiya.not ? vardiya.not + " | " : "") + `Görev değişimi: ${neden}`;
-        localStorage.setItem("gunlukVardiyalar", JSON.stringify(gunlukVardiyalar));
-    }
+    });
 
     localStorage.setItem("gorevTarifeDegisiklikleri", JSON.stringify(gorevTarifeDegisiklikleri));
 
     alert("Görev / tarife değişimi kaydedildi.");
     gorevTarifeDegisimleri();
-}
-
-function gorevTarifeDegisimiSil(index) {
-    if (confirm("Bu değişim kaydı silinsin mi?")) {
-        gorevTarifeDegisiklikleri.splice(index, 1);
-        localStorage.setItem("gorevTarifeDegisiklikleri", JSON.stringify(gorevTarifeDegisiklikleri));
-        gorevTarifeDegisimleri();
-    }
 }
 function gunSonuRaporu() {
     const bugun = new Date().toISOString().split("T")[0];
