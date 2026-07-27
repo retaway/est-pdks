@@ -724,10 +724,10 @@ function gunlukVardiya() {
 
                     <th>Ad Soyad</th>
 
-                    <th>Görev Kodu</th>
-
+                  <th>Görev Kodu</th>
+                    <th>Hat</th>
+                    <th>Araç</th>
                     <th>Durum</th>
-
                     <th>İşlem</th>
 
                 </tr>
