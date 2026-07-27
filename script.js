@@ -6,7 +6,6 @@ let tarifeVerileri = [];
 let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let gunlukVardiyaFiltre = "HEPSI";
-let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 
 document.addEventListener("DOMContentLoaded", function () {
     const kullaniciInput = document.querySelector('input[type="text"]');
