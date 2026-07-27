@@ -27,6 +27,14 @@ function surucuSefligi() {
     let satirlar = "";
 
     personelListesi.forEach(function(personel, index){
+        const metin =
+    (personel.sicil + " " +
+     personel.ad + " " +
+     personel.soyad).toLowerCase();
+
+if (arama !== "" && !metin.includes(arama)) {
+    return;
+}
         satirlar += `
         <tr>
             <td>${personel.sicil}</td>
@@ -59,6 +67,16 @@ function surucuSefligi() {
     <button disabled title="Personel kayıtları İnsan Kaynakları tarafından yönetilir.">
         👥 Personeller İK Modülünden Yönetilir
     </button>
+</div>
+<div class="toolbar">
+
+    <input
+        type="text"
+        id="arama"
+        placeholder="🔍 Sicil veya Ad Soyad Ara..."
+        onkeyup="gunlukVardiya()"
+        style="width:300px;">
+
 </div>
     <table class="tablo">
         <thead>
@@ -648,7 +666,13 @@ function degisimDurum(index){
     degisimKodlari();
 }
 function gunlukVardiya() {
+let arama = "";
 
+const aramaKutusu = document.getElementById("arama");
+
+if (aramaKutusu) {
+    arama = aramaKutusu.value.toLowerCase().trim();
+}
     const bugun = new Date().toISOString().split("T")[0];
 
     let satirlar = "";
