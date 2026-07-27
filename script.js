@@ -1002,8 +1002,8 @@ kayitlar.forEach(function (kayit, index) {        satirlar += `
             <td>${kayit.degisenTarife}</td>
             <td>${kayit.neden}</td>
             <td>
-                <button onclick="gorevTarifeDegisimiSil(${index})">🗑️</button>
-            </td>
+        <button onclick="gorevTarifeDegisimiSil(${kayit.id})">🗑️</button>      
+    </td>
         </tr>
         `;
     });
@@ -1191,12 +1191,22 @@ gorevTarifeDegisiklikleri.push({
     alert("Görev / tarife değişimi kaydedildi.");
     gorevTarifeDegisimleri();
 }
-    function gorevTarifeDegisimiSil(index) {
-    if (confirm("Bu görev / tarife değişimi silinsin mi?")) {
-        gorevTarifeDegisiklikleri.splice(index, 1);
-        localStorage.setItem("gorevTarifeDegisiklikleri", JSON.stringify(gorevTarifeDegisiklikleri));
-        gorevTarifeDegisimleri();
+ function gorevTarifeDegisimiSil(id) {
+
+    if (!confirm("Bu görev / tarife değişimi silinsin mi?")) {
+        return;
     }
+
+    gorevTarifeDegisiklikleri = gorevTarifeDegisiklikleri.filter(function(kayit) {
+        return kayit.id !== id;
+    });
+
+    localStorage.setItem(
+        "gorevTarifeDegisiklikleri",
+        JSON.stringify(gorevTarifeDegisiklikleri)
+    );
+
+    gorevTarifeDegisimleri();
 }
 function gunSonuRaporu() {
     const bugun = new Date().toISOString().split("T")[0];
