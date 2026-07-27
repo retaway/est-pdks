@@ -740,11 +740,11 @@ function vardiyaDuzenle(index){
 
     const personel = personelListesi[index];
 
-    let secenekler='<option value="">Görev Kodu Seçiniz</option>';
+    let secenekler = '<option value="">Görev Kodu Seçiniz</option>';
 
     degisimKodlariListesi.forEach(function(kod){
 
-        secenekler+=`
+        secenekler += `
             <option value="${kod.kod}">
                 ${kod.kod} - ${kod.aciklama}
             </option>
@@ -752,40 +752,59 @@ function vardiyaDuzenle(index){
 
     });
 
-    document.getElementById("icerik").innerHTML=`
+  document.getElementById("icerik").innerHTML = `
 
-        <h2>📅 Günlük Vardiya Atama</h2>
+<h2>📋 Günlük Vardiya Atama</h2>
 
-        <div class="form-kart">
+<div class="form-kart">
 
-            <h3>${personel.ad} ${personel.soyad}</h3>
+    <p><b>Sicil :</b> ${personel.sicil}</p>
 
-            <label>Görev Kodu</label>
+    <p><b>Ad Soyad :</b> ${personel.ad} ${personel.soyad}</p>
 
-            <select id="gorevKodu">
+    <label>Görev Kodu</label>
 
-                ${secenekler}
+    <select id="gorevKodu">
+        ${secenekler}
+    </select>
 
-            </select>
+    <label>Hat</label>
+    <input
+        id="hat"
+        type="text"
+        placeholder="Örn: SSK - OGÜ">
 
-            <br><br>
+    <label>Araç No</label>
+    <input
+        id="arac"
+        type="text"
+        placeholder="Örn: 31">
 
-            <button onclick="vardiyaKaydet(${index})">
+    <label>Platform</label>
+    <input
+        id="platform"
+        type="text"
+        placeholder="Örn: P2">
 
-                💾 Kaydet
+    <label>Not</label>
+    <textarea
+        id="not"
+        rows="3"
+        placeholder="Açıklama giriniz..."></textarea>
 
-            </button>
+    <br><br>
 
-            <button onclick="gunlukVardiya()">
+    <button onclick="vardiyaKaydet(${index})">
+        💾 Kaydet
+    </button>
 
-                ⬅ Geri
+    <button onclick="gunlukVardiya()">
+        ⬅ Geri
+    </button>
 
-            </button>
+</div>
 
-        </div>
-
-    `;
-
+`;
 }
 
 function vardiyaKaydet(index){
@@ -838,16 +857,23 @@ function vardiyaKaydet(index){
 
     }else{
 
-        gunlukVardiyalar.push({
+     gunlukVardiyalar.push({
 
-            tarih:bugun,
+    tarih: bugun,
 
-            sicil:personel.sicil,
+    sicil: personel.sicil,
 
-            gorevKodu:gorevKodu
+    gorevKodu: gorevKodu,
 
-        });
+    hat: document.getElementById("hat").value,
 
+    arac: document.getElementById("arac").value,
+
+    platform: document.getElementById("platform").value,
+
+    not: document.getElementById("not").value
+
+});
     }
 
     localStorage.setItem(
