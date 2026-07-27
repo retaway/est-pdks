@@ -4,6 +4,9 @@ let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
 
+let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
+let gunlukVardiyaFiltre = "HEPSI";
+
 document.addEventListener("DOMContentLoaded", function () {
     const kullaniciInput = document.querySelector('input[type="text"]');
     const sifreInput = document.querySelector('input[type="password"]');
@@ -665,100 +668,169 @@ function degisimDurum(index){
     localStorage.setItem("degisimKodlari", JSON.stringify(degisimKodlariListesi));
     degisimKodlari();
 }
-function gunlukVardiya() {
-let arama = "";
-
-const aramaKutusu = document.getElementById("arama");
-
-if (aramaKutusu) {
-    arama = aramaKutusu.value.toLowerCase().trim();
+function vardiyaFiltreDegistir(filtre) {
+    gunlukVardiyaFiltre = filtre;
+    gunlukVardiya();
 }
-    const bugun = new Date().toISOString().split("T")[0];
 
+function vardiyaDurumuBul(personel, bugun) {
+    const ikKaydi = personelDurumlari.find(function (k) {
+        return String(k.sicil) === String(personel.sicil) &&
+            (!k.baslangic || k.baslangic <= bugun) &&
+            (!k.bitis || k.bitis >= bugun);
+    });
+
+    if (ikKaydi) {
+        return {
+            durum: ikKaydi.durum || "ATANMADI",
+            gorevKodu: ikKaydi.gorevKodu || "-"
+        };
+    }
+
+    const vardiyaKaydi = gunlukVardiyalar.find(function (v) {
+        return String(v.sicil) === String(personel.sicil) && v.tarih === bugun;
+    });
+
+    if (vardiyaKaydi) {
+        return {
+            durum: vardiyaKaydi.durum || "ATANDI",
+            gorevKodu: vardiyaKaydi.gorevKodu || "-"
+        };
+    }
+
+    return {
+        durum: "ATANMADI",
+        gorevKodu: "-"
+    };
+}
+
+function gunlukVardiya() {
+    let arama = "";
+
+    const aramaKutusu = document.getElementById("arama");
+    if (aramaKutusu) {
+        arama = aramaKutusu.value.toLowerCase().trim();
+    }
+
+    const bugun = new Date().toISOString().split("T")[0];
     let satirlar = "";
 
-    personelListesi.forEach(function(personel, index){
+    personelListesi.forEach(function (personel, index) {
+        const metin =
+            (String(personel.sicil) + " " + personel.ad + " " + personel.soyad).toLowerCase();
 
-        const kayit = gunlukVardiyalar.find(v =>
-            v.sicil === personel.sicil &&
-            v.tarih === bugun
-        );
+        if (arama !== "" && !metin.includes(arama)) {
+            return;
+        }
 
-        let gorev = "-";
+        const bilgi = vardiyaDurumuBul(personel, bugun);
+
+        if (gunlukVardiyaFiltre !== "HEPSI" && bilgi.durum !== gunlukVardiyaFiltre) {
+            return;
+        }
+
+        let gorev = bilgi.gorevKodu;
         let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
-   
-      if(kayit){
 
-    gorev = kayit.gorevKodu;
+        switch (bilgi.durum) {
+            case "ATANDI":
+                durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
+                break;
+            case "YILLIK İZİN":
+                durum = '<span style="color:#d4a017;font-weight:bold;">🟡 YILLIK İZİN</span>';
+                gorev = "-";
+                break;
+            case "ÜCRETSİZ İZİN":
+                durum = '<span style="color:orange;font-weight:bold;">🟠 ÜCRETSİZ İZİN</span>';
+                gorev = "-";
+                break;
+            case "ÜCRETLİ İZİN":
+                durum = '<span style="color:blue;font-weight:bold;">🔵 ÜCRETLİ İZİN</span>';
+                gorev = "-";
+                break;
+            case "DOĞUM İZNİ":
+                durum = '<span style="color:purple;font-weight:bold;">🟣 DOĞUM İZNİ</span>';
+                gorev = "-";
+                break;
+            case "RAPOR":
+                durum = '<span style="color:red;font-weight:bold;">🔴 RAPOR</span>';
+                gorev = "-";
+                break;
+            case "GÖREVE GELMEDİ":
+                durum = '<span style="color:black;font-weight:bold;">⚫ GÖREVE GELMEDİ</span>';
+                gorev = "-";
+                break;
+            case "İSTİRAHAT":
+                durum = '<span style="color:gray;font-weight:bold;">⚪ İSTİRAHAT</span>';
+                gorev = "-";
+                break;
+        }
 
-    durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
-
-}
+        const duzenleButonu =
+            (bilgi.durum === "ATANDI" || bilgi.durum === "ATANMADI")
+                ? `<button onclick="vardiyaDuzenle(${index})">✏️ Düzenle</button>`
+                : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
         satirlar += `
         <tr>
-
             <td>${personel.sicil}</td>
-
             <td>${personel.ad} ${personel.soyad}</td>
-
-           <td>${gorev}</td>
-           <td>${durum}</td>
-
-            <td>
-                <button onclick="vardiyaDuzenle(${index})">
-                    ✏️ Düzenle
-                </button>
-            </td>
-
+            <td>${gorev}</td>
+            <td>${durum}</td>
+            <td>${duzenleButonu}</td>
         </tr>
         `;
     });
 
-    if(satirlar==""){
-
-        satirlar=`
+    if (satirlar === "") {
+        satirlar = `
         <tr>
             <td colspan="5" style="text-align:center;">
-                Personel bulunamadı.
+                Kayıt bulunamadı.
             </td>
         </tr>
         `;
-
     }
 
-    document.getElementById("icerik").innerHTML=`
-
+    document.getElementById("icerik").innerHTML = `
         <h2>📅 Günlük Vardiya</h2>
 
+        <div class="toolbar" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+            <input
+                type="text"
+                id="arama"
+                placeholder="🔍 Sicil veya Ad Soyad Ara..."
+                value="${arama}"
+                onkeyup="gunlukVardiya()"
+                style="width:300px;">
+
+            <button onclick="vardiyaFiltreDegistir('HEPSI')">Hepsi</button>
+            <button onclick="vardiyaFiltreDegistir('ATANDI')">Atananlar</button>
+            <button onclick="vardiyaFiltreDegistir('ATANMADI')">Atanmayanlar</button>
+            <button onclick="vardiyaFiltreDegistir('YILLIK İZİN')">Yıllık İzin</button>
+            <button onclick="vardiyaFiltreDegistir('ÜCRETLİ İZİN')">Ücretli İzin</button>
+            <button onclick="vardiyaFiltreDegistir('ÜCRETSİZ İZİN')">Ücretsiz İzin</button>
+            <button onclick="vardiyaFiltreDegistir('DOĞUM İZNİ')">Doğum İzni</button>
+            <button onclick="vardiyaFiltreDegistir('RAPOR')">Rapor</button>
+            <button onclick="vardiyaFiltreDegistir('İSTİRAHAT')">İstirahat</button>
+            <button onclick="vardiyaFiltreDegistir('GÖREVE GELMEDİ')">Göreve Gelmedi</button>
+        </div>
+
         <table class="tablo">
-
             <thead>
-
                 <tr>
-
                     <th>Sicil</th>
-
                     <th>Ad Soyad</th>
-
-                  <th>Görev Kodu</th>
+                    <th>Görev Kodu</th>
                     <th>Durum</th>
                     <th>İşlem</th>
-
                 </tr>
-
             </thead>
-
             <tbody>
-
                 ${satirlar}
-
             </tbody>
-
         </table>
-
     `;
-
 }
 function vardiyaDuzenle(index){
 
@@ -816,24 +888,34 @@ function vardiyaDuzenle(index){
 function vardiyaKaydet(index){
 
     const personel = personelListesi[index];
-
     const gorevKodu = document.getElementById("gorevKodu").value;
+    const notKutusu = document.getElementById("not");
 
-    if(gorevKodu == ""){
+    if (gorevKodu == "") {
         alert("Görev kodu seçiniz.");
         return;
     }
 
     const bugun = new Date().toISOString().split("T")[0];
+    const mevcutDurum = vardiyaDurumuBul(personel, bugun);
 
-    // Aynı görev kodu başka bir personele verilmiş mi?
+    // İK'dan gelen özel durum varsa görev atamasını engelle
+    if (
+        mevcutDurum.durum !== "ATANMADI" &&
+        mevcutDurum.durum !== "ATANDI"
+    ) {
+        alert("Bu personele bugün görev atanamaz. Durum: " + mevcutDurum.durum);
+        return;
+    }
+
+    // Aynı görev kodu başka birine verilmiş mi?
     const ayniKod = gunlukVardiyalar.find(v =>
         v.tarih === bugun &&
         v.gorevKodu === gorevKodu &&
         v.sicil !== personel.sicil
     );
 
-    if(ayniKod){
+    if (ayniKod) {
         alert("Bu görev kodu başka bir personele atanmış.");
         return;
     }
@@ -843,20 +925,16 @@ function vardiyaKaydet(index){
         v.sicil === personel.sicil
     );
 
-    if(kayit){
-
+    if (kayit) {
         kayit.gorevKodu = gorevKodu;
-        kayit.not = document.getElementById("not").value;
-
-    }else{
-
+        kayit.not = notKutusu ? notKutusu.value : "";
+    } else {
         gunlukVardiyalar.push({
             tarih: bugun,
             sicil: personel.sicil,
             gorevKodu: gorevKodu,
-            not: document.getElementById("not").value
+            not: notKutusu ? notKutusu.value : ""
         });
-
     }
 
     localStorage.setItem(
@@ -865,6 +943,19 @@ function vardiyaKaydet(index){
     );
 
     alert("Görev başarıyla atandı.");
-
     gunlukVardiya();
+}
+function personelDurumuKaydet(sicil, baslangic, bitis, durum, not = "") {
+
+    let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
+
+    personelDurumlari.push({
+        sicil: String(sicil),
+        baslangic: baslangic,
+        bitis: bitis,
+        durum: durum,
+        not: not
+    });
+
+    localStorage.setItem("personelDurumlari", JSON.stringify(personelDurumlari));
 }
