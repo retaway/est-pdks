@@ -791,85 +791,56 @@ function vardiyaDuzenle(index){
 
 function vardiyaKaydet(index){
 
-    const personel=personelListesi[index];
+    const personel = personelListesi[index];
 
-    const gorevKodu=document.getElementById("gorevKodu").value;
+    const gorevKodu = document.getElementById("gorevKodu").value;
 
-    if(gorevKodu==""){
-
+    if(gorevKodu == ""){
         alert("Görev kodu seçiniz.");
-
         return;
-
     }
 
-    const bugun=new Date().toISOString().split("T")[0];
+    const bugun = new Date().toISOString().split("T")[0];
 
-    // Aynı görev kodu başka birine verilmiş mi?
-
-    const ayniKod=gunlukVardiyalar.find(v=>
-
-        v.tarih===bugun &&
-
-        v.gorevKodu===gorevKodu &&
-
-        v.sicil!==personel.sicil
-
+    // Aynı görev kodu başka bir personele verilmiş mi?
+    const ayniKod = gunlukVardiyalar.find(v =>
+        v.tarih === bugun &&
+        v.gorevKodu === gorevKodu &&
+        v.sicil !== personel.sicil
     );
 
     if(ayniKod){
-
         alert("Bu görev kodu başka bir personele atanmış.");
-
         return;
-
     }
 
-    const kayit=gunlukVardiyalar.find(v=>
-
-        v.tarih===bugun &&
-
-        v.sicil===personel.sicil
-
+    const kayit = gunlukVardiyalar.find(v =>
+        v.tarih === bugun &&
+        v.sicil === personel.sicil
     );
 
     if(kayit){
 
-        kayit.gorevKodu=gorevKodu;
+        kayit.gorevKodu = gorevKodu;
+        kayit.not = document.getElementById("not").value;
 
     }else{
 
-     gunlukVardiyalar.push({
+        gunlukVardiyalar.push({
+            tarih: bugun,
+            sicil: personel.sicil,
+            gorevKodu: gorevKodu,
+            not: document.getElementById("not").value
+        });
 
-    tarih: bugun,
-
-    sicil: personel.sicil,
-
-    gorevKodu: gorevKodu,
-
-    gunlukVardiyalar.push({
-
-    tarih: bugun,
-
-    sicil: personel.sicil,
-
-    gorevKodu: gorevKodu,
-
-    not: document.getElementById("not").value
-
-});
     }
 
     localStorage.setItem(
-
         "gunlukVardiyalar",
-
         JSON.stringify(gunlukVardiyalar)
-
     );
 
     alert("Görev başarıyla atandı.");
 
     gunlukVardiya();
-
 }
