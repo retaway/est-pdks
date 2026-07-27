@@ -1013,11 +1013,17 @@ function gorevTarifeDegisimleri() {
 function yeniGorevTarifeDegisimi() {
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
-    personelListesi.forEach(function (p) {
-        personelSecenekleri += `
-            <option value="${p.sicil}">${p.sicil} - ${p.ad} ${p.soyad}</option>
-        `;
-    });
+    let siraliPersoneller = [...personelListesi].sort(function (a, b) {
+    const adA = `${a.ad} ${a.soyad}`.toLowerCase();
+    const adB = `${b.ad} ${b.soyad}`.toLowerCase();
+    return adA.localeCompare(adB, "tr");
+});
+
+siraliPersoneller.forEach(function (p) {
+    personelSecenekleri += `
+        <option value="${p.sicil}">${p.sicil} - ${p.ad} ${p.soyad}</option>
+    `;
+});
 
     document.getElementById("icerik").innerHTML = `
         <h2>➕ Yeni Görev / Tarife Değişimi</h2>
