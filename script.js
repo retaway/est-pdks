@@ -1058,7 +1058,7 @@ siraliPersoneller.forEach(function (p) {
             <textarea
                 id="degisimNeden"
                 rows="3"
-                placeholder="Örn: Operasyon ihtiyacı, keyfi değişim, yoğunluk"></textarea>
+                placeholder="Örn: Zorunlu Değişiklik, Vatman Değişim Talebi, Diğer"></textarea>
 
             <br><br>
             <button onclick="gorevTarifeDegisimiKaydet()">💾 Kaydet</button>
