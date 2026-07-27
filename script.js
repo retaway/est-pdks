@@ -488,25 +488,25 @@ function yeniDegisimKodu(){
     `;
 }
 
-function satirEkle(gorev = {}){
+function satirEkle(gorev = {}) {
     const tbody = document.querySelector("#degisimTablosu tbody");
     if (!tbody) return;
 
     tbody.insertAdjacentHTML("beforeend", `
-    <tr>
-        <td><input type="text" value="${gorev.gorevNo || ""}"></td>
-        <td><input type="text" value="${gorev.platform || ""}"></td>
-        <td><input type="text" value="${gorev.tarife || ""}"></td>
-        <td><input type="time" value="${gorev.baslangic || ""}"></td>
-        <td><input type="time" value="${gorev.bitis || ""}"></td>
-        <td>
-            <button onclick="this.closest('tr').remove()">🗑️</button>
-        </td>
-    </tr>
+        <tr>
+            <td><input type="text" value="${gorev.gorevNo || ""}"></td>
+            <td><input type="text" value="${gorev.platform || ""}"></td>
+            <td><input type="text" value="${gorev.tarife || ""}"></td>
+            <td><input type="time" value="${gorev.baslangic || ""}"></td>
+            <td><input type="time" value="${gorev.bitis || ""}"></td>
+            <td>
+                <button onclick="this.closest('tr').remove()">🗑️</button>
+            </td>
+        </tr>
     `);
 }
 
-{
+function degisimKaydet() {
     const kod = document.getElementById("degisimKodu").value.trim();
     const aciklama = document.getElementById("degisimAdi").value.trim();
 
@@ -516,7 +516,7 @@ function satirEkle(gorev = {}){
     }
 
     const gorevler = [];
-    document.querySelectorAll("#degisimTablosu tbody tr").forEach(function(tr){
+    document.querySelectorAll("#degisimTablosu tbody tr").forEach(function (tr) {
         const inputlar = tr.querySelectorAll("input");
         if (inputlar.length >= 5) {
             gorevler.push({
@@ -540,7 +540,6 @@ function satirEkle(gorev = {}){
     alert("Değişim kodu kaydedildi.");
     degisimKodlari();
 }
-
 function sayfaGoster(sayfa) {
     switch (sayfa) {
         case "anasayfa":
