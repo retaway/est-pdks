@@ -1095,69 +1095,6 @@ function degisimKaydet() {
         neden: neden
     });
 
-    const eskiVardiya = gunlukVardiyalar.find(v =>
-        String(v.sicil) === String(eskiSicil) && v.tarih === tarih
-    );
-
-    if (eskiVardiya) {
-        const yeniVardiyaVarMi = gunlukVardiyalar.find(v =>
-            String(v.sicil) === String(yeniSicil) && v.tarih === tarih
-        );
-
-        if (yeniVardiyaVarMi) {
-            alert("Yeni personelin bu tarihte zaten vardiya kaydı var. Değişim kaydedildi, vardiya taşınmadı.");
-        } else {
-            eskiVardiya.sicil = String(yeniSicil);
-            eskiVardiya.not = (eskiVardiya.not ? eskiVardiya.not + " | " : "") + `Personel değişimi: ${neden}`;
-        }
-    }
-
-    localStorage.setItem("personelDegisimleri", JSON.stringify(personelDegisimleri));
-    localStorage.setItem("gunlukVardiyalar", JSON.stringify(gunlukVardiyalar));
-
-    alert("Personel değişimi kaydedildi.");
-    personelDegisimi();
-}
-function degisimSil(index) {
-    if (confirm("Bu değişim kaydı silinsin mi?")) {
-        personelDegisimleri.splice(index, 1);
-        localStorage.setItem("personelDegisimleri", JSON.stringify(personelDegisimleri));
-        personelDegisimi();
-    }
-}
-{
-    const tarih = document.getElementById("degisimTarihi").value;
-    const yeniSicil = document.getElementById("yeniPersonelSicil").value;
-    const eskiSicil = document.getElementById("eskiPersonelSicil").value;
-    const neden = document.getElementById("degisimNeden").value.trim();
-
-    if (!tarih || !yeniSicil || !eskiSicil || !neden) {
-        alert("Lütfen tüm alanları doldurun.");
-        return;
-    }
-
-    if (yeniSicil === eskiSicil) {
-        alert("Eski ve yeni personel aynı olamaz.");
-        return;
-    }
-
-    const yeniPersonel = personelListesi.find(p => String(p.sicil) === String(yeniSicil));
-    const eskiPersonel = personelListesi.find(p => String(p.sicil) === String(eskiSicil));
-
-    if (!yeniPersonel || !eskiPersonel) {
-        alert("Personel bulunamadı.");
-        return;
-    }
-
-    personelDegisimleri.push({
-        tarih: tarih,
-        eskiSicil: eskiPersonel.sicil,
-        eskiAdSoyad: `${eskiPersonel.ad} ${eskiPersonel.soyad}`,
-        yeniSicil: yeniPersonel.sicil,
-        yeniAdSoyad: `${yeniPersonel.ad} ${yeniPersonel.soyad}`,
-        neden: neden
-    });
-
     // Aynı tarihte eski personele atanmış vardiya varsa yeni personele taşı
     const eskiVardiya = gunlukVardiyalar.find(v =>
         String(v.sicil) === String(eskiSicil) && v.tarih === tarih
@@ -1181,6 +1118,14 @@ function degisimSil(index) {
 
     alert("Personel değişimi kaydedildi.");
     personelDegisimi();
+}
+
+function degisimSil(index) {
+    if (confirm("Bu değişim kaydı silinsin mi?")) {
+        personelDegisimleri.splice(index, 1);
+        localStorage.setItem("personelDegisimleri", JSON.stringify(personelDegisimleri));
+        personelDegisimi();
+    }
 }
 function gunSonuRaporu() {
     const bugun = new Date().toISOString().split("T")[0];
