@@ -1,5 +1,6 @@
 let personelListesi = JSON.parse(localStorage.getItem("personeller")) || [];
 let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
+let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
 
@@ -540,6 +541,9 @@ function sayfaGoster(sayfa) {
             break;
 
         case "gunlukVardiya":
+             gunlukVardiya();
+            break;
+            
         case "izinler":
         case "puantaj":
         case "bildirimler":
@@ -637,4 +641,93 @@ function degisimDurum(index){
 
     localStorage.setItem("degisimKodlari", JSON.stringify(degisimKodlariListesi));
     degisimKodlari();
+}
+function gunlukVardiya() {
+
+    const bugun = new Date().toISOString().split("T")[0];
+
+    let satirlar = "";
+
+    personelListesi.forEach(function(personel, index){
+
+        const kayit = gunlukVardiyalar.find(v =>
+            v.sicil === personel.sicil &&
+            v.tarih === bugun
+        );
+
+        let gorev = "-";
+        let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
+
+        if(kayit){
+            gorev = kayit.gorevKodu;
+            durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
+        }
+
+        satirlar += `
+        <tr>
+
+            <td>${personel.sicil}</td>
+
+            <td>${personel.ad} ${personel.soyad}</td>
+
+            <td>${gorev}</td>
+
+            <td>${durum}</td>
+
+            <td>
+                <button onclick="vardiyaDuzenle(${index})">
+                    ✏️ Düzenle
+                </button>
+            </td>
+
+        </tr>
+        `;
+    });
+
+    if(satirlar==""){
+
+        satirlar=`
+        <tr>
+            <td colspan="5" style="text-align:center;">
+                Personel bulunamadı.
+            </td>
+        </tr>
+        `;
+
+    }
+
+    document.getElementById("icerik").innerHTML=`
+
+        <h2>📅 Günlük Vardiya</h2>
+
+        <table class="tablo">
+
+            <thead>
+
+                <tr>
+
+                    <th>Sicil</th>
+
+                    <th>Ad Soyad</th>
+
+                    <th>Görev Kodu</th>
+
+                    <th>Durum</th>
+
+                    <th>İşlem</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
 }
