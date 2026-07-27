@@ -153,15 +153,20 @@ function yeniPersonel(index = null) {
 }
 
 function personelKaydet(index = null) {
-    const personel = {
-        sicil: document.getElementById("sicil").value,
-        ad: document.getElementById("ad").value,
-        soyad: document.getElementById("soyad").value,
-        telefon: document.getElementById("telefon").value,
-        email: document.getElementById("email").value,
-        gorev: document.getElementById("gorev").value,
-        durum: document.getElementById("durum").value
-    };
+   const personel = {
+    sicil: document.getElementById("sicil").value,
+    ad: document.getElementById("ad").value,
+    soyad: document.getElementById("soyad").value,
+    telefon: document.getElementById("telefon").value,
+    email: document.getElementById("email").value,
+    gorev: document.getElementById("gorev").value,
+    durum: document.getElementById("durum").value,
+
+    vardiyaDurumu:
+        index !== null && personelListesi[index]
+            ? personelListesi[index].vardiyaDurumu || "ATANMADI"
+            : "ATANMADI"
+};
 
     if (index !== null && index >= 0) {
         personelListesi[index] = personel;
@@ -729,5 +734,132 @@ function gunlukVardiya() {
         </table>
 
     `;
+
+}
+function vardiyaDuzenle(index){
+
+    const personel = personelListesi[index];
+
+    let secenekler='<option value="">Görev Kodu Seçiniz</option>';
+
+    degisimKodlariListesi.forEach(function(kod){
+
+        secenekler+=`
+            <option value="${kod.kod}">
+                ${kod.kod} - ${kod.aciklama}
+            </option>
+        `;
+
+    });
+
+    document.getElementById("icerik").innerHTML=`
+
+        <h2>📅 Günlük Vardiya Atama</h2>
+
+        <div class="form-kart">
+
+            <h3>${personel.ad} ${personel.soyad}</h3>
+
+            <label>Görev Kodu</label>
+
+            <select id="gorevKodu">
+
+                ${secenekler}
+
+            </select>
+
+            <br><br>
+
+            <button onclick="vardiyaKaydet(${index})">
+
+                💾 Kaydet
+
+            </button>
+
+            <button onclick="gunlukVardiya()">
+
+                ⬅ Geri
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+function vardiyaKaydet(index){
+
+    const personel=personelListesi[index];
+
+    const gorevKodu=document.getElementById("gorevKodu").value;
+
+    if(gorevKodu==""){
+
+        alert("Görev kodu seçiniz.");
+
+        return;
+
+    }
+
+    const bugun=new Date().toISOString().split("T")[0];
+
+    // Aynı görev kodu başka birine verilmiş mi?
+
+    const ayniKod=gunlukVardiyalar.find(v=>
+
+        v.tarih===bugun &&
+
+        v.gorevKodu===gorevKodu &&
+
+        v.sicil!==personel.sicil
+
+    );
+
+    if(ayniKod){
+
+        alert("Bu görev kodu başka bir personele atanmış.");
+
+        return;
+
+    }
+
+    const kayit=gunlukVardiyalar.find(v=>
+
+        v.tarih===bugun &&
+
+        v.sicil===personel.sicil
+
+    );
+
+    if(kayit){
+
+        kayit.gorevKodu=gorevKodu;
+
+    }else{
+
+        gunlukVardiyalar.push({
+
+            tarih:bugun,
+
+            sicil:personel.sicil,
+
+            gorevKodu:gorevKodu
+
+        });
+
+    }
+
+    localStorage.setItem(
+
+        "gunlukVardiyalar",
+
+        JSON.stringify(gunlukVardiyalar)
+
+    );
+
+    alert("Görev başarıyla atandı.");
+
+    gunlukVardiya();
 
 }
