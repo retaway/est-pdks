@@ -724,6 +724,7 @@ function gunlukVardiya() {
         let gorev = bilgi.gorevKodu;
         let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
         const degisim = degisimEtiketiBul(personel.sicil, bugun);
+        const satirRengi = degisim !== "-" ? 'style="background:#fff8cc;"' : "";
 
         switch (bilgi.durum) {
             case "ATANDI":
@@ -749,14 +750,14 @@ function gunlukVardiya() {
                 durum = '<span style="color:red;font-weight:bold;">🔴 RAPOR</span>';
                 gorev = "-";
                 break;
+            case "HAFTA TATİLİ":
+                durum = '<span style="color:gray;font-weight:bold;">⚪ HAFTA TATİLİ</span>';
+                gorev = "-";
+                break;
             case "GÖREVE GELMEDİ":
                 durum = '<span style="color:black;font-weight:bold;">⚫ GÖREVE GELMEDİ</span>';
                 gorev = "-";
                 break;
-            case "HAFTA TATİLİ":
-    durum = '<span style="color:gray;font-weight:bold;">⚪ HAFTA TATİLİ</span>';
-    gorev = "-";
-    break;
         }
 
         const duzenleButonu =
@@ -765,7 +766,7 @@ function gunlukVardiya() {
                 : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
         satirlar += `
-        <tr>
+        <tr ${satirRengi}>
             <td>${personel.sicil}</td>
             <td>${personel.ad} ${personel.soyad}</td>
             <td>${gorev}</td>
@@ -1087,8 +1088,10 @@ function gorevTarifeDegisimiKaydet() {
 
     gorevTarifeDegisiklikleri.push({
         tarih: tarih,
+        talepEdenSicil: talepEdenPersonel.sicil,
         talepEdenPersonel: `${talepEdenPersonel.ad} ${talepEdenPersonel.soyad}`,
         talepEdenTarife: talepEdenTarife,
+        degisenSicil: degisenPersonel.sicil,
         degisenPersonel: `${degisenPersonel.ad} ${degisenPersonel.soyad}`,
         degisenTarife: degisenTarife,
         neden: neden
