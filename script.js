@@ -753,10 +753,10 @@ function gunlukVardiya() {
                 durum = '<span style="color:black;font-weight:bold;">⚫ GÖREVE GELMEDİ</span>';
                 gorev = "-";
                 break;
-            case "İSTİRAHAT":
-                durum = '<span style="color:gray;font-weight:bold;">⚪ İSTİRAHAT</span>';
-                gorev = "-";
-                break;
+            case "HAFTA TATİLİ":
+    durum = '<span style="color:gray;font-weight:bold;">⚪ HAFTA TATİLİ</span>';
+    gorev = "-";
+    break;
         }
 
         const duzenleButonu =
@@ -1293,4 +1293,17 @@ function gunSonuRaporu() {
 
         <button onclick="gunlukVardiya()">⬅ Günlük Vardiya</button>
     `;
+}
+function degisimEtiketiBul(sicil, bugun) {
+    const kayit = gorevTarifeDegisiklikleri.find(function (d) {
+        return String(d.tarih) === String(bugun) &&
+            (
+                String(d.talepEdenPersonel).includes(String(sicil)) ||
+                String(d.degisenPersonel).includes(String(sicil))
+            );
+    });
+
+    if (!kayit) return "-";
+
+    return `🔁 ${kayit.talepEdenPersonel} → ${kayit.degisenPersonel}`;
 }
