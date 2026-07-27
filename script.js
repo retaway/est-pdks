@@ -662,11 +662,19 @@ function gunlukVardiya() {
 
         let gorev = "-";
         let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
+    let hat = "-";
+    let arac = "-";
+      if(kayit){
 
-        if(kayit){
-            gorev = kayit.gorevKodu;
-            durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
-        }
+    gorev = kayit.gorevKodu;
+
+    hat = kayit.hat || "-";
+
+    arac = kayit.arac || "-";
+
+    durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
+
+}
 
         satirlar += `
         <tr>
@@ -675,9 +683,10 @@ function gunlukVardiya() {
 
             <td>${personel.ad} ${personel.soyad}</td>
 
-            <td>${gorev}</td>
-
-            <td>${durum}</td>
+           <td>${gorev}</td>
+            <td>${hat}</td>
+            <td>${arac}</td>
+             <td>${durum}</td>
 
             <td>
                 <button onclick="vardiyaDuzenle(${index})">
