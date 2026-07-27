@@ -65,32 +65,22 @@ if (arama !== "" && !metin.includes(arama)) {
         `;
     }
 
-    document.getElementById("icerik").innerHTML = `
-    <h2>👷 Personeller</h2>
-  <div class="toolbar">
-    <button disabled title="Personel kayıtları İnsan Kaynakları tarafından yönetilir.">
-        👥 Personeller İK Modülünden Yönetilir
-    </button>
-</div>
-<div class="toolbar">
+   document.getElementById("icerik").innerHTML = `
+    <h2>🔄 Görev / Tarife Değişimleri</h2>
 
-    <input
-        type="text"
-        id="arama"
-        placeholder="🔍 Sicil veya Ad Soyad Ara..."
-        onkeyup="gunlukVardiya()"
-        style="width:300px;">
+    <div class="toolbar">
+        <button onclick="yeniGorevTarifeDegisimi()">➕ Yeni Değişim</button>
+    </div>
 
-</div>
     <table class="tablo">
         <thead>
             <tr>
-                <th>Sicil</th>
-                <th>Ad Soyad</th>
-                <th>Telefon</th>
-                <th>E-Posta</th>
-                <th>Görev</th>
-                <th>Durum</th>
+                <th>Tarih</th>
+                <th>Değişim Talep Eden Personel</th>
+                <th>Tarifesi</th>
+                <th>Değişen Personel</th>
+                <th>Tarifesi</th>
+                <th>Neden</th>
                 <th>İşlem</th>
             </tr>
         </thead>
@@ -98,8 +88,7 @@ if (arama !== "" && !metin.includes(arama)) {
             ${satirlar}
         </tbody>
     </table>
-    `;
-}
+`;
 function personelDetay(index) {
     const p = personelListesi[index];
     if (!p) return;
@@ -1049,7 +1038,10 @@ function yeniGorevTarifeDegisimi() {
             </select>
 
             <label>Tarifesi</label>
-            <input id="talepEdenTarife" type="text" placeholder="Örn: 01011 / Sabah / A Hat">
+            <input
+                id="talepEdenTarife"
+                type="text"
+                placeholder="Örn: 01011 / Sabah / A Hat">
 
             <label>Değişen Personel</label>
             <select id="degisenPersonelSicil">
@@ -1057,10 +1049,16 @@ function yeniGorevTarifeDegisimi() {
             </select>
 
             <label>Tarifesi</label>
-            <input id="degisenTarife" type="text" placeholder="Örn: 02015 / Öğle / B Hat">
+            <input
+                id="degisenTarife"
+                type="text"
+                placeholder="Örn: 02015 / Öğle / B Hat">
 
             <label>Neden</label>
-            <textarea id="degisimNeden" rows="3" placeholder="Örn: Operasyon ihtiyacı, keyfi değişim, yoğunluk"></textarea>
+            <textarea
+                id="degisimNeden"
+                rows="3"
+                placeholder="Örn: Operasyon ihtiyacı, keyfi değişim, yoğunluk"></textarea>
 
             <br><br>
             <button onclick="gorevTarifeDegisimiKaydet()">💾 Kaydet</button>
@@ -1068,7 +1066,6 @@ function yeniGorevTarifeDegisimi() {
         </div>
     `;
 }
-
 function gorevTarifeDegisimiKaydet() {
     const tarih = document.getElementById("degisimTarihi").value;
     const talepEdenSicil = document.getElementById("talepEdenPersonelSicil").value;
@@ -1104,10 +1101,36 @@ function gorevTarifeDegisimiKaydet() {
         neden: neden
     });
 
+    const talepEdenVardiya = gunlukVardiyalar.find(v =>
+        String(v.sicil) === String(talepEdenSicil) && String(v.tarih) === String(tarih)
+    );
+
+    const degisenVardiya = gunlukVardiyalar.find(v =>
+        String(v.sicil) === String(degisenSicil) && String(v.tarih) === String(tarih)
+    );
+
+    if (talepEdenVardiya) {
+        talepEdenVardiya.gorevKodu = talepEdenTarife;
+        talepEdenVardiya.not = (talepEdenVardiya.not ? talepEdenVardiya.not + " | " : "") + `Tarife değişimi: ${neden}`;
+    }
+
+    if (degisenVardiya) {
+        degisenVardiya.gorevKodu = degisenTarife;
+        degisenVardiya.not = (degisenVardiya.not ? degisenVardiya.not + " | " : "") + `Tarife değişimi: ${neden}`;
+    }
+
     localStorage.setItem("gorevTarifeDegisiklikleri", JSON.stringify(gorevTarifeDegisiklikleri));
+    localStorage.setItem("gunlukVardiyalar", JSON.stringify(gunlukVardiyalar));
 
     alert("Görev / tarife değişimi kaydedildi.");
     gorevTarifeDegisimleri();
+}
+    function gorevTarifeDegisimiSil(index) {
+    if (confirm("Bu görev / tarife değişimi silinsin mi?")) {
+        gorevTarifeDegisiklikleri.splice(index, 1);
+        localStorage.setItem("gorevTarifeDegisiklikleri", JSON.stringify(gorevTarifeDegisiklikleri));
+        gorevTarifeDegisimleri();
+    }
 }
 function gunSonuRaporu() {
     const bugun = new Date().toISOString().split("T")[0];
