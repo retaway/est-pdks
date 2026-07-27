@@ -995,7 +995,7 @@ if (aramaKutusu) {
 
 kayitlar.forEach(function (kayit, index) {        satirlar += `
         <tr>
-            <td>${kayit.tarih}</td>
+            <td>${kayit.tarih}</td>            
             <td>${kayit.talepEdenPersonel}</td>
             <td>${kayit.talepEdenTarife}</td>
             <td>${kayit.degisenPersonel}</td>
@@ -1020,23 +1020,42 @@ kayitlar.forEach(function (kayit, index) {        satirlar += `
 
     document.getElementById("icerik").innerHTML = `
         <h2>🔄 Görev / Tarife Değişimleri</h2>
+<div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:15px;">
 
-        <div class="toolbar">
-            <button onclick="yeniGorevTarifeDegisimi()">➕ Yeni Değişim</button>
-        </div>
+    <label><b>📅 Tarih</b></label>
+
+    <input
+        type="date"
+        id="gorevTarifeTarih"
+        value="${gorevTarifeFiltreTarih}"
+        onchange="gorevTarifeDegisimleri()">
+
+    <input
+        type="text"
+        id="gorevTarifeArama"
+        placeholder="🔍 Sicil veya Ad Soyad Ara..."
+        value="${gorevTarifeArama}"
+        onkeyup="gorevTarifeDegisimleri()"
+        style="width:260px;">
+
+    <button onclick="yeniGorevTarifeDegisimi()">
+        ➕ Yeni Değişim
+    </button>
+
+</div>
 
         <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Tarih</th>
-                    <th>Değişim Talep Eden Personel</th>
-                    <th>Tarifesi</th>
-                    <th>Değişen Personel</th>
-                    <th>Tarifesi</th>
-                    <th>Neden</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
+    <thead>
+        <tr>
+            <th>Saat</th>
+            <th>Değişim Talep Eden Personel</th>
+            <th>Tarifesi</th>
+            <th>Değişen Personel</th>
+            <th>Tarifesi</th>
+            <th>Neden</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
             <tbody>
                 ${satirlar}
             </tbody>
@@ -1125,17 +1144,28 @@ function gorevTarifeDegisimiKaydet() {
         alert("Personel bulunamadı.");
         return;
     }
+gorevTarifeDegisiklikleri.push({
 
-    gorevTarifeDegisiklikleri.push({
-        tarih: tarih,
-        talepEdenSicil: talepEdenPersonel.sicil,
-        talepEdenPersonel: `${talepEdenPersonel.ad} ${talepEdenPersonel.soyad}`,
-        talepEdenTarife: talepEdenTarife,
-        degisenSicil: degisenPersonel.sicil,
-        degisenPersonel: `${degisenPersonel.ad} ${degisenPersonel.soyad}`,
-        degisenTarife: degisenTarife,
-        neden: neden
-    });
+    id: Date.now(),
+
+    tarih: tarih,
+
+    saat: new Date().toLocaleTimeString("tr-TR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    }),
+
+    talepEdenSicil: talepEdenPersonel.sicil,
+    talepEdenPersonel: `${talepEdenPersonel.ad} ${talepEdenPersonel.soyad}`,
+    talepEdenTarife: talepEdenTarife,
+
+    degisenSicil: degisenPersonel.sicil,
+    degisenPersonel: `${degisenPersonel.ad} ${degisenPersonel.soyad}`,
+    degisenTarife: degisenTarife,
+
+    neden: neden
+
+});
 
     const talepEdenVardiya = gunlukVardiyalar.find(v =>
         String(v.sicil) === String(talepEdenSicil) && String(v.tarih) === String(tarih)
