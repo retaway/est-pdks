@@ -7,6 +7,8 @@ let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let gunlukVardiyaFiltre = "HEPSI";
+let gorevTarifeFiltreTarih = new Date().toISOString().split("T")[0];
+let gorevTarifeArama = "";
 
 document.addEventListener("DOMContentLoaded", function () {
     const kullaniciInput = document.querySelector('input[type="text"]');
@@ -956,10 +958,42 @@ function personelDurumuKaydet(sicil, baslangic, bitis, durum, not = "") {
     localStorage.setItem("personelDurumlari", JSON.stringify(personelDurumlari));
 }
 function gorevTarifeDegisimleri() {
+    const tarihKutusu = document.getElementById("gorevTarifeTarih");
+if (tarihKutusu) {
+    gorevTarifeFiltreTarih = tarihKutusu.value;
+}
+
+const aramaKutusu = document.getElementById("gorevTarifeArama");
+if (aramaKutusu) {
+    gorevTarifeArama = aramaKutusu.value.toLowerCase().trim();
+}
+    let kayitlar = gorevTarifeDegisiklikleri.filter(function(k){
+
+    // Tarih filtresi
+    if (k.tarih !== gorevTarifeFiltreTarih) {
+        return false;
+    }
+
+    // Arama filtresi
+    if (gorevTarifeArama !== "") {
+
+        const metin = (
+            (k.talepEdenSicil || "") + " " +
+            (k.talepEdenPersonel || "") + " " +
+            (k.degisenSicil || "") + " " +
+            (k.degisenPersonel || "")
+        ).toLowerCase();
+
+        if (!metin.includes(gorevTarifeArama)) {
+            return false;
+        }
+    }
+
+    return true;
+});
     let satirlar = "";
 
-    gorevTarifeDegisiklikleri.forEach(function (kayit, index) {
-        satirlar += `
+kayitlar.forEach(function (kayit, index) {        satirlar += `
         <tr>
             <td>${kayit.tarih}</td>
             <td>${kayit.talepEdenPersonel}</td>
