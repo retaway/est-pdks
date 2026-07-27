@@ -1144,7 +1144,7 @@ function gunSonuRaporu() {
     let ucretsizIzinSayisi = 0;
     let dogumIzniSayisi = 0;
     let raporSayisi = 0;
-    let istirahatSayisi = 0;
+    let haftaTatiliSayisi = 0;
     let goreveGelmediSayisi = 0;
 
     personelListesi.forEach(function (personel) {
@@ -1170,7 +1170,7 @@ function gunSonuRaporu() {
                 raporSayisi++;
                 break;
             case "HAFTA TATİLİ":
-                istirahatSayisi++;
+                haftaTatiliSayisi++;
                 break;
             case "GÖREVE GELMEDİ":
                 goreveGelmediSayisi++;
@@ -1181,7 +1181,7 @@ function gunSonuRaporu() {
         }
     });
 
-    const bugunkuDegisimler = personelDegisimleri.filter(function (k) {
+    const bugunkuDegisimler = gorevTarifeDegisiklikleri.filter(function (k) {
         return String(k.tarih) === String(bugun);
     });
 
@@ -1193,17 +1193,18 @@ function gunSonuRaporu() {
         ? bugunkuDegisimler.map(function (k) {
             return `
             <tr>
-                <td>${k.eskiSicil}</td>
-                <td>${k.eskiAdSoyad}</td>
-                <td>${k.yeniSicil}</td>
-                <td>${k.yeniAdSoyad}</td>
+                <td>${k.tarih}</td>
+                <td>${k.talepEdenPersonel}</td>
+                <td>${k.talepEdenTarife}</td>
+                <td>${k.degisenPersonel}</td>
+                <td>${k.degisenTarife}</td>
                 <td>${k.neden}</td>
             </tr>
             `;
         }).join("")
         : `
         <tr>
-            <td colspan="5" style="text-align:center;">Bugün personel değişimi yok.</td>
+            <td colspan="6" style="text-align:center;">Bugün görev / tarife değişimi yok.</td>
         </tr>
         `;
 
@@ -1248,12 +1249,12 @@ function gunSonuRaporu() {
             <div class="kart"><h3>${dogumIzniSayisi}</h3><p>Doğum İzni</p></div>
             <div class="kart"><h3>${raporSayisi}</h3><p>Rapor</p></div>
 
-            <div class="kart"><h3>${istirahatSayisi}</h3><p>Hafta Tatili</p></div>
+            <div class="kart"><h3>${haftaTatiliSayisi}</h3><p>Hafta Tatili</p></div>
             <div class="kart"><h3>${goreveGelmediSayisi}</h3><p>Göreve Gelmedi</p></div>
 
             <div class="kart" style="grid-column:1 / -1;">
                 <h3>${bugunkuDegisimler.length}</h3>
-                <p>Değişim</p>
+                <p>Görev / Tarife Değişimi</p>
             </div>
         </div>
 
@@ -1261,14 +1262,15 @@ function gunSonuRaporu() {
             <p><b>Tarih:</b> ${bugun}</p>
         </div>
 
-   <h3>🔄 Görev / Tarife Değişimleri</h3>
+        <h3>🔄 Görev / Tarife Değişimleri</h3>
         <table class="tablo">
             <thead>
                 <tr>
-                    <th>Eski Sicil</th>
-                    <th>Eski Personel</th>
-                    <th>Yeni Sicil</th>
-                    <th>Yeni Personel</th>
+                    <th>Tarih</th>
+                    <th>Değişim Talep Eden Personel</th>
+                    <th>Tarifesi</th>
+                    <th>Değişen Personel</th>
+                    <th>Tarifesi</th>
                     <th>Neden</th>
                 </tr>
             </thead>
