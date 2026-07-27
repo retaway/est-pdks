@@ -1062,7 +1062,7 @@ function yeniDegisim() {
     `;
 }
 
-{
+function degisimKaydet() {
     const tarih = document.getElementById("degisimTarihi").value;
     const yeniSicil = document.getElementById("yeniPersonelSicil").value;
     const eskiSicil = document.getElementById("eskiPersonelSicil").value;
@@ -1095,7 +1095,6 @@ function yeniDegisim() {
         neden: neden
     });
 
-    // Aynı tarihte eski personele atanmış vardiya varsa yeni personele taşı
     const eskiVardiya = gunlukVardiyalar.find(v =>
         String(v.sicil) === String(eskiSicil) && v.tarih === tarih
     );
@@ -1119,7 +1118,6 @@ function yeniDegisim() {
     alert("Personel değişimi kaydedildi.");
     personelDegisimi();
 }
-
 function degisimSil(index) {
     if (confirm("Bu değişim kaydı silinsin mi?")) {
         personelDegisimleri.splice(index, 1);
