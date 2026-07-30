@@ -11,8 +11,8 @@ let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) ||
 // İZİN HAKLARI
 // =========================
 
-const izinHaklari = {
-
+const izinHaklariKurallari = {
+    
     "YILLIK İZİN": {
         hak: 30,
         devreder: true,
