@@ -859,7 +859,6 @@ function gunlukVardiya() {
         gorev = "-";
         break;
 }
-        }
 
         const duzenleButonu =
             (bilgi.durum === "ATANDI" || bilgi.durum === "ATANMADI")
