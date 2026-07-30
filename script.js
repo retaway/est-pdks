@@ -2375,3 +2375,6 @@ function izinDurumRenk(durum) {
     }
 
 }
+function puantaj() {
+
+}
