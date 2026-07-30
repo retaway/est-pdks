@@ -2082,7 +2082,8 @@ const izinKaydi = {
     ikBilgilendirildi: false,
     ikBilgilendirmeTarihi: "",
 
-    durum: "ONAY BEKLİYOR"
+  izinTuru: "YILLIK İZİN",
+durum: "ONAY BEKLİYOR"
 
 };
 if (
@@ -2136,6 +2137,33 @@ function izinSil(index){
         return;
     }
 
+    const kayit = personelDurumlari[index];
+
+    if (kayit && kayit.izinTuru === "YILLIK İZİN") {
+
+        const personel = personelListesi.find(function(p){
+            return String(p.sicil) === String(kayit.sicil);
+        });
+
+        if (personel) {
+
+            personel.kullanilanIzin =
+                Math.max(
+                    0,
+                    (personel.kullanilanIzin || 0) - (kayit.gunSayisi || 0)
+                );
+
+            personel.kalanIzin =
+                yillikIzinHakHesapla(personel.iseGiris) -
+                personel.kullanilanIzin;
+
+            localStorage.setItem(
+                "personeller",
+                JSON.stringify(personelListesi)
+            );
+        }
+    }
+
     personelDurumlari.splice(index,1);
 
     localStorage.setItem(
@@ -2144,7 +2172,6 @@ function izinSil(index){
     );
 
     izinler();
-
 }
 function izinOnayla(index) {
 
