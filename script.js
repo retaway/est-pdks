@@ -1479,10 +1479,25 @@ function izinler() {
         <tr>
             <td>${personel ? personel.sicil : kayit.sicil}</td>
             <td>${personel ? personel.ad + " " + personel.soyad : "-"}</td>
-            <td>${kayit.baslangic}</td>
-            <td>${kayit.bitis}</td>
-            <td>${kayit.durum}</td>
-            <td>${kayit.not || "-"}</td>
+          <td>${kayit.baslangic}</td>
+<td>${kayit.bitis}</td>
+
+<td>${kayit.izinTuru}</td>
+
+<td>
+    <span style="
+        background:${izinDurumRenk(kayit.durum)};
+        color:white;
+        padding:4px 8px;
+        border-radius:15px;
+        font-size:12px;
+        font-weight:bold;
+    ">
+        ${kayit.durum}
+    </span>
+</td>
+
+<td>${kayit.not || "-"}</td>
             <td>
                 <button onclick="yeniIzin(${index})">✏️</button>
                 <button onclick="izinSil(${index})">🗑️</button>
@@ -1495,8 +1510,8 @@ function izinler() {
     if(satirlar===""){
         satirlar=`
         <tr>
-            <td colspan="7" style="text-align:center">
-                Henüz izin kaydı bulunmuyor.
+<td colspan="8" style="text-align:center">          
+Henüz izin kaydı bulunmuyor.
             </td>
         </tr>`;
     }
@@ -1512,15 +1527,8 @@ function izinler() {
         <table class="tablo">
 
             <thead>
-                <tr>
-                    <th>Sicil</th>
-                    <th>Ad Soyad</th>
-                    <th>Başlangıç</th>
-                    <th>Bitiş</th>
-                    <th>İzin Türü</th>
-                    <th>Açıklama</th>
-                    <th>İşlem</th>
-                </tr>
+                  <th>Başlangıç</th>
+
             </thead>
 
             <tbody>
@@ -1631,27 +1639,16 @@ function yeniIzin(index = null) {
        <label>İzin Türü</label>
 
 <select id="izinDurumu">
-
-    <option>YILLIK İZİN</option>
-
-    <option>MAZERET İZNİ</option>
-
-    <option>SENDİKAL İZİN</option>
-
-    <option>ÜCRETLİ İZİN</option>
-
-    <option>ÜCRETSİZ İZİN</option>
-
-    <option>DOĞUM İZNİ</option>
-
-    <option>BABALIK İZNİ</option>
-
-    <option>RAPOR</option>
-
-    <option>HAFTA TATİLİ</option>
-
-    <option>GÖREVE GELMEDİ</option>
-
+    <option ${kayit.izinTuru=="YILLIK İZİN" ? "selected" : ""}>YILLIK İZİN</option>
+    <option ${kayit.izinTuru=="MAZERET İZNİ" ? "selected" : ""}>MAZERET İZNİ</option>
+    <option ${kayit.izinTuru=="SENDİKAL İZİN" ? "selected" : ""}>SENDİKAL İZİN</option>
+    <option ${kayit.izinTuru=="ÜCRETLİ İZİN" ? "selected" : ""}>ÜCRETLİ İZİN</option>
+    <option ${kayit.izinTuru=="ÜCRETSİZ İZİN" ? "selected" : ""}>ÜCRETSİZ İZİN</option>
+    <option ${kayit.izinTuru=="DOĞUM İZNİ" ? "selected" : ""}>DOĞUM İZNİ</option>
+    <option ${kayit.izinTuru=="BABALIK İZNİ" ? "selected" : ""}>BABALIK İZNİ</option>
+    <option ${kayit.izinTuru=="RAPOR" ? "selected" : ""}>RAPOR</option>
+    <option ${kayit.izinTuru=="HAFTA TATİLİ" ? "selected" : ""}>HAFTA TATİLİ</option>
+    <option ${kayit.izinTuru=="GÖREVE GELMEDİ" ? "selected" : ""}>GÖREVE GELMEDİ</option>
 </select>
 
         <label>Açıklama</label>
@@ -1695,7 +1692,6 @@ function izinKaydet(index = null) {
     const isBasi = document.getElementById("izinIsBasi").value;
     const durum = document.getElementById("izinDurumu").value;
     const not = document.getElementById("izinNot").value.trim();
-    const onaylayan = document.getElementById("izinOnaylayan").value.trim();
     const evrakNo = document.getElementById("izinEvrakNo").value.trim();
   
     // İzin süresi (gün)
@@ -1953,5 +1949,29 @@ function personelDurumuGetir(sicil, tarih) {
     }
 
     return kayit;
+
+}
+function izinDurumRenk(durum) {
+
+    switch (durum) {
+
+        case "ONAY BEKLİYOR":
+            return "#ff9800";
+
+        case "ONAYLANDI":
+            return "#4caf50";
+
+        case "İK'YA BİLDİRİLDİ":
+            return "#2196f3";
+
+        case "İPTAL EDİLDİ":
+            return "#f44336";
+
+        case "TAMAMLANDI":
+            return "#9e9e9e";
+
+        default:
+            return "#666";
+    }
 
 }
