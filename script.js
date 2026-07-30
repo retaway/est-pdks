@@ -2827,30 +2827,6 @@ for (let i = 1; i <= gunSayisi; i++) {
 
 <table style="width:100%;">
 
-<tr>
-
-<td style="text-align:center;">
-Hazırlayan
-<br><br><br>
-____________________
-</td>
-
-<td style="text-align:center;">
-Kontrol Eden
-<br><br><br>
-____________________
-</td>
-
-<td style="text-align:center;">
-Onaylayan
-<br><br><br>
-____________________
-</td>
-
-</tr>
-
-</table>
-
 }
 
 function bildirimOlustur(tip, personel, hedef) {
