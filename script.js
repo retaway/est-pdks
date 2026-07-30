@@ -2431,5 +2431,171 @@ function izinDurumRenk(durum) {
 
 }
 function puantaj() {
-    alert("Puantaj açıldı");
+
+    const bugun = new Date();
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>📊 Puantaj</h2>
+
+        <div class="toolbar">
+
+            <label>Ay</label>
+
+            <select id="puantajAy">
+                ${Array.from({length:12},(_,i)=>`
+                    <option value="${i+1}" ${i+1===bugun.getMonth()+1?"selected":""}>
+                        ${i+1}
+                    </option>
+                `).join("")}
+            </select>
+
+            <label>Yıl</label>
+
+            <select id="puantajYil">
+                ${Array.from({length:5},(_,i)=>`
+                    <option value="${bugun.getFullYear()-2+i}"
+                        ${bugun.getFullYear()-2+i===bugun.getFullYear()?"selected":""}>
+                        ${bugun.getFullYear()-2+i}
+                    </option>
+                `).join("")}
+            </select>
+
+            <button onclick="puantajOlustur()">
+                📄 Puantaj Oluştur
+            </button>
+
+        </div>
+
+        <div id="puantajTablo"></div>
+
+    `;
+
+}
+function puantajOlustur() {
+
+    const ay = Number(document.getElementById("puantajAy").value);
+    const yil = Number(document.getElementById("puantajYil").value);
+
+    const gunSayisi = new Date(yil, ay, 0).getDate();
+
+    let baslik = `
+        <tr>
+            <th>Sicil</th>
+            <th>Ad Soyad</th>
+    `;
+
+    for (let i = 1; i <= gunSayisi; i++) {
+        baslik += `<th>${i}</th>`;
+    }
+
+    baslik += `
+            <th>Toplam</th>
+        </tr>
+    `;
+
+    let satirlar = "";
+
+    personelListesi.forEach(function(personel){
+
+        satirlar += `
+            <tr>
+
+                <td>${personel.sicil}</td>
+
+                <td>${personel.ad} ${personel.soyad}</td>
+        `;
+
+      let toplam = 0;
+
+for (let i = 1; i <= gunSayisi; i++) {
+
+    const tarih =
+        yil + "-" +
+        String(ay).padStart(2, "0") + "-" +
+        String(i).padStart(2, "0");
+
+    const bilgi = vardiyaDurumuBul(personel, tarih);
+
+    let kod = "-";
+
+    switch (bilgi.durum) {
+
+        case "ATANDI":
+            kod = bilgi.gorevKodu;
+            toplam++;
+            break;
+
+        case "YILLIK İZİN":
+            kod = "Yİ";
+            break;
+
+        case "MAZERET İZNİ":
+            kod = "Mİ";
+            break;
+
+        case "SENDİKAL İZİN":
+            kod = "Sİ";
+            break;
+
+        case "ÜCRETLİ İZİN":
+            kod = "Üİ";
+            break;
+
+        case "ÜCRETSİZ İZİN":
+            kod = "ÜS";
+            break;
+
+        case "DOĞUM İZNİ":
+            kod = "Dİ";
+            break;
+
+        case "BABALIK İZNİ":
+            kod = "Bİ";
+            break;
+
+        case "RAPOR":
+            kod = "R";
+            break;
+
+        case "HAFTA TATİLİ":
+            kod = "HT";
+            break;
+
+        case "GÖREVE GELMEDİ":
+            kod = "GG";
+            break;
+    }
+
+    satirlar += `
+        <td style="text-align:center;">${kod}</td>
+    `;
+}
+
+        satirlar += `
+<td><b>${toplam}</b></td>            </tr>
+        `;
+
+    });
+
+    document.getElementById("puantajTablo").innerHTML = `
+
+        <table class="tablo">
+
+            <thead>
+
+                ${baslik}
+
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
 }
