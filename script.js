@@ -1769,58 +1769,7 @@ function izinHaklari() {
     `;
 
 }
-function izinHakDuzenle(sicil) {
 
-    const personel = personelListesi.find(function(p){
-        return String(p.sicil) === String(sicil);
-    });
-
-    if(!personel){
-        alert("Personel bulunamadı.");
-        return;
-    }
-
-    document.getElementById("icerik").innerHTML = `
-
-    <h2>✏️ İzin Hakları</h2>
-
-    <div class="form-kart">
-
-        <label>Sicil</label>
-        <input type="text" value="${personel.sicil}" readonly>
-
-        <label>Ad Soyad</label>
-        <input type="text"
-            value="${personel.ad} ${personel.soyad}"
-            readonly>
-
-        <label>Yıllık İzin Hakkı</label>
-        <input
-            type="number"
-            id="yillikHak"
-            value="${personel.yillikHak || 0}">
-
-        <label>Kullanılan İzin</label>
-        <input
-            type="number"
-            id="kullanilanIzin"
-            value="${personel.kullanilanIzin || 0}">
-
-        <br><br>
-
-        <button onclick="izinHakKaydet('${personel.sicil}')">
-            💾 Kaydet
-        </button>
-
-        <button onclick="izinHaklari()">
-            ⬅ Geri
-        </button>
-
-    </div>
-
-    `;
-
-}
 function izinHakDuzenle(sicil) {
 
     const personel = personelListesi.find(function(p){
