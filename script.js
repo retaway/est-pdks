@@ -1617,27 +1617,32 @@ function yeniIzin(index = null) {
     id="izinBaslangic"
     value="${kayit.baslangic || ""}"
     onchange="isBasiHesapla()">
-<label>İzin Süresi</label>
-<input
-    type="text"
-    id="izinSure"
-    readonly
-    placeholder="0 Gün">
-    
+
 <label>Bitiş Tarihi</label>
+
 <input
     type="date"
     id="izinBitis"
- value="${kayit.bitis || ""}"
+    value="${kayit.bitis || ""}"
     onchange="isBasiHesapla()">
 
+<label>İzin Süresi</label>
+
+<input
+    type="text"
+    id="izinSure"
+    value="${kayit.gunSayisi ? kayit.gunSayisi + ' Gün' : ''}"
+    readonly>
+
 <label>İş Başı Tarihi</label>
+
 <input
     type="date"
     id="izinIsBasi"
     value="${kayit.isBasi || ""}"
     readonly>
-       <label>İzin Türü</label>
+
+<label>İzin Türü</label>
 
 <select id="izinDurumu">
     <option ${kayit.izinTuru=="YILLIK İZİN" ? "selected" : ""}>YILLIK İZİN</option>
@@ -1652,15 +1657,20 @@ function yeniIzin(index = null) {
     <option ${kayit.izinTuru=="GÖREVE GELMEDİ" ? "selected" : ""}>GÖREVE GELMEDİ</option>
 </select>
 
-        <label>Açıklama</label>
+<label>Açıklama</label>
 
+<textarea
+    id="izinNot"
+    rows="3">${kayit.not || ""}</textarea>
 
 <label>Evrak No</label>
 
 <input
     type="text"
     id="izinEvrakNo"
-    placeholder="Örn : 2026-000125">
+    value="${kayit.evrakNo || ""}"
+    placeholder="Örn: 2026-000125">
+
         <textarea
             id="izinNot"
             rows="3">${kayit.not || ""}</textarea>
@@ -1678,6 +1688,12 @@ function yeniIzin(index = null) {
     </div>
 
     `;
+
+    if (kayit.sicil) {
+        izinBilgileriGetir();
+    }
+
+    isBasiHesapla();
 
 }
 function izinKaydet(index = null) {
@@ -1836,33 +1852,38 @@ function isBasiHesapla() {
     const bitis = document.getElementById("izinBitis").value;
 
     if (!baslangic || !bitis) {
+
+        document.getElementById("izinIsBasi").value = "";
+        document.getElementById("izinSure").value = "";
+
         return;
+
     }
 
-    // İş başı tarihini hesapla
-    const isBasiTarihi = new Date(bitis);
-    isBasiTarihi.setDate(isBasiTarihi.getDate() + 1);
+    const baslangicTarih = new Date(baslangic);
+    const bitisTarih = new Date(bitis);
 
-    const yil = isBasiTarihi.getFullYear();
-    const ay = String(isBasiTarihi.getMonth() + 1).padStart(2, "0");
-    const gun = String(isBasiTarihi.getDate()).padStart(2, "0");
+    // İzin süresi
+    const gunSayisi =
+        Math.floor(
+            (bitisTarih - baslangicTarih) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
+
+    document.getElementById("izinSure").value =
+        gunSayisi + " Gün";
+
+    // İş başı tarihi
+    let isBasi = new Date(bitisTarih);
+
+    do {
+
+        isBasi.setDate(isBasi.getDate() + 1);
+
+    } while (isBasi.getDay() === 0);
 
     document.getElementById("izinIsBasi").value =
-        `${yil}-${ay}-${gun}`;
-
-    // İzin süresini hesapla
-    const bas = new Date(baslangic);
-    const bit = new Date(bitis);
-
-    const gunSayisi = Math.floor(
-        (bit - bas) / (1000 * 60 * 60 * 24)
-    ) + 1;
-
-    const izinSure = document.getElementById("izinSure");
-
-    if (izinSure) {
-        izinSure.value = gunSayisi + " Gün";
-    }
+        isBasi.toISOString().split("T")[0];
 
 }
 function izinBilgileriGetir() {
