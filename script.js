@@ -1498,10 +1498,43 @@ function izinler() {
 </td>
 
 <td>${kayit.not || "-"}</td>
-            <td>
-                <button onclick="yeniIzin(${index})">✏️</button>
-                <button onclick="izinSil(${index})">🗑️</button>
-            </td>
+          <td>
+
+    <button
+        onclick="yeniIzin(${index})"
+        title="Düzenle">
+        ✏️
+    </button>
+
+    ${kayit.durum === "ONAY BEKLİYOR"
+        ? `
+        <button
+            onclick="izinOnayla(${index})"
+            title="Vardiya Amiri Onayı">
+            ✅
+        </button>
+        `
+        : ""
+    }
+
+    ${kayit.durum === "VARDİYA AMİRİ ONAYLADI"
+        ? `
+        <button
+            onclick="ikBilgilendir(${index})"
+            title="İK'ya Bildir">
+            📨
+        </button>
+        `
+        : ""
+    }
+
+    <button
+        onclick="izinSil(${index})"
+        title="Sil">
+        🗑️
+    </button>
+
+</td>
         </tr>
         `;
 
@@ -1842,6 +1875,48 @@ function izinSil(index){
         "personelDurumlari",
         JSON.stringify(personelDurumlari)
     );
+
+    izinler();
+
+}
+function izinOnayla(index) {
+
+    if (!confirm("Bu izin talebi onaylansın mı?")) {
+        return;
+    }
+
+    personelDurumlari[index].durum = "VARDİYA AMİRİ ONAYLADI";
+    personelDurumlari[index].onaylayanVardiyaAmiri = aktifKullanici || "";
+    personelDurumlari[index].vardiyaAmiriOnayTarihi =
+        new Date().toISOString();
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    izinler();
+
+}
+function ikBilgilendir(index) {
+
+    if (!confirm("İnsan Kaynaklarına bilgi gönderilsin mi?")) {
+        return;
+    }
+
+    personelDurumlari[index].ikBilgilendirildi = true;
+    personelDurumlari[index].ikBilgilendirmeTarihi =
+        new Date().toISOString();
+
+    personelDurumlari[index].durum =
+        "İK'YA BİLDİRİLDİ";
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    alert("İnsan Kaynakları bilgilendirildi.");
 
     izinler();
 
