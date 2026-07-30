@@ -6,11 +6,61 @@ let tarifeVerileri = [];
 let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
+let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
 
-// =========================
-// İZİN HAKLARI
-// =========================
+function ikBilgilendir(index) {
 
+    if (!confirm("İnsan Kaynaklarına bilgi gönderilsin mi?")) {
+        return;
+    }
+
+    personelDurumlari[index].ikBilgilendirildi = true;
+    personelDurumlari[index].ikBilgilendirmeTarihi =
+        new Date().toISOString();
+
+    personelDurumlari[index].durum =
+        "İK'YA BİLDİRİLDİ";
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    // Bildirim oluştur
+    bildirimEkle(
+        "İK",
+        "İzin Talebi",
+        personelDurumlari[index].sicil +
+        " sicilli personelin izin talebi İK'ya gönderildi.",
+        "IK"
+    );
+
+    alert("İnsan Kaynakları bilgilendirildi.");
+
+    izinler();
+
+}
+const bildirimSablonlari = {
+
+    IZIN_ONAY: {
+        tur: "İZİN",
+        baslik: "İzin Onaylandı",
+        mesaj: " isimli personelin izin talebi onaylandı."
+    },
+
+    IZIN_RED: {
+        tur: "İZİN",
+        baslik: "İzin Reddedildi",
+        mesaj: " isimli personelin izin talebi reddedildi."
+    },
+
+    YENI_IZIN: {
+        tur: "İZİN",
+        baslik: "Yeni İzin Talebi",
+        mesaj: " isimli personel izin talebinde bulundu."
+    }
+
+};
 const izinHaklariKurallari = {
     
     "YILLIK İZİN": {
@@ -659,7 +709,7 @@ function sayfaGoster(sayfa) {
             break;
 
         case "bildirimler":
-            alert("Henüz geliştiriliyor");
+            bildirimlerSayfasi();
             break;
     }
 }
@@ -1592,27 +1642,40 @@ function izinler() {
         ✏️
     </button>
 
-    ${kayit.durum === "ONAY BEKLİYOR"
-        ? `
+ ${kayit.durum === "ONAY BEKLİYOR"
+    ? `
         <button
             onclick="izinOnayla(${index})"
-            title="Vardiya Amiri Onayı">
+            title="Onayla">
             ✅
         </button>
-        `
-        : ""
-    }
 
-    ${kayit.durum === "VARDİYA AMİRİ ONAYLADI"
-        ? `
         <button
-            onclick="ikBilgilendir(${index})"
-            title="İK'ya Bildir">
-            📨
+            onclick="izinReddet(${index})"
+            title="Reddet">
+            ❌
         </button>
-        `
-        : ""
-    }
+    `
+    : ""
+}
+
+${kayit.durum === "ONAYLANDI"
+    ? `
+        <span style="color:green;font-weight:bold;">
+            ✔ Onaylandı
+        </span>
+    `
+    : ""
+}
+
+${kayit.durum === "REDDEDİLDİ"
+    ? `
+        <span style="color:red;font-weight:bold;">
+            ✖ Reddedildi
+        </span>
+    `
+    : ""
+}
 
     <button
         onclick="izinSil(${index})"
@@ -2180,9 +2243,18 @@ if (
         "personelDurumlari",
         JSON.stringify(personelDurumlari)
     );
-
+        bildirimEkle(
+    "İZİN",
+    "Yeni İzin Talebi",
+    sicil + " sicilli personel için izin talebi oluşturuldu.",
+    "VARDIYA_AMIRI"
+);
     alert("İzin kaydedildi.");
-
+    bildirimEkle(
+    "İZİN",
+    "Yeni izin talebi",
+    sicil + " sicilli personel için izin talebi oluşturuldu."
+);
     izinler();
 
 }
@@ -2228,25 +2300,6 @@ function izinSil(index){
 
     izinler();
 }
-function izinOnayla(index) {
-
-    if (!confirm("Bu izin talebi onaylansın mı?")) {
-        return;
-    }
-
-    personelDurumlari[index].durum = "VARDİYA AMİRİ ONAYLADI";
-    personelDurumlari[index].onaylayanVardiyaAmiri = aktifKullanici || "";
-    personelDurumlari[index].vardiyaAmiriOnayTarihi =
-        new Date().toISOString();
-
-    localStorage.setItem(
-        "personelDurumlari",
-        JSON.stringify(personelDurumlari)
-    );
-
-    izinler();
-
-}
 function ikBilgilendir(index) {
 
     if (!confirm("İnsan Kaynaklarına bilgi gönderilsin mi?")) {
@@ -2265,7 +2318,124 @@ function ikBilgilendir(index) {
         JSON.stringify(personelDurumlari)
     );
 
+    // Bildirim oluştur
+    bildirimEkle(
+        "İK",
+        "İK Bilgilendirildi",
+        personelDurumlari[index].sicil +
+        " sicilli personelin izin talebi İK'ya gönderildi."
+    );
+
     alert("İnsan Kaynakları bilgilendirildi.");
+
+    izinler();
+
+}
+function izinOnayla(index) {
+
+    if (!confirm("İzin talebi onaylansın mı?")) {
+        return;
+    }
+
+    personelDurumlari[index].durum = "ONAYLANDI";
+    personelDurumlari[index].onaylayanVardiyaAmiri =
+        aktifKullanici || "";
+
+    personelDurumlari[index].vardiyaAmiriOnayTarihi =
+        new Date().toISOString();
+
+    const personel = personelListesi.find(function(p){
+
+        return String(p.sicil) ===
+               String(personelDurumlari[index].sicil);
+
+    });
+
+    const adSoyad = personel
+        ? personel.ad + " " + personel.soyad
+        : personelDurumlari[index].sicil;
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    bildirimOlustur(
+        "IZIN_ONAY",
+        adSoyad,
+        "VATMAN"
+    );
+
+    bildirimOlustur(
+        "IZIN_ONAY",
+        adSoyad,
+        "SURUCU_SEFLIGI"
+    );
+
+    bildirimOlustur(
+        "IZIN_ONAY",
+        adSoyad,
+        "IK"
+    );
+
+    alert("İzin onaylandı.");
+
+    izinler();
+
+}
+function izinReddet(index) {
+
+    if (!confirm("İzin talebi reddedilsin mi?")) {
+        return;
+    }
+
+    personelDurumlari[index].durum = "REDDEDİLDİ";
+    personelDurumlari[index].onaylayanVardiyaAmiri =
+        aktifKullanici || "";
+
+    personelDurumlari[index].vardiyaAmiriOnayTarihi =
+        new Date().toISOString();
+
+    // Personeli bul
+    const personel = personelListesi.find(function(p){
+
+        return String(p.sicil) ===
+               String(personelDurumlari[index].sicil);
+
+    });
+
+    // Ad Soyad oluştur
+    const adSoyad = personel
+        ? personel.ad + " " + personel.soyad
+        : personelDurumlari[index].sicil;
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    // Vatmana bildir
+    bildirimOlustur(
+        "IZIN_RED",
+        adSoyad,
+        "VATMAN"
+    );
+
+    // Sürücü Şefliğine bildir
+    bildirimOlustur(
+        "IZIN_RED",
+        adSoyad,
+        "SURUCU_SEFLIGI"
+    );
+
+    // İK'ya bildir
+    bildirimOlustur(
+        "IZIN_RED",
+        adSoyad,
+        "IK"
+    );
+
+    alert("İzin reddedildi.");
 
     izinler();
 
@@ -2598,11 +2768,209 @@ for (let i = 1; i <= gunSayisi; i++) {
 
     document.getElementById("puantajTablo").innerHTML = `
 
+    <div style="margin-bottom:15px;">
+
+        <h3 style="margin:0;">
+            ESTRAM HAFİF RAYLI SİSTEMLER
+        </h3>
+
+        <b>${ay}/${yil} AYLIK PUANTAJ CETVELİ</b>
+
+    </div>
+
+    <table class="tablo">
+
+        <thead>
+
+            ${baslik}
+
+        </thead>
+
+        <tbody>
+
+            ${satirlar}
+
+        </tbody>
+
+    </table>
+
+`;
+    <br><br>
+
+<table style="width:100%;">
+
+<tr>
+
+<td style="text-align:center;">
+Hazırlayan
+<br><br><br>
+____________________
+</td>
+
+<td style="text-align:center;">
+Kontrol Eden
+<br><br><br>
+____________________
+</td>
+
+<td style="text-align:center;">
+Onaylayan
+<br><br><br>
+____________________
+</td>
+
+</tr>
+
+</table>
+
+}
+
+function bildirimOlustur(tip, personel, hedef) {
+
+    const sablon = bildirimSablonlari[tip];
+
+    if (!sablon) {
+        console.warn("Bildirim şablonu bulunamadı:", tip);
+        return;
+    }
+
+    bildirimEkle(
+
+        sablon.tur,
+
+        sablon.baslik,
+
+        personel + " " + sablon.mesaj,
+
+        hedef
+
+    );
+
+}
+function bildirimEkle(tur, baslik, aciklama, hedef = "GENEL") {
+
+    bildirimler.unshift({
+
+        id: Date.now(),
+
+        tarih: new Date().toLocaleString("tr-TR"),
+
+        tur: tur,
+
+        baslik: baslik,
+
+        aciklama: aciklama,
+
+        hedef: hedef,
+
+        okundu: false
+
+    });
+
+    localStorage.setItem(
+        "bildirimler",
+        JSON.stringify(bildirimler)
+    );
+
+}
+function bildirimlerSayfasi() {
+
+    let satirlar = "";
+
+    if (!bildirimler || bildirimler.length === 0) {
+
+        satirlar = `
+            <tr>
+                <td colspan="7" style="text-align:center;">
+                    Bildirim bulunmuyor.
+                </td>
+            </tr>
+        `;
+
+    } else {
+
+        bildirimler.forEach(function(bildirim, index){
+
+            satirlar += `
+                <tr>
+
+                    <td>${bildirim.tarih}</td>
+
+                    <td>
+                        <span style="
+                        background:#1976d2;
+                        color:white;
+                        padding:4px 8px;
+                        border-radius:12px;
+                        font-size:12px;
+                    ">
+                    ${bildirim.tur}
+                    </span>
+</td>
+
+                    <td>${bildirim.baslik}</td>
+
+                    <td>${bildirim.aciklama}</td>
+
+        <td>
+                ${
+                    bildirim.hedef === "IK"
+                    ? "👤 İnsan Kaynakları"
+                    : bildirim.hedef === "SURUCU_SEFLIGI"
+                    ? "🚋 Sürücü Şefliği"
+                    : bildirim.hedef === "VARDIYA_AMIRI"
+                    ? "👮 Vardiya Amiri"
+                    : "🌐 Genel"
+                    }
+        </td>
+                    <td style="text-align:center;">
+                        ${
+                            bildirim.okundu
+                            ? "<span style='color:green;font-weight:bold;'>✅ Okundu</span>"
+                            : "<span style='color:red;font-weight:bold;'>🔔 Yeni</span>"
+                        }
+                    </td>
+
+                    <td>
+
+                        ${
+                            !bildirim.okundu
+                            ? `<button onclick="bildirimOkundu(${index})" title="Okundu Yap">✔</button>`
+                            : ""
+                        }
+
+                        <button onclick="bildirimSil(${index})" title="Sil">
+                            🗑️
+                        </button>
+
+                    </td>
+
+                </tr>
+            `;
+
+        });
+
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>🔔 Bildirim Merkezi</h2>
+
         <table class="tablo">
 
             <thead>
 
-                ${baslik}
+                <tr>
+
+                    <th>Tarih</th>
+                    <th>Tür</th>
+                    <th>Başlık</th>
+                    <th>Açıklama</th>
+                    <th>Hedef</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+
+                </tr>
 
             </thead>
 
@@ -2615,5 +2983,46 @@ for (let i = 1; i <= gunSayisi; i++) {
         </table>
 
     `;
+
+}
+function bildirimOkundu(index) {
+
+    bildirimler[index].okundu = true;
+
+    localStorage.setItem(
+        "bildirimler",
+        JSON.stringify(bildirimler)
+    );
+
+    bildirimlerSayfasi();
+
+}
+function bildirimSil(index){
+
+    if(!confirm("Bu bildirim silinsin mi?")){
+        return;
+    }
+
+    bildirimler.splice(index,1);
+
+    localStorage.setItem(
+        "bildirimler",
+        JSON.stringify(bildirimler)
+    );
+
+    bildirimlerSayfasi();
+
+}
+function okunmamisBildirimSayisi(hedef = null) {
+
+    return bildirimler.filter(function(b){
+
+        if (hedef && b.hedef !== hedef && b.hedef !== "GENEL") {
+            return false;
+        }
+
+        return b.okundu === false;
+
+    }).length;
 
 }
