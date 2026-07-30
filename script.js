@@ -1548,14 +1548,17 @@ function yeniIzin(index = null) {
 
     const kayit = duzenleme
         ? personelDurumlari[index]
-      : {
+: {
     sicil: "",
     baslangic: "",
     bitis: "",
     isBasi: "",
-    durum: "",
-    not: ""
-    };
+    izinTuru: "",
+    gunSayisi: 0,
+    not: "",
+    evrakNo: "",
+    durum: "ONAY BEKLİYOR"
+};
 
     let personeller = '<option value="">Personel Seçiniz</option>';
 
@@ -1607,8 +1610,13 @@ function yeniIzin(index = null) {
 
 </div>
 
-  <label>Başlangıç Tarihi</label>
+<label>Başlangıç Tarihi</label>
 
+<input
+    type="date"
+    id="izinBaslangic"
+    value="${kayit.baslangic || ""}"
+    onchange="isBasiHesapla()">
 <label>İzin Süresi</label>
 <input
     type="text"
@@ -1620,22 +1628,15 @@ function yeniIzin(index = null) {
 <input
     type="date"
     id="izinBitis"
-    value="${kayit.bitis}"
+ value="${kayit.bitis || ""}"
     onchange="isBasiHesapla()">
 
 <label>İş Başı Tarihi</label>
 <input
     type="date"
     id="izinIsBasi"
-    value="${kayit.isBasi || ""}">
-    
-<label>İzin Süresi</label>
-<input
-    type="text"
-    id="izinSure"
-    readonly
-    placeholder="0 Gün">
-
+    value="${kayit.isBasi || ""}"
+    readonly>
        <label>İzin Türü</label>
 
 <select id="izinDurumu">
@@ -1652,12 +1653,7 @@ function yeniIzin(index = null) {
 </select>
 
         <label>Açıklama</label>
-<label>Onaylayan Amir</label>
 
-<input
-    type="text"
-    id="izinOnaylayan"
-    placeholder="Sürücü Şefi">
 
 <label>Evrak No</label>
 
