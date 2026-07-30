@@ -1667,6 +1667,61 @@ Henüz izin kaydı bulunmuyor.
     `;
 
 }
+function puantaj() {
+
+    const bugun = new Date();
+
+    let aylar = "";
+    for (let i = 1; i <= 12; i++) {
+        aylar += `
+            <option value="${i}" ${i === bugun.getMonth() + 1 ? "selected" : ""}>
+                ${i}
+            </option>
+        `;
+    }
+
+    let yillar = "";
+    for (let i = bugun.getFullYear() - 2; i <= bugun.getFullYear() + 2; i++) {
+        yillar += `
+            <option value="${i}" ${i === bugun.getFullYear() ? "selected" : ""}>
+                ${i}
+            </option>
+        `;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>📊 Puantaj</h2>
+
+        <div class="toolbar">
+
+            <label>Ay</label>
+
+            <select id="puantajAy">
+                ${aylar}
+            </select>
+
+            <label>Yıl</label>
+
+            <select id="puantajYil">
+                ${yillar}
+            </select>
+
+            <button onclick="puantajOlustur()">
+                📄 Puantaj Oluştur
+            </button>
+
+        </div>
+
+        <div id="puantajTablo"></div>
+
+    `;
+}
+function puantajOlustur() {
+
+    alert("Puantaj oluşturulacak.");
+
+}
 function yillikIzinHakHesapla(iseGiris) {
 
     if (!iseGiris) return 0;
