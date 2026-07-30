@@ -2766,33 +2766,61 @@ for (let i = 1; i <= gunSayisi; i++) {
         `;
     });
 
-    document.getElementById("puantajTablo").innerHTML = `
+   document.getElementById("puantajTablo").innerHTML = `
 
-    <div style="margin-bottom:15px;">
+<div style="margin-bottom:15px;">
 
-        <h3 style="margin:0;">
-            ESTRAM HAFİF RAYLI SİSTEMLER
-        </h3>
+    <h3 style="margin:0;">
+        ESTRAM HAFİF RAYLI SİSTEMLER
+    </h3>
 
-        <b>${ay}/${yil} AYLIK PUANTAJ CETVELİ</b>
+    <b>${ay}/${yil} AYLIK PUANTAJ CETVELİ</b>
 
-    </div>
+</div>
 
-    <table class="tablo">
+<table class="tablo">
 
-        <thead>
+    <thead>
 
-            ${baslik}
+        ${baslik}
 
-        </thead>
+    </thead>
 
-        <tbody>
+    <tbody>
 
-            ${satirlar}
+        ${satirlar}
 
-        </tbody>
+    </tbody>
 
-    </table>
+</table>
+
+<br><br>
+
+<table style="width:100%; border:none;">
+
+    <tr>
+
+        <td style="text-align:center; border:none;">
+            Hazırlayan
+            <br><br><br>
+            ____________________
+        </td>
+
+        <td style="text-align:center; border:none;">
+            Kontrol Eden
+            <br><br><br>
+            ____________________
+        </td>
+
+        <td style="text-align:center; border:none;">
+            Onaylayan
+            <br><br><br>
+            ____________________
+        </td>
+
+    </tr>
+
+</table>
 
 `;
     <br><br>
