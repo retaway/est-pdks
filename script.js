@@ -1939,10 +1939,6 @@ function yeniIzin(index = null) {
 
 <label>Açıklama</label>
 
-<textarea
-    id="izinNot"
-    rows="3">${kayit.not || ""}</textarea>
-
 <label>Evrak No</label>
 
 <input
