@@ -203,6 +203,11 @@ function yeniPersonel(index = null) {
     <label>Telefon</label>
     <input id="telefon" type="tel" value="${p.telefon}" placeholder="05xxxxxxxxx">
 
+    <label>İşe Giriş Tarihi</label>
+    <input type="date"
+    id="personelIseGiris"
+    value="${p.iseGiris || ""}">
+
     <label>E-Posta</label>
     <input id="email" type="email" value="${p.email}" placeholder="ornek@estram.com.tr">
 
@@ -228,14 +233,41 @@ function yeniPersonel(index = null) {
 }
 
 function personelKaydet(index = null) {
-   const personel = {
-    sicil: document.getElementById("sicil").value,
-    ad: document.getElementById("ad").value,
-    soyad: document.getElementById("soyad").value,
-    telefon: document.getElementById("telefon").value,
-    email: document.getElementById("email").value,
-    gorev: document.getElementById("gorev").value,
-    durum: document.getElementById("durum").value,
+
+    const personel = {
+
+        sicil: document.getElementById("sicil").value,
+        ad: document.getElementById("ad").value,
+        soyad: document.getElementById("soyad").value,
+
+        // Yeni alan
+        iseGiris: document.getElementById("personelIseGiris").value,
+
+        telefon: document.getElementById("telefon").value,
+        email: document.getElementById("email").value,
+        gorev: document.getElementById("gorev").value,
+        durum: document.getElementById("durum").value,
+
+        vardiyaDurumu:
+            index !== null && personelListesi[index]
+                ? personelListesi[index].vardiyaDurumu || "ATANMADI"
+                : "ATANMADI"
+
+    };
+
+    if (index !== null && index >= 0) {
+        personelListesi[index] = personel;
+    } else {
+        personelListesi.push(personel);
+    }
+
+    localStorage.setItem("personeller", JSON.stringify(personelListesi));
+
+    alert("Personel kaydedildi.");
+
+    surucuSefligi();
+
+}
 
     vardiyaDurumu:
         index !== null && personelListesi[index]
@@ -637,6 +669,10 @@ function sayfaGoster(sayfa) {
             
         case "izinler":
             izinler();
+            break;
+
+         case "izinHaklari":
+            izinHaklari();
             break;
 
         case "puantaj":
@@ -1652,6 +1688,212 @@ Henüz izin kaydı bulunmuyor.
     `;
 
 }
+function yillikIzinHakHesapla(iseGiris) {
+
+    if (!iseGiris) return 0;
+
+    const giris = new Date(iseGiris);
+    const bugun = new Date();
+
+    let yil = bugun.getFullYear() - giris.getFullYear();
+
+    if (
+        bugun.getMonth() < giris.getMonth() ||
+        (
+            bugun.getMonth() === giris.getMonth() &&
+            bugun.getDate() < giris.getDate()
+        )
+    ) {
+        yil--;
+    }
+
+    if (yil < 1) return 0;
+    if (yil < 5) return 20;
+    if (yil < 15) return 22;
+
+    return 26;
+
+}
+function izinHaklari() {
+
+    let satirlar = "";
+
+    personelListesi.forEach(function(personel){
+
+        satirlar += `
+        <tr>
+
+            <td>${personel.sicil}</td>
+
+            <td>${personel.ad} ${personel.soyad}</td>
+
+            <td>${personel.yillikHak || 0}</td>
+
+            <td>${personel.kullanilanIzin || 0}</td>
+
+        <td>${
+                yillikIzinHakHesapla(personel.iseGiris) -
+                (personel.kullanilanIzin || 0)
+        }</td>
+            <td>
+                <button onclick="izinHakDuzenle('${personel.sicil}')">
+                    ✏️
+                </button>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    if (satirlar === "") {
+
+        satirlar = `
+        <tr>
+            <td colspan="6" style="text-align:center;">
+                Personel bulunamadı.
+            </td>
+        </tr>
+        `;
+
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>🗂 İzin Hakları</h2>
+
+        <table class="tablo">
+
+            <thead>
+
+                <tr>
+
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Yıllık Hak</th>
+                    <th>Kullanılan</th>
+                    <th>Kalan</th>
+                    <th>İşlem</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+function izinHakDuzenle(sicil) {
+
+    const personel = personelListesi.find(function(p){
+        return String(p.sicil) === String(sicil);
+    });
+
+    if(!personel){
+        alert("Personel bulunamadı.");
+        return;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>✏️ İzin Hakları</h2>
+
+    <div class="form-kart">
+
+        <label>Sicil</label>
+        <input type="text" value="${personel.sicil}" readonly>
+
+        <label>Ad Soyad</label>
+        <input type="text"
+            value="${personel.ad} ${personel.soyad}"
+            readonly>
+
+        <label>Yıllık İzin Hakkı</label>
+        <input
+            type="number"
+            id="yillikHak"
+            value="${personel.yillikHak || 0}">
+
+        <label>Kullanılan İzin</label>
+        <input
+            type="number"
+            id="kullanilanIzin"
+            value="${personel.kullanilanIzin || 0}">
+
+        <br><br>
+
+        <button onclick="izinHakKaydet('${personel.sicil}')">
+            💾 Kaydet
+        </button>
+
+        <button onclick="izinHaklari()">
+            ⬅ Geri
+        </button>
+
+    </div>
+
+    `;
+
+}
+function izinHakDuzenle(sicil) {
+
+    const personel = personelListesi.find(function(p){
+        return String(p.sicil) === String(sicil);
+    });
+
+    if(!personel){
+        alert("Personel bulunamadı.");
+        return;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>✏️ İzin Hakları</h2>
+
+    <div class="form-kart">
+
+        <label>Sicil</label>
+        <input type="text" value="${personel.sicil}" readonly>
+
+        <label>Ad Soyad</label>
+        <input type="text"
+            value="${personel.ad} ${personel.soyad}"
+            readonly>
+
+        <label>Yıllık İzin Hakkı</label>
+        <input
+            type="number"
+            id="yillikHak"
+            value="${personel.yillikHak || 0}">
+
+        <label>Kullanılan İzin</label>
+        <input
+            type="number"
+            id="kullanilanIzin"
+            value="${personel.kullanilanIzin || 0}">
+
+        <br><br>
+
+        <button onclick="izinHakKaydet('${personel.sicil}')">
+            💾 Kaydet
+        </button>
+
+        <button onclick="izinHaklari()">
+            ⬅ Geri
+        </button>
+
+    </div>
+
+    `;
+
+}
 function yeniIzin(index = null) {
 
     const duzenleme = index !== null;
@@ -1919,7 +2161,31 @@ const izinKaydi = {
     durum: "ONAY BEKLİYOR"
 
 };
+if (
+    durum === "YILLIK İZİN" &&
+    (index === null || index < 0)
+) {
+    const personel = personelListesi.find(function (p) {
+        return String(p.sicil) === String(sicil);
+    });
 
+    if (personel) {
+
+        personel.kullanilanIzin =
+            (personel.kullanilanIzin || 0) + izinGunSayisi;
+
+        personel.kalanIzin =
+            yillikIzinHakHesapla(personel.iseGiris) -
+            personel.kullanilanIzin;
+
+        localStorage.setItem(
+            "personeller",
+            JSON.stringify(personelListesi)
+        );
+
+    }
+
+}
     if (index !== null && index >= 0) {
 
         personelDurumlari[index] = izinKaydi;
