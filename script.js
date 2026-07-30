@@ -1473,7 +1473,7 @@ function izinler() {
 
         const personel = personelListesi.find(function(p){
             return String(p.sicil) === String(kayit.sicil);
-        });
+        aa});
 
         satirlar += `
         <tr>
