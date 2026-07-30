@@ -803,38 +803,62 @@ function gunlukVardiya() {
         const degisim = degisimEtiketiBul(personel.sicil, bugun);
         const satirRengi = degisim !== "-" ? 'style="background:#fff8cc;"' : "";
 
-        switch (bilgi.durum) {
-            case "ATANDI":
-                durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
-                break;
-            case "YILLIK İZİN":
-                durum = '<span style="color:#d4a017;font-weight:bold;">🟡 YILLIK İZİN</span>';
-                gorev = "-";
-                break;
-            case "ÜCRETSİZ İZİN":
-                durum = '<span style="color:orange;font-weight:bold;">🟠 ÜCRETSİZ İZİN</span>';
-                gorev = "-";
-                break;
-            case "ÜCRETLİ İZİN":
-                durum = '<span style="color:blue;font-weight:bold;">🔵 ÜCRETLİ İZİN</span>';
-                gorev = "-";
-                break;
-            case "DOĞUM İZNİ":
-                durum = '<span style="color:purple;font-weight:bold;">🟣 DOĞUM İZNİ</span>';
-                gorev = "-";
-                break;
-            case "RAPOR":
-                durum = '<span style="color:red;font-weight:bold;">🔴 RAPOR</span>';
-                gorev = "-";
-                break;
-            case "HAFTA TATİLİ":
-                durum = '<span style="color:gray;font-weight:bold;">⚪ HAFTA TATİLİ</span>';
-                gorev = "-";
-                break;
-            case "GÖREVE GELMEDİ":
-                durum = '<span style="color:black;font-weight:bold;">⚫ GÖREVE GELMEDİ</span>';
-                gorev = "-";
-                break;
+  switch (bilgi.durum) {
+
+    case "ATANDI":
+        durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
+        break;
+
+    case "YILLIK İZİN":
+        durum = '<span style="color:#d4a017;font-weight:bold;">🟡 YILLIK İZİN</span>';
+        gorev = "-";
+        break;
+
+    case "MAZERET İZNİ":
+        durum = '<span style="color:#ff9800;font-weight:bold;">🟠 MAZERET İZNİ</span>';
+        gorev = "-";
+        break;
+
+    case "SENDİKAL İZİN":
+        durum = '<span style="color:#009688;font-weight:bold;">🟢 SENDİKAL İZİN</span>';
+        gorev = "-";
+        break;
+
+    case "ÜCRETSİZ İZİN":
+        durum = '<span style="color:orange;font-weight:bold;">🟠 ÜCRETSİZ İZİN</span>';
+        gorev = "-";
+        break;
+
+    case "ÜCRETLİ İZİN":
+        durum = '<span style="color:blue;font-weight:bold;">🔵 ÜCRETLİ İZİN</span>';
+        gorev = "-";
+        break;
+
+    case "DOĞUM İZNİ":
+        durum = '<span style="color:purple;font-weight:bold;">🟣 DOĞUM İZNİ</span>';
+        gorev = "-";
+        break;
+
+    case "BABALIK İZNİ":
+        durum = '<span style="color:#3f51b5;font-weight:bold;">🔵 BABALIK İZNİ</span>';
+        gorev = "-";
+        break;
+
+    case "RAPOR":
+        durum = '<span style="color:red;font-weight:bold;">🔴 RAPOR</span>';
+        gorev = "-";
+        break;
+
+    case "HAFTA TATİLİ":
+        durum = '<span style="color:gray;font-weight:bold;">⚪ HAFTA TATİLİ</span>';
+        gorev = "-";
+        break;
+
+    case "GÖREVE GELMEDİ":
+        durum = '<span style="color:black;font-weight:bold;">⚫ GÖREVE GELMEDİ</span>';
+        gorev = "-";
+        break;
+}
         }
 
         const duzenleButonu =
@@ -867,26 +891,43 @@ function gunlukVardiya() {
     document.getElementById("icerik").innerHTML = `
         <h2>📅 Günlük Vardiya</h2>
 
-        <div class="toolbar" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
-            <input
-                type="text"
-                id="arama"
-                placeholder="🔍 Sicil veya Ad Soyad Ara..."
-                value="${arama}"
-                onkeyup="gunlukVardiya()"
-                style="width:300px;">
+   <div class="toolbar" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
 
-            <button onclick="vardiyaFiltreDegistir('HEPSI')">Hepsi</button>
-            <button onclick="vardiyaFiltreDegistir('ATANDI')">Atananlar</button>
-            <button onclick="vardiyaFiltreDegistir('ATANMADI')">Atanmayanlar</button>
-            <button onclick="vardiyaFiltreDegistir('YILLIK İZİN')">Yıllık İzin</button>
-            <button onclick="vardiyaFiltreDegistir('ÜCRETLİ İZİN')">Ücretli İzin</button>
-            <button onclick="vardiyaFiltreDegistir('ÜCRETSİZ İZİN')">Ücretsiz İzin</button>
-            <button onclick="vardiyaFiltreDegistir('DOĞUM İZNİ')">Doğum İzni</button>
-            <button onclick="vardiyaFiltreDegistir('RAPOR')">Rapor</button>
-            <button onclick="vardiyaFiltreDegistir('HAFTA TATİLİ')">Hafta Tatili</button>
-            <button onclick="vardiyaFiltreDegistir('GÖREVE GELMEDİ')">Göreve Gelmedi</button>
-        </div>
+    <input
+        type="text"
+        id="arama"
+        placeholder="🔍 Sicil veya Ad Soyad Ara..."
+        value="${arama}"
+        onkeyup="gunlukVardiya()"
+        style="width:300px;">
+
+    <button onclick="vardiyaFiltreDegistir('HEPSI')">Hepsi</button>
+
+    <button onclick="vardiyaFiltreDegistir('ATANDI')">Atananlar</button>
+
+    <button onclick="vardiyaFiltreDegistir('ATANMADI')">Atanmayanlar</button>
+
+    <button onclick="vardiyaFiltreDegistir('YILLIK İZİN')">Yıllık İzin</button>
+
+    <button onclick="vardiyaFiltreDegistir('MAZERET İZNİ')">Mazeret İzni</button>
+
+    <button onclick="vardiyaFiltreDegistir('SENDİKAL İZİN')">Sendikal İzin</button>
+
+    <button onclick="vardiyaFiltreDegistir('ÜCRETLİ İZİN')">Ücretli İzin</button>
+
+    <button onclick="vardiyaFiltreDegistir('ÜCRETSİZ İZİN')">Ücretsiz İzin</button>
+
+    <button onclick="vardiyaFiltreDegistir('DOĞUM İZNİ')">Doğum İzni</button>
+
+    <button onclick="vardiyaFiltreDegistir('BABALIK İZNİ')">Babalık İzni</button>
+
+    <button onclick="vardiyaFiltreDegistir('RAPOR')">Rapor</button>
+
+    <button onclick="vardiyaFiltreDegistir('HAFTA TATİLİ')">Hafta Tatili</button>
+
+    <button onclick="vardiyaFiltreDegistir('GÖREVE GELMEDİ')">Göreve Gelmedi</button>
+
+</div>
 
         <table class="tablo">
             <thead>
@@ -977,8 +1018,11 @@ function vardiyaKaydet(index){
         mevcutDurum.durum !== "ATANMADI" &&
         mevcutDurum.durum !== "ATANDI"
     ) {
-        alert("Bu personele bugün görev atanamaz. Durum: " + mevcutDurum.durum);
-        return;
+alert(
+    personel.ad + " " + personel.soyad +
+    " bugün '" + mevcutDurum.durum +
+    "' durumundadır.\n\nBu personele vardiya atanamaz."
+);        return;
     }
 
     // Aynı görev kodu başka birine verilmiş mi?
@@ -1558,12 +1602,18 @@ Henüz izin kaydı bulunmuyor.
         </div>
 
         <table class="tablo">
-
-            <thead>
-                  <th>Başlangıç</th>
-
-            </thead>
-
+<thead>
+    <tr>
+        <th>Sicil</th>
+        <th>Ad Soyad</th>
+        <th>Başlangıç</th>
+        <th>Bitiş</th>
+        <th>İzin Türü</th>
+        <th>Durum</th>
+        <th>Açıklama</th>
+        <th>İşlem</th>
+    </tr>
+</thead>
             <tbody>
 
                 ${satirlar}
@@ -2041,6 +2091,20 @@ function personelDurumuGetir(sicil, tarih) {
     }
 
     return kayit;
+
+}
+function personelBugunDurumu(sicil) {
+
+    const bugun = new Date().toISOString().split("T")[0];
+
+    return personelDurumlari.find(function(kayit){
+
+        return String(kayit.sicil) === String(sicil)
+            && kayit.baslangic <= bugun
+            && kayit.bitis >= bugun
+            && kayit.durum !== "İPTAL EDİLDİ";
+
+    });
 
 }
 function izinDurumRenk(durum) {
