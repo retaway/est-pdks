@@ -248,27 +248,6 @@ function personelKaydet(index = null) {
         gorev: document.getElementById("gorev").value,
         durum: document.getElementById("durum").value,
 
-        vardiyaDurumu:
-            index !== null && personelListesi[index]
-                ? personelListesi[index].vardiyaDurumu || "ATANMADI"
-                : "ATANMADI"
-
-    };
-
-    if (index !== null && index >= 0) {
-        personelListesi[index] = personel;
-    } else {
-        personelListesi.push(personel);
-    }
-
-    localStorage.setItem("personeller", JSON.stringify(personelListesi));
-
-    alert("Personel kaydedildi.");
-
-    surucuSefligi();
-
-}
-
     vardiyaDurumu:
         index !== null && personelListesi[index]
             ? personelListesi[index].vardiyaDurumu || "ATANMADI"
