@@ -2490,12 +2490,15 @@ function puantajOlustur() {
     }
 
     baslik += `
-            <th>Toplam</th>
-        </tr>
+<th>Ç</th>
+<th>Yİ</th>
+<th>Mİ</th>
+<th>R</th>
+<th>HT</th>        </tr>
     `;
 
     let satirlar = "";
-
+    console.log(personelListesi);
     personelListesi.forEach(function(personel){
 
         satirlar += `
@@ -2507,7 +2510,10 @@ function puantajOlustur() {
         `;
 
       let toplam = 0;
-
+let yillikIzin = 0;
+let mazeret = 0;
+let rapor = 0;
+let haftaTatili = 0;
 for (let i = 1; i <= gunSayisi; i++) {
 
     const tarih =
@@ -2526,12 +2532,19 @@ for (let i = 1; i <= gunSayisi; i++) {
             toplam++;
             break;
 
-        case "YILLIK İZİN":
+       case "YILLIK İZİN":
             kod = "Yİ";
+            yillikIzin++;
             break;
 
+      case "HAFTA TATİLİ":
+            kod = "HT";
+            haftaTatili++;
+            break;
+      
         case "MAZERET İZNİ":
             kod = "Mİ";
+            mazeret++;
             break;
 
         case "SENDİKAL İZİN":
@@ -2556,10 +2569,11 @@ for (let i = 1; i <= gunSayisi; i++) {
 
         case "RAPOR":
             kod = "R";
+            rapor++;
             break;
 
-        case "HAFTA TATİLİ":
-            kod = "HT";
+      case "KADINLAR GÜNÜ İZNİ":
+            kod = "Kİ";
             break;
 
         case "GÖREVE GELMEDİ":
@@ -2573,9 +2587,13 @@ for (let i = 1; i <= gunSayisi; i++) {
 }
 
         satirlar += `
-<td><b>${toplam}</b></td>            </tr>
+<td><b>${toplam}</b></td>
+<td>${yillikIzin}</td>
+<td>${mazeret}</td>
+<td>${rapor}</td>
+<td>${haftaTatili}</td>        
+</tr>
         `;
-
     });
 
     document.getElementById("puantajTablo").innerHTML = `
