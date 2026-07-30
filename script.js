@@ -1471,12 +1471,13 @@ function yeniIzin(index = null) {
 
     const kayit = duzenleme
         ? personelDurumlari[index]
-        : {
-            sicil: "",
-            baslangic: "",
-            bitis: "",
-            durum: "YILLIK İZİN",
-            not: ""
+        :{
+            sicil: ...,
+            baslangic: ...,
+            bitis: ...,
+            isBasi: ...,
+            durum: ...,
+            not: ...
         };
 
     let personeller = '<option value="">Personel Seçiniz</option>';
