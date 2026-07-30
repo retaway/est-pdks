@@ -6,6 +6,75 @@ let tarifeVerileri = [];
 let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
+
+// =========================
+// İZİN HAKLARI
+// =========================
+
+const izinHaklari = {
+
+    "YILLIK İZİN": {
+        hak: 30,
+        devreder: true,
+        sifirlanma: "YOK"
+    },
+
+    "MAZERET İZNİ": {
+        hak: 3,
+        devreder: false,
+        sifirlanma: "YILBASI"
+    },
+
+    "SENDİKAL İZİN": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "YOK"
+    },
+
+    "DOĞUM İZNİ": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "MEVZUAT"
+    },
+
+    "BABALIK İZNİ": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "MEVZUAT"
+    },
+
+    "ÜCRETLİ İZİN": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "YOK"
+    },
+
+    "ÜCRETSİZ İZİN": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "YOK"
+    },
+
+    "RAPOR": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "YOK"
+    },
+
+    "HAFTA TATİLİ": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "YOK"
+    },
+
+    "GÖREVE GELMEDİ": {
+        hak: null,
+        devreder: false,
+        sifirlanma: "YOK"
+    }
+
+};
+
 let gunlukVardiyaFiltre = "HEPSI";
 let gorevTarifeFiltreTarih = new Date().toISOString().split("T")[0];
 let gorevTarifeArama = "";
@@ -1505,51 +1574,100 @@ function yeniIzin(index = null) {
 
     <div class="form-kart">
 
-        <label>Personel</label>
-        <select id="izinPersonel">
-            ${personeller}
-        </select>
+       <label>Personel</label>
 
-        <label>Başlangıç Tarihi</label>
-        <input
-            type="date"
-            id="izinBaslangic"
-            value="${kayit.baslangic}">
+<select id="izinPersonel" onchange="izinBilgileriGetir()">
+    ${personeller}
+</select>
 
-       <label>Bitiş Tarihi</label>
+<div id="izinBilgileri"
+     style="display:none; margin-top:15px; margin-bottom:15px;">
+
+    <table class="tablo">
+        <tr>
+            <th>Yıllık Hak</th>
+            <th>Kullanılan</th>
+            <th>Kalan</th>
+        </tr>
+
+        <tr>
+            <td id="lblYillikHak">-</td>
+            <td id="lblKullanilan">-</td>
+            <td id="lblKalan">-</td>
+        </tr>
+    </table>
+
+</div>
+
+  <label>Başlangıç Tarihi</label>
+
+<label>İzin Süresi</label>
+<input
+    type="text"
+    id="izinSure"
+    readonly
+    placeholder="0 Gün">
+    
+<label>Bitiş Tarihi</label>
 <input
     type="date"
     id="izinBitis"
-    value="${kayit.bitis}">
+    value="${kayit.bitis}"
+    onchange="isBasiHesapla()">
 
 <label>İş Başı Tarihi</label>
 <input
     type="date"
     id="izinIsBasi"
     value="${kayit.isBasi || ""}">
+    
+<label>İzin Süresi</label>
+<input
+    type="text"
+    id="izinSure"
+    readonly
+    placeholder="0 Gün">
 
-        <label>İzin Türü</label>
+       <label>İzin Türü</label>
 
-        <select id="izinDurumu">
+<select id="izinDurumu">
 
-            <option ${kayit.durum=="YILLIK İZİN"?"selected":""}>YILLIK İZİN</option>
+    <option>YILLIK İZİN</option>
 
-            <option ${kayit.durum=="ÜCRETLİ İZİN"?"selected":""}>ÜCRETLİ İZİN</option>
+    <option>MAZERET İZNİ</option>
 
-            <option ${kayit.durum=="ÜCRETSİZ İZİN"?"selected":""}>ÜCRETSİZ İZİN</option>
+    <option>SENDİKAL İZİN</option>
 
-            <option ${kayit.durum=="DOĞUM İZNİ"?"selected":""}>DOĞUM İZNİ</option>
+    <option>ÜCRETLİ İZİN</option>
 
-            <option ${kayit.durum=="RAPOR"?"selected":""}>RAPOR</option>
+    <option>ÜCRETSİZ İZİN</option>
 
-            <option ${kayit.durum=="HAFTA TATİLİ"?"selected":""}>HAFTA TATİLİ</option>
+    <option>DOĞUM İZNİ</option>
 
-            <option ${kayit.durum=="GÖREVE GELMEDİ"?"selected":""}>GÖREVE GELMEDİ</option>
+    <option>BABALIK İZNİ</option>
 
-        </select>
+    <option>RAPOR</option>
+
+    <option>HAFTA TATİLİ</option>
+
+    <option>GÖREVE GELMEDİ</option>
+
+</select>
 
         <label>Açıklama</label>
+<label>Onaylayan Amir</label>
 
+<input
+    type="text"
+    id="izinOnaylayan"
+    placeholder="Sürücü Şefi">
+
+<label>Evrak No</label>
+
+<input
+    type="text"
+    id="izinEvrakNo"
+    placeholder="Örn : 2026-000125">
         <textarea
             id="izinNot"
             rows="3">${kayit.not || ""}</textarea>
@@ -1567,5 +1685,273 @@ function yeniIzin(index = null) {
     </div>
 
     `;
+
+}
+function izinKaydet(index = null) {
+
+    const sicil = document.getElementById("izinPersonel").value;
+    const baslangic = document.getElementById("izinBaslangic").value;
+    const bitis = document.getElementById("izinBitis").value;
+    const isBasi = document.getElementById("izinIsBasi").value;
+    const durum = document.getElementById("izinDurumu").value;
+    const not = document.getElementById("izinNot").value.trim();
+    const onaylayan = document.getElementById("izinOnaylayan").value.trim();
+    const evrakNo = document.getElementById("izinEvrakNo").value.trim();
+  
+    // İzin süresi (gün)
+    const izinGunSayisi =
+        Math.floor(
+            (new Date(bitis) - new Date(baslangic)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
+   if (!izinKontrolEt(
+    sicil,
+    durum,
+    izinGunSayisi,
+    baslangic,
+    bitis,
+    index
+)) {
+    return;
+}
+    // İleride İK modülüyle entegre olacak izin kontrolleri
+    switch (durum) {
+
+        case "YILLIK İZİN":
+            // personel.izinBilgileri.yillik.kalan kontrol edilecek
+            break;
+
+        case "MAZERET İZNİ":
+            // personel.izinBilgileri.mazeret.kalan kontrol edilecek
+            break;
+
+        case "SENDİKAL İZİN":
+            // Sendikal izin kontrolü
+            break;
+
+        case "DOĞUM İZNİ":
+            // Doğum izni kontrolü
+            break;
+
+        case "BABALIK İZNİ":
+            // Babalık izni kontrolü
+            break;
+    }
+    if (
+        sicil === "" ||
+        baslangic === "" ||
+        bitis === "" ||
+        isBasi === ""
+    ) {
+        alert("Lütfen zorunlu alanları doldurunuz.");
+        return;
+    }
+
+    if (baslangic > bitis) {
+        alert("Başlangıç tarihi bitiş tarihinden büyük olamaz.");
+        return;
+    }
+
+    if (isBasi <= bitis) {
+        alert("İş başı tarihi bitiş tarihinden sonra olmalıdır.");
+        return;
+    }
+
+    // Aynı personele çakışan izin kontrolü
+    const cakisan = personelDurumlari.find(function (k, i) {
+
+        if (index !== null && i === index)
+            return false;
+
+        if (String(k.sicil) !== String(sicil))
+            return false;
+
+        return !(bitis < k.baslangic || baslangic > k.bitis);
+
+    });
+
+    if (cakisan) {
+        alert("Bu tarih aralığında personele ait başka bir izin bulunmaktadır.");
+        return;
+    }
+
+const izinKaydi = {
+
+    sicil: sicil,
+
+    baslangic: baslangic,
+    bitis: bitis,
+    isBasi: isBasi,
+
+    izinTuru: durum,
+    gunSayisi: izinGunSayisi,
+
+    not: not,
+    evrakNo: evrakNo,
+
+    talepEden: "",
+    talepTarihi: new Date().toISOString(),
+
+    onaylayanVardiyaAmiri: "",
+    vardiyaAmiriOnayTarihi: "",
+
+    ikBilgilendirildi: false,
+    ikBilgilendirmeTarihi: "",
+
+    durum: "ONAY BEKLİYOR"
+
+};
+
+    if (index !== null && index >= 0) {
+
+        personelDurumlari[index] = izinKaydi;
+
+    } else {
+
+        personelDurumlari.push(izinKaydi);
+
+    }
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    alert("İzin kaydedildi.");
+
+    izinler();
+
+}
+function izinSil(index){
+
+    if(!confirm("Bu izin kaydı silinsin mi?")){
+        return;
+    }
+
+    personelDurumlari.splice(index,1);
+
+    localStorage.setItem(
+        "personelDurumlari",
+        JSON.stringify(personelDurumlari)
+    );
+
+    izinler();
+
+}
+function isBasiHesapla() {
+
+    const baslangic = document.getElementById("izinBaslangic").value;
+    const bitis = document.getElementById("izinBitis").value;
+
+    if (!baslangic || !bitis) {
+        return;
+    }
+
+    // İş başı tarihini hesapla
+    const isBasiTarihi = new Date(bitis);
+    isBasiTarihi.setDate(isBasiTarihi.getDate() + 1);
+
+    const yil = isBasiTarihi.getFullYear();
+    const ay = String(isBasiTarihi.getMonth() + 1).padStart(2, "0");
+    const gun = String(isBasiTarihi.getDate()).padStart(2, "0");
+
+    document.getElementById("izinIsBasi").value =
+        `${yil}-${ay}-${gun}`;
+
+    // İzin süresini hesapla
+    const bas = new Date(baslangic);
+    const bit = new Date(bitis);
+
+    const gunSayisi = Math.floor(
+        (bit - bas) / (1000 * 60 * 60 * 24)
+    ) + 1;
+
+    const izinSure = document.getElementById("izinSure");
+
+    if (izinSure) {
+        izinSure.value = gunSayisi + " Gün";
+    }
+
+}
+function izinBilgileriGetir() {
+
+    const sicil = document.getElementById("izinPersonel").value;
+
+    if (sicil == "") {
+
+        document.getElementById("izinBilgileri").style.display = "none";
+        return;
+
+    }
+
+    const personel = personelListesi.find(function (p) {
+        return String(p.sicil) === String(sicil);
+    });
+
+    if (!personel) {
+
+        document.getElementById("izinBilgileri").style.display = "none";
+        return;
+
+    }
+
+    document.getElementById("izinBilgileri").style.display = "block";
+
+    document.getElementById("lblYillikHak").innerHTML =
+        (personel.yillikHak ?? 0) + " Gün";
+
+    document.getElementById("lblKullanilan").innerHTML =
+        (personel.kullanilanIzin ?? 0) + " Gün";
+
+    document.getElementById("lblKalan").innerHTML =
+        (personel.kalanIzin ?? 0) + " Gün";
+
+}
+function izinKontrolEt(sicil, izinTuru, gunSayisi, baslangic, bitis, index = null) {
+
+    // Aynı tarih aralığında izin var mı?
+    const cakisan = personelDurumlari.find(function (kayit, i) {
+
+        if (index !== null && i === index)
+            return false;
+
+        if (String(kayit.sicil) !== String(sicil))
+            return false;
+
+        return !(bitis < kayit.baslangic || baslangic > kayit.bitis);
+
+    });
+
+    if (cakisan) {
+
+        alert("Bu personelin seçilen tarihlerde başka bir izin kaydı bulunmaktadır.");
+
+        return false;
+
+    }
+
+    // İK kontrolleri daha sonra buraya eklenecek
+
+    return true;
+
+}
+function personelDurumuGetir(sicil, tarih) {
+
+    const kayit = personelDurumlari.find(function (izin) {
+
+        return String(izin.sicil) === String(sicil)
+            && tarih >= izin.baslangic
+            && tarih <= izin.bitis
+            && izin.durum !== "İPTAL EDİLDİ";
+
+    });
+
+    if (!kayit) {
+
+        return null;
+
+    }
+
+    return kayit;
 
 }
