@@ -2431,5 +2431,5 @@ function izinDurumRenk(durum) {
 
 }
 function puantaj() {
-
+    alert("Puantaj açıldı");
 }
