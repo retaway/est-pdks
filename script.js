@@ -1515,11 +1515,17 @@ function yeniIzin(index = null) {
             id="izinBaslangic"
             value="${kayit.baslangic}">
 
-        <label>Bitiş Tarihi</label>
-        <input
-            type="date"
-            id="izinBitis"
-            value="${kayit.bitis}">
+       <label>Bitiş Tarihi</label>
+<input
+    type="date"
+    id="izinBitis"
+    value="${kayit.bitis}">
+
+<label>İş Başı Tarihi</label>
+<input
+    type="date"
+    id="izinIsBasi"
+    value="${kayit.isBasi || ""}">
 
         <label>İzin Türü</label>
 
