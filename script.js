@@ -567,7 +567,13 @@ function sayfaGoster(sayfa) {
             break;
             
         case "izinler":
+            izinler();
+            break;
+
         case "puantaj":
+            alert("Henüz geliştiriliyor");
+            break;
+
         case "bildirimler":
             alert("Henüz geliştiriliyor");
             break;
@@ -1389,4 +1395,170 @@ function degisimEtiketiBul(sicil, bugun) {
     if (!kayit) return "-";
 
     return `🔁 ${kayit.talepEdenPersonel} → ${kayit.degisenPersonel}`;
+}
+function izinler() {
+
+    let satirlar = "";
+
+    personelDurumlari.forEach(function(kayit, index){
+
+        const personel = personelListesi.find(function(p){
+            return String(p.sicil) === String(kayit.sicil);
+        });
+
+        satirlar += `
+        <tr>
+            <td>${personel ? personel.sicil : kayit.sicil}</td>
+            <td>${personel ? personel.ad + " " + personel.soyad : "-"}</td>
+            <td>${kayit.baslangic}</td>
+            <td>${kayit.bitis}</td>
+            <td>${kayit.durum}</td>
+            <td>${kayit.not || "-"}</td>
+            <td>
+                <button onclick="yeniIzin(${index})">✏️</button>
+                <button onclick="izinSil(${index})">🗑️</button>
+            </td>
+        </tr>
+        `;
+
+    });
+
+    if(satirlar===""){
+        satirlar=`
+        <tr>
+            <td colspan="7" style="text-align:center">
+                Henüz izin kaydı bulunmuyor.
+            </td>
+        </tr>`;
+    }
+
+    document.getElementById("icerik").innerHTML=`
+
+        <h2>📝 İzinler</h2>
+
+        <div class="toolbar">
+            <button onclick="yeniIzin()">➕ Yeni İzin</button>
+        </div>
+
+        <table class="tablo">
+
+            <thead>
+                <tr>
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+                    <th>İzin Türü</th>
+                    <th>Açıklama</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+function yeniIzin(index = null) {
+
+    const duzenleme = index !== null;
+
+    const kayit = duzenleme
+        ? personelDurumlari[index]
+        : {
+            sicil: "",
+            baslangic: "",
+            bitis: "",
+            durum: "YILLIK İZİN",
+            not: ""
+        };
+
+    let personeller = '<option value="">Personel Seçiniz</option>';
+
+    personelListesi
+        .slice()
+        .sort(function(a,b){
+            return (a.ad + " " + a.soyad)
+                .localeCompare(b.ad + " " + b.soyad,"tr");
+        })
+        .forEach(function(p){
+
+            personeller += `
+                <option value="${p.sicil}"
+                    ${String(kayit.sicil)===String(p.sicil) ? "selected":""}>
+                    ${p.sicil} - ${p.ad} ${p.soyad}
+                </option>
+            `;
+
+        });
+
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>${duzenleme ? "✏️ İzin Düzenle" : "➕ Yeni İzin"}</h2>
+
+    <div class="form-kart">
+
+        <label>Personel</label>
+        <select id="izinPersonel">
+            ${personeller}
+        </select>
+
+        <label>Başlangıç Tarihi</label>
+        <input
+            type="date"
+            id="izinBaslangic"
+            value="${kayit.baslangic}">
+
+        <label>Bitiş Tarihi</label>
+        <input
+            type="date"
+            id="izinBitis"
+            value="${kayit.bitis}">
+
+        <label>İzin Türü</label>
+
+        <select id="izinDurumu">
+
+            <option ${kayit.durum=="YILLIK İZİN"?"selected":""}>YILLIK İZİN</option>
+
+            <option ${kayit.durum=="ÜCRETLİ İZİN"?"selected":""}>ÜCRETLİ İZİN</option>
+
+            <option ${kayit.durum=="ÜCRETSİZ İZİN"?"selected":""}>ÜCRETSİZ İZİN</option>
+
+            <option ${kayit.durum=="DOĞUM İZNİ"?"selected":""}>DOĞUM İZNİ</option>
+
+            <option ${kayit.durum=="RAPOR"?"selected":""}>RAPOR</option>
+
+            <option ${kayit.durum=="HAFTA TATİLİ"?"selected":""}>HAFTA TATİLİ</option>
+
+            <option ${kayit.durum=="GÖREVE GELMEDİ"?"selected":""}>GÖREVE GELMEDİ</option>
+
+        </select>
+
+        <label>Açıklama</label>
+
+        <textarea
+            id="izinNot"
+            rows="3">${kayit.not || ""}</textarea>
+
+        <br><br>
+
+        <button onclick="izinKaydet(${index})">
+            💾 Kaydet
+        </button>
+
+        <button onclick="izinler()">
+            ⬅ Geri
+        </button>
+
+    </div>
+
+    `;
+
 }
