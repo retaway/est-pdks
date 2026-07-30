@@ -1141,7 +1141,7 @@ kayitlar.forEach(function (kayit, index) {        satirlar += `
 function yeniGorevTarifeDegisimi() {
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
-    let siraliPersoneller = [...personelListesi].sort(function (a, b) {
+let siraliPersoneller = [...personelListesi].sort(function (a, b) {  
     const adA = `${a.ad} ${a.soyad}`.toLowerCase();
     const adB = `${b.ad} ${b.soyad}`.toLowerCase();
     return adA.localeCompare(adB, "tr");
@@ -1472,8 +1472,8 @@ function izinler() {
     personelDurumlari.forEach(function(kayit, index){
 
         const personel = personelListesi.find(function(p){
-            return String(p.sicil) === String(kayit.sicil);
-        aa});
+           return String(p.sicil) === String(kayit.sicil);
+});
 
         satirlar += `
         <tr>
@@ -1540,14 +1540,14 @@ function yeniIzin(index = null) {
 
     const kayit = duzenleme
         ? personelDurumlari[index]
-        :{
-            sicil: ...,
-            baslangic: ...,
-            bitis: ...,
-            isBasi: ...,
-            durum: ...,
-            not: ...
-        };
+      : {
+    sicil: "",
+    baslangic: "",
+    bitis: "",
+    isBasi: "",
+    durum: "",
+    not: ""
+    };
 
     let personeller = '<option value="">Personel Seçiniz</option>';
 
