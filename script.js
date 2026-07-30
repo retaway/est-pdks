@@ -772,7 +772,24 @@ function vardiyaDurumuBul(personel, bugun) {
         gorevKodu: "-"
     };
 }
+function personelIsBasiTarihi(sicil, tarih) {
 
+    const izin = personelDurumlari.find(function(k){
+
+        return String(k.sicil) === String(sicil)
+            && tarih >= k.baslangic
+            && tarih <= k.bitis
+            && k.durum !== "İPTAL EDİLDİ";
+
+    });
+
+    if(!izin){
+        return "-";
+    }
+
+    return izin.isBasi || "-";
+
+}
 function gunlukVardiya() {
     let arama = "";
 
@@ -798,11 +815,20 @@ function gunlukVardiya() {
             return;
         }
 
-        let gorev = bilgi.gorevKodu;
-        let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
-        const degisim = degisimEtiketiBul(personel.sicil, bugun);
-        const satirRengi = degisim !== "-" ? 'style="background:#fff8cc;"' : "";
+     let gorev = bilgi.gorevKodu;
+let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
 
+const degisim = degisimEtiketiBul(personel.sicil, bugun);
+
+const satirRengi =
+    degisim !== "-"
+        ? 'style="background:#fff8cc;"'
+        : "";
+
+const isBasi = personelIsBasiTarihi(
+    personel.sicil,
+    bugun
+);
   switch (bilgi.durum) {
 
     case "ATANDI":
@@ -866,14 +892,15 @@ function gunlukVardiya() {
                 : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
         satirlar += `
-        <tr ${satirRengi}>
-            <td>${personel.sicil}</td>
-            <td>${personel.ad} ${personel.soyad}</td>
-            <td>${gorev}</td>
-            <td>${durum}</td>
-            <td>${degisim}</td>
-            <td>${duzenleButonu}</td>
-        </tr>
+<tr ${satirRengi}>
+    <td>${personel.sicil}</td>
+    <td>${personel.ad} ${personel.soyad}</td>
+    <td>${gorev}</td>
+    <td>${durum}</td>
+    <td>${isBasi}</td>
+    <td>${degisim}</td>
+    <td>${duzenleButonu}</td>
+</tr>
         `;
     });
 
@@ -930,14 +957,15 @@ function gunlukVardiya() {
 
         <table class="tablo">
             <thead>
-                <tr>
-                    <th>Sicil</th>
-                    <th>Ad Soyad</th>
-                    <th>Görev Kodu</th>
-                    <th>Durum</th>
-                    <th>Değişim</th>
-                    <th>İşlem</th>
-                </tr>
+       <tr>
+    <th>Sicil</th>
+    <th>Ad Soyad</th>
+    <th>Görev Kodu</th>
+    <th>Durum</th>
+    <th>İş Başı</th>
+    <th>Değişim</th>
+    <th>İşlem</th>
+</tr>
             </thead>
             <tbody>
                 ${satirlar}
@@ -1398,7 +1426,7 @@ function gunSonuRaporu() {
         }).join("")
         : `
         <tr>
-            <td colspan="6" style="text-align:center;">Bugün görev / tarife değişimi yok.</td>
+            <td colspan="7" style="text-align:center;">Bugün görev / tarife değişimi yok.</td>
         </tr>
         `;
 
