@@ -655,7 +655,7 @@ function sayfaGoster(sayfa) {
             break;
 
         case "puantaj":
-            alert("Henüz geliştiriliyor");
+            puantaj();
             break;
 
         case "bildirimler":
