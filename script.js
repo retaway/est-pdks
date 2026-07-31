@@ -727,34 +727,7 @@ function surucuSefligi() {
     `;
 
 }
-function insanKaynaklari() {
 
-    document.getElementById("icerik").innerHTML = `
-
-        <h2>👥 İnsan Kaynakları</h2>
-
-        <div class="kartlar">
-
-            <div class="kart" onclick="personeller()">
-                👤
-                <h3>Personel Yönetimi</h3>
-            </div>
-
-            <div class="kart" onclick="izinHaklari()">
-                🗂
-                <h3>İzin Hakları</h3>
-            </div>
-
-            <div class="kart" onclick="personelRaporlari()">
-                📊
-                <h3>Personel Raporları</h3>
-            </div>
-
-        </div>
-
-    `;
-
-}
 function personelRaporlari() {
 
     alert("Henüz geliştiriliyor.");
