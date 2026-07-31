@@ -910,7 +910,16 @@ function sayfaGoster(sayfa) {
         case "personeller":
             personeller();
             break;
-        
+      
+        case "kullanicilar":
+        if (!yetkiVarMi("ADMIN")) {
+        alert("Bu sayfaya erişim yetkiniz yok.");
+        return;
+
+    }
+
+    kullaniciYonetimi();
+    break;
         case "degisimKodlari":
             degisimKodlari();
             break;
