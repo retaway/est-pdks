@@ -698,19 +698,35 @@ function personeller() {
         </table>
     `;
 }
-function insanKaynaklari(){
+function insanKaynaklari() {
 
-document.getElementById("icerik").innerHTML=`
+    document.getElementById("icerik").innerHTML = `
 
-<h2>İnsan Kaynakları</h2>
+        <h2>👨‍💼 İnsan Kaynakları</h2>
 
-<button onclick="alert('çalıştı');personelYonetimi()">
+        <div class="kartlar">
 
-Personel Yönetimi
+            <div class="kart" onclick="personelYonetimi()">
+                👥
+                <h3>Personel Yönetimi</h3>
+                <p>Personel ekleme, düzenleme ve silme işlemleri</p>
+            </div>
 
-</button>
+            <div class="kart" onclick="izinHaklari()">
+                🗂
+                <h3>İzin Hakları</h3>
+                <p>Yıllık izin ve hak tanımlamaları</p>
+            </div>
 
-`;
+            <div class="kart" onclick="izinler()">
+                📝
+                <h3>İzin İşlemleri</h3>
+                <p>İzin talepleri ve onay süreçleri</p>
+            </div>
+
+        </div>
+
+    `;
 
 }
 function surucuSefligi() {
