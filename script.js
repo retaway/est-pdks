@@ -505,7 +505,7 @@ function kullaniciSil(index) {
 }
 
 function personelYonetimi() {
-
+console.log("Personel Yönetimi açıldı");
     let satirlar = "";
 
     personelListesi.forEach(function(personel, index){
