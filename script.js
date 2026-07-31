@@ -1170,8 +1170,34 @@ function yetkiVarMi(...roller) {
     return roller.includes(aktifKullanici.rol);
 
 }
+function rolAdiGetir(rol) {
+
+    switch (rol) {
+
+        case "ADMIN":
+            return "Yönetici";
+
+        case "IK":
+            return "İnsan Kaynakları";
+
+        case "SURUCU_SEFI":
+            return "Sürücü Şefi";
+
+        case "VARDIYA_AMIRI":
+            return "Vardiya Amiri";
+
+        case "VATMAN":
+            return "Vatman";
+
+        default:
+            return rol;
+    }
+
+}
 function sayfaGoster(sayfa) {
+
     switch (sayfa) {
+
         case "anasayfa":
             document.getElementById("icerik").innerHTML = `
                 <h2>🏠 Ana Sayfa</h2>
@@ -1179,19 +1205,36 @@ function sayfaGoster(sayfa) {
             `;
             break;
 
+        case "ik":
+
+            if (!yetkiVarMi("IK", "ADMIN")) {
+                alert("Bu sayfaya erişim yetkiniz yok.");
+                return;
+            }
+
+            insanKaynaklari();
+            break;
+
+        case "kullanicilar":
+
+            if (!yetkiVarMi("ADMIN")) {
+                alert("Bu sayfaya erişim yetkiniz yok.");
+                return;
+            }
+
+            kullaniciYonetimi();
+            break;
+
         case "personeller":
+
+            if (!yetkiVarMi("SURUCU_SEFI", "IK", "ADMIN")) {
+                alert("Bu sayfaya erişim yetkiniz yok.");
+                return;
+            }
+
             personeller();
             break;
-      
-        case "kullanicilar":
-        if (!yetkiVarMi("ADMIN")) {
-        alert("Bu sayfaya erişim yetkiniz yok.");
-        return;
 
-    }
-
-    kullaniciYonetimi();
-    break;
         case "degisimKodlari":
             degisimKodlari();
             break;
@@ -1208,64 +1251,41 @@ function sayfaGoster(sayfa) {
             gorevTarifeDegisimleri();
             break;
 
-        if (
-    aktifKullanici.rol !== "SURUCU_SEFI" &&
-    aktifKullanici.rol !== "IK" &&
-    aktifKullanici.rol !== "ADMIN"
-) {
-    alert("Bu sayfaya erişim yetkiniz yok.");
-    return;
-}
+        case "gunlukVardiya":
+            gunlukVardiya();
+            break;
 
-personeller();
-break;
-            
+        case "izinler":
+            izinler();
+            break;
+
+        case "izinHaklari":
+
+            if (!yetkiVarMi("IK", "ADMIN")) {
+                alert("Bu sayfaya erişim yetkiniz yok.");
+                return;
+            }
+
+            izinHaklari();
+            break;
+
+        case "puantaj":
+            puantaj();
+            break;
+
+        case "bildirimler":
+            bildirimlerSayfasi();
+            break;
+
         case "raporlar":
-             gunSonuRaporu();
+            gunSonuRaporu();
             break;
 
         case "ayarlar":
             alert("Henüz geliştiriliyor");
             break;
-            
-        case "izinler":
-            izinler();
-            break;
-
-         if (
-    aktifKullanici.rol !== "IK" &&
-    aktifKullanici.rol !== "ADMIN"
-) {
-    alert("Bu sayfaya erişim yetkiniz yok.");
-    return;
-}
-
-izinHaklari();
-break;
-
-        case "puantaj":
-            puantaj();
-            break;
-         
-      case "ik":
-
-    if (
-        aktifKullanici.rol !== "IK" &&
-        aktifKullanici.rol !== "ADMIN"
-    ) {
-
-        alert("Bu sayfaya erişim yetkiniz yok.");
-        return;
-
     }
 
-    insanKaynaklari();
-    break;
-
-        case "bildirimler":
-            bildirimlerSayfasi();
-            break;
-    }
 }
 
 function degisimDuzenle(index){
