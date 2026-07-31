@@ -698,8 +698,7 @@ function insanKaynaklari() {
 
         <div class="kartlar">
 
-<div class="kart" onclick="personelYonetimi()">             
-👥
+<div class="kart" onclick="alert('Kart çalıştı'); personelYonetimi();"> 👥
                 <h3>Personel Yönetimi</h3>
             </div>
 
