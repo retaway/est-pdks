@@ -892,52 +892,83 @@ function personelKaydet(index = null) {
 
     const personel = {
 
-        sicil: document.getElementById("sicil").value,
-        ad: document.getElementById("ad").value,
-        soyad: document.getElementById("soyad").value,
-
-        // Yeni alan
-        iseGiris: document.getElementById("personelIseGiris").value,
-
-        telefon: document.getElementById("telefon").value,
-        email: document.getElementById("email").value,
+        sicil: document.getElementById("sicil").value.trim(),
+        ad: document.getElementById("ad").value.trim(),
+        soyad: document.getElementById("soyad").value.trim(),
+        telefon: document.getElementById("telefon").value.trim(),
+        email: document.getElementById("email").value.trim(),
         gorev: document.getElementById("gorev").value,
         durum: document.getElementById("durum").value,
+        iseGiris: document.getElementById("personelIseGiris").value
 
-    vardiyaDurumu:
-        index !== null && personelListesi[index]
-            ? personelListesi[index].vardiyaDurumu || "ATANMADI"
-            : "ATANMADI"
-};
+    };
 
-    if (index !== null && index >= 0) {
-        personelListesi[index] = personel;
-    } else {
-        personelListesi.push(personel);
+    if (
+        personel.sicil === "" ||
+        personel.ad === "" ||
+        personel.soyad === ""
+    ) {
+
+        alert("Lütfen zorunlu alanları doldurun.");
+        return;
+
     }
 
-    localStorage.setItem("personeller", JSON.stringify(personelListesi));
-    alert("Personel kaydedildi.");
-    surucuSefligi();
-}
+    if (index === null) {
 
+        personelListesi.push(personel);
+
+    } else {
+
+        personelListesi[index] = personel;
+
+    }
+
+    localStorage.setItem(
+        "personeller",
+        JSON.stringify(personelListesi)
+    );
+
+    alert("Personel başarıyla kaydedildi.");
+
+    personelYonetimi();
+
+}
 function personelDuzenle(index) {
     yeniPersonel(index);
 }
 
-function personelDurum(index) {
-    if (!personelListesi[index]) return;
-    personelListesi[index].durum = personelListesi[index].durum === "Aktif" ? "Pasif" : "Aktif";
-    localStorage.setItem("personeller", JSON.stringify(personelListesi));
-    surucuSefligi();
+function personelDurum(index){
+
+    personelListesi[index].durum =
+        personelListesi[index].durum === "Aktif"
+        ? "Pasif"
+        : "Aktif";
+
+    localStorage.setItem(
+        "personeller",
+        JSON.stringify(personelListesi)
+    );
+
+    personelYonetimi();
+
 }
 
-function personelSil(index) {
-    if (confirm("Bu personeli silmek istediğinize emin misiniz?")) {
-        personelListesi.splice(index, 1);
-        localStorage.setItem("personeller", JSON.stringify(personelListesi));
-        surucuSefligi();
+function personelSil(index){
+
+    if(!confirm("Personel silinsin mi?")){
+        return;
     }
+
+    personelListesi.splice(index,1);
+
+    localStorage.setItem(
+        "personeller",
+        JSON.stringify(personelListesi)
+    );
+
+    personelYonetimi();
+
 }
 
 function degisimKodlari() {
