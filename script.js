@@ -290,15 +290,218 @@ function kullaniciYonetimi() {
 
 }
 function yeniKullanici() {
-    alert("Yeni kullanıcı ekranı hazırlanıyor...");
-}
 
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>➕ Yeni Kullanıcı</h2>
+
+    <div class="form-kart">
+
+        <label>Kullanıcı Adı</label>
+        <input type="text" id="kullaniciAdi">
+
+        <label>Şifre</label>
+        <input type="password" id="kullaniciSifre">
+
+        <label>Personel</label>
+
+<select id="kullaniciPersonel">
+</select>
+
+        <label>Rol</label>
+
+        <select id="kullaniciRol">
+
+            <option value="ADMIN">Yönetici</option>
+
+            <option value="IK">İnsan Kaynakları</option>
+
+            <option value="SURUCU_SEFI">Sürücü Şefi</option>
+
+            <option value="VARDIYA_AMIRI">Vardiya Amiri</option>
+
+            <option value="VATMAN">Vatman</option>
+
+        </select>
+
+        <br><br>
+
+        <button onclick="kullaniciKaydet()">
+            💾 Kaydet
+        </button>
+
+        <button onclick="kullaniciYonetimi()">
+            ⬅ Geri
+        </button>
+
+    </div>
+
+    `;
+
+}
+function kullaniciKaydet() {
+
+    const kullanici = document.getElementById("kullaniciAdi").value.trim();
+    const sifre = document.getElementById("kullaniciSifre").value.trim();
+    const sicil = document.getElementById("kullaniciPersonel").value;
+    const personel = personelListesi.find(function (p) {
+    return String(p.sicil) === String(sicil);
+});
+    const rol = document.getElementById("kullaniciRol").value;
+
+   if (
+    kullanici === "" ||
+    sifre === "" ||
+    sicil === ""
+) {
+        alert("Lütfen tüm alanları doldurunuz.");
+        return;
+    }
+
+    const varMi = kullanicilar.find(function (k) {
+        return k.kullanici === kullanici;
+    });
+
+    if (varMi) {
+        alert("Bu kullanıcı adı zaten kullanılmaktadır.");
+        return;
+    }
+const ayniPersonel = kullanicilar.find(function (k) {
+    return String(k.sicil) === String(sicil);
+});
+
+if (ayniPersonel) {
+    alert("Bu personel için zaten bir kullanıcı hesabı bulunmaktadır.");
+    return;
+}
+   kullanicilar.push({
+
+    kullanici: kullanici,
+    sifre: sifre,
+
+    adSoyad: personel.ad + " " + personel.soyad,
+
+    rol: rol,
+
+    sicil: personel.sicil
+
+});
+
+    localStorage.setItem(
+        "kullanicilar",
+        JSON.stringify(kullanicilar)
+    );
+
+    alert("Kullanıcı başarıyla oluşturuldu.");
+
+    kullaniciYonetimi();
+
+}
 function kullaniciDuzenle(index) {
-    alert("Kullanıcı düzenleme hazırlanıyor...");
-}
 
+    const k = kullanicilar[index];
+
+    document.getElementById("icerik").innerHTML = `
+
+    <h2>✏️ Kullanıcı Düzenle</h2>
+
+    <div class="form-kart">
+
+        <label>Kullanıcı Adı</label>
+        <input
+            type="text"
+            id="kullaniciAdi"
+            value="${k.kullanici}">
+
+        <label>Şifre</label>
+        <input
+            type="password"
+            id="kullaniciSifre"
+            value="${k.sifre}">
+
+        <label>Ad Soyad</label>
+        <input
+            type="text"
+            id="kullaniciAdSoyad"
+            value="${k.adSoyad}">
+
+        <label>Rol</label>
+
+        <select id="kullaniciRol">
+
+            <option value="ADMIN" ${k.rol=="ADMIN"?"selected":""}>Yönetici</option>
+
+            <option value="IK" ${k.rol=="IK"?"selected":""}>İnsan Kaynakları</option>
+
+            <option value="SURUCU_SEFI" ${k.rol=="SURUCU_SEFI"?"selected":""}>Sürücü Şefi</option>
+
+            <option value="VARDIYA_AMIRI" ${k.rol=="VARDIYA_AMIRI"?"selected":""}>Vardiya Amiri</option>
+
+            <option value="VATMAN" ${k.rol=="VATMAN"?"selected":""}>Vatman</option>
+
+        </select>
+
+        <br><br>
+
+        <button onclick="kullaniciGuncelle(${index})">
+            💾 Güncelle
+        </button>
+
+        <button onclick="kullaniciYonetimi()">
+            ⬅ Geri
+        </button>
+
+    </div>
+
+    `;
+
+}
+function kullaniciGuncelle(index) {
+
+    kullanicilar[index].kullanici =
+        document.getElementById("kullaniciAdi").value.trim();
+
+    kullanicilar[index].sifre =
+        document.getElementById("kullaniciSifre").value.trim();
+
+    kullanicilar[index].adSoyad =
+        document.getElementById("kullaniciAdSoyad").value.trim();
+
+    kullanicilar[index].rol =
+        document.getElementById("kullaniciRol").value;
+
+    localStorage.setItem(
+        "kullanicilar",
+        JSON.stringify(kullanicilar)
+    );
+
+    alert("Kullanıcı güncellendi.");
+
+    kullaniciYonetimi();
+
+}
 function kullaniciSil(index) {
-    alert("Kullanıcı silme hazırlanıyor...");
+
+    if (!confirm("Bu kullanıcı silinsin mi?")) {
+        return;
+    }
+
+    if (kullanicilar[index].kullanici === "admin") {
+        alert("Admin kullanıcısı silinemez.");
+        return;
+    }
+
+    kullanicilar.splice(index, 1);
+
+    localStorage.setItem(
+        "kullanicilar",
+        JSON.stringify(kullanicilar)
+    );
+
+    alert("Kullanıcı silindi.");
+
+    kullaniciYonetimi();
+
 }
 function personeller() {
 
@@ -3337,23 +3540,29 @@ function bildirimOlustur(tip, personel, hedef) {
 }
 function bildirimEkle(tur, baslik, aciklama, hedef = "GENEL") {
 
-    bildirimler.unshift({
+  bildirimler.unshift({
 
-        id: Date.now(),
+    id: Date.now(),
 
-        tarih: new Date().toLocaleString("tr-TR"),
+    tarih: new Date().toLocaleString("tr-TR"),
 
-        tur: tur,
+    tur: tur,
 
-        baslik: baslik,
+    baslik: baslik,
 
-        aciklama: aciklama,
+    aciklama: aciklama,
 
-        hedef: hedef,
+    hedef: hedef,
 
-        okundu: false
+    okundu: false,
 
-    });
+    durum: "BEKLİYOR",
+
+    islemYapan: "",
+
+    islemTarihi: ""
+
+});
 
     localStorage.setItem(
         "bildirimler",
@@ -3411,27 +3620,39 @@ function bildirimlerSayfasi() {
                     : "🌐 Genel"
                     }
         </td>
-                    <td style="text-align:center;">
-                        ${
-                            bildirim.okundu
-                            ? "<span style='color:green;font-weight:bold;'>✅ Okundu</span>"
-                            : "<span style='color:red;font-weight:bold;'>🔔 Yeni</span>"
-                        }
-                    </td>
+                   <td style="text-align:center;">
 
-                    <td>
+    ${
+        bildirim.durum === "BEKLİYOR"
+        ? "<span style='color:#ff9800;font-weight:bold;'>🟡 Bekliyor</span>"
 
-                        ${
-                            !bildirim.okundu
-                            ? `<button onclick="bildirimOkundu(${index})" title="Okundu Yap">✔</button>`
-                            : ""
-                        }
+        : bildirim.durum === "ONAYLANDI"
+        ? "<span style='color:green;font-weight:bold;'>🟢 Onaylandı</span>"
 
-                        <button onclick="bildirimSil(${index})" title="Sil">
-                            🗑️
-                        </button>
+        : "<span style='color:red;font-weight:bold;'>🔴 Reddedildi</span>"
+    }
 
-                    </td>
+<td>
+
+    ${
+        bildirim.durum === "BEKLİYOR"
+        ? `
+            <button onclick="bildirimOnayla(${index})" title="Onayla">
+                ✔
+            </button>
+
+            <button onclick="bildirimReddet(${index})" title="Reddet">
+                ✖
+            </button>
+        `
+        : ""
+    }
+
+    <button onclick="bildirimSil(${index})" title="Sil">
+        🗑️
+    </button>
+
+</td>
 
                 </tr>
             `;
@@ -3492,6 +3713,47 @@ function bildirimSil(index){
     }
 
     bildirimler.splice(index,1);
+
+    localStorage.setItem(
+        "bildirimler",
+        JSON.stringify(bildirimler)
+    );
+
+    bildirimlerSayfasi();
+
+}
+function bildirimOnayla(index) {
+
+    bildirimler[index].durum = "ONAYLANDI";
+
+    bildirimler[index].okundu = true;
+
+    bildirimler[index].islemYapan =
+        aktifKullanici ? aktifKullanici.adSoyad : "";
+
+    bildirimler[index].islemTarihi =
+        new Date().toLocaleString("tr-TR");
+
+    localStorage.setItem(
+        "bildirimler",
+        JSON.stringify(bildirimler)
+    );
+
+    bildirimlerSayfasi();
+
+}
+
+function bildirimReddet(index) {
+
+    bildirimler[index].durum = "REDDEDILDI";
+
+    bildirimler[index].okundu = true;
+
+    bildirimler[index].islemYapan =
+        aktifKullanici ? aktifKullanici.adSoyad : "";
+
+    bildirimler[index].islemTarihi =
+        new Date().toLocaleString("tr-TR");
 
     localStorage.setItem(
         "bildirimler",
