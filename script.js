@@ -529,7 +529,9 @@ function kullaniciSil(index) {
 }
 
 function personelYonetimi() {
-console.log("Personel Yönetimi açıldı");
+
+    console.log("Personel Yönetimi açıldı");
+
     let satirlar = "";
 
     personelListesi.forEach(function(personel, index){
@@ -582,6 +584,8 @@ console.log("Personel Yönetimi açıldı");
 
     }
 
+    console.log("HTML yazılıyor...");
+
     document.getElementById("icerik").innerHTML = `
 
         <h2>👨‍💼 Personel Yönetimi</h2>
@@ -589,9 +593,7 @@ console.log("Personel Yönetimi açıldı");
         <div class="toolbar">
 
             <button onclick="yeniPersonel()">
-
                 ➕ Yeni Personel
-
             </button>
 
         </div>
@@ -621,6 +623,8 @@ console.log("Personel Yönetimi açıldı");
         </table>
 
     `;
+
+    console.log("HTML yazıldı.");
 
 }
 
