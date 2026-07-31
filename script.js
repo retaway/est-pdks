@@ -231,6 +231,75 @@ if (bulunanKullanici) {
         });
     }
 });
+function kullaniciYonetimi() {
+
+    let satirlar = "";
+
+    kullanicilar.forEach(function (kullanici, index) {
+
+        satirlar += `
+        <tr>
+            <td>${kullanici.kullanici}</td>
+            <td>${kullanici.adSoyad}</td>
+            <td>${rolAdiGetir(kullanici.rol)}</td>
+            <td>🟢 Aktif</td>
+            <td>
+                <button onclick="kullaniciDuzenle(${index})">✏️</button>
+                <button onclick="kullaniciSil(${index})">🗑️</button>
+            </td>
+        </tr>
+        `;
+
+    });
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>👤 Kullanıcı Yönetimi</h2>
+
+        <div class="toolbar">
+            <button onclick="yeniKullanici()">
+                ➕ Yeni Kullanıcı
+            </button>
+        </div>
+
+        <table class="tablo">
+
+            <thead>
+
+                <tr>
+
+                    <th>Kullanıcı</th>
+                    <th>Ad Soyad</th>
+                    <th>Rol</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+function yeniKullanici() {
+    alert("Yeni kullanıcı ekranı hazırlanıyor...");
+}
+
+function kullaniciDuzenle(index) {
+    alert("Kullanıcı düzenleme hazırlanıyor...");
+}
+
+function kullaniciSil(index) {
+    alert("Kullanıcı silme hazırlanıyor...");
+}
 function personeller() {
 
     surucuSefligi();
