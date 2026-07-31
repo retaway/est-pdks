@@ -503,6 +503,106 @@ function kullaniciSil(index) {
     kullaniciYonetimi();
 
 }
+function personelYonetimi() {
+
+    yeniPersonelListesi();
+
+}
+function personelYonetimi() {
+
+    let satirlar = "";
+
+    personelListesi.forEach(function(personel, index){
+
+        satirlar += `
+        <tr>
+
+            <td>${personel.sicil}</td>
+
+            <td>${personel.ad} ${personel.soyad}</td>
+
+            <td>${personel.gorev}</td>
+
+            <td>${
+                personel.durum === "Aktif"
+                ? "🟢 Aktif"
+                : "🔴 Pasif"
+            }</td>
+
+            <td>
+
+                <button onclick="yeniPersonel(${index})">
+                    ✏️
+                </button>
+
+                <button onclick="personelDurum(${index})">
+                    🔄
+                </button>
+
+                <button onclick="personelSil(${index})">
+                    🗑️
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    if (satirlar === "") {
+
+        satirlar = `
+        <tr>
+            <td colspan="5" style="text-align:center;">
+                Henüz personel bulunmuyor.
+            </td>
+        </tr>
+        `;
+
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>👨‍💼 Personel Yönetimi</h2>
+
+        <div class="toolbar">
+
+            <button onclick="yeniPersonel()">
+
+                ➕ Yeni Personel
+
+            </button>
+
+        </div>
+
+        <table class="tablo">
+
+            <thead>
+
+                <tr>
+
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Görev</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
 function personeller() {
 
     surucuSefligi();
@@ -582,8 +682,8 @@ function insanKaynaklari() {
 
         <div class="kartlar">
 
-            <div class="kart" onclick="personeller()">
-                👥
+<div class="kart" onclick="personelYonetimi()">             
+👥
                 <h3>Personel Yönetimi</h3>
             </div>
 
@@ -781,7 +881,7 @@ function yeniPersonel(index = null) {
     </select>
     <br><br>
     <button onclick="personelKaydet(${index})">💾 Kaydet</button>
-    <button onclick="personeller()">
+   <button onclick="personelYonetimi()">
     ⬅ Personel Listesi
 </button>
     </div>
