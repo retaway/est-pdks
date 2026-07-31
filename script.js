@@ -8,6 +8,23 @@ let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegi
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
 
+function personelleriGetir(gorev = null, sadeceAktif = true) {
+
+    return personelListesi.filter(function(personel){
+
+        if (sadeceAktif && personel.durum !== "Aktif") {
+            return false;
+        }
+
+        if (gorev && personel.gorev !== gorev) {
+            return false;
+        }
+
+        return true;
+
+    });
+
+}
 function ikBilgilendir(index) {
 
     if (!confirm("İnsan Kaynaklarına bilgi gönderilsin mi?")) {
@@ -147,8 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+function personeller() {
 
-function surucuSefligi() {
+    surucuSefligi();
+
+}
+function personeller() { 
     let satirlar = "";
 
     personelListesi.forEach(function(personel, index){
@@ -202,6 +223,67 @@ function surucuSefligi() {
             </tbody>
         </table>
     `;
+}
+function insanKaynaklari() {
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>👥 İnsan Kaynakları</h2>
+
+        <div class="kartlar">
+
+            <div class="kart" onclick="personeller()">
+                👷
+                <h3>Personeller</h3>
+            </div>
+
+         <div class="kart" onclick="izinler()">
+            📄
+            <h3>İzin Hakları</h3>
+            </div>
+
+            <div class="kart" onclick="puantaj()">
+                📊
+                <h3>Puantaj</h3>
+            </div>
+
+        </div>
+
+    `;
+
+}
+function surucuSefligi() {
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>🚋 Sürücü Şefliği</h2>
+
+        <div class="kartlar">
+
+            <div class="kart" onclick="gunlukVardiya()">
+                📅
+                <h3>Günlük Vardiya</h3>
+            </div>
+
+            <div class="kart" onclick="tarifeler()">
+                🚋
+                <h3>Tarifeler</h3>
+            </div>
+
+            <div class="kart" onclick="degisimKodlari()">
+                🔄
+                <h3>Değişim Kodları</h3>
+            </div>
+
+            <div class="kart" onclick="izinler()">
+                📝
+                <h3>İzin Takibi</h3>
+            </div>
+
+        </div>
+
+    `;
+
 }
 function personelDetay(index) {
     const p = personelListesi[index];
@@ -665,9 +747,9 @@ function sayfaGoster(sayfa) {
             break;
 
         case "personeller":
-            surucuSefligi();
+            personeller();
             break;
-
+        
         case "degisimKodlari":
             degisimKodlari();
             break;
@@ -707,6 +789,10 @@ function sayfaGoster(sayfa) {
         case "puantaj":
             puantaj();
             break;
+         
+        case "ik":
+        insanKaynaklari();
+        break;
 
         case "bildirimler":
             bildirimlerSayfasi();
@@ -865,8 +951,10 @@ function gunlukVardiya() {
 
     const bugun = new Date().toISOString().split("T")[0];
     let satirlar = "";
+    
+    const vatmanlar = personelleriGetir("Vatman");
 
-    personelListesi.forEach(function (personel, index) {
+    vatmanlar.forEach(function (personel, index) {
         const metin =
             (String(personel.sicil) + " " + personel.ad + " " + personel.soyad).toLowerCase();
 
@@ -953,8 +1041,8 @@ const isBasi = personelIsBasiTarihi(
 
         const duzenleButonu =
             (bilgi.durum === "ATANDI" || bilgi.durum === "ATANMADI")
-                ? `<button onclick="vardiyaDuzenle(${index})">✏️ Düzenle</button>`
-                : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
+            ? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
+            : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
         satirlar += `
 <tr ${satirRengi}>
@@ -1038,10 +1126,18 @@ const isBasi = personelIsBasiTarihi(
         </table>
     `;
 }
-function vardiyaDuzenle(index){
+function vardiyaDuzenle(sicil){
 
-    const personel = personelListesi[index];
+    const personel = personelleriGetir("Vatman").find(function(p){
 
+        return String(p.sicil) === String(sicil);
+
+    });
+
+    if (!personel){
+        alert("Personel bulunamadı.");
+        return;
+    }
     let secenekler = '<option value="">Görev Kodu Seçiniz</option>';
 
     degisimKodlariListesi.forEach(function(kod){
@@ -1078,8 +1174,8 @@ function vardiyaDuzenle(index){
 
     <br><br>
 
-    <button onclick="vardiyaKaydet(${index})">
-        💾 Kaydet
+<button onclick="vardiyaKaydet('${personel.sicil}')">
+💾 Kaydet
     </button>
 
     <button onclick="gunlukVardiya()">
@@ -1091,10 +1187,23 @@ function vardiyaDuzenle(index){
 `;
 }
 
-function vardiyaKaydet(index){
+function vardiyaKaydet(sicil){
 
-    const personel = personelListesi[index];
-    const gorevKodu = document.getElementById("gorevKodu").value;
+    const personel = personelleriGetir("Vatman").find(function(p){
+
+        return String(p.sicil) === String(sicil);
+
+    });
+
+    if (!personel){
+        alert("Personel bulunamadı.");
+        return;
+    }
+
+if (!personel) {
+    alert("Personel bulunamadı.");
+    return;
+}    const gorevKodu = document.getElementById("gorevKodu").value;
     const notKutusu = document.getElementById("not");
 
     if (gorevKodu == "") {
@@ -1958,15 +2067,15 @@ function yeniIzin(index = null) {
     durum: "ONAY BEKLİYOR"
 };
 
-    let personeller = '<option value="">Personel Seçiniz</option>';
+   let personeller = '<option value="">Personel Seçiniz</option>';
 
-    personelListesi
-        .slice()
-        .sort(function(a,b){
-            return (a.ad + " " + a.soyad)
-                .localeCompare(b.ad + " " + b.soyad,"tr");
-        })
-        .forEach(function(p){
+personelleriGetir("Vatman")
+    .slice()
+    .sort(function(a,b){
+        return (a.ad + " " + a.soyad)
+            .localeCompare(b.ad + " " + b.soyad,"tr");
+    })
+    .forEach(function(p){
 
             personeller += `
                 <option value="${p.sicil}"
@@ -2669,8 +2778,9 @@ function puantajOlustur() {
 
     let satirlar = "";
     console.log(personelListesi);
-    personelListesi.forEach(function(personel){
+const vatmanlar = personelleriGetir("Vatman");
 
+vatmanlar.forEach(function(personel){
         satirlar += `
             <tr>
 
