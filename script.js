@@ -301,7 +301,17 @@ personelListesi.forEach(function (p) {
 
 });
 function yeniKullanici() {
+let personelSecenekleri = "";
 
+personelListesi.forEach(function (p) {
+
+    personelSecenekleri += `
+        <option value="${p.sicil}">
+            ${p.sicil} - ${p.ad} ${p.soyad}
+        </option>
+    `;
+
+});
     document.getElementById("icerik").innerHTML = `
 
     <h2>➕ Yeni Kullanıcı</h2>
