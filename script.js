@@ -908,13 +908,21 @@ function personelKaydet(index = null) {
         personel.ad === "" ||
         personel.soyad === ""
     ) {
-
         alert("Lütfen zorunlu alanları doldurun.");
         return;
-
     }
 
+    // Yeni personel ekleniyorsa aynı sicil kontrolü
     if (index === null) {
+
+        const varMi = personelListesi.find(function (p) {
+            return p.sicil === personel.sicil;
+        });
+
+        if (varMi) {
+            alert("Bu sicil numarası zaten kayıtlı.");
+            return;
+        }
 
         personelListesi.push(personel);
 
@@ -931,6 +939,7 @@ function personelKaydet(index = null) {
 
     alert("Personel başarıyla kaydedildi.");
 
+    // İnsan Kaynakları → Personel Yönetimi ekranına dön
     personelYonetimi();
 
 }
