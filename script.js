@@ -690,31 +690,19 @@ function personeller() {
         </table>
     `;
 }
-function insanKaynaklari() {
+function insanKaynaklari(){
 
-    document.getElementById("icerik").innerHTML = `
+document.getElementById("icerik").innerHTML=`
 
-        <h2>👥 İnsan Kaynakları</h2>
+<h2>İnsan Kaynakları</h2>
 
-        <div class="kartlar">
+<button onclick="alert('çalıştı');personelYonetimi()">
 
-<div class="kart" onclick="alert('Kart çalıştı'); personelYonetimi();"> 👥
-                <h3>Personel Yönetimi</h3>
-            </div>
+Personel Yönetimi
 
-            <div class="kart" onclick="izinHaklari()">
-                🗂
-                <h3>İzin Hakları</h3>
-            </div>
+</button>
 
-            <div class="kart" onclick="izinler()">
-                📝
-                <h3>İzin İşlemleri</h3>
-            </div>
-
-        </div>
-
-    `;
+`;
 
 }
 function surucuSefligi() {
