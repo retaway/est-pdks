@@ -503,11 +503,7 @@ function kullaniciSil(index) {
     kullaniciYonetimi();
 
 }
-function personelYonetimi() {
 
-    yeniPersonelListesi();
-
-}
 function personelYonetimi() {
 
     let satirlar = "";
