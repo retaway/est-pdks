@@ -7,7 +7,56 @@ let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
+let aktifKullanici =
+    JSON.parse(localStorage.getItem("aktifKullanici")) || null;
+let kullanicilar = JSON.parse(localStorage.getItem("kullanicilar")) || [
 
+    {
+        kullanici: "admin",
+        sifre: "1234",
+        adSoyad: "Sistem Yöneticisi",
+        rol: "ADMIN",
+        sicil: ""
+    },
+
+    {
+        kullanici: "ik",
+        sifre: "1234",
+        adSoyad: "İnsan Kaynakları",
+        rol: "IK",
+        sicil: "1001"
+    },
+
+    {
+        kullanici: "sef",
+        sifre: "1234",
+        adSoyad: "Sürücü Şefi",
+        rol: "SURUCU_SEFI",
+        sicil: "2001"
+    },
+
+    {
+        kullanici: "amir",
+        sifre: "1234",
+        adSoyad: "Vardiya Amiri",
+        rol: "VARDIYA_AMIRI",
+        sicil: "3001"
+    },
+
+    {
+        kullanici: "vatman",
+        sifre: "1234",
+        adSoyad: "Örnek Vatman",
+        rol: "VATMAN",
+        sicil: "4001"
+    }
+
+];
+
+localStorage.setItem(
+    "kullanicilar",
+    JSON.stringify(kullanicilar)
+);
 function personelleriGetir(gorev = null, sadeceAktif = true) {
 
     return personelListesi.filter(function(personel){
@@ -156,11 +205,29 @@ document.addEventListener("DOMContentLoaded", function () {
             const kullanici = kullaniciInput.value.trim();
             const sifre = sifreInput.value.trim();
 
-            if (kullanici === "admin" && sifre === "1234") {
-                window.location.href = "panel.html";
-            } else {
-                alert("Kullanıcı adı veya şifre hatalı!");
-            }
+         const bulunanKullanici = kullanicilar.find(function (k) {
+    return (
+        k.kullanici === kullanici &&
+        k.sifre === sifre
+    );
+});
+
+if (bulunanKullanici) {
+
+    aktifKullanici = bulunanKullanici;
+
+    localStorage.setItem(
+        "aktifKullanici",
+        JSON.stringify(aktifKullanici)
+    );
+
+    window.location.href = "panel.html";
+
+} else {
+
+    alert("Kullanıcı adı veya şifre hatalı!");
+
+}
         });
     }
 });
@@ -181,10 +248,21 @@ function personeller() {
             <td>${personel.email}</td>
             <td>${personel.gorev}</td>
             <td>${personel.durum === "Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
-            <td>
-                <button onclick="personelDetay(${index})">👁️</button>
-                <button onclick="personelAta(${index})">📋</button>
-            </td>
+           <td>
+
+    <button
+        onclick="personelKarti(${index})"
+        title="Personel Kartı">
+        📂
+    </button>
+
+    <button
+        onclick="personelAta(${index})"
+        title="Görev Atamaları">
+        📅
+    </button>
+
+</td>
         </tr>
         `;
     });
@@ -233,18 +311,18 @@ function insanKaynaklari() {
         <div class="kartlar">
 
             <div class="kart" onclick="personeller()">
-                👷
-                <h3>Personeller</h3>
+                👥
+                <h3>Personel Yönetimi</h3>
             </div>
 
-         <div class="kart" onclick="izinler()">
-            📄
-            <h3>İzin Hakları</h3>
+            <div class="kart" onclick="izinHaklari()">
+                🗂
+                <h3>İzin Hakları</h3>
             </div>
 
-            <div class="kart" onclick="puantaj()">
-                📊
-                <h3>Puantaj</h3>
+            <div class="kart" onclick="izinler()">
+                📝
+                <h3>İzin İşlemleri</h3>
             </div>
 
         </div>
@@ -285,26 +363,98 @@ function surucuSefligi() {
     `;
 
 }
-function personelDetay(index) {
-    const p = personelListesi[index];
-    if (!p) return;
+function insanKaynaklari() {
 
     document.getElementById("icerik").innerHTML = `
-        <h2>👤 Personel Bilgileri</h2>
+
+        <h2>👥 İnsan Kaynakları</h2>
+
+        <div class="kartlar">
+
+            <div class="kart" onclick="personeller()">
+                👤
+                <h3>Personel Yönetimi</h3>
+            </div>
+
+            <div class="kart" onclick="izinHaklari()">
+                🗂
+                <h3>İzin Hakları</h3>
+            </div>
+
+            <div class="kart" onclick="personelRaporlari()">
+                📊
+                <h3>Personel Raporları</h3>
+            </div>
+
+        </div>
+
+    `;
+
+}
+function personelRaporlari() {
+
+    alert("Henüz geliştiriliyor.");
+
+}
+function personelDetay(index) {
+
+    const p = personelListesi[index];
+
+    if (!p) return;
+
+    const izin = izinHakkiGetir(p.sicil);
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>👤 Personel Kartı</h2>
 
         <div class="form-kart">
-            <p><b>Sicil:</b> ${p.sicil}</p>
-            <p><b>Ad Soyad:</b> ${p.ad} ${p.soyad}</p>
-            <p><b>Telefon:</b> ${p.telefon}</p>
-            <p><b>E-Posta:</b> ${p.email}</p>
-            <p><b>Görev:</b> ${p.gorev}</p>
-            <p><b>Durum:</b> ${p.durum}</p>
 
-            <br>
+           <h3>📋 Genel Bilgiler</h3>
 
-            <button onclick="surucuSefligi()">⬅ Geri</button>
+<p><b>Sicil :</b> ${p.sicil}</p>
+<p><b>Ad Soyad :</b> ${p.ad} ${p.soyad}</p>
+<p><b>Görev :</b> ${p.gorev}</p>
+<p><b>Durum :</b> ${p.durum}</p>
+<p><b>İşe Giriş :</b> ${p.iseGiris || "-"}</p>
+
+<hr>
+
+<h3>🗂 İzin Bilgileri</h3>
+
+<p><b>Hak Edilen :</b> ${izin.hakEdilen} Gün</p>
+<p><b>Kullanılan :</b> ${izin.kullanilan} Gün</p>
+<p><b>Kalan :</b> ${izin.kalan} Gün</p>
+
+<hr>
+
+<h3>📞 İletişim</h3>
+
+            <p><b>Telefon :</b> ${p.telefon || "-"}</p>
+            <p><b>E-Posta :</b> ${p.email || "-"}</p>
+
+            <hr>
+
+           const izin = izinHakkiGetir(p.sicil);
+
+            <hr>
+
+            <h3>📅 Görev İşlemleri</h3>
+
+            <button onclick="personelAta(${index})">
+                📅 Günlük Vardiya Ata
+            </button>
+
+            <br><br>
+
+            <button onclick="personeller()">
+                ⬅ Geri
+            </button>
+
         </div>
+
     `;
+
 }
 
 function personelAta(index){
@@ -359,7 +509,9 @@ function yeniPersonel(index = null) {
     </select>
     <br><br>
     <button onclick="personelKaydet(${index})">💾 Kaydet</button>
-    <button onclick="surucuSefligi()">⬅ Geri</button>
+    <button onclick="personeller()">
+    ⬅ Personel Listesi
+</button>
     </div>
     `;
 }
@@ -737,6 +889,15 @@ function degisimKaydet() {
     alert("Değişim kodu kaydedildi.");
     degisimKodlari();
 }
+function yetkiVarMi(...roller) {
+
+    if (!aktifKullanici) {
+        return false;
+    }
+
+    return roller.includes(aktifKullanici.rol);
+
+}
 function sayfaGoster(sayfa) {
     switch (sayfa) {
         case "anasayfa":
@@ -766,9 +927,17 @@ function sayfaGoster(sayfa) {
             gorevTarifeDegisimleri();
             break;
 
-        case "gunlukVardiya":
-             gunlukVardiya();
-            break;
+        if (
+    aktifKullanici.rol !== "SURUCU_SEFI" &&
+    aktifKullanici.rol !== "IK" &&
+    aktifKullanici.rol !== "ADMIN"
+) {
+    alert("Bu sayfaya erişim yetkiniz yok.");
+    return;
+}
+
+personeller();
+break;
             
         case "raporlar":
              gunSonuRaporu();
@@ -782,17 +951,35 @@ function sayfaGoster(sayfa) {
             izinler();
             break;
 
-         case "izinHaklari":
-            izinHaklari();
-            break;
+         if (
+    aktifKullanici.rol !== "IK" &&
+    aktifKullanici.rol !== "ADMIN"
+) {
+    alert("Bu sayfaya erişim yetkiniz yok.");
+    return;
+}
+
+izinHaklari();
+break;
 
         case "puantaj":
             puantaj();
             break;
          
-        case "ik":
-        insanKaynaklari();
-        break;
+      case "ik":
+
+    if (
+        aktifKullanici.rol !== "IK" &&
+        aktifKullanici.rol !== "ADMIN"
+    ) {
+
+        alert("Bu sayfaya erişim yetkiniz yok.");
+        return;
+
+    }
+
+    insanKaynaklari();
+    break;
 
         case "bildirimler":
             bildirimlerSayfasi();
@@ -1839,6 +2026,101 @@ Henüz izin kaydı bulunmuyor.
     `;
 
 }
+function izinHaklari() {
+
+    let satirlar = "";
+
+    const personeller = personelleriGetir("Vatman");
+
+    personeller.forEach(function(personel, index){
+
+        const izin = izinHakkiGetir(personel.sicil);
+
+        satirlar += `
+        <tr>
+
+            <td>${personel.sicil}</td>
+
+            <td>${personel.ad} ${personel.soyad}</td>
+
+            <td>${personel.iseGiris || "-"}</td>
+
+            <td style="text-align:center;">
+                ${izin.hakEdilen}
+            </td>
+
+            <td style="text-align:center;">
+                ${izin.kullanilan}
+            </td>
+
+            <td style="text-align:center;">
+                <b>${izin.kalan}</b>
+            </td>
+
+            <td>
+
+                <button onclick="personelDetay(${index})">
+                    👁️
+                </button>
+
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+    if (satirlar === "") {
+
+        satirlar = `
+        <tr>
+            <td colspan="7" style="text-align:center;">
+                Personel bulunamadı.
+            </td>
+        </tr>
+        `;
+
+    }
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>🗂 İzin Hakları</h2>
+
+        <table class="tablo">
+
+            <thead>
+
+                <tr>
+
+                    <th>Sicil</th>
+
+                    <th>Ad Soyad</th>
+
+                    <th>İşe Giriş</th>
+
+                    <th>Hak Edilen</th>
+
+                    <th>Kullanılan</th>
+
+                    <th>Kalan</th>
+
+                    <th>İşlem</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
 function puantaj() {
 
     const bugun = new Date();
@@ -2309,35 +2591,8 @@ const izinKaydi = {
     ikBilgilendirildi: false,
     ikBilgilendirmeTarihi: "",
 
-  izinTuru: "YILLIK İZİN",
-durum: "ONAY BEKLİYOR"
-
 };
-if (
-    durum === "YILLIK İZİN" &&
-    (index === null || index < 0)
-) {
-    const personel = personelListesi.find(function (p) {
-        return String(p.sicil) === String(sicil);
-    });
 
-    if (personel) {
-
-        personel.kullanilanIzin =
-            (personel.kullanilanIzin || 0) + izinGunSayisi;
-
-        personel.kalanIzin =
-            yillikIzinHakHesapla(personel.iseGiris) -
-            personel.kullanilanIzin;
-
-        localStorage.setItem(
-            "personeller",
-            JSON.stringify(personelListesi)
-        );
-
-    }
-
-}
     if (index !== null && index >= 0) {
 
         personelDurumlari[index] = izinKaydi;
@@ -2375,31 +2630,6 @@ function izinSil(index){
 
     const kayit = personelDurumlari[index];
 
-    if (kayit && kayit.izinTuru === "YILLIK İZİN") {
-
-        const personel = personelListesi.find(function(p){
-            return String(p.sicil) === String(kayit.sicil);
-        });
-
-        if (personel) {
-
-            personel.kullanilanIzin =
-                Math.max(
-                    0,
-                    (personel.kullanilanIzin || 0) - (kayit.gunSayisi || 0)
-                );
-
-            personel.kalanIzin =
-                yillikIzinHakHesapla(personel.iseGiris) -
-                personel.kullanilanIzin;
-
-            localStorage.setItem(
-                "personeller",
-                JSON.stringify(personelListesi)
-            );
-        }
-    }
-
     personelDurumlari.splice(index,1);
 
     localStorage.setItem(
@@ -2408,6 +2638,76 @@ function izinSil(index){
     );
 
     izinler();
+}
+function izinHakkiGetir(sicil) {
+
+    const personel = personelListesi.find(function(p) {
+        return String(p.sicil) === String(sicil);
+    });
+
+    if (!personel) {
+        return {
+            hakEdilen: 0,
+            kullanilan: 0,
+            kalan: 0
+        };
+    }
+
+    let hakEdilen = 0;
+
+    if (personel.iseGiris) {
+
+        const iseGiris = new Date(personel.iseGiris);
+        const bugun = new Date();
+
+        let yil =
+            bugun.getFullYear() - iseGiris.getFullYear();
+
+        if (
+            bugun.getMonth() < iseGiris.getMonth() ||
+            (
+                bugun.getMonth() === iseGiris.getMonth() &&
+                bugun.getDate() < iseGiris.getDate()
+            )
+        ) {
+            yil--;
+        }
+
+        if (yil < 1) {
+            hakEdilen = 0;
+        } else if (yil < 5) {
+            hakEdilen = 20;
+        } else if (yil < 15) {
+            hakEdilen = 24;
+        } else {
+            hakEdilen = 30;
+        }
+    }
+
+    let kullanilan = 0;
+
+    personelDurumlari.forEach(function(kayit) {
+
+        if (
+            String(kayit.sicil) === String(sicil) &&
+            kayit.durum === "ONAYLANDI" &&
+            kayit.izinTuru === "YILLIK İZİN"
+        ) {
+            kullanilan += Number(kayit.gunSayisi || 0);
+        }
+
+    });
+
+    return {
+
+        hakEdilen: hakEdilen,
+
+        kullanilan: kullanilan,
+
+        kalan: hakEdilen - kullanilan
+
+    };
+
 }
 function ikBilgilendir(index) {
 
@@ -3134,5 +3434,17 @@ function okunmamisBildirimSayisi(hedef = null) {
         return b.okundu === false;
 
     }).length;
+
+}
+// Panele giriş kontrolü
+if (window.location.pathname.includes("panel.html")) {
+
+    if (!aktifKullanici) {
+
+        alert("Lütfen giriş yapınız.");
+
+        window.location.href = "index.html";
+
+    }
 
 }
