@@ -3448,3 +3448,19 @@ if (window.location.pathname.includes("panel.html")) {
     }
 
 }
+document.addEventListener("DOMContentLoaded", function () {
+
+    const bilgi = document.getElementById("kullaniciBilgisi");
+
+    if (bilgi && aktifKullanici) {
+
+        bilgi.innerHTML =
+            "👤 " +
+            aktifKullanici.adSoyad +
+            "<br><small>" +
+            aktifKullanici.rol +
+            "</small>";
+
+    }
+
+});
