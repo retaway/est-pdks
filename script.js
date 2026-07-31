@@ -301,17 +301,19 @@ personelListesi.forEach(function (p) {
 
 });
 function yeniKullanici() {
-let personelSecenekleri = "";
 
-personelListesi.forEach(function (p) {
+    let personelSecenekleri = "";
 
-    personelSecenekleri += `
-        <option value="${p.sicil}">
-            ${p.sicil} - ${p.ad} ${p.soyad}
-        </option>
-    `;
+    personelListesi.forEach(function (p) {
 
-});
+        personelSecenekleri += `
+            <option value="${p.sicil}">
+                ${p.sicil} - ${p.ad} ${p.soyad}
+            </option>
+        `;
+
+    });
+
     document.getElementById("icerik").innerHTML = `
 
     <h2>➕ Yeni Kullanıcı</h2>
@@ -326,24 +328,22 @@ personelListesi.forEach(function (p) {
 
         <label>Personel</label>
 
-<select id="kullaniciPersonel">
+        <select id="kullaniciPersonel">
 
-    ${personelSecenekleri}
+            <option value="">Personel Seçiniz</option>
 
-</select>
+            ${personelSecenekleri}
+
+        </select>
 
         <label>Rol</label>
 
         <select id="kullaniciRol">
 
             <option value="ADMIN">Yönetici</option>
-
             <option value="IK">İnsan Kaynakları</option>
-
             <option value="SURUCU_SEFI">Sürücü Şefi</option>
-
             <option value="VARDIYA_AMIRI">Vardiya Amiri</option>
-
             <option value="VATMAN">Vatman</option>
 
         </select>
@@ -361,6 +361,10 @@ personelListesi.forEach(function (p) {
     </div>
 
     `;
+
+    if (personelListesi.length === 0) {
+        alert("Önce İnsan Kaynakları modülünden personel oluşturmalısınız.");
+    }
 
 }
 function kullaniciKaydet() {
