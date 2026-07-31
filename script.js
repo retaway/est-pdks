@@ -599,11 +599,7 @@ function personelYonetimi() {
     `;
 
 }
-function personeller() {
 
-    surucuSefligi();
-
-}
 function personeller() { 
     let satirlar = "";
 
