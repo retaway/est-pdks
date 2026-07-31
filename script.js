@@ -289,6 +289,17 @@ function kullaniciYonetimi() {
     `;
 
 }
+let personelSecenekleri = "";
+
+personelListesi.forEach(function (p) {
+
+    personelSecenekleri += `
+        <option value="${p.sicil}">
+            ${p.sicil} - ${p.ad} ${p.soyad}
+        </option>
+    `;
+
+});
 function yeniKullanici() {
 
     document.getElementById("icerik").innerHTML = `
@@ -306,6 +317,9 @@ function yeniKullanici() {
         <label>Personel</label>
 
 <select id="kullaniciPersonel">
+
+    ${personelSecenekleri}
+
 </select>
 
         <label>Rol</label>
