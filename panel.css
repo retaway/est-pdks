@@ -206,3 +206,34 @@ select{
     font-weight: bold;
     text-align: center;
 }
+.kartlar{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.kart{
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.kart:hover{
+    transform:translateY(-4px);
+    background:#f5f9ff;
+}
+
+.kart h3{
+    margin:10px 0;
+}
+
+.kart p{
+    color:#666;
+    font-size:14px;
+}
