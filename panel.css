@@ -763,7 +763,8 @@ button:hover{
 /* Mini Sidebar - Logo */
 
 .sidebar:not(:hover) li{
-
+    display:flex;
+    align-items:center;
     justify-content:center;
 
     padding:16px 0;
