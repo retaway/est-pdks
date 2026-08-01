@@ -2124,25 +2124,26 @@ function gorevTarifeDegisimleri() {
 
    kayitlar.forEach(function (kayit) {
 
-    satirlar += `
-    <tr>
-        <td>${kayit.saat || "-"}</td>
-        <td>${kayit.talepEdenPersonel}</td>
-        <td>${kayit.talepEdenTarife}</td>
-        <td>${kayit.degisenPersonel}</td>
-        <td>${kayit.degisenTarife}</td>
-        <td>${kayit.neden}</td>
-        <td>
-            <button onclick="gorevTarifeDegisimiSil(${kayit.id})">🗑️</button>
-        </td>
-    </tr>
-    `;
+   satirlar += `
+<tr>
+    <td>${kayit.tarih}</td>
+    <td>${kayit.saat || "-"}</td>
+    <td>${kayit.talepEdenPersonel}</td>
+    <td>${kayit.talepEdenTarife}</td>
+    <td>${kayit.degisenPersonel}</td>
+    <td>${kayit.degisenTarife}</td>
+    <td>${kayit.neden}</td>
+    <td>
+        <button onclick="gorevTarifeDegisimiSil(${kayit.id})">🗑️</button>
+    </td>
+</tr>
+`;
 });
 
     if (satirlar === "") {
         satirlar = `
         <tr>
-            <td colspan="7" style="text-align:center;">
+            <td colspan="8" style="text-align:center;">
                 Henüz görev / tarife değişimi yapılmadı.
             </td>
         </tr>
@@ -2177,17 +2178,18 @@ function gorevTarifeDegisimleri() {
         </div>
 
         <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Saat</th>
-                    <th>Değişim Talep Eden Personel</th>
-                    <th>Tarifesi</th>
-                    <th>Değişen Personel</th>
-                    <th>Tarifesi</th>
-                    <th>Neden</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>Değişim Talep Eden Personel</th>
+            <th>Tarifesi</th>
+            <th>Değişen Personel</th>
+            <th>Tarifesi</th>
+            <th>Neden</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
 
             <tbody>
                 ${satirlar}
