@@ -220,6 +220,281 @@
 
 </div>
 <div class="main">
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ESTRAM Kurumsal Yönetim Sistemi</title>
+
+    <link rel="icon" href="Estram.png">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="panel.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+
+        <img src="Estram.png">
+
+        <div class="logo-text">
+
+            <h2>ESTRAM</h2>
+
+            <span>Kurumsal Yönetim Sistemi</span>
+
+        </div>
+
+    </div>
+
+    <div class="menu-search">
+
+        <i class="fas fa-search"></i>
+
+        <input
+            id="menuAra"
+            type="text"
+            placeholder="Menü Ara...">
+
+    </div>
+
+    <ul id="yanMenu">
+
+        <li class="menu-title">
+            GENEL
+        </li>
+
+        <li onclick="sayfaGoster('anasayfa')">
+
+            <i class="fas fa-house"></i>
+
+            <span>Ana Sayfa</span>
+
+        </li>
+
+        <li class="menu-title">
+            İNSAN KAYNAKLARI
+        </li>
+
+        <li onclick="sayfaGoster('ik')">
+
+            <i class="fas fa-users"></i>
+
+            <span>İnsan Kaynakları</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('kullanicilar')">
+
+            <i class="fas fa-user-shield"></i>
+
+            <span>Kullanıcı Yönetimi</span>
+
+        </li>
+
+        <li class="menu-title">
+            OPERASYON
+        </li>
+
+        <li onclick="sayfaGoster('personeller')">
+
+            <i class="fas fa-train-tram"></i>
+
+            <span>Sürücü Şefliği</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('degisimKodlari')">
+
+            <i class="fas fa-repeat"></i>
+
+            <span>Değişim Kodları</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('tarifeler')">
+
+            <i class="fas fa-table"></i>
+
+            <span>Tarifeler</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('gunlukVardiya')">
+
+            <i class="fas fa-calendar-days"></i>
+
+            <span>Günlük Vardiya</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('personelDegisimi')">
+
+            <i class="fas fa-right-left"></i>
+
+            <span>Görev / Tarife Değişimleri</span>
+
+        </li>
+
+        <li class="menu-title">
+
+            PERSONEL
+
+        </li>
+
+        <li onclick="sayfaGoster('izinler')">
+
+            <i class="fas fa-plane-departure"></i>
+
+            <span>İzinler</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('izinHaklari')">
+
+            <i class="fas fa-folder-open"></i>
+
+            <span>İzin Hakları</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('puantaj')">
+
+            <i class="fas fa-chart-column"></i>
+
+            <span>Puantaj</span>
+
+        </li>
+
+        <li class="menu-title">
+
+            SİSTEM
+
+        </li>
+
+        <li onclick="sayfaGoster('bildirimler')">
+
+            <i class="fas fa-bell"></i>
+
+            <span>Bildirimler</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('raporlar')">
+
+            <i class="fas fa-chart-line"></i>
+
+            <span>Raporlar</span>
+
+        </li>
+
+        <li onclick="sayfaGoster('ayarlar')">
+
+            <i class="fas fa-gear"></i>
+
+            <span>Ayarlar</span>
+
+        </li>
+
+        </ul>
+
+    <div class="sidebar-footer">
+
+        <div class="sidebar-user">
+
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+
+            <div class="user-info">
+
+                <div id="kullaniciAdi">
+                    Kullanıcı
+                </div>
+
+                <small id="kullaniciRol">
+                    Giriş Yapıldı
+                </small>
+
+            </div>
+
+        </div>
+
+        <div class="sidebar-version">
+
+            <strong>ESTRAM EKYS</strong>
+
+            <span>Versiyon 1.0</span>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="main">
+
+    <div class="topbar">
+
+        <div>
+
+            <h1 id="sayfaBasligi">
+
+                Ana Sayfa
+
+            </h1>
+
+            <p>
+
+                ESTRAM Kurumsal Yönetim Sistemi
+
+            </p>
+
+        </div>
+
+        <div class="topbar-right">
+
+            <button
+                class="bildirimBtn"
+                onclick="sayfaGoster('bildirimler')">
+
+                <i class="fas fa-bell"></i>
+
+            </button>
+
+            <div
+                class="user"
+                id="kullaniciBilgisi">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="icerik">
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
 
     <div class="topbar">
 
