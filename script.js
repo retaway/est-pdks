@@ -1301,7 +1301,7 @@ function degisimKaydet() {
     alert("Değişim kodu kaydedildi.");
     degisimKodlari();
 }
-function yetkiVarMi(...roller) {
+function yetkiVarMi(roller) {
 
     if (!aktifKullanici) {
         return false;
@@ -4212,13 +4212,25 @@ function dashboardGrafik() {
 }
 function girisYap(){
 
-    const kullanici = document.getElementById("kullaniciAdi").value;
-    const sifre = document.getElementById("sifre").value;
+    const kullanici = document.getElementById("kullaniciAdi").value.trim();
+    const sifre = document.getElementById("sifre").value.trim();
 
-    if(kullanici==="admin" && sifre==="1234"){
-        window.location.href="panel.html";
-    }else{
+    const bulunan = kullanicilar.find(function(k){
+
+        return k.kullanici === kullanici &&
+               k.sifre === sifre;
+
+    });
+
+    if(!bulunan){
         alert("Kullanıcı adı veya şifre hatalı!");
+        return;
     }
 
+    localStorage.setItem(
+        "aktifKullanici",
+        JSON.stringify(bulunan)
+    );
+
+    window.location.href = "panel.html";
 }
