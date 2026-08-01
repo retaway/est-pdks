@@ -7,7 +7,7 @@
     left:0;
     top:0;
 
-    width:75px;
+    width:70px;
     height:100vh;
 
     display:flex;
@@ -27,7 +27,7 @@
 }
 
 .sidebar.open{
-    width:70px;
+    width:250px;
 }
 
 /* ===========================
@@ -389,7 +389,7 @@ button:hover{
 
 .main{
     flex:1;
-    margin-left:75px;
+    margin-left:70px;
     min-height:100vh;
     display:flex;
     flex-direction:column;
@@ -598,9 +598,9 @@ button:hover{
 
     bottom:0;
 
-    left:75px;
+    left:70px;
 
-    width:calc(100% - 75px);
+    width:calc(100% - 70px);
 
     height:90px;
 
