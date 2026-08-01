@@ -1,31 +1,8 @@
-let personelListesi = JSON.parse(localStorage.getItem("personeller")) || [];
-let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
-let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
-let tarifeDosyasi = null;
-let tarifeVerileri = [];
-let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
-let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
-let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
-let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
 let aktifKullanici =
     JSON.parse(localStorage.getItem("aktifKullanici")) || null;
+
 let kullanicilar = JSON.parse(localStorage.getItem("kullanicilar")) || [
-function kullaniciBilgileriniGoster() {
 
-    if (!aktifKullanici) return;
-
-    const ad = document.getElementById("kullaniciAdi");
-    const rol = document.getElementById("kullaniciRol");
-
-    if (ad) {
-        ad.innerText = aktifKullanici.adSoyad;
-    }
-
-    if (rol) {
-        rol.innerText = rolAdiGetir(aktifKullanici.rol);
-    }
-
-}
     {
         kullanici: "admin",
         sifre: "1234",
@@ -72,6 +49,23 @@ localStorage.setItem(
     "kullanicilar",
     JSON.stringify(kullanicilar)
 );
+
+function kullaniciBilgileriniGoster() {
+
+    if (!aktifKullanici) return;
+
+    const ad = document.getElementById("kullaniciAdi");
+    const rol = document.getElementById("kullaniciRol");
+
+    if (ad) {
+        ad.innerText = aktifKullanici.adSoyad;
+    }
+
+    if (rol) {
+        rol.innerText = rolAdiGetir(aktifKullanici.rol);
+    }
+
+}
 function personelleriGetir(gorev = null, sadeceAktif = true) {
 
     return personelListesi.filter(function(personel){
