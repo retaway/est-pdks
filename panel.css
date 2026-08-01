@@ -627,7 +627,10 @@ button:hover{
     z-index:999;
 
 }
-
+.sidebar:hover + .main .ekys-footer{
+    left:270px;
+    width:calc(100% - 270px);
+}
 .footer-item{
     display:flex;
     align-items:center;
