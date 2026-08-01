@@ -2204,6 +2204,7 @@ document.getElementById("icerik").innerHTML = `
         </table>
     </div>
 `;
+    }
 function yeniGorevTarifeDegisimi() {
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
