@@ -951,8 +951,20 @@ button:hover{
     display:none;
 }
 
-.sidebar:not(:open) .menu-search{
-    display:none;
+.sidebar:not(.open) .menu-search{
+
+    max-height:0;
+
+    opacity:0;
+
+    margin:0;
+
+    padding:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
 }
 
 .sidebar li span{
