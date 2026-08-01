@@ -89,6 +89,7 @@
 
 .sidebar li:hover{
     background:#1f3353;
+    color:#ffffff;
 }
 
 .sidebar li i{
@@ -98,7 +99,7 @@
 }
 
 .sidebar li:hover i{
-    color:#00c2d7;
+    color:#3dd5f3;
 }
 
 /* ===========================
