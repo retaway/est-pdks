@@ -399,13 +399,7 @@ button:hover{
 
     transition:margin-left .30s ease;
 }
-.sidebar.open + .main{
-    margin-left:250px;
-}
-.sidebar.open + .main .ekys-footer{
-    left:250px;
-    width:calc(100% - 250px);
-}
+
 .kart h3{
     font-size:32px;
     color:#2563eb;
@@ -447,7 +441,7 @@ button:hover{
     }
 
     .main{
-        margin-left:80px;
+        margin-left:70px;
     }
 
 }
