@@ -600,5 +600,19 @@ button:hover{
     .footer-item{
         width:100%;
     }
+.footer-brand{
+    flex:0.8;
+}
 
+.footer-brand h4{
+    color:#fff;
+    font-size:16px;
+    margin:0;
+}
+
+.footer-brand p{
+    color:#b7cae6;
+    font-size:12px;
+    margin-top:5px;
+}
 }
