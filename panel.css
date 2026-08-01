@@ -175,9 +175,13 @@
 
     width:22px;
 
+    text-align:center;
+
     font-size:17px;
 
     color:#dbe7ff;
+
+    flex-shrink:0;
 
 }
 
@@ -753,8 +757,13 @@ button:hover{
 }
 /* Mini Sidebar - Logo */
 
-.sidebar-logo{
-    transition:padding .30s ease;
+.sidebar:not(:hover) li{
+
+    justify-content:center;
+
+    padding:16px 0;
+
+    gap:0;
 }
 
 .sidebar-logo img{
