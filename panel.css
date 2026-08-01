@@ -54,7 +54,6 @@
 .sidebar-logo img{
 
     width:85px;
-
     height:85px;
 
     object-fit:contain;
@@ -62,6 +61,8 @@
     margin:auto;
 
     display:block;
+
+    transition:.30s ease;
 
     filter:drop-shadow(0 5px 8px rgba(0,0,0,.25));
 
@@ -749,4 +750,22 @@ button:hover{
 
 .sidebar:not(:hover) li{
     justify-content:center;
+}
+/* Mini Sidebar - Logo */
+
+.sidebar-logo{
+    transition:padding .30s ease;
+}
+
+.sidebar-logo img{
+    transition:width .30s ease, height .30s ease;
+}
+
+.sidebar:not(:hover) .sidebar-logo{
+    padding:15px 0;
+}
+
+.sidebar:not(:hover) .sidebar-logo img{
+    width:48px;
+    height:48px;
 }
