@@ -4004,6 +4004,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     kullaniciBilgileriniGoster();
 
+
+    // Panel açılınca Ana Sayfa gelsin
+    if(document.getElementById("icerik")){
+
+        sayfaGoster("anasayfa");
+
+    }
+
 });
 let personelChart = null;
 
