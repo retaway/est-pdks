@@ -25,10 +25,10 @@
 
     z-index:999;
 }
-
-.sidebar:hover{
+.sidebar.open{
     width:270px;
 }
+
 /* ===========================
    LOGO ALANI
 =========================== */
@@ -720,17 +720,17 @@ button:hover{
 }
 /* Mini Sidebar */
 
-.sidebar:not(:hover) .logo-text{
+.sidebar:not(.open) .logo-text{
     opacity:0;
     width:0;
     overflow:hidden;
 }
 
-.sidebar:hover .logo-text{
+.sidebar:open .logo-text{
     opacity:1;
 }
 
-.sidebar:not(:hover) .menu-title{
+.sidebar:not(:open) .menu-title{
     display:none;
 }
 
@@ -743,7 +743,7 @@ button:hover{
     transition:opacity .25s ease;
 }
 
-.sidebar:not(:hover) li span{
+.sidebar:not(.open) li span{
     opacity:0;
     width:0;
     overflow:hidden;
