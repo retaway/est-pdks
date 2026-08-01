@@ -356,6 +356,14 @@
 }
 .topbar{
 
+    position:fixed;
+
+    top:0;
+
+    left:70px;
+
+    right:0;
+
     height:90px;
 
     background:#fff;
@@ -366,22 +374,22 @@
 
     align-items:center;
 
-    gap:25px;
-
     padding:0 35px;
 
     border-bottom:1px solid #e8edf4;
 
     box-shadow:0 8px 24px rgba(15,23,42,.06);
 
-    position:sticky;
+    z-index:950;
 
-    top:0;
-
-    z-index:100;
+    transition:left .30s ease;
 
 }
+.sidebar.open ~ .main .topbar{
 
+    left:250px;
+
+}
 .topbar h1{
 
     margin:0;
@@ -915,7 +923,7 @@ button:hover{
 
 #icerik{
     flex:1;
-    margin:25px;
+    margin:110px;
     overflow-y:auto;
     padding-bottom:120px;
 }
