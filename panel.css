@@ -814,15 +814,16 @@ button:hover{
 
     inset:0;
 
-    background:rgba(0,0,0,.35);
+    background:rgba(8,25,47,.22);
 
-    backdrop-filter:blur(3px);
-   
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+
     opacity:0;
 
     visibility:hidden;
 
-    transition:.30s;
+    transition:.30s ease;
 
     z-index:998;
 
