@@ -17,33 +17,76 @@
     z-index:999;
 }
 
+/* ===========================
+   LOGO ALANI
+=========================== */
+
 .sidebar-logo{
-    padding:25px 20px;
-    text-align:left;
-    border-bottom:1px solid rgba(255,255,255,.08);
+
+    text-align:center;
+
+    padding:30px 15px 25px;
+
+    border-bottom:1px solid rgba(255,255,255,.12);
+
+    background:linear-gradient(
+        180deg,
+        #17375e,
+        #102944
+    );
+
 }
+
 
 .sidebar-logo img{
-    width:62px;
-    display:inline-block;
-    vertical-align:middle;
+
+    width:85px;
+
+    height:85px;
+
+    object-fit:contain;
+
+    margin:auto;
+
+    display:block;
+
+    filter:drop-shadow(0 5px 8px rgba(0,0,0,.25));
+
 }
+
 
 .logo-text{
-    display:inline-block;
-    margin-left:12px;
-    vertical-align:middle;
+
+    margin-top:15px;
+
 }
+
 
 .logo-text h2{
-    color:#fff;
-    font-size:28px;
+
+    color:#ffffff;
+
+    font-size:26px;
+
     font-weight:700;
+
+    letter-spacing:2px;
+
+    margin-bottom:6px;
+
 }
 
+
 .logo-text span{
-    color:#b9cce7;
-    font-size:12px;
+
+    display:block;
+
+    color:#c7d8ee;
+
+    font-size:13px;
+
+    letter-spacing:.5px;
+
 }
 
 .menu-search{
