@@ -10,7 +10,22 @@ let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
 let aktifKullanici =
     JSON.parse(localStorage.getItem("aktifKullanici")) || null;
 let kullanicilar = JSON.parse(localStorage.getItem("kullanicilar")) || [
+function kullaniciBilgileriniGoster() {
 
+    if (!aktifKullanici) return;
+
+    const ad = document.getElementById("kullaniciAdi");
+    const rol = document.getElementById("kullaniciRol");
+
+    if (ad) {
+        ad.innerText = aktifKullanici.adSoyad;
+    }
+
+    if (rol) {
+        rol.innerText = rolAdiGetir(aktifKullanici.rol);
+    }
+
+}
     {
         kullanici: "admin",
         sifre: "1234",
@@ -4013,10 +4028,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "👤 " +
             aktifKullanici.adSoyad +
             "<br><small>" +
-            aktifKullanici.rol +
+            rolAdiGetir(aktifKullanici.rol) +
             "</small>";
 
     }
+
+    kullaniciBilgileriniGoster();
 
 });
 let personelChart = null;
