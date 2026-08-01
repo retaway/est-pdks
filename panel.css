@@ -976,7 +976,7 @@ button:hover{
 
     width:calc(100% - 70px);
 
-    height:90px;
+    height:60px;
 
     background:linear-gradient(90deg,#08192f,#12386b);
 
@@ -986,9 +986,9 @@ button:hover{
 
     justify-content:space-around;
 
-    gap:20px;
+    gap:12px;
 
-    padding:15px 25px;
+    padding:8px 20px;
 
     color:#fff;
 
@@ -997,37 +997,38 @@ button:hover{
     box-shadow:0 -4px 18px rgba(0,0,0,.18);
 
     z-index:900;
+
 }
 
 .footer-item{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:10px;
     flex:1;
-    min-width:220px;
+    min-width:180px;
 }
 
 .footer-icon{
-    width:50px;
-    height:50px;
-    border-radius:14px;
+    width:40px;
+    height:40px;
+    border-radius:10px;
     background:rgba(255,255,255,.12);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:22px;
+    font-size:18px;
     color:#fff;
 }
 
 .footer-item h4{
     margin:0;
-    font-size:14px;
+    font-size:13px;
     color:#fff;
 }
 
 .footer-item p{
-    margin:4px 0 0;
-    font-size:12px;
+    margin:2px 0 0;
+    font-size:11px;
     color:#b7cae6;
 }
 
