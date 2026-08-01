@@ -4,52 +4,58 @@
 
 .sidebar{
     position:fixed;
-    top:0;
     left:0;
-    width:260px;
+    top:0;
+    width:270px;
     height:100vh;
-    background:linear-gradient(180deg,#08192f,#12386b);
     display:flex;
     flex-direction:column;
+    background:linear-gradient(180deg,#06172d 0%,#0d2d58 60%,#123d74 100%);
+    color:#fff;
     overflow:hidden;
-    z-index:1000;
+    box-shadow:6px 0 25px rgba(0,0,0,.18);
+    z-index:999;
 }
 
 .sidebar-logo{
-    text-align:center;
-    padding:25px 15px;
-    border-bottom:1px solid rgba(255,255,255,.1);
+    padding:25px 20px;
+    text-align:left;
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .sidebar-logo img{
-    width:90px;
-    margin:auto;
-    display:block;
+    width:62px;
+    display:inline-block;
+    vertical-align:middle;
 }
 
 .logo-text{
-    margin-top:12px;
+    display:inline-block;
+    margin-left:12px;
+    vertical-align:middle;
 }
 
 .logo-text h2{
     color:#fff;
-    font-size:22px;
-    margin-bottom:5px;
+    font-size:28px;
+    font-weight:700;
 }
 
 .logo-text span{
-    color:#9fb3c8;
-    font-size:13px;
+    color:#b9cce7;
+    font-size:12px;
 }
 
 .menu-search{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:15px;
-    padding:12px;
-    background:#13294A;
-    border-radius:10px;
+
+    margin:18px;
+
+    background:#17375e;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:12px;
+
 }
 
 .menu-search input{
@@ -67,38 +73,61 @@
 }
 
 .menu-title{
-    color:#6F90BF;
+
+    color:#86a8d9;
+
     font-size:11px;
-    font-weight:bold;
-    padding:18px 20px 8px;
-    text-transform:uppercase;
-    letter-spacing:1px;
+
+    letter-spacing:2px;
+
+    padding:18px;
+
+    font-weight:700;
+
 }
 
 .sidebar li{
+
+    color:#dbe7ff;
+
     display:flex;
+
     align-items:center;
+
     gap:14px;
+
     padding:14px 18px;
-    margin:4px 10px;
-    border-radius:10px;
-    cursor:pointer;
+
+    margin:5px 0;
+
+    border-radius:12px;
+
     transition:.25s;
-    color:#dce8ff;
+
 }
 
 .sidebar li:hover{
-    background:#1C4FD7;
+
+    background:#2563eb;
+
+    color:#fff;
+
 }
 
 .sidebar li i{
-    width:20px;
-   color:#90B7FF;
-    text-align:center;
+
+    width:22px;
+
+    font-size:17px;
+
+    color:#dbe7ff;
+
 }
 
 .sidebar li:hover i{
+
     color:#fff;
+
 }
 
 /* ===========================
@@ -381,10 +410,15 @@ button:hover{
 }
 
 .sidebar-footer{
-    margin-top:auto;
+
     padding:18px;
-    background:linear-gradient(180deg,#12386b,#0a2144);
+
+    background:rgba(255,255,255,.05);
+
+    backdrop-filter:blur(12px);
+
     border-top:1px solid rgba(255,255,255,.08);
+
 }
 
 .sidebar-user{
