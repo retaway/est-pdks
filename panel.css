@@ -495,27 +495,15 @@ button:hover{
 }
 
 .ekys-footer{
-
-    margin-top:35px;
-
+    margin-top:auto;
     height:90px;
-
-    background:linear-gradient(90deg,#0f2447,#163d74);
-
+    background:linear-gradient(90deg,#08192f,#12386b);
     display:flex;
-
     align-items:center;
-
-    justify-content:space-between;
-
+    justify-content:space-around;
     color:#fff;
-
-    padding:0 30px;
-
-    gap:20px;
-
-    box-shadow:0 -4px 18px rgba(0,0,0,.12);
-
+    border-top:1px solid rgba(255,255,255,.08);
+    box-shadow:0 -4px 18px rgba(0,0,0,.18);
 }
 
 .footer-item{
