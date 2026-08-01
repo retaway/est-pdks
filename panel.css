@@ -764,7 +764,30 @@ button:hover{
 
     gap:0;
 }
+.sidebar:not(.open) .sidebar-logo{
 
+    padding:18px 0;
+
+}
+
+.sidebar:not(.open) .sidebar-logo img{
+
+    width:42px;
+
+    height:42px;
+
+}
+.sidebar:not(.open){
+
+    align-items:center;
+
+}
+
+.sidebar:not(.open) #yanMenu{
+
+    width:100%;
+
+}
 .sidebar-logo img{
     transition:width .30s ease, height .30s ease;
 }
