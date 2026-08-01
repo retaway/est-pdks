@@ -1,16 +1,18 @@
-let personelListesi = JSON.parse(localStorage.getItem("personeller")) || []; 
-let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || []; 
-let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || []; 
-let tarifeDosyasi = null; let tarifeVerileri = []; 
+let personelListesi = JSON.parse(localStorage.getItem("personeller")) || [];
+let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
+let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
+let tarifeDosyasi = null;
+let tarifeVerileri = [];
 let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
-let aktifKullanici = JSON.parse(localStorage.getItem("aktifKullanici")) || null; let kullanicilar = JSON.parse(localStorage.getItem("kullanicilar")) ||
-[ function kullaniciBilgileriniGoster() {let aktifKullanici =
+
+let aktifKullanici =
 JSON.parse(localStorage.getItem("aktifKullanici")) || null;
 
-let kullanicilar = JSON.parse(localStorage.getItem("kullanicilar")) || [
+let kullanicilar =
+JSON.parse(localStorage.getItem("kullanicilar")) || [
 
     {
         kullanici: "admin",
