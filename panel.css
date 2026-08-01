@@ -968,18 +968,23 @@ button:hover{
 }
 
 .sidebar li span{
+
     white-space:nowrap;
-    transition:opacity .15s ease;
+
+    transition:all .25s ease;
+
 }
 
 .sidebar:not(.open) li span{
-    opacity:0;
-    width:0;
-    overflow:hidden;
+
+    display:none;
+
 }
 
-.sidebar:not(.open) li{
-    justify-content:center;
+.sidebar.open li span{
+
+    display:inline;
+
 }
 /* Mini Sidebar - Logo */
 
