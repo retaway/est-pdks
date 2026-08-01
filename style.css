@@ -1,12 +1,8 @@
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #e9eef3;
-    font-family: Arial, sans-serif;
+body{
+    margin:0;
+    padding:0;
+    background:#e9eef3;
+    font-family:Arial,sans-serif;
 }
 
 .login-container {
