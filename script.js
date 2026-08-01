@@ -1301,7 +1301,7 @@ function degisimKaydet() {
     alert("Değişim kodu kaydedildi.");
     degisimKodlari();
 }
-function yetkiVarMi(roller) {
+function yetkiVarMi(...roller) {
 
     if (!aktifKullanici) {
         return false;
