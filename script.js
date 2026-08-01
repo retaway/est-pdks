@@ -1471,7 +1471,16 @@ function sayfaGoster(sayfa) {
         </table>
 
     </div>
+<div class="panel grafik-panel">
 
+    <h3>
+        <i class="fas fa-chart-pie"></i>
+        Personel Durumu
+    </h3>
+
+    <canvas id="personelGrafik" height="90"></canvas>
+
+</div>
     <div class="panel">
 
         <h3><i class="fas fa-bullhorn"></i> Duyurular</h3>
