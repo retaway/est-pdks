@@ -8,11 +8,10 @@
     left:0;
     width:260px;
     height:100vh;
-    background:#17375e;
+    background:linear-gradient(180deg,#07182F,#0B2345,#102C54);
     display:flex;
     flex-direction:column;
     overflow:hidden;
-    z-index:1000;
 }
 
 .sidebar-logo{
@@ -84,22 +83,21 @@
     border-radius:10px;
     cursor:pointer;
     transition:.25s;
-    color:#eaf3ff;
+    color:#dce8ff;
 }
 
 .sidebar li:hover{
-    background:#1f3353;
-    color:#ffffff;
+    background:#1C4FD7;
 }
 
 .sidebar li i{
     width:20px;
-    color:#bcd3ef;
+   color:#90B7FF;
     text-align:center;
 }
 
 .sidebar li:hover i{
-    color:#3dd5f3;
+    color:#fff;
 }
 
 /* ===========================
