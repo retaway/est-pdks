@@ -1339,11 +1339,84 @@ function sayfaGoster(sayfa) {
     switch (sayfa) {
 
         case "anasayfa":
-            document.getElementById("icerik").innerHTML = `
-                <h2>🏠 Ana Sayfa</h2>
-                <p>ESTRAM Personel ve Vardiya Yönetim Sistemine hoş geldiniz.</p>
-            `;
-            break;
+
+    document.getElementById("icerik").innerHTML = `
+
+<div class="dashboard">
+
+    <div class="dashboard-header">
+
+        <div>
+            <h1>ESTRAM Kurumsal Yönetim Sistemi</h1>
+            <p>Kurumsal yönetim paneline hoş geldiniz.</p>
+        </div>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-title">Toplam Personel</div>
+            <div class="stat-value">0</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Aktif Vardiya</div>
+            <div class="stat-value">0</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Bugünkü İzin</div>
+            <div class="stat-value">0</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Bekleyen İş Emri</div>
+            <div class="stat-value">0</div>
+        </div>
+
+    </div>
+
+    <div class="moduller">
+
+        <div class="modul-card" onclick="sayfaGoster('ik')">
+            <div class="modul-icon">👨‍💼</div>
+            <div class="modul-title">İnsan Kaynakları</div>
+            <div class="modul-desc">
+                Personel yönetimi ve özlük işlemleri
+            </div>
+        </div>
+
+        <div class="modul-card" onclick="sayfaGoster('personeller')">
+            <div class="modul-icon">🚋</div>
+            <div class="modul-title">Sürücü Şefliği</div>
+            <div class="modul-desc">
+                Vardiya ve görev planlamaları
+            </div>
+        </div>
+
+        <div class="modul-card">
+            <div class="modul-icon">🏗️</div>
+            <div class="modul-title">Sabit Tesisler</div>
+            <div class="modul-desc">
+                Bakım ve altyapı yönetimi
+            </div>
+        </div>
+
+        <div class="modul-card">
+            <div class="modul-icon">🚛</div>
+            <div class="modul-title">Araçlar Müdürlüğü</div>
+            <div class="modul-desc">
+                Araç ve ekipman yönetimi
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+`;
+    break;
 
         case "ik":
 
