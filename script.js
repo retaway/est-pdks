@@ -2208,7 +2208,7 @@ document.getElementById("icerik").innerHTML = `
 function yeniGorevTarifeDegisimi() {
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
-let siraliPersoneller = [...personelListesi].sort(function (a, b) {  
+let siraliPersoneller = [...personelListesi].sort(function(a,b){
     const adA = `${a.ad} ${a.soyad}`.toLowerCase();
     const adB = `${b.ad} ${b.soyad}`.toLowerCase();
     return adA.localeCompare(adB, "tr");
