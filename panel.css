@@ -258,7 +258,7 @@
     padding:25px;
     transition:.30s;
 }
-.sidebar:open ~ .content{
+.sidebar.open ~ .content{
     margin-left:270px;
 }
 .topbar{
@@ -1046,7 +1046,7 @@ button:hover{
 }
 /* Mini Sidebar - Logo */
 
-.sidebar:not(:open) li{
+.sidebar:not(.open) li{
     display:flex;
     align-items:center;
     justify-content:center;
@@ -1091,11 +1091,11 @@ button:hover{
     transition:width .30s ease, height .30s ease;
 }
 
-.sidebar:not(:open) .sidebar-logo{
+.sidebar:not(.open) .sidebar-logo{
     padding:15px 0;
 }
 
-.sidebar:not(:open) .sidebar-logo img{
+.sidebar:not(.open) .sidebar-logo img{
     width:48px;
     height:48px;
 }
