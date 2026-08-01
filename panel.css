@@ -394,10 +394,6 @@ button:hover{
     overflow-y:auto;
     overflow-x:hidden;
     padding-bottom:100px;
-    transition:margin-left .3s ease;
-}
-.sidebar:hover + .main{
-    margin-left:270px;
 }
 .kart h3{
     font-size:32px;
@@ -600,9 +596,9 @@ button:hover{
 
     bottom:0;
 
-    left:260px;
+    left:75px;
 
-    width:calc(100% - 260px);
+    width:calc(100% - 75px);
 
     height:90px;
 
@@ -624,13 +620,9 @@ button:hover{
 
     box-shadow:0 -4px 18px rgba(0,0,0,.18);
 
-    z-index:999;
+    z-index:900;
+}
 
-}
-.sidebar:hover + .main .ekys-footer{
-    left:270px;
-    width:calc(100% - 270px);
-}
 .footer-item{
     display:flex;
     align-items:center;
