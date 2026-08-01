@@ -4087,3 +4087,8 @@ function girisYap(){
 
     window.location.href = "panel.html";
 }
+function toggleSidebar() {
+
+    document.querySelector(".sidebar").classList.toggle("open");
+
+}
