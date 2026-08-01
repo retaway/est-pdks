@@ -4,7 +4,12 @@ body{
     background:#e9eef3;
     font-family:Arial,sans-serif;
 }
-
+.login-page{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 .login-container {
     background: white;
     width: 320px;
@@ -14,9 +19,13 @@ body{
     box-shadow: 0 0 20px rgba(0,0,0,0.15);
 }
 
-.login-container h1 {
-    color: #005baa;
-    margin-bottom: 5px;
+.login-container{
+    width:320px;
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,.15);
 }
 
 .login-container h2 {
@@ -26,24 +35,23 @@ body{
     margin-bottom: 25px;
 }
 
-input {
-    width: 90%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+.login-container input{
+    width:90%;
+    padding:12px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
 }
 
-button {
-    width: 95%;
-    padding: 12px;
-    margin-top: 15px;
-    background: #005baa;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
+.login-container button{
+    width:95%;
+    padding:12px;
+    margin-top:15px;
+    background:#005baa;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
 }
 
 button:hover {
@@ -77,8 +85,10 @@ button:hover {
 }
 
 .content{
-    margin-left:260px;
-    padding:30px;
+    margin-left:240px;
+    padding:25px;
+    min-height:100vh;
+    box-sizing:border-box;
 }
 
 .cards{
@@ -299,4 +309,17 @@ button:hover {
     padding:20px;
     box-shadow:0 5px 18px rgba(0,0,0,.08);
     margin-bottom:20px;
+}
+.form-kart input,
+.form-kart select,
+.form-kart textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px;
+    margin:8px 0 15px;
+}
+
+.form-kart button{
+    width:auto;
+    margin-right:8px;
 }
