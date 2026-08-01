@@ -2660,101 +2660,7 @@ Henüz izin kaydı bulunmuyor.
     `;
 
 }
-function izinHaklari() {
 
-    let satirlar = "";
-
-    const personeller = personelleriGetir("Vatman");
-
-    personeller.forEach(function(personel, index){
-
-        const izin = izinHakkiGetir(personel.sicil);
-
-        satirlar += `
-        <tr>
-
-            <td>${personel.sicil}</td>
-
-            <td>${personel.ad} ${personel.soyad}</td>
-
-            <td>${personel.iseGiris || "-"}</td>
-
-            <td style="text-align:center;">
-                ${izin.hakEdilen}
-            </td>
-
-            <td style="text-align:center;">
-                ${izin.kullanilan}
-            </td>
-
-            <td style="text-align:center;">
-                <b>${izin.kalan}</b>
-            </td>
-
-            <td>
-
-                <button onclick="personelDetay(${index})">
-                    👁️
-                </button>
-
-            </td>
-
-        </tr>
-        `;
-
-    });
-
-    if (satirlar === "") {
-
-        satirlar = `
-        <tr>
-            <td colspan="7" style="text-align:center;">
-                Personel bulunamadı.
-            </td>
-        </tr>
-        `;
-
-    }
-
-    document.getElementById("icerik").innerHTML = `
-
-        <h2>🗂 İzin Hakları</h2>
-
-        <table class="tablo">
-
-            <thead>
-
-                <tr>
-
-                    <th>Sicil</th>
-
-                    <th>Ad Soyad</th>
-
-                    <th>İşe Giriş</th>
-
-                    <th>Hak Edilen</th>
-
-                    <th>Kullanılan</th>
-
-                    <th>Kalan</th>
-
-                    <th>İşlem</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                ${satirlar}
-
-            </tbody>
-
-        </table>
-
-    `;
-
-}
 function puantaj() {
 
     const bugun = new Date();
@@ -2805,11 +2711,7 @@ function puantaj() {
 
     `;
 }
-function puantajOlustur() {
 
-    alert("Puantaj oluşturulacak.");
-
-}
 function yillikIzinHakHesapla(iseGiris) {
 
     if (!iseGiris) return 0;
