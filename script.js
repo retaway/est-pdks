@@ -4142,3 +4142,56 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+let personelChart = null;
+
+function dashboardGrafik() {
+
+    const canvas = document.getElementById("personelGrafik");
+
+    if (!canvas) return;
+
+    if (personelChart) {
+        personelChart.destroy();
+    }
+
+    personelChart = new Chart(canvas, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: [
+                "Aktif Personel",
+                "Pasif Personel"
+            ],
+
+            datasets: [{
+                data: [
+                    personelListesi.filter(p => p.durum === "Aktif").length,
+                    personelListesi.filter(p => p.durum === "Pasif").length
+                ],
+                backgroundColor: [
+                    "#00b894",
+                    "#d63031"
+                ]
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+                    position: "bottom"
+                }
+
+            }
+
+        }
+
+    });
+
+}
