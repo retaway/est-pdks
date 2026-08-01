@@ -4055,19 +4055,20 @@ function dashboardGrafik() {
 
         },
 
-        options: {
+       options: {
 
-            responsive: true,
+    responsive: true,
+    maintainAspectRatio: false,
 
-            plugins: {
+    plugins: {
 
-                legend: {
-                    position: "bottom"
-                }
-
-            }
-
+        legend: {
+            position: "bottom"
         }
+
+    }
+
+}
 
     });
 
