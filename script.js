@@ -1888,7 +1888,7 @@ const isBasi = personelIsBasiTarihi(
     if (satirlar === "") {
         satirlar = `
         <tr>
-            <td colspan="6" style="text-align:center;">
+            <td colspan="7" style="text-align:center;">
                 Kayıt bulunamadı.
             </td>
         </tr>
