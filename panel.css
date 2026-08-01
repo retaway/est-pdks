@@ -235,31 +235,65 @@
     margin-left:270px;
 }
 .topbar{
-    height:75px;
-    background:white;
+
+    height:90px;
+
+    background:#fff;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
-    gap:20px;
-    padding:0 30px;
-    border-bottom:1px solid #e5e7eb;
-    box-shadow:0 2px 12px rgba(0,0,0,.05);
+
+    gap:25px;
+
+    padding:0 35px;
+
+    border-bottom:1px solid #e8edf4;
+
+    box-shadow:0 8px 24px rgba(15,23,42,.06);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
 }
 
 .topbar h1{
-    font-size:26px;
+
+    margin:0;
+
+    font-size:34px;
+
+    font-weight:700;
+
     color:#17375e;
+
+    line-height:1.2;
+
 }
 
 .topbar p{
-    color:#64748b;
-    margin-top:4px;
+
+    margin-top:6px;
+
+    color:#7b8798;
+
+    font-size:14px;
+
 }
 
 .topbar-right{
+
     display:flex;
+
     align-items:center;
-    gap:15px;
+
+    gap:12px;
+
 }
 
 .user{
