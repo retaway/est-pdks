@@ -237,3 +237,135 @@ select{
     color:#666;
     font-size:14px;
 }
+/* ===========================
+   EKYS PROFESYONEL TEMA
+=========================== */
+
+.logo-text{
+    margin-top:12px;
+}
+
+.logo-text h2{
+    color:#fff;
+    font-size:22px;
+    margin:0;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.logo-text span{
+    color:#cbd5e1;
+    font-size:13px;
+}
+
+.topbar{
+    height:80px;
+    background:#ffffff;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.topbar p{
+    color:#64748b;
+    margin-top:5px;
+    font-size:14px;
+}
+
+.topbar-right{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.bildirimBtn{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#f1f5f9;
+    color:#0f172a;
+    font-size:20px;
+    border:none;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.bildirimBtn:hover{
+    background:#dbeafe;
+}
+
+.dashboard{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+.dashboard-header h1{
+    font-size:32px;
+    color:#17375e;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+}
+
+.stat-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    border-left:5px solid #00a6b6;
+    transition:.25s;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-title{
+    color:#64748b;
+    font-size:14px;
+}
+
+.stat-value{
+    font-size:34px;
+    font-weight:bold;
+    color:#17375e;
+    margin-top:15px;
+}
+
+.moduller{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.modul-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.modul-card:hover{
+    transform:translateY(-6px);
+}
+
+.modul-icon{
+    font-size:48px;
+}
+
+.modul-title{
+    font-size:21px;
+    font-weight:700;
+    color:#17375e;
+    margin-top:15px;
+}
+
+.modul-desc{
+    margin-top:10px;
+    color:#64748b;
+    line-height:1.6;
+}
