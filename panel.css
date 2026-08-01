@@ -21,13 +21,19 @@
 
     box-shadow:6px 0 25px rgba(0,0,0,.18);
 
-    transition:.30s ease;
+    transition:
+        width .30s ease,
+        box-shadow .30s ease;
 
     z-index:999;
 }
 
 .sidebar.open{
+
     width:250px;
+
+    box-shadow:12px 0 35px rgba(0,0,0,.30);
+
 }
 
 /* ===========================
