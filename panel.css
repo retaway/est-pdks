@@ -978,7 +978,7 @@ button:hover{
     overflow:hidden;
 }
 
-.sidebar:not(:open) li{
+.sidebar:not(.open) li{
     justify-content:center;
 }
 /* Mini Sidebar - Logo */
