@@ -1504,7 +1504,9 @@ function sayfaGoster(sayfa) {
 </div>
 `;
 
-            break;
+dashboardGrafik();
+
+break;
 
         case "ik":
 
