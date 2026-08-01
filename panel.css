@@ -196,7 +196,11 @@
     color:#fff;
 
 }
+.sidebar li:hover::before{
 
+    height:28px;
+
+}
 .sidebar li i{
 
     width:22px;
