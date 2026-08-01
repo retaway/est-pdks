@@ -196,14 +196,14 @@
     transition:.25s;
 
 }
-.sidebar li:hover{
+.sidebar li:open{
 
     background:#2563eb;
 
     color:#fff;
 
 }
-.sidebar li:hover::before{
+.sidebar li:open::before{
 
     height:28px;
 
@@ -222,7 +222,7 @@
 
 }
 
-.sidebar li:hover i{
+.sidebar li:open i{
 
     color:#fff;
 
@@ -238,7 +238,7 @@
     padding:25px;
     transition:.30s;
 }
-.sidebar:hover ~ .content{
+.sidebar:open ~ .content{
     margin-left:270px;
 }
 .topbar{
