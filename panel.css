@@ -406,7 +406,7 @@ button:hover{
     flex:1;
     overflow-y:auto;
     overflow-x:hidden;
-    padding-bottom:10px;
+    padding-bottom:0;
 }
 
 .sidebar-footer{
