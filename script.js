@@ -4210,3 +4210,15 @@ function dashboardGrafik() {
     });
 
 }
+function girisYap(){
+
+    const kullanici = document.getElementById("kullaniciAdi").value;
+    const sifre = document.getElementById("sifre").value;
+
+    if(kullanici==="admin" && sifre==="1234"){
+        window.location.href="panel.html";
+    }else{
+        alert("Kullanıcı adı veya şifre hatalı!");
+    }
+
+}
