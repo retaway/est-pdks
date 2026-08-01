@@ -149,6 +149,8 @@
 
 .sidebar li{
 
+   position:relative;
+   
     color:#ffffff;
 
     display:flex;
@@ -166,7 +168,27 @@
     transition:.25s;
 
 }
+.sidebar li::before{
 
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:10px;
+
+    width:4px;
+
+    height:0;
+
+    background:#4ea8ff;
+
+    border-radius:0 6px 6px 0;
+
+    transition:.25s;
+
+}
 .sidebar li:hover{
 
     background:#2563eb;
