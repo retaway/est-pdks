@@ -748,7 +748,7 @@ button:hover{
 
 .sidebar li span{
     white-space:nowrap;
-    transition:opacity .25s ease;
+    transition:opacity .15s ease;
 }
 
 .sidebar:not(.open) li span{
