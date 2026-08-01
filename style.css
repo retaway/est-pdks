@@ -104,8 +104,10 @@ button:hover {
     margin-top:0;
 }
 .logo{
-    text-align: center;
-    padding: 20px 10px;
+    display:block;
+    width:90px;
+    height:auto;
+    margin:0 auto 20px;
 }
 
 .logo img{
