@@ -466,7 +466,12 @@ button:hover{
     flex:1;
     overflow-y:auto;
     overflow-x:hidden;
+
+    margin:0;
+    padding:0;
     padding-bottom:0;
+
+    list-style:none;
 }
 
 .sidebar-footer{
