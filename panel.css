@@ -546,8 +546,9 @@ button:hover{
 .footer-item{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:12px;
     flex:1;
+    min-width:220px;
 }
 
 .footer-icon{
