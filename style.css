@@ -318,5 +318,6 @@ textarea:focus{
     border-color:#005baa;
 }
 .table-responsive{
+    width:100%;
     overflow-x:auto;
 }
