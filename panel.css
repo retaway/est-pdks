@@ -423,3 +423,6 @@ button:hover{
     width:100% !important;
     height:320px !important;
 }
+.grafik-panel h3{
+    margin-bottom:20px;
+}
