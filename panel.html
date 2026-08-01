@@ -194,45 +194,47 @@
 
 <div class="main">
 
-    <div class="topbar">
-<button class="menu-toggle" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
-        <div>
+<div class="topbar">
+
+    <div class="topbar-left">
+
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="page-title">
 
             <h1 id="sayfaBasligi">
-
                 Ana Sayfa
-
             </h1>
 
             <p>
-
                 ESTRAM Kurumsal Yönetim Sistemi
-
             </p>
 
         </div>
 
-        <div class="topbar-right">
+    </div>
 
-            <button
-                class="bildirimBtn"
-                onclick="sayfaGoster('bildirimler')">
+    <div class="topbar-right">
 
-                <i class="fas fa-bell"></i>
+        <button
+            class="bildirimBtn"
+            onclick="sayfaGoster('bildirimler')">
 
-            </button>
+            <i class="fas fa-bell"></i>
 
-            <div
-                class="user"
-                id="kullaniciBilgisi">
+        </button>
 
-            </div>
+        <div
+            class="user"
+            id="kullaniciBilgisi">
 
         </div>
 
     </div>
+
+</div>
 
     <div id="icerik">
 
