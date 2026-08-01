@@ -21,11 +21,7 @@ body{
 =========================== */
 
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:260px;
-    height:100vh;
+    position:relative;
 }
 
 .sidebar-logo{
@@ -80,10 +76,7 @@ body{
 }
 
 .sidebar ul{
-    list-style:none;
-    flex:1;
-    overflow-y:auto;
-}
+
 
 .menu-title{
     color:#6b8cb3;
@@ -320,18 +313,6 @@ button:hover{
     padding:6px 12px;
     margin:0;
 }
-/* ===========================
-   SİDEBAR DÜZELTMESİ
-=========================== */
-
-.sidebar{
-    background:#0f1f35;
-    color:#fff;
-    display:flex;
-    flex-direction:column;
-    overflow-y:auto;
-    z-index:1000;
-}
 
 /* ===========================
    ANA PANEL
@@ -430,23 +411,13 @@ button:hover{
    SOL MENÜ ALT KULLANICI ALANI
 ========================================== */
 
-.sidebar{
-    position:relative;
-}
-
 #yanMenu{
     padding-bottom:180px;
 }
 
 .sidebar-footer{
 
-    position:absolute;
-
-    left:0;
-
-    right:0;
-
-    bottom:0;
+    margin-top:auto;
 
     width:100%;
 
