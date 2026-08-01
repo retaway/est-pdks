@@ -681,3 +681,25 @@ button:hover{
     margin-top:5px;
 }
 }
+.son-islemler table{
+    display:table;
+    width:100%;
+}
+
+.son-islemler thead{
+    display:table-header-group;
+}
+
+.son-islemler tbody{
+    display:table-row-group;
+}
+
+.son-islemler tr{
+    display:table-row;
+}
+
+.son-islemler th,
+.son-islemler td{
+    display:table-cell;
+    vertical-align:middle;
+}
