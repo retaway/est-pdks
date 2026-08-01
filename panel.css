@@ -432,7 +432,46 @@
     gap:20px;
 
 }
+.header-logo{
 
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+}
+
+.header-logo img{
+
+    width:40px;
+    height:40px;
+    object-fit:contain;
+
+}
+
+.header-title{
+
+    display:flex;
+    flex-direction:column;
+    line-height:1.1;
+
+}
+
+.header-title h2{
+
+    margin:0;
+    font-size:18px;
+    font-weight:700;
+    color:#17375e;
+
+}
+
+.header-title span{
+
+    margin-top:2px;
+    font-size:11px;
+    color:#64748b;
+
+}
 .page-title{
 
     display:flex;
