@@ -201,7 +201,9 @@
     padding:25px;
     transition:.30s;
 }
-
+.sidebar:hover ~ .content{
+    margin-left:270px;
+}
 .topbar{
     height:75px;
     background:white;
@@ -385,15 +387,18 @@ button:hover{
 
 .main{
     flex:1;
-    margin-left:260px;
+    margin-left:75px;
     min-height:100vh;
     display:flex;
     flex-direction:column;
     overflow-y:auto;
     overflow-x:hidden;
     padding-bottom:100px;
+    transition:margin-left .3s ease;
 }
-
+.sidebar:hover + .main{
+    margin-left:270px;
+}
 .kart h3{
     font-size:32px;
     color:#2563eb;
@@ -581,15 +586,6 @@ button:hover{
    EKYS FOOTER
 ================================================== */
 
-.main{
-
-    min-height:100vh;
-
-    display:flex;
-
-    flex-direction:column;
-
-}
 
 #icerik{
     flex:1;
