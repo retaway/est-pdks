@@ -215,42 +215,6 @@ let gunlukVardiyaFiltre = "HEPSI";
 let gorevTarifeFiltreTarih = new Date().toISOString().split("T")[0];
 let gorevTarifeArama = "";
 
-document.addEventListener("DOMContentLoaded", function () {
-    const kullaniciInput = document.querySelector('input[type="text"]');
-    const sifreInput = document.querySelector('input[type="password"]');
-    const girisButonu = document.querySelector(".login-container button");
-
-    if (kullaniciInput && sifreInput && girisButonu) {
-        girisButonu.addEventListener("click", function () {
-            const kullanici = kullaniciInput.value.trim();
-            const sifre = sifreInput.value.trim();
-
-         const bulunanKullanici = kullanicilar.find(function (k) {
-    return (
-        k.kullanici === kullanici &&
-        k.sifre === sifre
-    );
-});
-
-if (bulunanKullanici) {
-
-    aktifKullanici = bulunanKullanici;
-
-    localStorage.setItem(
-        "aktifKullanici",
-        JSON.stringify(aktifKullanici)
-    );
-
-    window.location.href = "panel.html";
-
-} else {
-
-    alert("Kullanıcı adı veya şifre hatalı!");
-
-}
-        });
-    }
-});
 function kullaniciYonetimi() {
 
     let satirlar = "";
