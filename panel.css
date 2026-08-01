@@ -571,3 +571,162 @@ button:hover{
     }
 
 }
+/* ==================================================
+   EKYS FOOTER
+================================================== */
+
+.main{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+#icerik{
+
+    flex:1;
+
+}
+
+.ekys-footer{
+
+    margin-top:35px;
+
+    height:90px;
+
+    background:linear-gradient(90deg,#0f2447,#163d74);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    color:#fff;
+
+    padding:0 30px;
+
+    gap:20px;
+
+    box-shadow:0 -4px 18px rgba(0,0,0,.12);
+
+}
+
+.footer-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    flex:1;
+
+}
+
+.footer-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,.08);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:24px;
+
+    color:#fff;
+
+}
+
+.footer-item h4{
+
+    margin:0;
+
+    font-size:15px;
+
+    letter-spacing:.6px;
+
+}
+
+.footer-item p{
+
+    margin-top:5px;
+
+    font-size:12px;
+
+    color:#d6e3ff;
+
+    line-height:18px;
+
+}
+
+.footer-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    font-size:24px;
+
+    font-weight:600;
+
+    white-space:nowrap;
+
+}
+
+.footer-right strong{
+
+    color:#fff;
+
+}
+
+.footer-right i{
+
+    font-size:26px;
+
+    opacity:.8;
+
+}
+
+@media(max-width:1200px){
+
+    .ekys-footer{
+
+        flex-wrap:wrap;
+
+        height:auto;
+
+        padding:25px;
+
+    }
+
+    .footer-item{
+
+        width:45%;
+
+    }
+
+    .footer-right{
+
+        width:100%;
+
+        justify-content:center;
+
+        margin-top:15px;
+
+    }
+
+}
