@@ -43,7 +43,16 @@ body{
 =========================== */
 
 .sidebar{
-    position:relative;
+    position:fixed;
+    top:0;
+    left:0;
+    width:260px;
+    height:100vh;
+    background:#17375e;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:1000;
 }
 
 .sidebar-logo{
@@ -751,7 +760,8 @@ button:hover{
     list-style:none;
     flex:1;
     overflow-y:auto;
-    padding-bottom:180px;
+    overflow-x:hidden;
+    padding-bottom:20px;
 }
 
 .menu-title{
@@ -1036,21 +1046,6 @@ button:hover{
 ========================================== */
 
 
-.sidebar-footer{
-
-    margin-top:auto;
-
-    width:100%;
-
-    padding:18px;
-
-    box-sizing:border-box;
-
-    border-top:1px solid rgba(255,255,255,.08);
-
-    background:linear-gradient(180deg,#183b73,#1f5cb8);
-
-}
 
 .sidebar-user{
 
