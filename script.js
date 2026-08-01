@@ -2122,22 +2122,29 @@ function gorevTarifeDegisimleri() {
 
     let satirlar = "";
 
-   kayitlar.forEach(function (kayit) {
+kayitlar.forEach(function (kayit) {
 
-   satirlar += `
-<tr>
-    <td>${kayit.tarih}</td>
-    <td>${kayit.saat || "-"}</td>
-    <td>${kayit.talepEdenPersonel}</td>
-    <td>${kayit.talepEdenTarife}</td>
-    <td>${kayit.degisenPersonel}</td>
-    <td>${kayit.degisenTarife}</td>
-    <td>${kayit.neden}</td>
-    <td>
-        <button onclick="gorevTarifeDegisimiSil(${kayit.id})">🗑️</button>
-    </td>
-</tr>
-`;
+    satirlar += `
+    <tr>
+        <td>${kayit.tarih}</td>
+        <td>${kayit.saat || "-"}</td>
+        <td>${kayit.talepEdenPersonel}</td>
+        <td style="text-align:center;font-weight:bold;">
+            ${kayit.talepEdenTarife}
+        </td>
+        <td>${kayit.degisenPersonel}</td>
+        <td style="text-align:center;font-weight:bold;">
+            ${kayit.degisenTarife}
+        </td>
+        <td>${kayit.neden}</td>
+        <td style="text-align:center;">
+            <button onclick="gorevTarifeDegisimiSil(${kayit.id})">
+                🗑️
+            </button>
+        </td>
+    </tr>
+    `;
+
 });
 
     if (satirlar === "") {
