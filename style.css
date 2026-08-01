@@ -3,7 +3,8 @@ body{
     padding:0;
     min-height:100vh;
     background:#e9eef3;
-    font-family:Arial,sans-serif;
+    color:#1f2937;
+    font-family:"Segoe UI",Arial,sans-serif;
 }
 .login-page{
     height:100vh;
@@ -79,9 +80,10 @@ button:hover {
 
 .content{
     margin-left:240px;
-    padding:25px;
+    width:calc(100% - 240px);
     min-height:100vh;
-    box-sizing:border-box;
+    padding:25px;
+    overflow-x:auto;
 }
 
 .cards{
@@ -292,6 +294,7 @@ button:hover {
 }
 #icerik{
     width:100%;
+    max-width:100%;
 }
 
 table{
@@ -313,4 +316,7 @@ input:focus,
 select:focus,
 textarea:focus{
     border-color:#005baa;
+}
+.table-responsive{
+    overflow-x:auto;
 }
