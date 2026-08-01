@@ -324,9 +324,12 @@ button:hover{
 .main{
     flex:1;
     margin-left:260px;
+    min-height:100vh;
     display:flex;
     flex-direction:column;
-    min-height:100vh;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:100px;
 }
 
 .kart h3{
@@ -522,13 +525,10 @@ button:hover{
 }
 
 #icerik{
-
     flex:1;
-
     margin:25px;
-
+    overflow-y:auto;
     padding-bottom:120px;
-
 }
 
 .ekys-footer{
@@ -541,7 +541,7 @@ button:hover{
 
     width:calc(100% - 260px);
 
-    min-height:90px;
+    height:90px;
 
     background:linear-gradient(90deg,#08192f,#12386b);
 
