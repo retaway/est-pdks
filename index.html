@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESTRAM Yönetim Sistemi</title>
+    <title>ESTRAM Kurumsal Yönetim Sistemi</title>
+
     <link rel="stylesheet" href="stil.css">
 </head>
 
@@ -19,11 +21,29 @@
             <h1>ESTRAM</h1>
             <h2>Kurumsal Yönetim Sistemi</h2>
 
-            <!-- Kullanıcı Girişi -->
+            <!-- Kullanıcı Adı -->
+            <input
+                type="text"
+                id="kullaniciAdi"
+                placeholder="👤 Kullanıcı Adı">
+
+            <!-- Şifre -->
+            <input
+                type="password"
+                id="sifre"
+                placeholder="🔒 Şifre">
+
+            <!-- Giriş -->
+            <button onclick="girisYap()">
+                Giriş Yap
+            </button>
 
         </div>
 
     </div>
 
+    <script src="script.js"></script>
+
 </body>
+
 </html>
