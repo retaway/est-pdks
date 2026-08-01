@@ -37,19 +37,20 @@
    LOGO ALANI
 =========================== */
 
+/* ===========================
+   LOGO ALANI
+=========================== */
+
 .sidebar-logo{
 
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     justify-content:center;
 
     height:110px;
 
-    padding:20px 10px;
+    padding:15px 10px;
 
     border-bottom:1px solid rgba(255,255,255,.12);
 
@@ -59,15 +60,15 @@
         #102944
     );
 
-    transition:all .35s ease;
+    transition:all .30s ease;
 
 }
 
 .sidebar-logo img{
 
-    width:80px;
+    width:72px;
 
-    height:auto;
+    height:72px;
 
     object-fit:contain;
 
@@ -75,64 +76,63 @@
 
     filter:drop-shadow(0 5px 8px rgba(0,0,0,.25));
 
-    transition:all .35s ease;
+    transition:all .30s ease;
 
 }
-
 
 .logo-text{
 
-    margin-top:15px;
+    margin-top:10px;
+
+    text-align:center;
+
+    transition:.25s;
 
 }
 
-
 .logo-text h2{
 
-    color:#ffffff;
+    margin:0;
 
-    font-size:26px;
+    color:#fff;
+
+    font-size:24px;
 
     font-weight:700;
 
     letter-spacing:2px;
 
-    margin-bottom:6px;
-
 }
-
 
 .logo-text span{
 
     display:block;
 
+    margin-top:4px;
+
     color:#c7d8ee;
 
-    font-size:13px;
+    font-size:12px;
 
     letter-spacing:.5px;
 
 }
-.logo-mini{
 
-    display:none;
+/* ===========================
+   MENÜ ARAMA
+=========================== */
 
-    margin-top:6px;
-
-    font-size:10px;
-
-    font-weight:700;
-
-    letter-spacing:2px;
-
-    color:#ffffff;
-
-    opacity:.9;
-
-}
 .menu-search{
 
-    margin:18px;
+    margin:16px;
+
+    padding:10px 14px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
 
     background:#17375e;
 
@@ -140,35 +140,65 @@
 
     border-radius:12px;
 
+    transition:.25s;
+
+}
+
+.menu-search i{
+
+    color:#9fb8dc;
+
 }
 
 .menu-search input{
+
     width:100%;
+
     background:none;
+
     border:none;
+
     outline:none;
-    color:white;
+
+    color:#fff;
+
     margin:0;
+
     padding:0;
+
+    font-size:14px;
+
 }
 
 .menu-search input::placeholder{
+
     color:#8DA7CB;
+
 }
 
+/* ===========================
+   MENÜ BAŞLIKLARI
+=========================== */
+
 .menu-title{
+
+    padding:18px;
 
     color:#dbeafe;
 
     font-size:11px;
 
-    letter-spacing:2px;
-
-    padding:18px;
-
     font-weight:700;
 
+    letter-spacing:2px;
+
+    user-select:none;
+
 }
+
+/* ===========================
+   MENÜ SATIRLARI
+=========================== */
 
 .sidebar li:not(.menu-title){
 
@@ -180,13 +210,13 @@
 
     gap:14px;
 
-    padding:14px 18px;
-
     margin:5px 8px;
+
+    padding:14px 18px;
 
     border-radius:12px;
 
-    color:#ffffff;
+    color:#fff;
 
     cursor:pointer;
 
@@ -220,7 +250,13 @@
 
     border-radius:0 6px 6px 0;
 
-    transition:all .25s ease;
+    transition:.25s;
+
+}
+
+.sidebar li:not(.menu-title):hover::before{
+
+    height:28px;
 
 }
 
@@ -245,7 +281,6 @@
     transition:opacity .20s ease;
 
 }
-
 /* Mini Menü */
 
 .sidebar:not(.open) li:not(.menu-title){
@@ -263,7 +298,37 @@
     display:none;
 
 }
+/* Mini Menü - Logo */
 
+.sidebar:not(.open) .sidebar-logo{
+
+    height:70px;
+
+    padding:8px 0;
+
+    border-bottom:none;
+
+}
+
+.sidebar:not(.open) .sidebar-logo img{
+
+    width:42px;
+
+    height:42px;
+
+}
+
+.sidebar:not(.open) .logo-text{
+
+    display:none;
+
+}
+
+.sidebar.open .logo-text{
+
+    display:block;
+
+}
 /* ===========================
    ANA ALAN
 =========================== */
@@ -983,17 +1048,7 @@ button:hover{
 
 }
 
-.sidebar:not(.open) .logo-mini{
 
-    display:block;
-
-}
-
-.sidebar.open .logo-mini{
-
-    display:none;
-
-}
 
 /* Menü Başlıkları */
 
