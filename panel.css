@@ -662,9 +662,9 @@ button:hover{
 
 .user-avatar{
 
-    width:42px;
+    width:36px;
 
-    height:42px;
+    height:36px;
 
     border-radius:50%;
 
@@ -678,7 +678,7 @@ button:hover{
 
     color:#fff;
 
-    font-size:18px;
+    font-size:15px;
 
     flex-shrink:0;
 
