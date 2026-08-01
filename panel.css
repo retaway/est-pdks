@@ -197,8 +197,9 @@
 
 .content{
     flex:1;
-    margin-left:260px;
+    margin-left:75px;
     padding:25px;
+    transition:.30s;
 }
 
 .topbar{
