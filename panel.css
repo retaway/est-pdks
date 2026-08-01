@@ -955,21 +955,41 @@ button:hover{
     display:table-cell;
     vertical-align:middle;
 }
-/* Mini Sidebar */
+/* ==========================================
+   MINI SIDEBAR
+========================================== */
+
+/* Logo Yazısı */
 
 .sidebar:not(.open) .logo-text{
+
     opacity:0;
+
     width:0;
+
     overflow:hidden;
+
+    pointer-events:none;
+
 }
 
-.sidebar:open .logo-text{
+.sidebar.open .logo-text{
+
     opacity:1;
+
+    width:auto;
+
 }
 
-.sidebar:not(:open) .menu-title{
+/* Menü Başlıkları */
+
+.sidebar:not(.open) .menu-title{
+
     display:none;
+
 }
+
+/* Arama Kutusu */
 
 .sidebar:not(.open) .menu-search{
 
@@ -987,11 +1007,13 @@ button:hover{
 
 }
 
+/* Menü Yazıları */
+
 .sidebar li span{
 
     white-space:nowrap;
 
-    transition:all .25s ease;
+    transition:opacity .25s ease;
 
 }
 
@@ -1004,6 +1026,22 @@ button:hover{
 .sidebar.open li span{
 
     display:inline;
+
+}
+
+/* Mini Menü Hizalama */
+
+.sidebar:not(.open) li:not(.menu-title){
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:0;
+
+    padding:16px 0;
 
 }
 /* Mini Sidebar - Logo */
