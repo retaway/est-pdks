@@ -320,3 +320,89 @@ button:hover{
     padding:6px 12px;
     margin:0;
 }
+/* ===========================
+   SİDEBAR DÜZELTMESİ
+=========================== */
+
+.sidebar{
+    background:#0f1f35;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+    z-index:1000;
+}
+
+/* ===========================
+   ANA PANEL
+=========================== */
+
+.main{
+    flex:1;
+    margin-left:260px;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+#icerik{
+    flex:1;
+    margin:25px;
+}
+
+/* ===========================
+   KARTLAR
+=========================== */
+
+.kart{
+    background:#fff;
+    border-radius:16px;
+    padding:22px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.kart h3{
+    font-size:32px;
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.kart p{
+    color:#64748b;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+.sidebar::-webkit-scrollbar{
+    width:6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+    background:#345;
+    border-radius:20px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:80px;
+    }
+
+    .logo-text,
+    .menu-search input,
+    .sidebar li span,
+    .menu-title{
+        display:none;
+    }
+
+    .main{
+        margin-left:80px;
+    }
+
+}
