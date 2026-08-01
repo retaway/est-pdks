@@ -113,7 +113,23 @@
     letter-spacing:.5px;
 
 }
+.logo-mini{
 
+    display:none;
+
+    margin-top:6px;
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    color:#ffffff;
+
+    opacity:.9;
+
+}
 .menu-search{
 
     margin:18px;
