@@ -21,12 +21,11 @@ body{
 =========================== */
 
 .sidebar{
+    position:fixed;
+    left:0;
+    top:0;
     width:260px;
-    background:#0f172a;
-    color:#fff;
-    display:flex;
-    flex-direction:column;
-    box-shadow:4px 0 20px rgba(0,0,0,.15);
+    height:100vh;
 }
 
 .sidebar-logo{
@@ -124,10 +123,10 @@ body{
    ANA ALAN
 =========================== */
 
-.main{
+.content{
     flex:1;
-    display:flex;
-    flex-direction:column;
+    margin-left:260px;
+    padding:25px;
 }
 
 .topbar{
@@ -179,8 +178,7 @@ body{
 =========================== */
 
 #icerik{
-    margin:25px;
-    background:white;
+    background:#fff;
     border-radius:18px;
     padding:30px;
     box-shadow:0 5px 18px rgba(0,0,0,.08);
