@@ -734,7 +734,7 @@ button:hover{
     display:none;
 }
 
-.sidebar:not(:hover) .menu-search{
+.sidebar:not(:open) .menu-search{
     display:none;
 }
 
@@ -749,12 +749,12 @@ button:hover{
     overflow:hidden;
 }
 
-.sidebar:not(:hover) li{
+.sidebar:not(:open) li{
     justify-content:center;
 }
 /* Mini Sidebar - Logo */
 
-.sidebar:not(:hover) li{
+.sidebar:not(:open) li{
     display:flex;
     align-items:center;
     justify-content:center;
@@ -768,11 +768,11 @@ button:hover{
     transition:width .30s ease, height .30s ease;
 }
 
-.sidebar:not(:hover) .sidebar-logo{
+.sidebar:not(:open) .sidebar-logo{
     padding:15px 0;
 }
 
-.sidebar:not(:hover) .sidebar-logo img{
+.sidebar:not(:open) .sidebar-logo img{
     width:48px;
     height:48px;
 }
