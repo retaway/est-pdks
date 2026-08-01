@@ -6,17 +6,29 @@
     position:fixed;
     left:0;
     top:0;
-    width:270px;
+
+    width:75px;
     height:100vh;
+
     display:flex;
     flex-direction:column;
+
     background:linear-gradient(180deg,#06172d 0%,#0d2d58 60%,#123d74 100%);
+
     color:#fff;
+
     overflow:hidden;
+
     box-shadow:6px 0 25px rgba(0,0,0,.18);
+
+    transition:.30s ease;
+
     z-index:999;
 }
 
+.sidebar:hover{
+    width:270px;
+}
 /* ===========================
    LOGO ALANI
 =========================== */
@@ -35,8 +47,9 @@
         #102944
     );
 
-}
+    transition:.30s;
 
+}
 
 .sidebar-logo img{
 
@@ -702,4 +715,38 @@ button:hover{
 .son-islemler td{
     display:table-cell;
     vertical-align:middle;
+}
+/* Mini Sidebar */
+
+.sidebar:not(:hover) .logo-text{
+    opacity:0;
+    width:0;
+    overflow:hidden;
+}
+
+.sidebar:hover .logo-text{
+    opacity:1;
+}
+
+.sidebar:not(:hover) .menu-title{
+    display:none;
+}
+
+.sidebar:not(:hover) .menu-search{
+    display:none;
+}
+
+.sidebar li span{
+    white-space:nowrap;
+    transition:opacity .25s ease;
+}
+
+.sidebar:not(:hover) li span{
+    opacity:0;
+    width:0;
+    overflow:hidden;
+}
+
+.sidebar:not(:hover) li{
+    justify-content:center;
 }
