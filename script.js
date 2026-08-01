@@ -3545,48 +3545,7 @@ function izinDurumRenk(durum) {
     }
 
 }
-function puantaj() {
 
-    const bugun = new Date();
-
-    document.getElementById("icerik").innerHTML = `
-
-        <h2>📊 Puantaj</h2>
-
-        <div class="toolbar">
-
-            <label>Ay</label>
-
-            <select id="puantajAy">
-                ${Array.from({length:12},(_,i)=>`
-                    <option value="${i+1}" ${i+1===bugun.getMonth()+1?"selected":""}>
-                        ${i+1}
-                    </option>
-                `).join("")}
-            </select>
-
-            <label>Yıl</label>
-
-            <select id="puantajYil">
-                ${Array.from({length:5},(_,i)=>`
-                    <option value="${bugun.getFullYear()-2+i}"
-                        ${bugun.getFullYear()-2+i===bugun.getFullYear()?"selected":""}>
-                        ${bugun.getFullYear()-2+i}
-                    </option>
-                `).join("")}
-            </select>
-
-            <button onclick="puantajOlustur()">
-                📄 Puantaj Oluştur
-            </button>
-
-        </div>
-
-        <div id="puantajTablo"></div>
-
-    `;
-
-}
 function puantajOlustur() {
 
     const ay = Number(document.getElementById("puantajAy").value);
