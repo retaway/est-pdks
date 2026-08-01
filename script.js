@@ -1478,7 +1478,7 @@ function sayfaGoster(sayfa) {
         Personel Durumu
     </h3>
 
-    <canvas id="personelGrafik" height="90"></canvas>
+    <canvas id="personelGrafik"></canvas>
 
 </div>
     <div class="panel">
@@ -4055,19 +4055,15 @@ function dashboardGrafik() {
 
         },
 
-       options: {
-
+     options: {
     responsive: true,
     maintainAspectRatio: false,
 
     plugins: {
-
         legend: {
             position: "bottom"
         }
-
     }
-
 }
 
     });
