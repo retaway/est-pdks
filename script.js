@@ -2086,52 +2086,55 @@ function personelDurumuKaydet(sicil, baslangic, bitis, durum, not = "") {
     localStorage.setItem("personelDurumlari", JSON.stringify(personelDurumlari));
 }
 function gorevTarifeDegisimleri() {
+
     const tarihKutusu = document.getElementById("gorevTarifeTarih");
-if (tarihKutusu) {
-    gorevTarifeFiltreTarih = tarihKutusu.value;
-}
-
-const aramaKutusu = document.getElementById("gorevTarifeArama");
-if (aramaKutusu) {
-    gorevTarifeArama = aramaKutusu.value.toLowerCase().trim();
-}
-    let kayitlar = gorevTarifeDegisiklikleri.filter(function(k){
-
-    // Tarih filtresi
-    if (k.tarih !== gorevTarifeFiltreTarih) {
-        return false;
+    if (tarihKutusu) {
+        gorevTarifeFiltreTarih = tarihKutusu.value;
     }
 
-    // Arama filtresi
-    if (gorevTarifeArama !== "") {
+    const aramaKutusu = document.getElementById("gorevTarifeArama");
+    if (aramaKutusu) {
+        gorevTarifeArama = aramaKutusu.value.toLowerCase().trim();
+    }
 
-        const metin = (
-            (k.talepEdenSicil || "") + " " +
-            (k.talepEdenPersonel || "") + " " +
-            (k.degisenSicil || "") + " " +
-            (k.degisenPersonel || "")
-        ).toLowerCase();
+    const kayitlar = gorevTarifeDegisiklikleri.filter(function (k) {
 
-        if (!metin.includes(gorevTarifeArama)) {
+        if (k.tarih !== gorevTarifeFiltreTarih) {
             return false;
         }
-    }
 
-    return true;
-});
+        if (gorevTarifeArama !== "") {
+
+            const metin = (
+                (k.talepEdenSicil || "") + " " +
+                (k.talepEdenPersonel || "") + " " +
+                (k.degisenSicil || "") + " " +
+                (k.degisenPersonel || "")
+            ).toLowerCase();
+
+            if (!metin.includes(gorevTarifeArama)) {
+                return false;
+            }
+        }
+
+        return true;
+    });
+
     let satirlar = "";
 
-kayitlar.forEach(function (kayit, index) {        satirlar += `
+    kayitlar.forEach(function (kayit) {
+
+        satirlar += `
         <tr>
-            <td>${kayit.tarih}</td>            
+            <td>${kayit.saat || "-"}</td>
             <td>${kayit.talepEdenPersonel}</td>
             <td>${kayit.talepEdenTarife}</td>
             <td>${kayit.degisenPersonel}</td>
             <td>${kayit.degisenTarife}</td>
             <td>${kayit.neden}</td>
             <td>
-        <button onclick="gorevTarifeDegisimiSil(${kayit.id})">🗑️</button>      
-    </td>
+                <button onclick="gorevTarifeDegisimiSil(${kayit.id})">🗑️</button>
+            </td>
         </tr>
         `;
     });
@@ -2148,49 +2151,50 @@ kayitlar.forEach(function (kayit, index) {        satirlar += `
 
     document.getElementById("icerik").innerHTML = `
         <h2>🔄 Görev / Tarife Değişimleri</h2>
-<div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:15px;">
 
-    <label><b>📅 Tarih</b></label>
+        <div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:15px;">
 
-    <input
-        type="date"
-        id="gorevTarifeTarih"
-        value="${gorevTarifeFiltreTarih}"
-        onchange="gorevTarifeDegisimleri()">
+            <label><b>📅 Tarih</b></label>
 
-    <input
-        type="text"
-        id="gorevTarifeArama"
-        placeholder="🔍 Sicil veya Ad Soyad Ara..."
-        value="${gorevTarifeArama}"
-        onkeyup="gorevTarifeDegisimleri()"
-        style="width:260px;">
+            <input
+                type="date"
+                id="gorevTarifeTarih"
+                value="${gorevTarifeFiltreTarih}"
+                onchange="gorevTarifeDegisimleri()">
 
-    <button onclick="yeniGorevTarifeDegisimi()">
-        ➕ Yeni Değişim
-    </button>
+            <input
+                type="text"
+                id="gorevTarifeArama"
+                placeholder="🔍 Sicil veya Ad Soyad Ara..."
+                value="${gorevTarifeArama}"
+                onkeyup="gorevTarifeDegisimleri()"
+                style="width:260px;">
 
-</div>
+            <button onclick="yeniGorevTarifeDegisimi()">
+                ➕ Yeni Değişim
+            </button>
+
+        </div>
 
         <table class="tablo">
-    <thead>
-        <tr>
-            <th>Saat</th>
-            <th>Değişim Talep Eden Personel</th>
-            <th>Tarifesi</th>
-            <th>Değişen Personel</th>
-            <th>Tarifesi</th>
-            <th>Neden</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
+            <thead>
+                <tr>
+                    <th>Saat</th>
+                    <th>Değişim Talep Eden Personel</th>
+                    <th>Tarifesi</th>
+                    <th>Değişen Personel</th>
+                    <th>Tarifesi</th>
+                    <th>Neden</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+
             <tbody>
                 ${satirlar}
             </tbody>
         </table>
     `;
 }
-
 function yeniGorevTarifeDegisimi() {
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
@@ -2508,10 +2512,10 @@ function gunSonuRaporu() {
 function degisimEtiketiBul(sicil, bugun) {
     const kayit = gorevTarifeDegisiklikleri.find(function (d) {
         return String(d.tarih) === String(bugun) &&
-            (
-                String(d.talepEdenPersonel).includes(String(sicil)) ||
-                String(d.degisenPersonel).includes(String(sicil))
-            );
+(
+    String(d.talepEdenSicil) === String(sicil) ||
+    String(d.degisenSicil) === String(sicil)
+);
     });
 
     if (!kayit) return "-";
