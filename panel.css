@@ -406,3 +406,20 @@ button:hover{
     }
 
 }
+/* ===========================
+   GRAFİKLER
+=========================== */
+
+.grafik-panel{
+    margin-top:25px;
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    height:380px;
+}
+
+.grafik-panel canvas{
+    width:100% !important;
+    height:320px !important;
+}
