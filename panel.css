@@ -804,3 +804,32 @@ button:hover{
     width:48px;
     height:48px;
 }
+/* ==========================================
+   SIDEBAR OVERLAY
+========================================== */
+
+.sidebar-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.35);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.30s;
+
+    z-index:998;
+
+}
+
+.sidebar.open ~ .sidebar-overlay{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
