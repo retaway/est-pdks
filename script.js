@@ -1346,17 +1346,19 @@ function dashboardVerileri() {
         p => p.durum === "Aktif"
     ).length;
 
-    const izinliPersonel = typeof izinListesi !== "undefined"
-        ? izinListesi.filter(i => i.durum === "Onaylandı").length
-        : 0;
+    const pasifPersonel = personelListesi.filter(
+        p => p.durum === "Pasif"
+    ).length;
 
-    const degisimSayisi = degisimKodlariListesi.length;
+    const degisimKodu = degisimKodlariListesi.length;
 
     return {
+
         toplamPersonel,
         aktifPersonel,
-        izinliPersonel,
-        degisimSayisi
+        pasifPersonel,
+        degisimKodu
+
     };
 
 }
@@ -1388,58 +1390,107 @@ function sayfaGoster(sayfa) {
             <div class="stat-value">${d.toplamPersonel}</div> 
             </div>
 
-        <div class="stat-card">
-            <div class="stat-title">Aktif Vardiya</div>
-        <div class="stat-value">${d.aktifPersonel}</div>     
-        </div>
+      <div class="stat-card">
+    <div class="stat-title">Aktif Personel</div>
+    <div class="stat-value">${d.aktifPersonel}</div>
+</div>
 
-        <div class="stat-card">
-            <div class="stat-title">Bugünkü İzin</div>
-            <div class="stat-value">${d.degisimSayisi}</div>
-        </div>
+<div class="stat-card">
+    <div class="stat-title">Pasif Personel</div>
+    <div class="stat-value">${d.pasifPersonel}</div>
+</div>
 
-        <div class="stat-card">
-            <div class="stat-title">Bekleyen İş Emri</div>
-            <div class="stat-value">${d.izinliPersonel}</div>
-        </div>
-
+<div class="stat-card">
+    <div class="stat-title">Değişim Kodları</div>
+    <div class="stat-value">${d.degisimKodu}</div>
+</div>
     </div>
 
     <div class="moduller">
 
-        <div class="modul-card" onclick="sayfaGoster('ik')">
-            <div class="modul-icon"><i class="fas fa-users"></i></div>
-            <div class="modul-title">İnsan Kaynakları</div>
-            <div class="modul-desc">
-                Personel yönetimi ve özlük işlemleri
-            </div>
+    <div class="modul-card" onclick="sayfaGoster('ik')">
+        <div class="modul-icon"><i class="fas fa-users"></i></div>
+        <div class="modul-title">İnsan Kaynakları</div>
+        <div class="modul-desc">
+            Personel yönetimi ve özlük işlemleri
+        </div>
+    </div>
+
+    <div class="modul-card" onclick="sayfaGoster('personeller')">
+        <div class="modul-icon"><i class="fas fa-train-tram"></i></div>
+        <div class="modul-title">Sürücü Şefliği</div>
+        <div class="modul-desc">
+            Vardiya ve görev planlamaları
+        </div>
+    </div>
+
+    <div class="modul-card">
+        <div class="modul-icon"><i class="fas fa-industry"></i></div>
+        <div class="modul-title">Sabit Tesisler Müdürlüğü</div>
+        <div class="modul-desc">
+            Bakım, SCADA, Kataner ve altyapı yönetimi
+        </div>
+    </div>
+
+    <div class="modul-card">
+        <div class="modul-icon"><i class="fas fa-truck"></i></div>
+        <div class="modul-title">Araçlar Müdürlüğü</div>
+        <div class="modul-desc">
+            Araç ve ekipman yönetimi
+        </div>
+    </div>
+
+</div>
+
+<div class="dashboard-bottom">
+
+    <div class="panel">
+
+        <h3><i class="fas fa-clock"></i> Son İşlemler</h3>
+
+        <table class="dashboard-table">
+
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>İşlem</th>
+                    <th>Kullanıcı</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>-</td>
+                    <td>Henüz işlem kaydı bulunmuyor.</td>
+                    <td>-</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="panel">
+
+        <h3><i class="fas fa-bullhorn"></i> Duyurular</h3>
+
+        <div class="duyuru-item">
+            ✅ EKYS başarıyla çalışıyor.
         </div>
 
-        <div class="modul-card" onclick="sayfaGoster('personeller')">
-            <div class="modul-icon"><i class="fas fa-train-tram"></i></div>
-            <div class="modul-title">Sürücü Şefliği</div>
-            <div class="modul-desc">
-                Vardiya ve görev planlamaları
-            </div>
+        <div class="duyuru-item">
+            💾 Günlük yedekleme sistemi aktif.
         </div>
 
-        <div class="modul-card">
-            <div class="modul-icon"><i class="fas fa-industry"></i></div>
-            <div class="modul-title">Sabit Tesisler</div>
-            <div class="modul-desc">
-                Bakım ve altyapı yönetimi
-            </div>
-        </div>
-
-        <div class="modul-card">
-            <div class="modul-icon"><i class="fas fa-truck"></i></div>
-            <div class="modul-title">Araçlar Müdürlüğü</div>
-            <div class="modul-desc">
-                Araç ve ekipman yönetimi
-            </div>
+        <div class="duyuru-item">
+            🚋 Vardiya planlamaları güncel.
         </div>
 
     </div>
+
+</div>
 
 </div>
 `;
