@@ -4098,3 +4098,17 @@ function toggleSidebar() {
     }
 
 }
+document.addEventListener("click", function(e){
+
+    const sidebar = document.querySelector(".sidebar");
+    const button = document.querySelector(".menu-toggle");
+
+    if(
+        sidebar.classList.contains("open") &&
+        !sidebar.contains(e.target) &&
+        !button.contains(e.target)
+    ){
+        sidebar.classList.remove("open");
+    }
+
+});
