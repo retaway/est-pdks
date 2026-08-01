@@ -329,10 +329,6 @@ button:hover{
     min-height:100vh;
 }
 
-#icerik{
-    flex:1;
-    margin:25px;
-}
 .kart h3{
     font-size:32px;
     color:#2563eb;
@@ -526,21 +522,47 @@ button:hover{
 }
 
 #icerik{
+
     flex:1;
+
+    margin:25px;
+
+    padding-bottom:120px;
+
 }
 
 .ekys-footer{
-    margin-top:auto;
+
+    position:fixed;
+
+    bottom:0;
+
+    left:260px;
+
+    width:calc(100% - 260px);
+
     min-height:90px;
+
     background:linear-gradient(90deg,#08192f,#12386b);
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-around;
+
     gap:20px;
+
     padding:15px 25px;
+
     color:#fff;
+
     border-top:1px solid rgba(255,255,255,.08);
+
     box-shadow:0 -4px 18px rgba(0,0,0,.18);
+
+    z-index:999;
+
 }
 
 .footer-item{
