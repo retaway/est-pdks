@@ -1334,13 +1334,41 @@ function rolAdiGetir(rol) {
     }
 
 }
+function sayfaBasligiYaz(baslik) {
+    const baslikAlani = document.getElementById("sayfaBasligi");
+    if (baslikAlani) baslikAlani.textContent = baslik;
+}
+function dashboardVerileri() {
+
+    const toplamPersonel = personelListesi.length;
+
+    const aktifPersonel = personelListesi.filter(
+        p => p.durum === "Aktif"
+    ).length;
+
+    const izinliPersonel = typeof izinListesi !== "undefined"
+        ? izinListesi.filter(i => i.durum === "Onaylandı").length
+        : 0;
+
+    const degisimSayisi = degisimKodlariListesi.length;
+
+    return {
+        toplamPersonel,
+        aktifPersonel,
+        izinliPersonel,
+        degisimSayisi
+    };
+
+}
 function sayfaGoster(sayfa) {
 
     switch (sayfa) {
 
         case "anasayfa":
 
-    document.getElementById("icerik").innerHTML = `
+            sayfaBasligiYaz("Ana Sayfa");
+        const d = dashboardVerileri();
+            document.getElementById("icerik").innerHTML = `
 
 <div class="dashboard">
 
@@ -1357,22 +1385,22 @@ function sayfaGoster(sayfa) {
 
         <div class="stat-card">
             <div class="stat-title">Toplam Personel</div>
-            <div class="stat-value">0</div>
-        </div>
+            <div class="stat-value">${d.toplamPersonel}</div> 
+            </div>
 
         <div class="stat-card">
             <div class="stat-title">Aktif Vardiya</div>
-            <div class="stat-value">0</div>
+        <div class="stat-value">${d.aktifPersonel}</div>     
         </div>
 
         <div class="stat-card">
             <div class="stat-title">Bugünkü İzin</div>
-            <div class="stat-value">0</div>
+            <div class="stat-value">${d.degisimSayisi}</div>
         </div>
 
         <div class="stat-card">
             <div class="stat-title">Bekleyen İş Emri</div>
-            <div class="stat-value">0</div>
+            <div class="stat-value">${d.izinliPersonel}</div>
         </div>
 
     </div>
@@ -1380,7 +1408,7 @@ function sayfaGoster(sayfa) {
     <div class="moduller">
 
         <div class="modul-card" onclick="sayfaGoster('ik')">
-            <div class="modul-icon">👨‍💼</div>
+            <div class="modul-icon"><i class="fas fa-users"></i></div>
             <div class="modul-title">İnsan Kaynakları</div>
             <div class="modul-desc">
                 Personel yönetimi ve özlük işlemleri
@@ -1388,7 +1416,7 @@ function sayfaGoster(sayfa) {
         </div>
 
         <div class="modul-card" onclick="sayfaGoster('personeller')">
-            <div class="modul-icon">🚋</div>
+            <div class="modul-icon"><i class="fas fa-train-tram"></i></div>
             <div class="modul-title">Sürücü Şefliği</div>
             <div class="modul-desc">
                 Vardiya ve görev planlamaları
@@ -1396,7 +1424,7 @@ function sayfaGoster(sayfa) {
         </div>
 
         <div class="modul-card">
-            <div class="modul-icon">🏗️</div>
+            <div class="modul-icon"><i class="fas fa-industry"></i></div>
             <div class="modul-title">Sabit Tesisler</div>
             <div class="modul-desc">
                 Bakım ve altyapı yönetimi
@@ -1404,7 +1432,7 @@ function sayfaGoster(sayfa) {
         </div>
 
         <div class="modul-card">
-            <div class="modul-icon">🚛</div>
+            <div class="modul-icon"><i class="fas fa-truck"></i></div>
             <div class="modul-title">Araçlar Müdürlüğü</div>
             <div class="modul-desc">
                 Araç ve ekipman yönetimi
@@ -1414,11 +1442,13 @@ function sayfaGoster(sayfa) {
     </div>
 
 </div>
-
 `;
-    break;
+
+            break;
 
         case "ik":
+
+            sayfaBasligiYaz("İnsan Kaynakları");
 
             if (!yetkiVarMi("IK", "ADMIN")) {
                 alert("Bu sayfaya erişim yetkiniz yok.");
@@ -1430,6 +1460,8 @@ function sayfaGoster(sayfa) {
 
         case "kullanicilar":
 
+            sayfaBasligiYaz("Kullanıcı Yönetimi");
+
             if (!yetkiVarMi("ADMIN")) {
                 alert("Bu sayfaya erişim yetkiniz yok.");
                 return;
@@ -1440,6 +1472,8 @@ function sayfaGoster(sayfa) {
 
         case "personeller":
 
+            sayfaBasligiYaz("Sürücü Şefliği");
+
             if (!yetkiVarMi("SURUCU_SEFI", "IK", "ADMIN")) {
                 alert("Bu sayfaya erişim yetkiniz yok.");
                 return;
@@ -1449,30 +1483,38 @@ function sayfaGoster(sayfa) {
             break;
 
         case "degisimKodlari":
+            sayfaBasligiYaz("Değişim Kodları");
             degisimKodlari();
             break;
 
         case "tarifeler":
+            sayfaBasligiYaz("Tarifeler");
             tarifeler();
             break;
 
         case "calismaPlanlari":
+            sayfaBasligiYaz("Çalışma Planları");
             calismaPlanlari();
             break;
 
         case "personelDegisimi":
+            sayfaBasligiYaz("Görev / Tarife Değişimleri");
             gorevTarifeDegisimleri();
             break;
 
         case "gunlukVardiya":
+            sayfaBasligiYaz("Günlük Vardiya");
             gunlukVardiya();
             break;
 
         case "izinler":
+            sayfaBasligiYaz("İzinler");
             izinler();
             break;
 
         case "izinHaklari":
+
+            sayfaBasligiYaz("İzin Hakları");
 
             if (!yetkiVarMi("IK", "ADMIN")) {
                 alert("Bu sayfaya erişim yetkiniz yok.");
@@ -1483,24 +1525,27 @@ function sayfaGoster(sayfa) {
             break;
 
         case "puantaj":
+            sayfaBasligiYaz("Puantaj");
             puantaj();
             break;
 
         case "bildirimler":
+            sayfaBasligiYaz("Bildirimler");
             bildirimlerSayfasi();
             break;
 
         case "raporlar":
+            sayfaBasligiYaz("Raporlar");
             gunSonuRaporu();
             break;
 
         case "ayarlar":
+            sayfaBasligiYaz("Ayarlar");
             alert("Henüz geliştiriliyor");
             break;
     }
 
 }
-
 function degisimDuzenle(index){
     const kayit = degisimKodlariListesi[index];
     if (!kayit) return;
