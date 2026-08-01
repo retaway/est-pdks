@@ -8,10 +8,11 @@
     left:0;
     width:260px;
     height:100vh;
-    background:linear-gradient(180deg,#07182F,#0B2345,#102C54);
+    background:linear-gradient(180deg,#08192f,#12386b);
     display:flex;
     flex-direction:column;
     overflow:hidden;
+    z-index:1000;
 }
 
 .sidebar-logo{
@@ -373,15 +374,17 @@ button:hover{
 ========================================== */
 
 #yanMenu{
-    padding-bottom:180px;
+    flex:1;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:10px;
 }
 
 .sidebar-footer{
     margin-top:auto;
     padding:18px;
+    background:linear-gradient(180deg,#12386b,#0a2144);
     border-top:1px solid rgba(255,255,255,.08);
-    background:linear-gradient(180deg,#183b73,#1f5cb8);
-    flex-shrink:0;
 }
 
 .sidebar-user{
