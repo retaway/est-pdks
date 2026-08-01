@@ -47,7 +47,7 @@
 
     justify-content:center;
 
-    height:140px;
+    height:110px;
 
     padding:20px 10px;
 
@@ -1057,9 +1057,9 @@ button:hover{
 }
 .sidebar:not(.open) .sidebar-logo{
 
-    height:90px;
+    height:65px;
 
-    padding:10px 0;
+    padding:8px 0;
 
     display:flex;
 
@@ -1067,9 +1067,11 @@ button:hover{
 
     justify-content:center;
 
+    border-bottom:none;
+
 }
 
-.sidebar:not(.open) .sidebar-logo img{
+
 
     width:46px;
 
@@ -1096,8 +1098,8 @@ button:hover{
 }
 
 .sidebar:not(.open) .sidebar-logo img{
-    width:48px;
-    height:48px;
+    width:42px;
+    height:42px;
 }
 /* ==========================================
    SIDEBAR OVERLAY
