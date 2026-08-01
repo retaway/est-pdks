@@ -4092,15 +4092,17 @@ function toggleSidebar() {
     const sidebar = document.querySelector(".sidebar");
     const overlay = document.querySelector(".sidebar-overlay");
 
-    if (sidebar.classList.contains("open")) {
-        sidebar.classList.remove("open");
-        overlay.classList.remove("open");
-    } else {
-        sidebar.classList.add("open");
-        overlay.classList.add("open");
-    }
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("open");
 
 }
+
+document.querySelector(".sidebar-overlay").addEventListener("click", function () {
+
+    document.querySelector(".sidebar").classList.remove("open");
+    this.classList.remove("open");
+
+});
 document.addEventListener("click", function(e){
 
     const sidebar = document.querySelector(".sidebar");
