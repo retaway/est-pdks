@@ -2156,54 +2156,54 @@ kayitlar.forEach(function (kayit) {
         </tr>
         `;
     }
+document.getElementById("icerik").innerHTML = `
+    <h2>🔄 Görev / Tarife Değişimleri</h2>
 
-    document.getElementById("icerik").innerHTML = `
-        <h2>🔄 Görev / Tarife Değişimleri</h2>
+    <div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:15px;">
 
-        <div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:15px;">
+        <label><b>📅 Tarih</b></label>
 
-            <label><b>📅 Tarih</b></label>
+        <input
+            type="date"
+            id="gorevTarifeTarih"
+            value="${gorevTarifeFiltreTarih}"
+            onchange="gorevTarifeDegisimleri()">
 
-            <input
-                type="date"
-                id="gorevTarifeTarih"
-                value="${gorevTarifeFiltreTarih}"
-                onchange="gorevTarifeDegisimleri()">
+        <input
+            type="text"
+            id="gorevTarifeArama"
+            placeholder="🔍 Sicil veya Ad Soyad Ara..."
+            value="${gorevTarifeArama}"
+            onkeyup="gorevTarifeDegisimleri()"
+            style="width:260px;">
 
-            <input
-                type="text"
-                id="gorevTarifeArama"
-                placeholder="🔍 Sicil veya Ad Soyad Ara..."
-                value="${gorevTarifeArama}"
-                onkeyup="gorevTarifeDegisimleri()"
-                style="width:260px;">
+        <button onclick="yeniGorevTarifeDegisimi()">
+            ➕ Yeni Değişim
+        </button>
 
-            <button onclick="yeniGorevTarifeDegisimi()">
-                ➕ Yeni Değişim
-            </button>
+    </div>
 
-        </div>
-
+    <div class="table-responsive">
         <table class="tablo">
-    <thead>
-        <tr>
-            <th>Tarih</th>
-            <th>Saat</th>
-            <th>Değişim Talep Eden Personel</th>
-            <th>Tarifesi</th>
-            <th>Değişen Personel</th>
-            <th>Tarifesi</th>
-            <th>Neden</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Saat</th>
+                    <th>Değişim Talep Eden Personel</th>
+                    <th>Tarifesi</th>
+                    <th>Değişen Personel</th>
+                    <th>Tarifesi</th>
+                    <th>Neden</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
 
             <tbody>
                 ${satirlar}
             </tbody>
         </table>
-    `;
-}
+    </div>
+`;
 function yeniGorevTarifeDegisimi() {
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
