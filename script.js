@@ -1432,6 +1432,7 @@ function sistemSaati() {
 function dashboardAdmin(){
 
 const d = dashboardVerileri();
+console.log(aktifKullanici);
 
 document.getElementById("icerik").innerHTML = `
 
