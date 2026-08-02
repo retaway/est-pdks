@@ -1444,8 +1444,8 @@ const d = dashboardVerileri();
             👋 Günaydın, ${aktifKullanici.adSoyad}
         </h2>
 
-        <div class="panel-name">
-            📍 İşletim Müdürlüğü Yönetim Paneli
+        <div class="panel-name" id="panelBaslik">
+        Yönetim Paneli
         </div>
 
         <div class="panel-status">
@@ -1964,6 +1964,44 @@ const d = dashboardVerileri();
 
 dashboardGrafik();
 sistemSaati();
+panelBasligiGetir();
+    
+}
+function panelBasligiGetir() {
+
+    if (!aktifKullanici) return;
+
+    let baslik = "Kurumsal Yönetim Paneli";
+
+    switch (aktifKullanici.rol) {
+
+        case "ADMIN":
+            baslik = "Kurumsal Yönetim Paneli";
+            break;
+
+        case "IK":
+            baslik = "İnsan Kaynakları Yönetim Paneli";
+            break;
+
+        case "SURUCU_SEFI":
+            baslik = "İşletim Müdürlüğü Yönetim Paneli";
+            break;
+
+        case "VARDIYA_AMIRI":
+            baslik = "Vardiya Amirliği Yönetim Paneli";
+            break;
+
+        case "VATMAN":
+            baslik = "Vatman Bilgi Paneli";
+            break;
+
+    }
+
+    const panel = document.getElementById("panelBaslik");
+
+    if (panel) {
+        panel.innerHTML = "📍 " + baslik;
+    }
 
 }
 function sayfaGoster(sayfa) {
