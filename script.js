@@ -1358,75 +1358,187 @@ function sayfaGoster(sayfa) {
 
 <div class="dashboard">
 
-    <div class="dashboard-header">
+   <div class="dashboard-header">
+
+    <div class="dashboard-welcome">
+
+        <div class="welcome-icon">
+            <i class="fas fa-building"></i>
+        </div>
 
         <div>
 
-    <h1>👋 Günaydın, ${aktifKullanici.adSoyad}</h1>
+            <h1>
+                Hoş Geldiniz,
+                ${aktifKullanici.adSoyad}
+            </h1>
 
-    <p>
-        İşletim Müdürlüğü Dashboard • ${new Date().toLocaleDateString("tr-TR")}
-    </p>
+            <p>
+                ESTRAM Kurumsal Yönetim Sistemi • İşletim Müdürlüğü
+            </p>
 
-</div>
+        </div>
 
     </div>
 
-    <div class="stats">
+    <div class="dashboard-date">
 
-        <div class="stat-card">
-            <div class="stat-title">Toplam Personel</div>
-            <div class="stat-value">${d.toplamPersonel}</div> 
+        <i class="fas fa-calendar-days"></i>
+
+        ${new Date().toLocaleDateString("tr-TR")}
+
+    </div>
+
+</div>
+
+  <div class="stats">
+
+    <div class="stat-card blue">
+
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-title">
+                Toplam Personel
             </div>
 
-      <div class="stat-card">
-    <div class="stat-title">Aktif Personel</div>
-    <div class="stat-value">${d.aktifPersonel}</div>
-</div>
+            <div class="stat-value">
+                ${d.toplamPersonel}
+            </div>
 
-<div class="stat-card">
-    <div class="stat-title">Pasif Personel</div>
-    <div class="stat-value">${d.pasifPersonel}</div>
-</div>
+        </div>
 
-<div class="stat-card">
-    <div class="stat-title">Değişim Kodları</div>
-    <div class="stat-value">${d.degisimKodu}</div>
-</div>
     </div>
 
-    <div class="moduller">
+    <div class="stat-card green">
+
+        <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-title">
+                Aktif Personel
+            </div>
+
+            <div class="stat-value">
+                ${d.aktifPersonel}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card orange">
+
+        <div class="stat-icon">
+            <i class="fas fa-user-xmark"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-title">
+                Pasif Personel
+            </div>
+
+            <div class="stat-value">
+                ${d.pasifPersonel}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="stat-card red">
+
+        <div class="stat-icon">
+            <i class="fas fa-repeat"></i>
+        </div>
+
+        <div>
+
+            <div class="stat-title">
+                Değişim Kodları
+            </div>
+
+            <div class="stat-value">
+                ${d.degisimKodu}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="moduller">
 
     <div class="modul-card" onclick="sayfaGoster('ik')">
-        <div class="modul-icon"><i class="fas fa-users"></i></div>
-        <div class="modul-title">İnsan Kaynakları</div>
+
+        <div class="modul-icon">
+            <i class="fas fa-users"></i>
+        </div>
+
+        <div class="modul-title">
+            İnsan Kaynakları
+        </div>
+
         <div class="modul-desc">
             Personel yönetimi ve özlük işlemleri
         </div>
+
     </div>
 
     <div class="modul-card" onclick="sayfaGoster('personeller')">
-        <div class="modul-icon"><i class="fas fa-train-tram"></i></div>
-        <div class="modul-title">Sürücü Şefliği</div>
+
+        <div class="modul-icon">
+            <i class="fas fa-train-tram"></i>
+        </div>
+
+        <div class="modul-title">
+            Sürücü Şefliği
+        </div>
+
         <div class="modul-desc">
             Vardiya ve görev planlamaları
         </div>
+
     </div>
 
     <div class="modul-card">
-        <div class="modul-icon"><i class="fas fa-industry"></i></div>
-        <div class="modul-title">Sabit Tesisler Müdürlüğü</div>
+
+        <div class="modul-icon">
+            <i class="fas fa-industry"></i>
+        </div>
+
+        <div class="modul-title">
+            Sabit Sistemler Müdürlüğü
+        </div>
+
         <div class="modul-desc">
             Bakım, SCADA, Kataner ve altyapı yönetimi
         </div>
+
     </div>
 
     <div class="modul-card">
-        <div class="modul-icon"><i class="fas fa-truck"></i></div>
-        <div class="modul-title">Araçlar Müdürlüğü</div>
+
+        <div class="modul-icon">
+            <i class="fas fa-truck"></i>
+        </div>
+
+        <div class="modul-title">
+            Araçlar Müdürlüğü
+        </div>
+
         <div class="modul-desc">
             Araç ve ekipman yönetimi
         </div>
+
     </div>
 
 </div>
@@ -1435,24 +1547,33 @@ function sayfaGoster(sayfa) {
 
     <div class="panel">
 
-        <h3><i class="fas fa-clock"></i> Son İşlemler</h3>
+        <h3>
+            <i class="fas fa-clock"></i>
+            Son İşlemler
+        </h3>
 
         <table class="dashboard-table">
 
             <thead>
+
                 <tr>
+
                     <th>Tarih</th>
                     <th>İşlem</th>
                     <th>Kullanıcı</th>
+
                 </tr>
+
             </thead>
 
             <tbody>
 
                 <tr>
+
                     <td>-</td>
                     <td>Henüz işlem kaydı bulunmuyor.</td>
                     <td>-</td>
+
                 </tr>
 
             </tbody>
@@ -1460,19 +1581,30 @@ function sayfaGoster(sayfa) {
         </table>
 
     </div>
-<div class="panel grafik-panel">
 
-    <h3>
-        <i class="fas fa-chart-pie"></i>
-        Personel Durumu
-    </h3>
+    <div class="panel grafik-panel">
 
-    <canvas id="personelGrafik"></canvas>
+        <h3>
 
-</div>
+            <i class="fas fa-chart-pie"></i>
+
+            Personel Durumu
+
+        </h3>
+
+        <canvas id="personelGrafik"></canvas>
+
+    </div>
+
     <div class="panel">
 
-        <h3><i class="fas fa-bullhorn"></i> Duyurular</h3>
+        <h3>
+
+            <i class="fas fa-bullhorn"></i>
+
+            Duyurular
+
+        </h3>
 
         <div class="duyuru-item">
             ✅ EKYS başarıyla çalışıyor.
@@ -1494,7 +1626,6 @@ function sayfaGoster(sayfa) {
 `;
 
 dashboardGrafik();
-
 break;
 
         case "ik":
