@@ -4596,16 +4596,24 @@ function toggleSidebar() {
 
 }
 
-document.querySelector(".sidebar-overlay").addEventListener("click", function () {
+const overlay = document.querySelector(".sidebar-overlay");
 
-    document.querySelector(".sidebar").classList.remove("open");
-    this.classList.remove("open");
+if (overlay) {
 
-});
+    overlay.addEventListener("click", function () {
+
+        document.querySelector(".sidebar").classList.remove("open");
+        this.classList.remove("open");
+
+    });
+
+}
 document.addEventListener("click", function(e){
 
     const sidebar = document.querySelector(".sidebar");
     const button = document.querySelector(".menu-toggle");
+
+    if (!sidebar || !button) return;
 
     if(
         sidebar.classList.contains("open") &&
