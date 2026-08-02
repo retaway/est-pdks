@@ -63,7 +63,7 @@ localStorage.setItem(
 
 function kullaniciBilgileriniGoster() {
 
-    if (!aktifKullanici) return;
+    if (!) return;
 
     const ad = document.getElementById("kullaniciAdi");
     const rol = document.getElementById("kullaniciRol");
@@ -1443,13 +1443,13 @@ document.getElementById("icerik").innerHTML = `
 
         <div class="welcome-left">
 
-            <h2>
-                👋 Hoş Geldiniz,
-                <strong>${aktifKullanici.adSoyad}</strong>
-            </h2>
+           <h2>
+    👋 Hoş Geldiniz,
+    <strong>${aktifKullanici.ad} ${aktifKullanici.soyad}</strong>
+</h2>
 
-           <div class="panel-name">
-    📍 ${aktifKullanici.rol || "Sistem Yönetimi"} • ${aktifKullanici.adSoyad}
+<div class="panel-name">
+    📍 ${aktifKullanici.bagliOlduguYer} • ${aktifKullanici.gorev}
 </div>
 
             <div class="welcome-divider"></div>
