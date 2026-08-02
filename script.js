@@ -1445,11 +1445,11 @@ document.getElementById("icerik").innerHTML = `
 
            <h2>
     👋 Hoş Geldiniz,
-    <strong>${aktifKullanici.ad} ${aktifKullanici.soyad}</strong>
+    <strong>${aktifKullanici.adSoyad}</strong>
 </h2>
 
 <div class="panel-name">
-    📍 ${aktifKullanici.bagliOlduguYer} • ${aktifKullanici.gorev}
+   📍 ${rolAdiGetir(aktifKullanici.rol)} • ${aktifKullanici.adSoyad}
 </div>
 
             <div class="welcome-divider"></div>
