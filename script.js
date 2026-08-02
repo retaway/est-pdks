@@ -1474,8 +1474,6 @@ const d = dashboardVerileri();
 
 </div>
 
-    </div>
-
     <div class="stats">
 
         <div class="stat-card blue">
