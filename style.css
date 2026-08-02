@@ -48,17 +48,11 @@ body{
 }
 
 .left-content{
-
     position:absolute;
-
     left:70px;
-
-    top:170px;
-
-    width:560px;
-
+    top:150px;
+    width:620px;
     z-index:5;
-
 }
 
 .left-content h1{
