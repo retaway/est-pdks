@@ -1346,15 +1346,66 @@ function dashboardVerileri() {
     };
 
 }
-function sayfaGoster(sayfa) {
+function dashboardOlustur() {
 
-    switch (sayfa) {
+    switch (aktifKullanici.rol) {
 
-      case "anasayfa":
+        case "ADMIN":
+            dashboardAdmin();
+            break;
 
-    sayfaBasligiYaz("Ana Sayfa");
+        case "GENEL_YONETIM":
+            dashboardGenelYonetim();
+            break;
 
-    const d = dashboardVerileri();
+        case "ISLETIM":
+            dashboardIsletim();
+            break;
+
+        case "IK":
+            dashboardIK();
+            break;
+
+        case "ARACLAR":
+            dashboardAraclar();
+            break;
+
+        case "SABIT_SISTEMLER":
+            dashboardSabitSistemler();
+            break;
+
+        case "TOPLU_TASIMA":
+            dashboardTopluTasima();
+            break;
+
+        case "MALI_ISLER":
+            dashboardMali();
+            break;
+
+        case "SATIN_ALMA":
+            dashboardSatinAlma();
+            break;
+
+        case "LOJISTIK":
+            dashboardLojistik();
+            break;
+
+        case "KALITE":
+            dashboardKalite();
+            break;
+
+        case "YBS":
+            dashboardYBS();
+            break;
+
+        default:
+            dashboardAdmin();
+
+    }
+
+}
+function dashboardAdmin(){
+
 
     document.getElementById("icerik").innerHTML = `
 
@@ -1902,6 +1953,18 @@ function sayfaGoster(sayfa) {
 
 dashboardGrafik();
 sistemSaati();
+
+}
+function sayfaGoster(sayfa) {
+
+    switch (sayfa) {
+
+  case "anasayfa":
+
+    sayfaBasligiYaz("Ana Sayfa");
+
+    dashboardOlustur();
+
 break;
         case "ik":
 
