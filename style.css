@@ -649,3 +649,44 @@ textarea:focus{
     width:100%!important;
     max-height:350px;
 }
+/* ===========================
+   LOGIN FOOTER
+=========================== */
+
+.login-footer{
+
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:60px;
+
+    padding:0 40px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(7,20,45,.80);
+
+    backdrop-filter:blur(10px);
+
+    border-top:1px solid rgba(255,255,255,.12);
+
+    color:#fff;
+
+    font-size:14px;
+
+    z-index:9999;
+
+}
+
+.login-footer span{
+
+    color:#4da3ff;
+
+    font-weight:600;
+
+}
