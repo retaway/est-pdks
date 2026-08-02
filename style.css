@@ -379,7 +379,7 @@ button:hover{
 
     left:70px;
 
-    bottom:90px;
+    bottom:80px;
 
     display:flex;
 
@@ -387,7 +387,7 @@ button:hover{
 
     width:620px;
 
-    z-index:5;
+    z-index:21;
 
 }
 .login-footer{
