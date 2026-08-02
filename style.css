@@ -62,13 +62,15 @@ body{
 
     position:absolute;
 
-    left:70px;
-
     top:70px;
+
+    left:70px;
 
     width:520px;
 
-    z-index:5;
+    display:block;
+
+    z-index:20;
 
 }
 
@@ -196,17 +198,17 @@ body{
 
     max-width:100%;
 
-    background:#fff;
+    background:#ffffff;
 
-    border-radius:22px;
+    border-radius:24px;
 
     padding:36px;
 
-    box-shadow:0 20px 45px rgba(17,38,80,.15);
+    box-shadow:0 20px 45px rgba(0,0,0,.18);
 
     position:relative;
 
-    z-index:10;
+    z-index:20;
 
 }
 
@@ -386,17 +388,15 @@ button:hover{
 
     left:70px;
 
-    right:70px;
-
-    bottom:75px;
-
-    width:auto;
+    bottom:80px;
 
     display:flex;
 
     gap:20px;
 
-    z-index:5;
+    width:620px;
+
+    z-index:20;
 
 }
 .login-footer span{
