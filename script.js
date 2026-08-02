@@ -1432,7 +1432,6 @@ function sistemSaati() {
 function dashboardAdmin(){
 
 const d = dashboardVerileri();
-console.log(aktifKullanici);
 
 document.getElementById("icerik").innerHTML = `
 
@@ -1449,9 +1448,9 @@ document.getElementById("icerik").innerHTML = `
                 <strong>${aktifKullanici.adSoyad}</strong>
             </h2>
 
-            <div class="panel-name">
-                📍 ${aktifKullanici.mudurluk} • ${aktifKullanici.gorev}
-            </div>
+           <div class="panel-name">
+    📍 ${aktifKullanici.rol || "Sistem Yönetimi"} • ${aktifKullanici.adSoyad}
+</div>
 
             <div class="welcome-divider"></div>
 
