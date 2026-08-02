@@ -370,7 +370,75 @@ button:hover{
 .card h3{
     margin-top:0;
 }
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(8,22,52,.20);
+}
 
+.feature-bar{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    gap:18px;
+
+    margin:0 60px 50px;
+
+}
+
+.login-footer{
+
+    height:70px;
+
+    background:#071b42;
+
+    color:#fff;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 40px;
+
+    font-size:16px;
+
+}
+
+.login-footer span{
+
+    color:#4da3ff;
+
+}
+
+.login-icon{
+
+    width:90px;
+
+    height:90px;
+
+    margin:0 auto 25px;
+
+    border-radius:50%;
+
+    background:#eef4ff;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:42px;
+
+    color:#2563eb;
+
+}
 /* ===========================
    DASHBOARD
 =========================== */
