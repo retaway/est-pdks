@@ -1361,9 +1361,14 @@ function sayfaGoster(sayfa) {
     <div class="dashboard-header">
 
         <div>
-            <h1>ESTRAM Kurumsal Yönetim Sistemi</h1>
-            <p>Kurumsal yönetim paneline hoş geldiniz.</p>
-        </div>
+
+    <h1>👋 Günaydın, ${aktifKullanici.adSoyad}</h1>
+
+    <p>
+        İşletim Müdürlüğü Dashboard • ${new Date().toLocaleDateString("tr-TR")}
+    </p>
+
+</div>
 
     </div>
 
