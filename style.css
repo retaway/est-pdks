@@ -6,48 +6,151 @@ body{
     color:#1f2937;
     font-family:"Segoe UI",Arial,sans-serif;
 }
+/*==================================================
+                LOGIN SAYFASI
+==================================================*/
+
 .login-page{
+    display:flex;
     height:100vh;
+}
+
+.login-left{
+    width:55%;
+    background:
+        linear-gradient(rgba(8,25,56,.70),rgba(8,25,56,.80)),
+        url("tramvay.jpg");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+}
+
+.left-content{
+    width:75%;
+}
+
+.login-logo{
+    width:170px;
+    margin-bottom:30px;
+}
+
+.left-content h1{
+    margin:0;
+    font-size:58px;
+    font-weight:700;
+}
+
+.left-content h1 span{
+    color:#3b82f6;
+}
+
+.left-content h2{
+    margin-top:10px;
+    font-size:34px;
+    font-weight:300;
+}
+
+.blue-line{
+    width:90px;
+    height:5px;
+    border-radius:20px;
+    background:#3b82f6;
+    margin:30px 0;
+}
+
+.left-content p{
+    font-size:20px;
+    line-height:32px;
+    color:#dbe7ff;
+}
+
+.login-features{
+    margin-top:50px;
+    display:flex;
+    gap:18px;
+}
+
+.feature{
+    flex:1;
+    background:rgba(255,255,255,.12);
+    border-radius:18px;
+    padding:20px;
+    backdrop-filter:blur(10px);
+}
+
+.feature strong{
+    display:block;
+    margin-bottom:8px;
+}
+
+.login-right{
+    width:45%;
     display:flex;
     justify-content:center;
     align-items:center;
+    background:#f4f7fb;
 }
 
-.login-container{
-    width:320px;
+.login-card{
+    width:430px;
     background:#fff;
-    padding:30px;
-    border-radius:15px;
+    border-radius:24px;
+    padding:45px;
+    box-shadow:0 20px 60px rgba(0,0,0,.12);
+}
+
+.login-card h2{
+    margin:0;
     text-align:center;
-    box-shadow:0 0 20px rgba(0,0,0,.15);
+    color:#17375e;
+    font-size:36px;
 }
 
-.login-container h2 {
-    font-size: 16px;
-    font-weight: normal;
-    color: #555;
-    margin-bottom: 25px;
+.login-card p{
+    text-align:center;
+    color:#666;
+    margin-bottom:35px;
 }
 
-.login-container input{
-    width:90%;
-    padding:12px;
-    margin:8px 0;
-    border:1px solid #ccc;
-    border-radius:8px;
+.login-card label{
+    display:block;
+    margin:18px 0 8px;
+    font-weight:600;
+    color:#17375e;
 }
 
-.login-container button{
-    width:95%;
-    padding:12px;
-    margin-top:15px;
+.login-card input{
+    width:100%;
+    padding:15px;
+    border:1px solid #d5dce5;
+    border-radius:12px;
+    box-sizing:border-box;
+    font-size:16px;
+}
+
+.login-card input:focus{
+    border-color:#005baa;
+    box-shadow:0 0 0 3px rgba(0,91,170,.15);
+}
+
+.login-card button{
+    width:100%;
+    margin-top:30px;
+    padding:16px;
+    border:none;
+    border-radius:12px;
     background:#005baa;
     color:#fff;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
+    font-size:18px;
+    font-weight:700;
 }
 
+.login-card button:hover{
+    background:#004080;
+}
 button:hover {
     background: #003f7f;
 }
@@ -103,17 +206,7 @@ button:hover {
 .card h3{
     margin-top:0;
 }
-.logo{
-    display:block;
-    width:90px;
-    height:auto;
-    margin:0 auto 20px;
-}
 
-.logo img{
-    width: 90px;
-    height: auto;
-}
 /* ===========================
    DASHBOARD
 =========================== */
