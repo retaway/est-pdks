@@ -53,7 +53,7 @@ body{
 }
 
 .left-content{
-  
+
     position:absolute;
 
     left:70px;
@@ -63,6 +63,7 @@ body{
     width:520px;
 
     z-index:5;
+
 }
 
 .left-content h1{
