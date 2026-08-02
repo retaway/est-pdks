@@ -1406,7 +1406,7 @@ function dashboardOlustur() {
 }
 function dashboardAdmin(){
 
-
+const d = dashboardVerileri();
     document.getElementById("icerik").innerHTML = `
 
 <div class="dashboard">
