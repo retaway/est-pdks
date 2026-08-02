@@ -1804,30 +1804,44 @@ button:hover{
 
 }
 /*==========================
-  Dashboard Header
+      Dashboard Header
 ==========================*/
 
 .dashboard-header{
 
-    margin-bottom:28px;
+    margin-bottom:30px;
 
 }
 
 .welcome-panel{
 
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
     background:#ffffff;
 
     border-radius:20px;
 
-    padding:30px 35px;
+    padding:28px 34px;
 
     border:1px solid #e5e7eb;
 
-    box-shadow:0 10px 25px rgba(15,23,42,.08);
+    box-shadow:0 10px 30px rgba(15,23,42,.08);
 
 }
 
-.welcome-panel h2{
+.welcome-left{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.welcome-left h2{
 
     margin:0;
 
@@ -1837,13 +1851,15 @@ button:hover{
 
     color:#17375e;
 
+    line-height:1.2;
+
 }
 
 .panel-name{
 
     margin-top:10px;
 
-    font-size:18px;
+    font-size:17px;
 
     font-weight:600;
 
@@ -1851,17 +1867,23 @@ button:hover{
 
 }
 
-.panel-status{
-
-    margin-top:22px;
+.welcome-right{
 
     display:flex;
 
     align-items:center;
 
-    flex-wrap:wrap;
+}
 
-    gap:12px;
+.panel-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    flex-wrap:wrap;
 
     font-size:15px;
 
@@ -1885,6 +1907,6 @@ button:hover{
 
     color:#cbd5e1;
 
-    font-weight:400;
+    font-weight:300;
 
 }
