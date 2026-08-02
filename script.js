@@ -1465,27 +1465,37 @@ document.getElementById("icerik").innerHTML = `
 
         </div>
 
-        <div class="welcome-right">
+      <div class="welcome-right">
 
-            <div class="weather-box">
+    <div class="status-line">
 
-                🌤
-                <span id="havaDurumu">
-                    Eskişehir yükleniyor...
-                </span>
+        <span>
+            📅
+            ${new Date().toLocaleDateString("tr-TR",{
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            })}
+        </span>
 
-            </div>
+        <span class="ayrac">|</span>
 
-            <div class="clock-box">
+        <span>
+            🕒
+            <span id="sistemSaat">--:--:--</span>
+        </span>
 
-                🕒
-                <span id="sistemSaat">
-                    --:--:--
-                </span>
+        <span class="ayrac">|</span>
 
-            </div>
+        <span>
+            🌤
+            <span id="havaDurumu">Eskişehir yükleniyor...</span>
+        </span>
 
-        </div>
+    </div>
+
+</div>
 
     </div>
     <div class="stats">
