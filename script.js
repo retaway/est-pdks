@@ -1404,6 +1404,31 @@ function dashboardOlustur() {
     }
 
 }
+function sistemSaati() {
+
+    function guncelle() {
+
+        const simdi = new Date();
+
+        const saat = String(simdi.getHours()).padStart(2, "0");
+        const dakika = String(simdi.getMinutes()).padStart(2, "0");
+        const saniye = String(simdi.getSeconds()).padStart(2, "0");
+
+        const alan = document.getElementById("sistemSaat");
+
+        if (alan) {
+            alan.innerText = `${saat}:${dakika}:${saniye}`;
+        }
+
+    }
+
+    guncelle();
+
+    clearInterval(window.sistemSaatTimer);
+
+    window.sistemSaatTimer = setInterval(guncelle, 1000);
+
+}
 function dashboardAdmin(){
 
 const d = dashboardVerileri();
