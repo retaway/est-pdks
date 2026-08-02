@@ -1459,72 +1459,82 @@ const d = dashboardVerileri();
                 İşletim Müdürlüğü • Kurumsal Yönetim Paneli
 
             </p>
+<div class="dashboard-info-bar">
+
+    <div class="info-item">
+
+        <i class="fas fa-user-shield"></i>
+
+        <div>
+
+            <span>Kullanıcı</span>
+
+            <strong>${aktifKullanici.adSoyad}</strong>
 
         </div>
 
-      <div class="dashboard-right">
+    </div>
 
-    <div class="header-info-card">
+    <div class="info-item">
 
-        <div class="info-row">
+        <i class="fas fa-user-tag"></i>
 
-            <i class="fas fa-calendar-days"></i>
+        <div>
 
-            <div>
+            <span>Yetki</span>
 
-                <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
-
-                <small>Bugünkü Tarih</small>
-
-            </div>
+            <strong>${rolAdiGetir(aktifKullanici.rol)}</strong>
 
         </div>
 
-        <div class="info-row">
+    </div>
 
-            <i class="fas fa-clock"></i>
+    <div class="info-item">
 
-            <div>
+        <i class="fas fa-calendar-days"></i>
 
-                <strong id="sistemSaat">--:--:--</strong>
+        <div>
 
-                <small>Sistem Saati</small>
+            <span>Tarih</span>
 
-            </div>
-
-        </div>
-
-        <div class="info-row">
-
-            <i class="fas fa-user"></i>
-
-            <div>
-
-                <strong>${aktifKullanici.adSoyad}</strong>
-
-                <small>${rolAdiGetir(aktifKullanici.rol)}</small>
-
-            </div>
+            <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
 
         </div>
 
-        <div class="info-row">
+    </div>
 
-            <i class="fas fa-circle-check"></i>
+    <div class="info-item">
 
-            <div>
+        <i class="fas fa-clock"></i>
 
-                <strong>Sistem Aktif</strong>
+        <div>
 
-                <small>Tüm servisler çalışıyor</small>
+            <span>Saat</span>
 
-            </div>
+            <strong id="sistemSaat">--:--:--</strong>
+
+        </div>
+
+    </div>
+
+    <div class="info-item success">
+
+        <i class="fas fa-circle-check"></i>
+
+        <div>
+
+            <span>Durum</span>
+
+            <strong>Sistem Aktif</strong>
 
         </div>
 
     </div>
 
 </div>
+        </div>
+
+     
 
     </div>
  <div class="stats">
