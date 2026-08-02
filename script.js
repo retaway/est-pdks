@@ -1432,61 +1432,62 @@ function sistemSaati() {
 function dashboardAdmin(){
 
 const d = dashboardVerileri();
-    document.getElementById("icerik").innerHTML = `
+
+document.getElementById("icerik").innerHTML = `
 
 <div class="dashboard">
 
- <div class="dashboard-header">
+    <div class="dashboard-header">
 
-    <div class="welcome-left">
+        <div class="welcome-left">
 
-        <h2>
-            Hoş Geldiniz,
-            <strong>${aktifKullanici.adSoyad}</strong>
-        </h2>
+            <h2>
+                Hoş Geldiniz,
+                <strong>${aktifKullanici.adSoyad}</strong>
+            </h2>
 
-        <div class="welcome-role">
+            <div class="welcome-role">
 
-            ${aktifKullanici.mudurluk} • ${aktifKullanici.gorev}
+                İşletim Müdürlüğü • Sistem Yöneticisi
+
+            </div>
+
+            <div class="welcome-date">
+
+                ${new Date().toLocaleDateString("tr-TR",{
+                    weekday:"long",
+                    day:"2-digit",
+                    month:"long",
+                    year:"numeric"
+                })}
+
+            </div>
 
         </div>
 
-        <div class="welcome-date">
+        <div class="welcome-right">
 
-            ${new Date().toLocaleDateString("tr-TR",{
-                weekday:"long",
-                day:"2-digit",
-                month:"long",
-                year:"numeric"
-            })}
+            <div class="weather-box">
+
+                🌤
+                <span id="havaDurumu">
+                    Eskişehir yükleniyor...
+                </span>
+
+            </div>
+
+            <div class="clock-box">
+
+                🕒
+                <span id="sistemSaat">
+                    --:--:--
+                </span>
+
+            </div>
 
         </div>
 
     </div>
-
-    <div class="welcome-right">
-
-        <div class="weather-box">
-
-            🌤
-            <span id="havaDurumu">
-                Eskişehir yükleniyor...
-            </span>
-
-        </div>
-
-        <div class="clock-box">
-
-            🕒
-            <span id="sistemSaat">
-                --:--:--
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
     <div class="stats">
 
         <div class="stat-card blue">
