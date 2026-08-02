@@ -1389,66 +1389,147 @@ button:hover{
 /* ==========================================
    DASHBOARD V2
 ========================================== */
-
 .stats{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
 
-    gap:20px;
+    gap:22px;
 
-    margin:25px 0;
+    margin:28px 0;
 
 }
 
 .stat-card{
 
-    background:#fff;
-
-    border-radius:18px;
-
-    padding:22px;
+    position:relative;
 
     display:flex;
 
+    justify-content:space-between;
+
     align-items:center;
 
-    gap:18px;
+    padding:28px;
 
-    box-shadow:0 10px 30px rgba(15,23,42,.08);
+    background:#ffffff;
 
-    transition:.25s;
+    border-radius:20px;
 
-    border:1px solid #edf2f7;
+    overflow:hidden;
 
+    border:1px solid #e5e7eb;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+
+    transition:all .30s ease;
+
+}
+
+.stat-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:5px;
+
+}
+
+.blue::before{
+    background:#2563eb;
+}
+
+.green::before{
+    background:#10b981;
+}
+
+.orange::before{
+    background:#f59e0b;
+}
+
+.red::before{
+    background:#ef4444;
 }
 
 .stat-card:hover{
 
-    transform:translateY(-6px);
+    transform:translateY(-8px);
 
-    box-shadow:0 18px 35px rgba(15,23,42,.14);
+    box-shadow:0 20px 45px rgba(37,99,235,.15);
+
+}
+
+.stat-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.stat-title{
+
+    font-size:13px;
+
+    font-weight:600;
+
+    color:#64748b;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    margin-bottom:12px;
+
+}
+
+.stat-value{
+
+    font-size:44px;
+
+    font-weight:800;
+
+    line-height:1;
+
+    color:#0f172a;
+
+    margin-bottom:8px;
+
+}
+
+.stat-content small{
+
+    font-size:13px;
+
+    color:#94a3b8;
 
 }
 
 .stat-icon{
 
-    width:62px;
+    width:78px;
 
-    height:62px;
+    height:78px;
 
-    border-radius:18px;
+    border-radius:20px;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
+
+    align-items:center;
 
     color:#fff;
 
-    font-size:26px;
+    font-size:32px;
 
     flex-shrink:0;
 
@@ -1462,41 +1543,44 @@ button:hover{
 
 .green .stat-icon{
 
-    background:linear-gradient(135deg,#16a34a,#4ade80);
+    background:linear-gradient(135deg,#10b981,#34d399);
 
 }
 
 .orange .stat-icon{
 
-    background:linear-gradient(135deg,#ea580c,#fb923c);
+    background:linear-gradient(135deg,#f59e0b,#fbbf24);
 
 }
 
 .red .stat-icon{
 
-    background:linear-gradient(135deg,#dc2626,#f87171);
+    background:linear-gradient(135deg,#ef4444,#f87171);
 
 }
 
-.stat-title{
 
-    font-size:14px;
 
-    color:#64748b;
+.panel{
 
-    margin-bottom:6px;
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    border:1px solid #e5e7eb;
+
+    box-shadow:0 8px 25px rgba(15,23,42,.08);
+
+}
+
+.panel-large{
+
+    grid-column:span 2;
 
 }
 
-.stat-value{
-
-    font-size:34px;
-
-    font-weight:700;
-
-    color:#17375e;
-
-}
 .panel-header{
 
     display:flex;
@@ -1513,11 +1597,11 @@ button:hover{
 
     margin:0;
 
-    font-size:19px;
-
-    font-weight:700;
+    font-size:20px;
 
     color:#17375e;
+
+    font-weight:700;
 
 }
 
@@ -1558,23 +1642,9 @@ button:hover{
     color:#fff;
 
 }
-.panel{
 
-    background:#fff;
 
-    border-radius:18px;
 
-    padding:24px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-}
-
-.panel-large{
-
-    grid-column:span 2;
-
-}
 .duyuru-item{
 
     display:flex;
@@ -1583,7 +1653,7 @@ button:hover{
 
     gap:15px;
 
-    padding:15px;
+    padding:16px;
 
     margin-top:15px;
 
@@ -1607,9 +1677,9 @@ button:hover{
 
 .duyuru-item i{
 
-    color:#2563eb;
-
     font-size:22px;
+
+    color:#2563eb;
 
     margin-top:2px;
 
@@ -1638,11 +1708,14 @@ button:hover{
     line-height:1.5;
 
 }
+
+
+
 .durum-basarili{
 
     display:inline-block;
 
-    padding:5px 10px;
+    padding:6px 12px;
 
     border-radius:20px;
 
@@ -1655,23 +1728,22 @@ button:hover{
     font-weight:700;
 
 }
+
+
+
 .header-info-card{
 
-    width:270px;
+    width:280px;
 
-    background:#ffffff;
+    background:#fff;
 
     border-radius:18px;
 
-    padding:18px;
+    padding:20px;
 
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    border:1px solid #e5e7eb;
 
-    display:flex;
-
-    flex-direction:column;
-
-    gap:16px;
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
 
 }
 
@@ -1683,15 +1755,23 @@ button:hover{
 
     gap:14px;
 
+    margin-bottom:16px;
+
+}
+
+.info-row:last-child{
+
+    margin-bottom:0;
+
 }
 
 .info-icon{
 
-    width:44px;
+    width:46px;
 
-    height:44px;
+    height:46px;
 
-    border-radius:12px;
+    border-radius:14px;
 
     background:#eff6ff;
 
@@ -1705,27 +1785,21 @@ button:hover{
 
     font-size:18px;
 
-    flex-shrink:0;
-
-}
-
-.info-text{
-
-    display:flex;
-
-    flex-direction:column;
-
 }
 
 .info-text strong{
 
+    display:block;
+
     font-size:15px;
 
-    color:#1e293b;
+    color:#0f172a;
 
 }
 
 .info-text span{
+
+    display:block;
 
     font-size:12px;
 
