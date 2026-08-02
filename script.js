@@ -1438,33 +1438,45 @@ const d = dashboardVerileri();
 
 <div class="dashboard-header">
 
-    <div class="header-logo">
-        <img src="Estram.png" alt="ESTRAM">
-    </div>
+    <div class="welcome-panel">
 
-    <div class="header-title">
+        <h2 id="selamlama">
+            👋 Günaydın, ${aktifKullanici.adSoyad}
+        </h2>
 
-        <h1>ESTRAM EKYS</h1>
-
-        <span>Kurumsal Yönetim Sistemi</span>
-
-    </div>
-
-    <div class="header-date">
-
-        <div class="header-date-item">
-
-            <i class="fas fa-calendar-days"></i>
-
-            <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
-
+        <div class="panel-name">
+            📍 İşletim Müdürlüğü Yönetim Paneli
         </div>
 
-        <div class="header-date-item">
+        <div class="panel-status">
 
-            <i class="fas fa-clock"></i>
+            <span>
+                📅
+                <span id="bugunTarih">
+                    ${new Date().toLocaleDateString("tr-TR",{
+                        weekday:"long",
+                        day:"2-digit",
+                        month:"long",
+                        year:"numeric"
+                    })}
+                </span>
+            </span>
 
-            <strong id="sistemSaat">--:--:--</strong>
+            <span class="ayrac">|</span>
+
+            <span>
+                🕒
+                <span id="sistemSaat">--:--:--</span>
+            </span>
+
+            <span class="ayrac">|</span>
+
+            <span>
+                🌤
+                <span id="havaDurumu">
+                    Eskişehir yükleniyor...
+                </span>
+            </span>
 
         </div>
 
