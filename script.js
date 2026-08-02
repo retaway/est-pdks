@@ -1440,17 +1440,23 @@ const d = dashboardVerileri();
 
         <div class="dashboard-left">
 
-            <span class="dashboard-badge">
+        <div class="dashboard-brand">
 
-                <i class="fas fa-building"></i>
+    <img src="Estram.png" alt="ESTRAM">
 
-                ESTRAM Kurumsal Yönetim Sistemi
+    <div>
 
-            </span>
+        <h5>ESTRAM</h5>
+
+        <span>Kurumsal Yönetim Sistemi</span>
+
+    </div>
+
+</div>
 
             <h1>
 
-                Hoş Geldiniz, ${aktifKullanici.adSoyad}
+            ESTRAM EKYS
 
             </h1>
 
