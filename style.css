@@ -48,10 +48,17 @@ body{
 }
 
 .left-content{
-    position:relative;
+
+    position:absolute;
+
+    left:70px;
+
+    top:55px;
+
+    width:520px;
+
     z-index:5;
-    width:70%;
-    padding:70px 60px;
+
 }
 
 .login-logo{
@@ -98,13 +105,15 @@ body{
 
 .left-content h2{
 
-    margin:14px 0 0;
+    margin:18px 0 0;
 
-    font-size:30px;
+    font-size:28px;
 
     font-weight:400;
 
-    color:#f2f5fb;
+    color:#ffffff;
+
+    line-height:1.25;
 
 }
 
