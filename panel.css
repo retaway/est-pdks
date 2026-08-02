@@ -1825,19 +1825,23 @@ button:hover{
 
     border-radius:20px;
 
-    padding:28px 34px;
+    padding:30px 36px;
 
     border:1px solid #e5e7eb;
 
-    box-shadow:0 10px 30px rgba(15,23,42,.08);
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
 
 }
+
+/* Sol Alan */
 
 .welcome-left{
 
     display:flex;
 
     flex-direction:column;
+
+    gap:8px;
 
 }
 
@@ -1855,37 +1859,15 @@ button:hover{
 
 }
 
-.panel-name{
-
-    margin-top:10px;
-
-    font-size:17px;
-
-    font-weight:600;
+.welcome-left h2 strong{
 
     color:#2563eb;
 
 }
 
-.welcome-right{
+.panel-name{
 
-    display:flex;
-
-    align-items:center;
-
-}
-
-.panel-status{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    flex-wrap:wrap;
-
-    font-size:15px;
+    font-size:17px;
 
     font-weight:600;
 
@@ -1893,20 +1875,64 @@ button:hover{
 
 }
 
-.panel-status span{
+.welcome-date{
+
+    font-size:15px;
+
+    color:#64748b;
+
+}
+
+/* Sağ Alan */
+
+.welcome-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:12px;
+
+}
+
+/* Saat ve Hava Kartları */
+
+.weather-box,
+.clock-box{
 
     display:flex;
 
     align-items:center;
 
-    gap:6px;
+    gap:10px;
+
+    min-width:190px;
+
+    padding:11px 18px;
+
+    border-radius:12px;
+
+    background:#f8fafc;
+
+    border:1px solid #e2e8f0;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#17375e;
+
+    transition:.25s;
 
 }
 
-.ayrac{
+.weather-box:hover,
+.clock-box:hover{
 
-    color:#cbd5e1;
+    background:#eef4ff;
 
-    font-weight:300;
+    border-color:#bfdbfe;
 
 }
