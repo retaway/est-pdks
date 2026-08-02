@@ -1386,11 +1386,11 @@ button:hover{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 
-    gap:22px;
+    gap:24px;
 
-    margin:28px 0;
+    margin:30px 0;
 
 }
 
@@ -1404,17 +1404,17 @@ button:hover{
 
     align-items:center;
 
-    padding:28px;
+    padding:26px 28px;
 
     background:#ffffff;
 
-    border-radius:20px;
+    border-radius:18px;
 
     overflow:hidden;
 
-    border:1px solid #e5e7eb;
+    border:1px solid #e8edf5;
 
-    box-shadow:0 12px 30px rgba(15,23,42,.08);
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
 
     transition:all .30s ease;
 
@@ -1454,9 +1454,9 @@ button:hover{
 
 .stat-card:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-6px);
 
-    box-shadow:0 20px 45px rgba(37,99,235,.15);
+    box-shadow:0 16px 36px rgba(15,23,42,.14);
 
 }
 
@@ -1466,13 +1466,15 @@ button:hover{
 
     flex-direction:column;
 
+    flex:1;
+
 }
 
 .stat-title{
 
-    font-size:13px;
+    font-size:12px;
 
-    font-weight:600;
+    font-weight:700;
 
     color:#64748b;
 
@@ -1480,21 +1482,21 @@ button:hover{
 
     letter-spacing:1px;
 
-    margin-bottom:12px;
+    margin-bottom:10px;
 
 }
 
 .stat-value{
 
-    font-size:44px;
+    font-size:42px;
 
     font-weight:800;
 
     line-height:1;
 
-    color:#0f172a;
+    color:#17375e;
 
-    margin-bottom:8px;
+    margin-bottom:10px;
 
 }
 
@@ -1502,17 +1504,19 @@ button:hover{
 
     font-size:13px;
 
-    color:#94a3b8;
+    color:#64748b;
+
+    line-height:1.5;
 
 }
 
 .stat-icon{
 
-    width:78px;
+    width:72px;
 
-    height:78px;
+    height:72px;
 
-    border-radius:20px;
+    border-radius:18px;
 
     display:flex;
 
@@ -1522,9 +1526,11 @@ button:hover{
 
     color:#fff;
 
-    font-size:32px;
+    font-size:30px;
 
     flex-shrink:0;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
 
 }
 
@@ -1551,8 +1557,6 @@ button:hover{
     background:linear-gradient(135deg,#ef4444,#f87171);
 
 }
-
-
 
 .panel{
 
