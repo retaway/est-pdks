@@ -1438,67 +1438,41 @@ const d = dashboardVerileri();
 
     <div class="dashboard-header">
 
-        <div class="dashboard-left">
+    <div class="header-logo">
 
-        <div class="dashboard-brand">
+        <img src="Estram.png" alt="ESTRAM">
 
-    <img src="Estram.png" alt="ESTRAM">
+    </div>
 
-    <div>
+    <div class="header-title">
 
-        <h5>ESTRAM</h5>
+        <h1>ESTRAM EKYS</h1>
 
-        <span>Kurumsal Yönetim Sistemi</span>
+        <p>Kurumsal Yönetim Bilgi Sistemi</p>
+
+    </div>
+
+    <div class="header-date">
+
+        <div class="header-date-item">
+
+            <i class="fas fa-calendar-days"></i>
+
+            <span>${new Date().toLocaleDateString("tr-TR")}</span>
+
+        </div>
+
+        <div class="header-date-item">
+
+            <i class="fas fa-clock"></i>
+
+            <span id="sistemSaat">--:--:--</span>
+
+        </div>
 
     </div>
 
 </div>
-
-            <h1>
-
-            ESTRAM EKYS
-
-            </h1>
-
-            <p>
-
-                Kurumsal Yönetim Bilgi Sistemi
-
-            </p>
-
-        </div>
-
-        <div class="dashboard-right">
-
-            <div class="header-box">
-
-                <i class="fas fa-calendar-days"></i>
-
-                <div>
-
-                    <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
-
-                    <small>Bugünkü Tarih</small>
-
-                </div>
-
-            </div>
-
-            <div class="header-box">
-
-                <i class="fas fa-clock"></i>
-
-                <div>
-
-                    <strong id="sistemSaat">--:--:--</strong>
-
-                    <small>Sistem Saati</small>
-
-                </div>
-
-            </div>
-
-        </div>
 
     </div>
 
