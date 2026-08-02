@@ -1814,17 +1814,17 @@ button:hover{
 
     display:grid;
 
-    grid-template-columns:130px 1fr 220px;
+    grid-template-columns:100px 1fr 180px;
 
     align-items:center;
 
-    gap:28px;
+    gap:20px;
 
     background:#ffffff;
 
     border-radius:18px;
 
-    padding:24px 30px;
+    padding:20px 28px;
 
     margin-bottom:25px;
 
@@ -1846,31 +1846,41 @@ button:hover{
 
 .header-logo img{
 
-    width:110px;
-
+    width:80px;
     height:auto;
-
     object-fit:contain;
 
 }
 
 /* Başlık */
 
+.header-title{
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+}
+
 .header-title h1{
 
     margin:0;
 
-    font-size:34px;
+    font-size:32px;
 
-    font-weight:700;
+    font-weight:800;
 
     color:#17375e;
+
+    line-height:1;
+
+    letter-spacing:.5px;
 
 }
 
 .header-title p{
 
-    margin-top:6px;
+    margin:6px 0 0 0;
 
     font-size:15px;
 
@@ -1888,7 +1898,7 @@ button:hover{
 
     align-items:flex-end;
 
-    gap:12px;
+    gap:8px;
 
 }
 
@@ -1898,9 +1908,9 @@ button:hover{
 
     align-items:center;
 
-    gap:10px;
+    gap:8px;
 
-    font-size:15px;
+    font-size:14px;
 
     font-weight:600;
 
@@ -1910,11 +1920,11 @@ button:hover{
 
 .header-date-item i{
 
-    width:36px;
+    width:34px;
 
-    height:36px;
+    height:34px;
 
-    border-radius:10px;
+    border-radius:8px;
 
     background:#eef4ff;
 
