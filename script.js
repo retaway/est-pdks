@@ -1462,37 +1462,69 @@ const d = dashboardVerileri();
 
         </div>
 
-        <div class="dashboard-right">
+      <div class="dashboard-right">
 
-            <div class="header-box">
+    <div class="header-info-card">
 
-                <i class="fas fa-calendar-days"></i>
+        <div class="info-row">
 
-                <div>
+            <i class="fas fa-calendar-days"></i>
 
-                    <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
+            <div>
 
-                    <small>Bugünkü Tarih</small>
+                <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
 
-                </div>
-
-            </div>
-
-            <div class="header-box">
-
-                <i class="fas fa-clock"></i>
-
-                <div>
-
-                    <strong id="sistemSaat">--:--</strong>
-
-                    <small>Sistem Saati</small>
-
-                </div>
+                <small>Bugünkü Tarih</small>
 
             </div>
 
         </div>
+
+        <div class="info-row">
+
+            <i class="fas fa-clock"></i>
+
+            <div>
+
+                <strong id="sistemSaat">--:--:--</strong>
+
+                <small>Sistem Saati</small>
+
+            </div>
+
+        </div>
+
+        <div class="info-row">
+
+            <i class="fas fa-user"></i>
+
+            <div>
+
+                <strong>${aktifKullanici.adSoyad}</strong>
+
+                <small>${rolAdiGetir(aktifKullanici.rol)}</small>
+
+            </div>
+
+        </div>
+
+        <div class="info-row">
+
+            <i class="fas fa-circle-check"></i>
+
+            <div>
+
+                <strong>Sistem Aktif</strong>
+
+                <small>Tüm servisler çalışıyor</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
     </div>
  <div class="stats">
