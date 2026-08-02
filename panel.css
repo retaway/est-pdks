@@ -1809,39 +1809,29 @@ button:hover{
 
 .dashboard-header{
 
-    margin-bottom:30px;
+    margin-bottom:28px;
 
 }
 
 .welcome-panel{
 
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
     background:#ffffff;
-
-    border-radius:20px;
-
-    padding:30px 36px;
 
     border:1px solid #e5e7eb;
 
-    box-shadow:0 12px 30px rgba(15,23,42,.08);
+    border-radius:18px;
+
+    padding:28px 34px;
+
+    box-shadow:0 8px 24px rgba(15,23,42,.08);
 
 }
-
-/* Sol Alan */
 
 .welcome-left{
 
     display:flex;
 
     flex-direction:column;
-
-    gap:8px;
 
 }
 
@@ -1855,8 +1845,6 @@ button:hover{
 
     color:#17375e;
 
-    line-height:1.2;
-
 }
 
 .welcome-left h2 strong{
@@ -1865,9 +1853,11 @@ button:hover{
 
 }
 
-.welcome-role{
+.panel-name{
 
-    font-size:17px;
+    margin-top:8px;
+
+    font-size:18px;
 
     font-weight:600;
 
@@ -1875,53 +1865,37 @@ button:hover{
 
 }
 
-.welcome-date{
+.welcome-divider{
 
-    font-size:15px;
+    width:100%;
 
-    color:#64748b;
+    height:1px;
 
-}
+    background:#e5e7eb;
 
-/* Sağ Alan */
-
-.welcome-right{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    align-items:center;
+    margin:18px 0;
 
 }
 
-/* Sağ Bilgi Satırı */
-
-.status-line{
+.panel-info{
 
     display:flex;
 
     align-items:center;
+
+    flex-wrap:wrap;
 
     gap:14px;
-
-    padding:12px 20px;
-
-    background:#f8fafc;
-
-    border:1px solid #e2e8f0;
-
-    border-radius:14px;
 
     font-size:15px;
 
     font-weight:600;
 
-    color:#334155;
+    color:#475569;
 
 }
 
-.status-line span{
+.panel-info span{
 
     display:flex;
 
@@ -1931,10 +1905,10 @@ button:hover{
 
 }
 
-.status-line .ayrac{
+.ayrac{
 
     color:#cbd5e1;
 
-    font-weight:400;
+    font-weight:300;
 
 }
