@@ -29,11 +29,17 @@ body{
 
     width:48%;
 
+    height:100%;
+
     position:relative;
 
-    z-index:2;
+    display:flex;
 
-    overflow:hidden;
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    z-index:2;
 
 }
 .login-left::before{
@@ -58,7 +64,7 @@ body{
 
     left:70px;
 
-    top:80px;
+    top:70px;
 
     width:520px;
 
@@ -190,9 +196,17 @@ body{
 
     max-width:100%;
 
-    padding:36px;
+    background:#fff;
 
     border-radius:22px;
+
+    padding:36px;
+
+    box-shadow:0 20px 45px rgba(17,38,80,.15);
+
+    position:relative;
+
+    z-index:10;
 
 }
 
@@ -366,42 +380,25 @@ button:hover{
     inset:0;
     background:rgba(8,22,52,.20);
 }
-
-
 .feature-bar{
 
     position:absolute;
 
     left:70px;
 
-    bottom:90px;
+    right:70px;
+
+    bottom:75px;
+
+    width:auto;
 
     display:flex;
 
-    gap:22px;
-
-    width:620px;
-
-    z-index:5;
-
-}.feature-bar{
-
-    position:absolute;
-
-    left:70px;
-
-    bottom:90px;
-
-    display:flex;
-
-    gap:22px;
-
-    width:620px;
+    gap:20px;
 
     z-index:5;
 
 }
-
 .login-footer span{
 
     color:#4da3ff;
