@@ -1437,67 +1437,56 @@ document.getElementById("icerik").innerHTML = `
 
 <div class="dashboard">
 
-    <div class="dashboard-header">
+<div class="dashboard-header">
+
+    <div class="welcome-panel">
 
         <div class="welcome-left">
 
             <h2>
-                Hoş Geldiniz,
+                👋 Hoş Geldiniz,
                 <strong>${aktifKullanici.adSoyad}</strong>
             </h2>
 
-            <div class="welcome-role">
-
-                İşletim Müdürlüğü • Sistem Yöneticisi
-
+            <div class="panel-name">
+                📍 ${aktifKullanici.mudurluk} • ${aktifKullanici.gorev}
             </div>
 
-            <div class="welcome-date">
+            <div class="welcome-divider"></div>
 
-                ${new Date().toLocaleDateString("tr-TR",{
-                    weekday:"long",
-                    day:"2-digit",
-                    month:"long",
-                    year:"numeric"
-                })}
+            <div class="panel-info">
+
+                <span>
+                    📅
+                    ${new Date().toLocaleDateString("tr-TR",{
+                        weekday:"long",
+                        day:"2-digit",
+                        month:"long",
+                        year:"numeric"
+                    })}
+                </span>
+
+                <span class="ayrac">|</span>
+
+                <span>
+                    🕒
+                    <span id="sistemSaat">--:--:--</span>
+                </span>
+
+                <span class="ayrac">|</span>
+
+                <span>
+                    🌤
+                    <span id="havaDurumu">Eskişehir yükleniyor...</span>
+                </span>
 
             </div>
 
         </div>
 
-      <div class="welcome-right">
-
-    <div class="status-line">
-
-        <span>
-            📅
-            ${new Date().toLocaleDateString("tr-TR",{
-                weekday:"long",
-                day:"2-digit",
-                month:"long",
-                year:"numeric"
-            })}
-        </span>
-
-        <span class="ayrac">|</span>
-
-        <span>
-            🕒
-            <span id="sistemSaat">--:--:--</span>
-        </span>
-
-        <span class="ayrac">|</span>
-
-        <span>
-            🌤
-            <span id="havaDurumu">Eskişehir yükleniyor...</span>
-        </span>
-
     </div>
 
 </div>
-
-    </div>
     <div class="stats">
 
         <div class="stat-card blue">
