@@ -1924,3 +1924,50 @@ button:hover{
     color:#fff;
 
 }
+.dashboard-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin-bottom:12px;
+
+}
+
+.dashboard-brand img{
+
+    width:64px;
+
+    height:64px;
+
+    object-fit:contain;
+
+}
+
+.dashboard-brand h5{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#fff;
+
+    letter-spacing:1px;
+
+}
+
+.dashboard-brand span{
+
+    display:block;
+
+    margin-top:4px;
+
+    font-size:14px;
+
+    color:#dbeafe;
+
+}
