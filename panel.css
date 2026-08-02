@@ -465,13 +465,6 @@
 
 }
 
-.header-title span{
-
-    margin-top:2px;
-    font-size:11px;
-    color:#64748b;
-
-}
 .page-title{
 
     display:flex;
@@ -1878,11 +1871,15 @@ button:hover{
 
 }
 
-.header-title p{
+.header-title span{
 
-    margin:6px 0 0 0;
+    display:block;
+
+    margin-top:6px;
 
     font-size:15px;
+
+    font-weight:500;
 
     color:#64748b;
 
