@@ -1436,19 +1436,17 @@ const d = dashboardVerileri();
 
 <div class="dashboard">
 
-    <div class="dashboard-header">
+<div class="dashboard-header">
 
     <div class="header-logo">
-
         <img src="Estram.png" alt="ESTRAM">
-
     </div>
 
     <div class="header-title">
 
         <h1>ESTRAM EKYS</h1>
 
-        <p>Kurumsal Yönetim Sistemi</p>
+        <span>Kurumsal Yönetim Sistemi</span>
 
     </div>
 
@@ -1458,7 +1456,7 @@ const d = dashboardVerileri();
 
             <i class="fas fa-calendar-days"></i>
 
-            <span>${new Date().toLocaleDateString("tr-TR")}</span>
+            <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
 
         </div>
 
@@ -1466,7 +1464,7 @@ const d = dashboardVerileri();
 
             <i class="fas fa-clock"></i>
 
-            <span id="sistemSaat">--:--:--</span>
+            <strong id="sistemSaat">--:--:--</strong>
 
         </div>
 
