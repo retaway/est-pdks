@@ -55,7 +55,7 @@ body{
 
     top:120px;
 
-    width:620px;
+    width:520px;
 
     z-index:5;
 
@@ -414,13 +414,15 @@ button:hover{
 
     left:70px;
 
-    bottom:70px;
+    bottom:85px;
 
     display:flex;
 
-    gap:18px;
+    gap:22px;
 
-    z-index:4;
+    width:620px;
+
+    z-index:5;
 
 }
 
