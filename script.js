@@ -63,7 +63,7 @@ localStorage.setItem(
 
 function kullaniciBilgileriniGoster() {
 
-    if (!) return;
+    if (!aktifKullanici) return;
 
     const ad = document.getElementById("kullaniciAdi");
     const rol = document.getElementById("kullaniciRol");
