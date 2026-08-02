@@ -1448,7 +1448,7 @@ const d = dashboardVerileri();
 
         <h1>ESTRAM EKYS</h1>
 
-        <p>Kurumsal Yönetim Bilgi Sistemi</p>
+        <p>Kurumsal Yönetim Sistemi</p>
 
     </div>
 
