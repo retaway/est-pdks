@@ -1436,50 +1436,50 @@ const d = dashboardVerileri();
 
 <div class="dashboard">
 
-  <div class="dashboard-header">
+ <div class="dashboard-header">
 
     <div class="welcome-left">
 
-        <h2 id="selamlama">
-            👋 Günaydın, ${aktifKullanici.adSoyad}
+        <h2>
+            Hoş Geldiniz,
+            <strong>${aktifKullanici.adSoyad}</strong>
         </h2>
 
-        <div class="welcome-sub" id="panelBaslik">
-            📍 İşletim Müdürlüğü • ${aktifKullanici.gorev}
+        <div class="welcome-role">
+
+            ${aktifKullanici.mudurluk} • ${aktifKullanici.gorev}
+
+        </div>
+
+        <div class="welcome-date">
+
+            ${new Date().toLocaleDateString("tr-TR",{
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            })}
+
         </div>
 
     </div>
 
     <div class="welcome-right">
 
-        <div class="welcome-info">
+        <div class="weather-box">
 
-            <span>
-                📅
-                <span id="bugunTarih">
-                    ${new Date().toLocaleDateString("tr-TR",{
-                        weekday:"long",
-                        day:"2-digit",
-                        month:"long",
-                        year:"numeric"
-                    })}
-                </span>
+            🌤
+            <span id="havaDurumu">
+                Eskişehir yükleniyor...
             </span>
 
-            <span class="ayrac">|</span>
+        </div>
 
-            <span>
-                🕒
-                <span id="sistemSaat">--:--:--</span>
-            </span>
+        <div class="clock-box">
 
-            <span class="ayrac">|</span>
-
-            <span>
-                🌤
-                <span id="havaDurumu">
-                    Eskişehir yükleniyor...
-                </span>
+            🕒
+            <span id="sistemSaat">
+                --:--:--
             </span>
 
         </div>
