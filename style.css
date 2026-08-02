@@ -48,6 +48,7 @@ body{
 }
 
 .left-content{
+    display:none !important;
 
     position:absolute;
 
