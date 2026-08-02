@@ -2,43 +2,145 @@
 <html lang="tr">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ESTRAM Kurumsal Yönetim Sistemi</title>
 
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-    <div class="login-page">
+<div class="login-page">
 
-        <div class="login-container">
+    <!-- SOL TARAF -->
 
-    <img src="Estram.png" alt="ESTRAM Logo" class="logo">
+    <div class="login-left">
 
-    <h1>ESTRAM</h1>
-    <h2>Kurumsal Yönetim Sistemi</h2>
+        <div class="overlay"></div>
 
-    <input
-        type="text"
-        id="kullaniciAdi"
-        placeholder="Kullanıcı Adı">
+        <div class="left-content">
 
-    <input
-        type="password"
-        id="sifre"
-        placeholder="Şifre">
+            <img src="Estram.png" class="login-logo">
 
-    <button onclick="girisYap()">
-        Giriş Yap
-    </button>
+            <h1>
+                ESTRAM <span>EKYS</span>
+            </h1>
 
-</div>
+            <h2>Kurumsal Yönetim Sistemi</h2>
+
+            <div class="blue-line"></div>
+
+            <p>
+                Eskişehir Hafif Raylı Sistem İşletmesi
+                <br>
+                Kurumsal Yönetim Platformu
+            </p>
+
+            <div class="login-features">
+
+                <div class="feature">
+
+                    🛡️
+
+                    <div>
+
+                        <strong>GÜVENLİ</strong>
+
+                        <span>Verileriniz SSL ile korunur.</span>
+
+                    </div>
+
+                </div>
+
+                <div class="feature">
+
+                    👤
+
+                    <div>
+
+                        <strong>KURUMSAL</strong>
+
+                        <span>Tüm süreçler tek platformda.</span>
+
+                    </div>
+
+                </div>
+
+                <div class="feature">
+
+                    📈
+
+                    <div>
+
+                        <strong>VERİMLİ</strong>
+
+                        <span>Hızlı ve etkin yönetim.</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <script src="script.js"></script>
+    <!-- SAĞ TARAF -->
+
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <div class="login-icon">
+
+                👤
+
+            </div>
+
+            <h2>Giriş Yap</h2>
+
+            <p>Hesabınıza giriş yaparak devam edin</p>
+
+            <label>Kullanıcı Adı</label>
+
+            <input
+                type="text"
+                id="kullaniciAdi"
+                placeholder="Kullanıcı adınızı giriniz">
+
+            <label>Şifre</label>
+
+            <input
+                type="password"
+                id="sifre"
+                placeholder="Şifrenizi giriniz">
+
+            <button onclick="girisYap()">
+
+                GİRİŞ YAP
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="login-footer">
+
+    <span>ESTRAM EKYS v1.0</span>
+
+    <span>© 2026 ESTRAM Genel Müdürlüğü</span>
+
+</footer>
+
+<script src="script.js"></script>
 
 </body>
-
 </html>
