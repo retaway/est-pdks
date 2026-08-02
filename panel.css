@@ -1732,3 +1732,91 @@ button:hover{
     color:#64748b;
 
 }
+/*==========================
+  Dashboard Bilgi Barı
+==========================*/
+
+.dashboard-info-bar{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+
+    margin-top:28px;
+
+}
+
+.info-item{
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    background:rgba(255,255,255,.12);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    backdrop-filter:blur(10px);
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    transition:.25s;
+
+}
+
+.info-item:hover{
+
+    background:rgba(255,255,255,.22);
+
+    transform:translateY(-2px);
+
+}
+
+.info-item i{
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(255,255,255,.18);
+
+    font-size:18px;
+
+}
+
+.info-item span{
+
+    display:block;
+
+    font-size:12px;
+
+    color:#dbeafe;
+
+}
+
+.info-item strong{
+
+    display:block;
+
+    margin-top:3px;
+
+    font-size:15px;
+
+    color:#fff;
+
+}
+
+.info-item.success i{
+
+    background:#10b981;
+
+    color:#fff;
+
+}
