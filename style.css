@@ -373,7 +373,7 @@ button:hover{
 
     left:70px;
 
-    bottom:80px;
+    bottom:90px;
 
     display:flex;
 
@@ -381,7 +381,23 @@ button:hover{
 
     width:620px;
 
-    z-index:21;
+    z-index:5;
+
+}.feature-bar{
+
+    position:absolute;
+
+    left:70px;
+
+    bottom:90px;
+
+    display:flex;
+
+    gap:22px;
+
+    width:620px;
+
+    z-index:5;
 
 }
 .login-footer{
