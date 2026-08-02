@@ -257,15 +257,15 @@ body{
 }
 .login-card{
 
-    width:360px;
+    width:320px;
 
-    max-width:92%;
+    max-width:90%;
 
     background:#fff;
 
     border-radius:22px;
 
-    padding:28px 30px;
+    padding:26px 24px;
 
     box-shadow:0 25px 60px rgba(0,0,0,.18);
 
@@ -281,7 +281,7 @@ body{
 
     color:#17375e;
 
-    font-size:22px;
+    font-size:20px;
 
     font-weight:700;
 
@@ -292,9 +292,9 @@ body{
 
     color:#6b7280;
 
-    font-size:14px;
+    font-size:13px;
 
-    margin:8px 0 22px;
+    margin:8px 0 20px;
 
     line-height:1.5;
 
@@ -304,13 +304,13 @@ body{
 
     display:block;
 
-    margin:14px 0 7px;
+    margin:12px 0 7px;
 
     font-weight:600;
 
     color:#17375e;
 
-    font-size:15px;
+    font-size:14px;
 
 }
 
@@ -320,7 +320,7 @@ body{
 
     box-sizing:border-box;
 
-    padding:11px 14px;
+    padding:10px 12px;
 
     border:1px solid #d7dee8;
 
@@ -349,9 +349,9 @@ body{
 
     width:100%;
 
-    margin-top:20px;
+    margin-top:18px;
 
-    padding:13px;
+    padding:12px;
 
     border:none;
 
