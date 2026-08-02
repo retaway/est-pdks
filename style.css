@@ -361,15 +361,9 @@ button:hover{
     margin-top:0;
 }
 .overlay{
-
     position:absolute;
-
     inset:0;
-
     background:rgba(8,22,52,.20);
-
-    z-index:1;
-
 }
 
 
