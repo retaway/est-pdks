@@ -1456,7 +1456,7 @@ const d = dashboardVerileri();
 
             <p>
 
-                İşletim Müdürlüğü • Kurumsal Yönetim Paneli
+        Kurumsal Yönetim Bilgi Sistemi
 
             </p>
 <div class="dashboard-info-bar">
