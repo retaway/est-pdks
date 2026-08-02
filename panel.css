@@ -1865,7 +1865,7 @@ button:hover{
 
 }
 
-.panel-name{
+.welcome-role{
 
     font-size:17px;
 
@@ -1889,50 +1889,52 @@ button:hover{
 
     display:flex;
 
-    flex-direction:column;
+    justify-content:flex-end;
 
-    align-items:flex-end;
-
-    gap:12px;
+    align-items:center;
 
 }
 
-/* Saat ve Hava Kartları */
+/* Sağ Bilgi Satırı */
 
-.weather-box,
-.clock-box{
+.status-line{
 
     display:flex;
 
     align-items:center;
 
-    gap:10px;
+    gap:14px;
 
-    min-width:190px;
-
-    padding:11px 18px;
-
-    border-radius:12px;
+    padding:12px 20px;
 
     background:#f8fafc;
 
     border:1px solid #e2e8f0;
 
+    border-radius:14px;
+
     font-size:15px;
 
     font-weight:600;
 
-    color:#17375e;
-
-    transition:.25s;
+    color:#334155;
 
 }
 
-.weather-box:hover,
-.clock-box:hover{
+.status-line span{
 
-    background:#eef4ff;
+    display:flex;
 
-    border-color:#bfdbfe;
+    align-items:center;
+
+    gap:6px;
+
+}
+
+.status-line .ayrac{
+
+    color:#cbd5e1;
+
+    font-weight:400;
 
 }
