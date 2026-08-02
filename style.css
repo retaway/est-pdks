@@ -20,8 +20,7 @@ body{
     width:60%;
     position:relative;
     overflow:hidden;
-    background:
-        linear-gradient(135deg,#0d1b3d 0%,#1f3b68 100%);
+    background:#102548;
     display:flex;
     align-items:flex-start;
     justify-content:flex-start;
@@ -46,8 +45,8 @@ body{
 .left-content{
     position:relative;
     z-index:5;
-    width:75%;
-    padding:70px;
+    width:70%;
+    padding:70px 60px;
 }
 
 .login-logo{
@@ -126,10 +125,10 @@ body{
 .tram-image{
     position:absolute;
     bottom:0;
-    right:-120px;
+    left:50%;
+    transform:translateX(-5%);
     width:820px;
-    z-index:2;
-    pointer-events:none;
+    z-index:1;
 }
 .login-features{
 
