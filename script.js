@@ -1436,50 +1436,57 @@ const d = dashboardVerileri();
 
 <div class="dashboard">
 
-    <div class="dashboard-header">
+  <div class="dashboard-header">
 
-        <div class="welcome-panel">
+    <div class="welcome-left">
 
-            <h2 id="selamlama"></h2>
+        <h2 id="selamlama">
+            👋 Günaydın, ${aktifKullanici.adSoyad}
+        </h2>
 
-            <div class="panel-name" id="panelBilgisi"></div>
+        <div class="welcome-sub" id="panelBaslik">
+            📍 İşletim Müdürlüğü • ${aktifKullanici.gorev}
+        </div>
 
-            <div class="panel-status">
+    </div>
 
-                <span>
-                    📅
-                    <span id="bugunTarih">
-                        ${new Date().toLocaleDateString("tr-TR",{
-                            weekday:"long",
-                            day:"2-digit",
-                            month:"long",
-                            year:"numeric"
-                        })}
-                    </span>
+    <div class="welcome-right">
+
+        <div class="welcome-info">
+
+            <span>
+                📅
+                <span id="bugunTarih">
+                    ${new Date().toLocaleDateString("tr-TR",{
+                        weekday:"long",
+                        day:"2-digit",
+                        month:"long",
+                        year:"numeric"
+                    })}
                 </span>
+            </span>
 
-                <span class="ayrac">|</span>
+            <span class="ayrac">|</span>
 
-                <span>
-                    🕒
-                    <span id="sistemSaat">--:--:--</span>
+            <span>
+                🕒
+                <span id="sistemSaat">--:--:--</span>
+            </span>
+
+            <span class="ayrac">|</span>
+
+            <span>
+                🌤
+                <span id="havaDurumu">
+                    Eskişehir yükleniyor...
                 </span>
-
-                <span class="ayrac">|</span>
-
-                <span>
-                    🌤
-                    <span id="havaDurumu">
-                        Eskişehir yükleniyor...
-                    </span>
-                </span>
-
-            </div>
+            </span>
 
         </div>
 
     </div>
 
+</div>
     <div class="stats">
 
         <div class="stat-card blue">
