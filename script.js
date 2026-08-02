@@ -1436,53 +1436,49 @@ const d = dashboardVerileri();
 
 <div class="dashboard">
 
-<div class="dashboard-header">
+    <div class="dashboard-header">
 
-    <div class="welcome-panel">
+        <div class="welcome-panel">
 
-        <h2 id="selamlama">
-            👋 Günaydın, ${aktifKullanici.adSoyad}
-        </h2>
+            <h2 id="selamlama"></h2>
 
-        <div class="panel-name" id="panelBaslik">
-        Yönetim Paneli
-        </div>
+            <div class="panel-name" id="panelBilgisi"></div>
 
-        <div class="panel-status">
+            <div class="panel-status">
 
-            <span>
-                📅
-                <span id="bugunTarih">
-                    ${new Date().toLocaleDateString("tr-TR",{
-                        weekday:"long",
-                        day:"2-digit",
-                        month:"long",
-                        year:"numeric"
-                    })}
+                <span>
+                    📅
+                    <span id="bugunTarih">
+                        ${new Date().toLocaleDateString("tr-TR",{
+                            weekday:"long",
+                            day:"2-digit",
+                            month:"long",
+                            year:"numeric"
+                        })}
+                    </span>
                 </span>
-            </span>
 
-            <span class="ayrac">|</span>
+                <span class="ayrac">|</span>
 
-            <span>
-                🕒
-                <span id="sistemSaat">--:--:--</span>
-            </span>
-
-            <span class="ayrac">|</span>
-
-            <span>
-                🌤
-                <span id="havaDurumu">
-                    Eskişehir yükleniyor...
+                <span>
+                    🕒
+                    <span id="sistemSaat">--:--:--</span>
                 </span>
-            </span>
+
+                <span class="ayrac">|</span>
+
+                <span>
+                    🌤
+                    <span id="havaDurumu">
+                        Eskişehir yükleniyor...
+                    </span>
+                </span>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
     <div class="stats">
 
