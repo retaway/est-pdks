@@ -401,39 +401,7 @@ button:hover{
     z-index:5;
 
 }
-.login-footer{
 
-    position:absolute;
-
-    left:0;
-
-    right:0;
-
-    bottom:0;
-
-    height:60px;
-
-    padding:0 40px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    background:rgba(7,20,45,.72);
-
-    backdrop-filter:blur(10px);
-
-    border-top:1px solid rgba(255,255,255,.12);
-
-    color:#ffffff;
-
-    font-size:14px;
-
-    z-index:20;
-
-}
 .login-footer span{
 
     color:#4da3ff;
