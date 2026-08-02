@@ -1807,167 +1807,123 @@ button:hover{
 
 }
 /*==========================
-  Dashboard Bilgi Barı
+  Dashboard Header
 ==========================*/
 
-.dashboard-info-bar{
+.dashboard-header{
 
-    display:flex;
-    flex-wrap:wrap;
-    gap:18px;
+    display:grid;
 
-    margin-top:28px;
+    grid-template-columns:130px 1fr 220px;
 
-}
-
-.info-item{
-
-    display:flex;
     align-items:center;
-    gap:14px;
 
-    min-width:180px;
+    gap:28px;
 
-    padding:14px 18px;
+    background:#ffffff;
 
-    border-radius:14px;
+    border-radius:18px;
 
-    background:rgba(255,255,255,.15);
+    padding:24px 30px;
 
-    border:1px solid rgba(255,255,255,.25);
+    margin-bottom:25px;
 
-    backdrop-filter:blur(12px);
-
-    transition:.25s;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
 
 }
 
-.info-item:hover{
+/* Logo */
 
-    transform:translateY(-3px);
-
-    background:rgba(255,255,255,.22);
-
-}
-
-.info-item i{
-
-    width:44px;
-    height:44px;
-
-    border-radius:50%;
+.header-logo{
 
     display:flex;
-    align-items:center;
+
     justify-content:center;
 
-    background:rgba(255,255,255,.20);
-
-    color:#ffffff;
-
-    font-size:18px;
-
-    flex-shrink:0;
-
-}
-
-.info-item span{
-
-    display:block;
-
-    font-size:11px;
-
-    font-weight:600;
-
-    color:rgba(255,255,255,.75);
-
-    letter-spacing:.5px;
-
-    text-transform:uppercase;
-
-}
-
-.info-item strong{
-
-    display:block;
-
-    margin-top:3px;
-
-    font-size:16px;
-
-    font-weight:700;
-
-    line-height:1.3;
-
-    color:#ffffff !important;
-
-    opacity:1 !important;
-
-    visibility:visible !important;
-
-    text-shadow:0 2px 6px rgba(0,0,0,.35);
-
-}
-
-.info-item.success{
-
-    background:rgba(16,185,129,.20);
-
-    border:1px solid rgba(16,185,129,.45);
-
-}
-
-.info-item.success i{
-
-    background:#10b981;
-
-    color:#fff;
-
-}
-.dashboard-brand{
-
-    display:flex;
-
     align-items:center;
 
-    gap:16px;
-
-    margin-bottom:12px;
-
 }
 
-.dashboard-brand img{
+.header-logo img{
 
-    width:64px;
+    width:110px;
 
-    height:64px;
+    height:auto;
 
     object-fit:contain;
 
 }
 
-.dashboard-brand h5{
+/* Başlık */
+
+.header-title h1{
 
     margin:0;
 
-    font-size:28px;
+    font-size:34px;
 
-    font-weight:800;
+    font-weight:700;
 
-    color:#fff;
-
-    letter-spacing:1px;
+    color:#17375e;
 
 }
 
-.dashboard-brand span{
+.header-title p{
 
-    display:block;
+    margin-top:6px;
 
-    margin-top:4px;
+    font-size:15px;
 
-    font-size:14px;
+    color:#64748b;
 
-    color:#dbeafe;
+}
+
+/* Tarih / Saat */
+
+.header-date{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:12px;
+
+}
+
+.header-date-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#17375e;
+
+}
+
+.header-date-item i{
+
+    width:36px;
+
+    height:36px;
+
+    border-radius:10px;
+
+    background:#eef4ff;
+
+    color:#2563eb;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
 
 }
