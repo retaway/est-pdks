@@ -50,16 +50,6 @@ body{
 .left-content{
     display:none !important;
 
-    position:absolute;
-
-    left:70px;
-
-    top:80px;
-
-    width:520px;
-
-    z-index:5;
-
 }
 
 .left-content h1{
