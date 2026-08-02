@@ -1456,189 +1456,145 @@ const d = dashboardVerileri();
 
             <p>
 
-        Kurumsal Yönetim Bilgi Sistemi
+                Kurumsal Yönetim Bilgi Sistemi
 
             </p>
-<div class="dashboard-info-bar">
 
-    <div class="info-item">
+        </div>
 
-        <i class="fas fa-user-shield"></i>
+        <div class="dashboard-right">
 
-        <div>
+            <div class="header-box">
 
-            <span>Kullanıcı</span>
+                <i class="fas fa-calendar-days"></i>
 
-            <strong>${aktifKullanici.adSoyad}</strong>
+                <div>
+
+                    <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
+
+                    <small>Bugünkü Tarih</small>
+
+                </div>
+
+            </div>
+
+            <div class="header-box">
+
+                <i class="fas fa-clock"></i>
+
+                <div>
+
+                    <strong id="sistemSaat">--:--:--</strong>
+
+                    <small>Sistem Saati</small>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
-    <div class="info-item">
+    <div class="stats">
 
-        <i class="fas fa-user-tag"></i>
+        <div class="stat-card blue">
 
-        <div>
+            <div class="stat-content">
 
-            <span>Yetki</span>
+                <span class="stat-title">
+                    Toplam Personel
+                </span>
 
-            <strong>${rolAdiGetir(aktifKullanici.rol)}</strong>
+                <h2 class="stat-value">
+                    ${d.toplamPersonel}
+                </h2>
+
+                <small>
+                    Sistemde kayıtlı personel
+                </small>
+
+            </div>
+
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+
+        </div>
+
+        <div class="stat-card green">
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Aktif Personel
+                </span>
+
+                <h2 class="stat-value">
+                    ${d.aktifPersonel}
+                </h2>
+
+                <small>
+                    Görevde bulunan personel
+                </small>
+
+            </div>
+
+            <div class="stat-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+
+        </div>
+
+        <div class="stat-card orange">
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Pasif Personel
+                </span>
+
+                <h2 class="stat-value">
+                    ${d.pasifPersonel}
+                </h2>
+
+                <small>
+                    Pasif durumdaki personel
+                </small>
+
+            </div>
+
+            <div class="stat-icon">
+                <i class="fas fa-user-xmark"></i>
+            </div>
+
+        </div>
+
+        <div class="stat-card red">
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Değişim Kodları
+                </span>
+
+                <h2 class="stat-value">
+                    ${d.degisimKodu}
+                </h2>
+
+                <small>
+                    Tanımlı değişim kodu
+                </small>
+
+            </div>
+
+            <div class="stat-icon">
+                <i class="fas fa-repeat"></i>
+            </div>
 
         </div>
 
     </div>
-
-    <div class="info-item">
-
-        <i class="fas fa-calendar-days"></i>
-
-        <div>
-
-            <span>Tarih</span>
-
-            <strong>${new Date().toLocaleDateString("tr-TR")}</strong>
-
-        </div>
-
-    </div>
-
-    <div class="info-item">
-
-        <i class="fas fa-clock"></i>
-
-        <div>
-
-            <span>Saat</span>
-
-            <strong id="sistemSaat">--:--:--</strong>
-
-        </div>
-
-    </div>
-
-    <div class="info-item success">
-
-        <i class="fas fa-circle-check"></i>
-
-        <div>
-
-            <span>Durum</span>
-
-            <strong>Sistem Aktif</strong>
-
-        </div>
-
-    </div>
-
-</div>
-        </div>
-
-     
-
-    </div>
- <div class="stats">
-
-    <div class="stat-card blue">
-
-        <div class="stat-content">
-
-            <span class="stat-title">
-                Toplam Personel
-            </span>
-
-            <h2 class="stat-value">
-                ${d.toplamPersonel}
-            </h2>
-
-            <small>
-                Sistemde kayıtlı personel
-            </small>
-
-        </div>
-
-        <div class="stat-icon">
-            <i class="fas fa-users"></i>
-        </div>
-
-    </div>
-
-
-    <div class="stat-card green">
-
-        <div class="stat-content">
-
-            <span class="stat-title">
-                Aktif Personel
-            </span>
-
-            <h2 class="stat-value">
-                ${d.aktifPersonel}
-            </h2>
-
-            <small>
-                Görevde bulunan personel
-            </small>
-
-        </div>
-
-        <div class="stat-icon">
-            <i class="fas fa-user-check"></i>
-        </div>
-
-    </div>
-
-
-    <div class="stat-card orange">
-
-        <div class="stat-content">
-
-            <span class="stat-title">
-                Pasif Personel
-            </span>
-
-            <h2 class="stat-value">
-                ${d.pasifPersonel}
-            </h2>
-
-            <small>
-                Pasif durumdaki personel
-            </small>
-
-        </div>
-
-        <div class="stat-icon">
-            <i class="fas fa-user-xmark"></i>
-        </div>
-
-    </div>
-
-
-    <div class="stat-card red">
-
-        <div class="stat-content">
-
-            <span class="stat-title">
-                Değişim Kodları
-            </span>
-
-            <h2 class="stat-value">
-                ${d.degisimKodu}
-            </h2>
-
-            <small>
-                Tanımlı değişim kodu
-            </small>
-
-        </div>
-
-        <div class="stat-icon">
-            <i class="fas fa-repeat"></i>
-        </div>
-
-    </div>
-
-</div>
 <div class="moduller">
 
     <div class="modul-card" onclick="sayfaGoster('ik')">
