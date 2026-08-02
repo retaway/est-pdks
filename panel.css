@@ -1809,132 +1809,82 @@ button:hover{
 
 .dashboard-header{
 
-    display:grid;
+    margin-bottom:28px;
 
-    grid-template-columns:100px 1fr 180px;
+}
 
-    align-items:center;
-
-    gap:20px;
+.welcome-panel{
 
     background:#ffffff;
 
-    border-radius:18px;
+    border-radius:20px;
 
-    padding:20px 28px;
+    padding:30px 35px;
 
-    margin-bottom:25px;
+    border:1px solid #e5e7eb;
 
-    box-shadow:0 8px 24px rgba(0,0,0,.08);
-
-}
-
-/* Logo */
-
-.header-logo{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
+    box-shadow:0 10px 25px rgba(15,23,42,.08);
 
 }
 
-.header-logo img{
-
-    width:80px;
-    height:auto;
-    object-fit:contain;
-
-}
-
-/* Başlık */
-
-.header-title{
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-
-}
-
-.header-title h1{
+.welcome-panel h2{
 
     margin:0;
 
-    font-size:32px;
+    font-size:30px;
 
-    font-weight:800;
+    font-weight:700;
 
     color:#17375e;
 
-    line-height:1;
-
-    letter-spacing:.5px;
-
 }
 
-.header-title span{
+.panel-name{
 
-    display:block;
+    margin-top:10px;
 
-    margin-top:6px;
-
-    font-size:15px;
-
-    font-weight:500;
-
-    color:#64748b;
-
-}
-
-/* Tarih / Saat */
-
-.header-date{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-end;
-
-    gap:8px;
-
-}
-
-.header-date-item{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    font-size:14px;
+    font-size:18px;
 
     font-weight:600;
 
-    color:#17375e;
+    color:#2563eb;
 
 }
 
-.header-date-item i{
+.panel-status{
 
-    width:34px;
-
-    height:34px;
-
-    border-radius:8px;
-
-    background:#eef4ff;
-
-    color:#2563eb;
+    margin-top:22px;
 
     display:flex;
 
     align-items:center;
 
-    justify-content:center;
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#475569;
+
+}
+
+.panel-status span{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+.ayrac{
+
+    color:#cbd5e1;
+
+    font-weight:400;
 
 }
