@@ -1760,70 +1760,86 @@ function sistemSaati() {
     window.sistemSaatTimer = setInterval(guncelle, 1000);
 
 }
-function dashboardAdmin(){
-
-const d = dashboardVerileri();
-
-document.getElementById("icerik").innerHTML = `
-
-<div class="dashboard">
-
 <div class="dashboard-header">
 
     <div class="welcome-panel">
 
+        <!-- SOL TARAF -->
+
         <div class="welcome-left">
 
-<h2>
-    👋 Hoş Geldiniz,
-    <strong>${aktifKullanici.adSoyad}</strong>
-</h2>
+            <h2>
+                👋 Hoş Geldiniz,
+                <strong>${aktifKullanici.adSoyad}</strong>
+            </h2>
 
-<div class="panel-name">
+            <div class="panel-name">
 
-    🏢 ${aktifPersonel ? aktifPersonel.mudurluk : "SİSTEM YÖNETİCİSİ"}
+                <div>
+                    🏢 <strong>${aktifPersonel ? aktifPersonel.mudurluk : "SİSTEM YÖNETİCİSİ"}</strong>
+                </div>
 
-    <br>
+                <div>
+                    📍 ${aktifPersonel ? aktifPersonel.birim : "-"}
+                </div>
 
-    📍 ${aktifPersonel ? aktifPersonel.birim : "SİSTEM"}
-
-    <br>
-
-    👤 ${aktifPersonel ? aktifPersonel.gorev : "ADMIN"}
-
-</div>
-
-            <div class="welcome-divider"></div>
-
-            <div class="panel-info">
-
-                <span>
-                    📅
-                    ${new Date().toLocaleDateString("tr-TR",{
-                        weekday:"long",
-                        day:"2-digit",
-                        month:"long",
-                        year:"numeric"
-                    })}
-                </span>
-
-                <span class="ayrac">|</span>
-
-                <span>
-                    🕒
-                    <span id="sistemSaat">--:--:--</span>
-                </span>
-
-                <span class="ayrac">|</span>
-
-                <span>
-                    🌤
-                    <span id="havaDurumu">Eskişehir yükleniyor...</span>
-                </span>
+                <div>
+                    👤 ${aktifPersonel ? aktifPersonel.gorev : "ADMIN"}
+                </div>
 
             </div>
 
         </div>
+
+        <!-- SAĞ TARAF -->
+
+        <div class="welcome-right">
+
+            <div class="duyuru-title">
+                📌 Bekleyen İşler
+            </div>
+
+            <div class="duyuru-item">
+                🔴 Bekleyen görev değişikliği bulunmuyor.
+            </div>
+
+            <div class="duyuru-item">
+                🟡 Bekleyen izin talebi bulunmuyor.
+            </div>
+
+            <div class="duyuru-item">
+                🟢 Yeni duyuru bulunmuyor.
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="welcome-footer">
+
+        <span>
+            📅
+            ${new Date().toLocaleDateString("tr-TR",{
+                weekday:"long",
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            })}
+        </span>
+
+        <span class="ayrac">|</span>
+
+        <span>
+            🕒
+            <span id="sistemSaat">--:--:--</span>
+        </span>
+
+        <span class="ayrac">|</span>
+
+        <span>
+            🌤
+            <span id="havaDurumu">Yükleniyor...</span>
+        </span>
 
     </div>
 
