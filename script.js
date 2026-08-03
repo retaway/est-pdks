@@ -346,6 +346,26 @@ function yeniKullanici() {
 
     `;
 
+    const mudurlukSelect = document.getElementById("mudurluk");
+
+Object.keys(organizasyonYapisi).forEach(function(mudurluk){
+
+    mudurlukSelect.innerHTML += `
+        <option value="${mudurluk}">
+            ${mudurluk}
+        </option>
+    `;
+
+});
+
+if (p.mudurluk) {
+
+    mudurlukSelect.value = p.mudurluk;
+
+}
+
+gorevleriYukle(p.gorev);
+
     if (personelListesi.length === 0) {
         alert("Önce İnsan Kaynakları modülünden personel oluşturmalısınız.");
     }
@@ -823,8 +843,16 @@ function personelAta(index){
     );
 }
 function yeniPersonel(index = null) {
-    const isEdit = index !== null;
-    const p = isEdit ? personelListesi[index] : { sicil: "", ad: "", soyad: "", telefon: "", email: "", gorev: "Vatman", durum: "Aktif" };
+ const p = isEdit ? personelListesi[index] : {
+    sicil: "",
+    ad: "",
+    soyad: "",
+    telefon: "",
+    email: "",
+    mudurluk: "",
+    gorev: "",
+    durum: "Aktif"
+};
 
     document.getElementById("icerik").innerHTML = `
     <h2>${isEdit ? "✏️ Personel Düzenle" : "➕ Yeni Personel"}</h2>
@@ -849,14 +877,12 @@ function yeniPersonel(index = null) {
     <label>E-Posta</label>
     <input id="email" type="email" value="${p.email}" placeholder="ornek@estram.com.tr">
 
-    <label>Görev</label>
-    <select id="gorev">
-        <option ${p.gorev === "Vatman" ? "selected" : ""}>Vatman</option>
-        <option ${p.gorev === "İdari Personel" ? "selected" : ""}>Denetçi</option>
-        <option ${p.gorev === "Vardiya Amiri" ? "selected" : ""}>Vardiya Amiri</option>
-          <option ${p.gorev === "Sürücü Şefi" ? "selected" : ""}>Sürücü Şefi</option>
+<label>Müdürlük</label>
+<select id="mudurluk" onchange="gorevleriYukle()">
+</select>
 
-    </select>
+    <label>Görev</label>
+   <select id="gorev"></select>
 
     <label>Durum</label>
     <select id="durum">
@@ -871,7 +897,34 @@ function yeniPersonel(index = null) {
     </div>
     `;
 }
+function gorevleriYukle(seciliGorev = ""){
 
+    const mudurluk =
+        document.getElementById("mudurluk").value;
+
+    const gorevSelect =
+        document.getElementById("gorev");
+
+    gorevSelect.innerHTML = "";
+
+    if(!organizasyonYapisi[mudurluk]){
+        return;
+    }
+
+    organizasyonYapisi[mudurluk].forEach(function(gorev){
+
+        gorevSelect.innerHTML += `
+            <option
+                value="${gorev}"
+                ${gorev===seciliGorev?"selected":""}
+            >
+                ${gorev}
+            </option>
+        `;
+
+    });
+
+}
 function personelKaydet(index = null) {
 
     const personel = {
@@ -881,6 +934,7 @@ function personelKaydet(index = null) {
         soyad: document.getElementById("soyad").value.trim(),
         telefon: document.getElementById("telefon").value.trim(),
         email: document.getElementById("email").value.trim(),
+        mudurluk: document.getElementById("mudurluk").value,
         gorev: document.getElementById("gorev").value,
         durum: document.getElementById("durum").value,
         iseGiris: document.getElementById("personelIseGiris").value
