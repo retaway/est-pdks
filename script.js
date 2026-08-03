@@ -1133,6 +1133,67 @@ function personelSil(index){
     personelYonetimi();
 
 }
+function personelKarti(index){
+
+    const p = personelListesi[index];
+
+    const kullanici = kullanicilar.find(function(k){
+
+        return String(k.sicil) === String(p.sicil);
+
+    });
+
+    document.getElementById("icerik").innerHTML = `
+
+        <h2>👤 Personel Kartı</h2>
+
+        <div class="form-kart">
+
+            <label>Sicil No</label>
+            <input type="text" value="${p.sicil}" readonly>
+
+            <label>Ad Soyad</label>
+            <input type="text" value="${p.ad} ${p.soyad}" readonly>
+
+            <label>Telefon</label>
+            <input type="text" value="${p.telefon}" readonly>
+
+            <label>E-Posta</label>
+            <input type="text" value="${p.email}" readonly>
+
+            <label>Müdürlük</label>
+            <input type="text" value="${p.mudurluk}" readonly>
+
+            <label>Görev</label>
+            <input type="text" value="${p.gorev}" readonly>
+
+            <label>İşe Giriş Tarihi</label>
+            <input type="text" value="${p.iseGiris}" readonly>
+
+            <label>Durum</label>
+            <input type="text" value="${p.durum}" readonly>
+
+            <label>Kullanıcı Adı</label>
+            <input
+                type="text"
+                value="${kullanici ? kullanici.kullanici : '-'}"
+                readonly>
+
+            <br>
+
+            <button onclick="sifreSifirla(${index})">
+                🔑 Şifreyi Sıfırla
+            </button>
+
+            <button onclick="personeller()">
+                ⬅ Geri
+            </button>
+
+        </div>
+
+    `;
+
+}
 function sifreSifirla(index){
 
     if(!confirm("Şifre 1234 olarak sıfırlansın mı?")){
