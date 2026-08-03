@@ -97,11 +97,6 @@ localStorage.setItem(
     JSON.stringify(kullanicilar)
 );
 
-localStorage.setItem(
-    "kullanicilar",
-    JSON.stringify(kullanicilar)
-);
-
 function kullaniciBilgileriniGoster() {
 
     if (!aktifKullanici) return;
