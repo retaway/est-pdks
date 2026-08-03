@@ -772,3 +772,54 @@ textarea:focus{
     font-weight:700;
 
 }
+.input-group{
+    position:relative;
+    margin-bottom:16px;
+}
+
+.input-group input{
+    padding-left:48px;
+}
+
+.input-icon{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:18px;
+    color:#8a94a6;
+    pointer-events:none;
+}
+
+.login-options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:8px 0 18px;
+}
+
+.remember-me{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    color:#4b5563;
+    cursor:pointer;
+}
+
+.remember-me input{
+    width:16px;
+    height:16px;
+    margin:0;
+}
+
+.login-options a{
+    color:#2563eb;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+}
+
+.login-options a:hover{
+    text-decoration:underline;
+}
