@@ -32,12 +32,6 @@ if (aktifKullanici) {
 
     });
 
-    // Sağ üst kullanıcı bilgileri
-    document.getElementById("kullaniciAdi").textContent =
-        aktifKullanici.adSoyad;
-
-    document.getElementById("kullaniciGorev").textContent =
-        aktifPersonel?.gorev || "-";
 
 }
 
