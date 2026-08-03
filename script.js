@@ -1789,20 +1789,20 @@ function dashboardAdmin(){
 
     <div class="panel-name">
 
-        <div>
-            🏢 <strong>Müdürlük:</strong>
-            ${aktifPersonel?.mudurluk || "-"}
-        </div>
+       <div>
+    🏢 <strong>Müdürlük:</strong>
+    ${aktifPersonel ? aktifPersonel.mudurluk : "Sistem Yönetimi"}
+</div>
 
-        <div>
-            📍 <strong>Birim:</strong>
-            ${aktifPersonel?.birim || "-"}
-        </div>
+<div>
+    📍 <strong>Birim:</strong>
+    ${aktifPersonel ? aktifPersonel.birim : "-"}
+</div>
 
-        <div>
-            👤 <strong>Görev:</strong>
-            ${aktifPersonel?.gorev || "-"}
-        </div>
+<div>
+    👤 <strong>Görev:</strong>
+    ${aktifPersonel ? aktifPersonel.gorev : aktifKullanici.gorev}
+</div>
 
     </div>
 
