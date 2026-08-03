@@ -408,7 +408,7 @@ function kullaniciKaydet() {
     const personel = personelListesi.find(function (p) {
     return String(p.sicil) === String(sicil);
 });
-    const rol = document.getElementById("kullaniciRol").value;
+  
 
    if (
     kullanici === "" ||
@@ -442,7 +442,7 @@ if (ayniPersonel) {
 
     adSoyad: personel.ad + " " + personel.soyad,
 
-    rol: rol,
+    rol: rolBelirle(personel.gorev),
 
     sicil: personel.sicil
 
@@ -915,17 +915,6 @@ function yeniPersonel(index = null) {
 
    <label>Görev</label>
 <select id="gorev"></select>
-
-<label>Rol</label>
-<select id="rol">
-    <option value="">Rol Seçiniz</option>
-    <option>İnsan Kaynakları</option>
-    <option>İşletme Müdürü</option>
-    <option>Sürücü Şefi</option>
-    <option>Vardiya Amiri</option>
-    <option>Vatman</option>
-    <option>Personel</option>
-</select>
 
 <label>
     <input type="checkbox"
