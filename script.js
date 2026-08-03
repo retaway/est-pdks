@@ -32,6 +32,15 @@ if (aktifKullanici) {
 
     });
 
+    // Sağ üst kullanıcı bilgileri
+    document.getElementById("kullaniciAdi").textContent =
+        aktifKullanici.adSoyad;
+
+    document.getElementById("kullaniciGorev").textContent =
+        aktifPersonel?.gorev || "-";
+
+}
+
 }
 let kullanicilar =
 JSON.parse(localStorage.getItem("kullanicilar")) || [
