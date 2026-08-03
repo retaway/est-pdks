@@ -1770,7 +1770,6 @@ function dashboardAdmin(){
     <div class="welcome-panel">
 
 <!-- SOL TARAF -->
-
 <div class="welcome-left">
 
     <h2>
@@ -1780,20 +1779,20 @@ function dashboardAdmin(){
 
     <div class="panel-name">
 
-        <div class="info-item">
-    <span class="info-label">🏢 Müdürlük</span>
-    <strong class="info-value">${aktifPersonel ? aktifPersonel.mudurluk : "Sistem Yönetimi"}</strong>
-</div>
+        <div>
+            🏢 <strong>Müdürlük:</strong>
+            ${aktifPersonel?.mudurluk || "-"}
+        </div>
 
-<div class="info-item">
-    <span class="info-label">📍 Birim</span>
-    <strong class="info-value">${aktifPersonel ? aktifPersonel.birim : "-"}</strong>
-</div>
+        <div>
+            📍 <strong>Birim:</strong>
+            ${aktifPersonel?.birim || "-"}
+        </div>
 
-<div class="info-item">
-    <span class="info-label">👤 Görev</span>
-    <strong class="info-value">${aktifPersonel ? aktifPersonel.gorev : "Sistem Yöneticisi"}</strong>
-</div>
+        <div>
+            👤 <strong>Görev:</strong>
+            ${aktifPersonel?.gorev || "-"}
+        </div>
 
     </div>
 
