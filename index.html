@@ -107,24 +107,46 @@
                 Hesabınıza giriş yaparak devam edin
             </p>
 
-            <label>Kullanıcı Adı</label>
+           <label>Kullanıcı Adı</label>
 
-            <input
-                type="text"
-                id="kullaniciAdi"
-                placeholder="Kullanıcı adınızı giriniz">
+<div class="input-group">
 
-            <label>Şifre</label>
+    <span class="input-icon">👤</span>
 
-            <input
-                type="password"
-                id="sifre"
-                placeholder="Şifrenizi giriniz">
+    <input
+        type="text"
+        id="kullaniciAdi"
+        placeholder="Kullanıcı adınızı giriniz">
 
-            <button onclick="girisYap()">
-                GİRİŞ YAP
-            </button>
+</div>
 
+<label>Şifre</label>
+
+<div class="input-group">
+
+    <span class="input-icon">🔒</span>
+
+    <input
+        type="password"
+        id="sifre"
+        placeholder="Şifrenizi giriniz">
+
+</div>
+
+<div class="login-options">
+
+    <label class="remember-me">
+        <input type="checkbox">
+        <span>Beni Hatırla</span>
+    </label>
+
+    <a href="#">Şifremi Unuttum?</a>
+
+</div>
+
+<button onclick="girisYap()">
+    GİRİŞ YAP
+</button>
         </div>
 
     </div>
