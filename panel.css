@@ -998,30 +998,28 @@ button:hover{
 .user-text{
 
     display:flex;
-
     flex-direction:column;
-
-    line-height:1.2;
+    line-height:1.25;
 
 }
 
 .user-text strong{
 
     color:#17375e;
-
-    font-size:13px;
-
+    font-size:16px;
     font-weight:700;
 
 }
 
 .user-text span{
 
+    margin-top:3px;
+
+    font-size:13px;
+
     color:#64748b;
 
-    font-size:11px;
-
-    margin-top:3px;
+    font-weight:500;
 
 }
 
