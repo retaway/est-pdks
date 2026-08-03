@@ -910,12 +910,22 @@ function yeniPersonel(index = null) {
     <input id="email" type="email" value="${p.email}" placeholder="ornek@estram.com.tr">
 
 <label>Müdürlük</label>
-<select id="mudurluk" onchange="gorevleriYukle()">
+
+<select id="mudurluk" onchange="mudurlukDegisti()">
+    <option value="">Müdürlük Seçiniz</option>
 </select>
 
-   <label>Görev</label>
-<select id="gorev"></select>
+<label>Şeflik / Birim</label>
 
+<select id="birim" onchange="birimDegisti()">
+    <option value="">Şeflik / Birim Seçiniz</option>
+</select>
+
+<label>Görev</label>
+
+<select id="gorev">
+    <option value="">Görev Seçiniz</option>
+</select>
 <label>
     <input type="checkbox"
            id="kullaniciOlustur"
@@ -935,22 +945,34 @@ function yeniPersonel(index = null) {
 </button>
     </div>
     `;
-    const mudurlukSelect = document.getElementById("mudurluk");
+const mudurlukSelect =
+document.getElementById("mudurluk");
 
-mudurlukSelect.innerHTML = '<option value="">Müdürlük Seçiniz</option>';
-
-Object.keys(organizasyonYapisi).forEach(function(mudurluk){
+Object.keys(organizasyonYapisi).forEach(function(m){
 
     mudurlukSelect.innerHTML += `
-        <option value="${mudurluk}"
-        ${mudurluk === p.mudurluk ? "selected" : ""}>
-            ${mudurluk}
+        <option value="${m}">
+            ${m}
         </option>
     `;
 
 });
 
-gorevleriYukle(p.gorev);
+if(isEdit){
+
+    mudurlukSelect.value = p.mudurluk;
+
+    mudurlukDegisti();
+
+    document.getElementById("birim").value =
+        p.birim;
+
+    birimDegisti();
+
+    document.getElementById("gorev").value =
+        p.gorev;
+
+}
 }
 function gorevleriYukle(seciliGorev = ""){
 
@@ -990,6 +1012,7 @@ function personelKaydet(index = null) {
         telefon: document.getElementById("telefon").value.trim(),
         email: document.getElementById("email").value.trim(),
         mudurluk: document.getElementById("mudurluk").value,
+        birim: document.getElementById("birim").value,
         gorev: document.getElementById("gorev").value,
         durum: document.getElementById("durum").value,
         iseGiris: document.getElementById("personelIseGiris").value
@@ -5017,5 +5040,68 @@ function ilkSifreKaydet(){
     alert("Şifreniz başarıyla değiştirildi.");
 
     window.location.href = "panel.html";
+
+}
+function mudurlukDegisti(){
+
+    const mudurluk =
+        document.getElementById("mudurluk").value;
+
+    const birim =
+        document.getElementById("birim");
+
+    const gorev =
+        document.getElementById("gorev");
+
+    birim.innerHTML =
+        `<option value="">Şeflik / Birim Seçiniz</option>`;
+
+    gorev.innerHTML =
+        `<option value="">Görev Seçiniz</option>`;
+
+    if(mudurluk=="") return;
+
+    Object.keys(
+        organizasyonYapisi[mudurluk]
+    ).forEach(function(b){
+
+        birim.innerHTML += `
+            <option value="${b}">
+                ${b}
+            </option>
+        `;
+
+    });
+
+}
+function birimDegisti(){
+
+    const mudurluk =
+        document.getElementById("mudurluk").value;
+
+    const birim =
+        document.getElementById("birim").value;
+
+    const gorev =
+        document.getElementById("gorev");
+
+    gorev.innerHTML =
+        `<option value="">Görev Seçiniz</option>`;
+
+    if(
+        mudurluk=="" ||
+        birim==""
+    ) return;
+
+    organizasyonYapisi[mudurluk][birim]
+    .forEach(function(g){
+
+        gorev.innerHTML += `
+            <option value="${g}">
+                ${g}
+            </option>
+        `;
+
+    });
 
 }
