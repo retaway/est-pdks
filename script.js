@@ -4982,7 +4982,7 @@ function girisYap() {
         return;
 
     }
-
+console.log(bulunan);
     // Aktif kullanıcıyı kaydet
     localStorage.setItem("aktifKullanici", JSON.stringify({
 
