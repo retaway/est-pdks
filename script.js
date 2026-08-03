@@ -26,7 +26,7 @@ let aktifPersonel = null;
 
 if (aktifKullanici) {
 
-    aktifPersonel = personelListesi.find(function(p){
+    aktifPersonel = personelListesi.find(function (p) {
 
         return String(p.sicil) === String(aktifKullanici.sicil);
 
@@ -41,7 +41,6 @@ if (aktifKullanici) {
 
 }
 
-}
 let kullanicilar =
 JSON.parse(localStorage.getItem("kullanicilar")) || [
 
