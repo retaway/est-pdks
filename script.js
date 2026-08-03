@@ -1769,32 +1769,35 @@ function dashboardAdmin(){
 
     <div class="welcome-panel">
 
-        <!-- SOL TARAF -->
+<!-- SOL TARAF -->
 
-        <div class="welcome-left">
+<div class="welcome-left">
 
-            <h2>
-                👋 Hoş Geldiniz,
-                <strong>${aktifKullanici.adSoyad}</strong>
-            </h2>
+    <h2>
+        👋 Hoş Geldiniz,
+        <strong>${aktifKullanici.adSoyad}</strong>
+    </h2>
 
-            <div class="panel-name">
+    <div class="panel-name">
 
-                <div>
-                    🏢 <strong>${aktifPersonel ? aktifPersonel.mudurluk : "SİSTEM YÖNETİCİSİ"}</strong>
-                </div>
-
-                <div>
-                    📍 ${aktifPersonel ? aktifPersonel.birim : "-"}
-                </div>
-
-                <div>
-                    👤 ${aktifPersonel ? aktifPersonel.gorev : "ADMIN"}
-                </div>
-
-            </div>
-
+        <div class="info-item">
+            <span>🏢 Müdürlük</span>
+            <strong>${aktifPersonel ? aktifPersonel.mudurluk : "Sistem Yönetimi"}</strong>
         </div>
+
+        <div class="info-item">
+            <span>📍 Birim</span>
+            <strong>${aktifPersonel ? aktifPersonel.birim : "-"}</strong>
+        </div>
+
+        <div class="info-item">
+            <span>👤 Görev</span>
+            <strong>${aktifPersonel ? aktifPersonel.gorev : "Sistem Yöneticisi"}</strong>
+        </div>
+
+    </div>
+
+</div>
 
         <!-- SAĞ TARAF -->
 
