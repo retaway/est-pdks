@@ -257,21 +257,32 @@ body{
 }
 .login-card{
 
-    width:300px;
+    width:430px;
+    max-width:100%;
 
-    max-width:90%;
+    padding:42px 38px;
 
-    background:#fff;
+    background:#ffffff;
 
-    border-radius:22px;
+    border-radius:30px;
 
-    margin-left:-35px;
+    box-shadow:
+        0 20px 60px rgba(18,39,88,.18),
+        0 5px 15px rgba(18,39,88,.08);
 
-    padding:26px 24px;
-
-    box-shadow:0 25px 60px rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.7);
 
     transition:.35s;
+
+}
+
+.login-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 28px 70px rgba(18,39,88,.20),
+        0 8px 20px rgba(18,39,88,.10);
 
 }
 
