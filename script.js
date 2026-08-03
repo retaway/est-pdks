@@ -4984,16 +4984,17 @@ function girisYap() {
     }
 console.log(bulunan);
     // Aktif kullanıcıyı kaydet
-    localStorage.setItem("aktifKullanici", JSON.stringify({
+   localStorage.setItem("aktifKullanici", JSON.stringify({
 
-        kullanici : bulunan.kullanici,
-        adSoyad   : bulunan.adSoyad,
-        gorev     : bulunan.gorev,
-        mudurluk  : bulunan.mudurluk,
-        birim     : bulunan.birim,
-        rol       : bulunan.rol
+    kullanici : bulunan.kullanici,
+    sicil     : bulunan.sicil,
+    adSoyad   : bulunan.adSoyad,
+    mudurluk  : bulunan.mudurluk,
+    birim     : bulunan.birim,
+    gorev     : bulunan.gorev,
+    rol       : bulunan.rol
 
-    }));
+}));
 
     if(bulunan.ilkGiris){
 
