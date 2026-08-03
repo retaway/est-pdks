@@ -843,16 +843,19 @@ function personelAta(index){
     );
 }
 function yeniPersonel(index = null) {
- const p = isEdit ? personelListesi[index] : {
-    sicil: "",
-    ad: "",
-    soyad: "",
-    telefon: "",
-    email: "",
-    mudurluk: "",
-    gorev: "",
-    durum: "Aktif"
-};
+
+    const isEdit = index !== null;
+
+    const p = isEdit ? personelListesi[index] : {
+        sicil: "",
+        ad: "",
+        soyad: "",
+        telefon: "",
+        email: "",
+        mudurluk: "",
+        gorev: "",
+        durum: "Aktif"
+    };
 
     document.getElementById("icerik").innerHTML = `
     <h2>${isEdit ? "✏️ Personel Düzenle" : "➕ Yeni Personel"}</h2>
