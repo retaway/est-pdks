@@ -22,6 +22,7 @@ JSON.parse(localStorage.getItem("kullanicilar")) || [
     {
         kullanici: "admin",
         sifre: "1234",
+        ilkGiris: true,
         adSoyad: "Sistem Yöneticisi",
         rol: "ADMIN",
         sicil: ""
@@ -30,6 +31,7 @@ JSON.parse(localStorage.getItem("kullanicilar")) || [
     {
         kullanici: "ik",
         sifre: "1234",
+        ilkGiris: true,
         adSoyad: "İnsan Kaynakları",
         rol: "IK",
         sicil: "1001"
@@ -38,6 +40,7 @@ JSON.parse(localStorage.getItem("kullanicilar")) || [
     {
         kullanici: "sef",
         sifre: "1234",
+        ilkGiris: true,
         adSoyad: "Sürücü Şefi",
         rol: "SURUCU_SEFI",
         sicil: "2001"
@@ -46,6 +49,7 @@ JSON.parse(localStorage.getItem("kullanicilar")) || [
     {
         kullanici: "amir",
         sifre: "1234",
+        ilkGiris: true,
         adSoyad: "Vardiya Amiri",
         rol: "VARDIYA_AMIRI",
         sicil: "3001"
@@ -54,12 +58,18 @@ JSON.parse(localStorage.getItem("kullanicilar")) || [
     {
         kullanici: "vatman",
         sifre: "1234",
+        ilkGiris: true,
         adSoyad: "Örnek Vatman",
         rol: "VATMAN",
         sicil: "4001"
     }
 
 ];
+
+localStorage.setItem(
+    "kullanicilar",
+    JSON.stringify(kullanicilar)
+);
 
 localStorage.setItem(
     "kullanicilar",
@@ -245,11 +255,13 @@ function kullaniciYonetimi() {
 
         <h2>👤 Kullanıcı Yönetimi</h2>
 
-        <div class="toolbar">
-            <button onclick="yeniKullanici()">
-                ➕ Yeni Kullanıcı
-            </button>
-        </div>
+       <div class="toolbar">
+
+    <button onclick="personelYonetimi()">
+        👥 Yeni kullanıcı oluşturmak için Personel Yönetimini kullanın
+    </button>
+
+</div>
 
         <table class="tablo">
 
@@ -290,7 +302,12 @@ personelListesi.forEach(function (p) {
 
 });
 function yeniKullanici() {
+    
+alert("Yeni kullanıcı oluşturma işlemi artık Personel Yönetimi üzerinden yapılmaktadır.");
 
+personelYonetimi();
+
+return;
     let personelSecenekleri = "";
 
     personelListesi.forEach(function (p) {
@@ -889,14 +906,32 @@ function yeniPersonel(index = null) {
 <select id="mudurluk" onchange="gorevleriYukle()">
 </select>
 
-    <label>Görev</label>
-   <select id="gorev"></select>
+   <label>Görev</label>
+<select id="gorev"></select>
 
-    <label>Durum</label>
-    <select id="durum">
-        <option ${p.durum === "Aktif" ? "selected" : ""}>Aktif</option>
-        <option ${p.durum === "Pasif" ? "selected" : ""}>Pasif</option>
-    </select>
+<label>Rol</label>
+<select id="rol">
+    <option value="">Rol Seçiniz</option>
+    <option>İnsan Kaynakları</option>
+    <option>İşletme Müdürü</option>
+    <option>Sürücü Şefi</option>
+    <option>Vardiya Amiri</option>
+    <option>Vatman</option>
+    <option>Personel</option>
+</select>
+
+<label>
+    <input type="checkbox"
+           id="kullaniciOlustur"
+           checked>
+    Sisteme giriş hesabı oluştur
+</label>
+
+<label>Durum</label>
+<select id="durum">
+    <option ${p.durum === "Aktif" ? "selected" : ""}>Aktif</option>
+    <option ${p.durum === "Pasif" ? "selected" : ""}>Pasif</option>
+</select>
     <br><br>
     <button onclick="personelKaydet(${index})">💾 Kaydet</button>
    <button onclick="personelYonetimi()">
@@ -987,6 +1022,7 @@ function personelKaydet(index = null) {
         }
 
         personelListesi.push(personel);
+        kullaniciOtomatikOlustur(personel);
 
     } else {
 
@@ -1003,6 +1039,49 @@ function personelKaydet(index = null) {
 
     // İnsan Kaynakları → Personel Yönetimi ekranına dön
     personelYonetimi();
+
+}
+function kullaniciOtomatikOlustur(personel){
+
+    const varMi = kullanicilar.find(function(k){
+        return String(k.sicil) === String(personel.sicil);
+    });
+
+    if(varMi){
+        return;
+    }
+
+    let kullaniciAdi =
+        (personel.ad + "." + personel.soyad)
+        .toLowerCase()
+        .replace(/ç/g,"c")
+        .replace(/ğ/g,"g")
+        .replace(/ı/g,"i")
+        .replace(/ö/g,"o")
+        .replace(/ş/g,"s")
+        .replace(/ü/g,"u")
+        .replace(/İ/g,"i");
+
+    kullanicilar.push({
+
+        kullanici: kullaniciAdi,
+
+        sifre: "1234",
+
+        ilkGiris: true,
+
+        adSoyad: personel.ad + " " + personel.soyad,
+
+        rol: rolBelirle(personel.gorev),
+
+        sicil: personel.sicil
+
+    });
+
+    localStorage.setItem(
+        "kullanicilar",
+        JSON.stringify(kullanicilar)
+    );
 
 }
 function personelDuzenle(index) {
@@ -1372,15 +1451,51 @@ function yetkiVarMi(...roller) {
     return roller.includes(aktifKullanici.rol);
 
 }
+function rolBelirle(gorev) {
+
+    switch (gorev) {
+
+        case "Genel Müdür":
+            return "ADMIN";
+
+        case "Yönetici Asistanı":
+            return "ADMIN";
+
+        case "İK Müdürü":
+        case "İK Uzmanı":
+        case "İK Personeli":
+            return "IK";
+
+        case "İşletme Müdürü":
+            return "ISLETME_MUDURU";
+
+        case "Sürücü Şefi":
+            return "SURUCU_SEFI";
+
+        case "Vardiya Amiri":
+            return "VARDIYA_AMIRI";
+
+        case "Vatman":
+            return "VATMAN";
+
+        default:
+            return "PERSONEL";
+    }
+
+}
+
 function rolAdiGetir(rol) {
 
     switch (rol) {
 
         case "ADMIN":
-            return "Yönetici";
+            return "Sistem Yöneticisi";
 
         case "IK":
             return "İnsan Kaynakları";
+
+        case "ISLETME_MUDURU":
+            return "İşletme Müdürü";
 
         case "SURUCU_SEFI":
             return "Sürücü Şefi";
@@ -1390,6 +1505,9 @@ function rolAdiGetir(rol) {
 
         case "VATMAN":
             return "Vatman";
+
+        case "PERSONEL":
+            return "Personel";
 
         default:
             return rol;
@@ -4689,7 +4807,16 @@ function girisYap(){
         JSON.stringify(bulunan)
     );
 
-    window.location.href = "panel.html";
+    if(bulunan.ilkGiris){
+
+        window.location.href = "ilkSifre.html";
+
+    }else{
+
+        window.location.href = "panel.html";
+
+    }
+
 }
 function toggleSidebar() {
 
