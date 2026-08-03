@@ -1,9 +1,16 @@
-let personelListesi = [...varsayilanPersoneller];
+let personelListesi =
+JSON.parse(localStorage.getItem("personeller"));
 
-localStorage.setItem(
-    "personeller",
-    JSON.stringify(personelListesi)
-);
+if (!personelListesi) {
+
+    personelListesi = [...varsayilanPersoneller];
+
+    localStorage.setItem(
+        "personeller",
+        JSON.stringify(personelListesi)
+    );
+
+}
 let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
