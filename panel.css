@@ -584,17 +584,21 @@
 .kart,
 .modul-card{
 
-    background:#fff;
+    position:relative;
 
-    border-radius:18px;
+    overflow:hidden;
 
-    padding:24px;
+    background:#ffffff;
 
-    border:1px solid #edf2f7;
+    border-radius:22px;
 
-    box-shadow:0 10px 25px rgba(15,23,42,.08);
+    padding:28px;
 
-    transition:all .25s ease;
+    border:1px solid #e6edf5;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+
+    transition:all .35s ease;
 
 }
 
@@ -602,17 +606,37 @@
 .kart:hover,
 .modul-card:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-10px);
 
-    box-shadow:0 20px 35px rgba(15,23,42,.15);
+    box-shadow:0 22px 45px rgba(15,23,42,.16);
+
+    border-color:#d4e4ff;
+
+}
+
+.modul-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:5px;
+
+    background:linear-gradient(90deg,#2563eb,#60a5fa);
 
 }
 
 .stat-value{
 
-    font-size:34px;
+    font-size:36px;
 
-    font-weight:700;
+    font-weight:800;
 
     color:#17375e;
 
@@ -620,13 +644,13 @@
 
 .modul-icon{
 
-    width:72px;
+    width:78px;
 
-    height:72px;
+    height:78px;
 
-    margin:0 auto 18px;
+    margin:0 0 22px;
 
-    border-radius:18px;
+    border-radius:20px;
 
     display:flex;
 
@@ -634,39 +658,69 @@
 
     justify-content:center;
 
-    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    background:linear-gradient(135deg,#2563eb,#4f8cff);
 
     color:#fff;
 
-    font-size:30px;
+    font-size:34px;
+
+    box-shadow:0 10px 25px rgba(37,99,235,.28);
 
 }
 
 .modul-title{
 
-    margin-top:10px;
+    margin:0;
 
-    font-size:18px;
+    font-size:21px;
 
     font-weight:700;
 
     color:#17375e;
 
-    text-align:center;
+    text-align:left;
 
 }
 
 .modul-desc{
 
-    margin-top:10px;
+    margin-top:12px;
 
     color:#64748b;
 
-    line-height:1.6;
+    line-height:1.7;
 
     font-size:14px;
 
-    text-align:center;
+    text-align:left;
+
+}
+
+.modul-card::after{
+
+    content:"→";
+
+    position:absolute;
+
+    right:28px;
+
+    bottom:24px;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#cbd5e1;
+
+    transition:.30s;
+
+}
+
+.modul-card:hover::after{
+
+    color:#2563eb;
+
+    transform:translateX(8px);
 
 }
 /* ===========================
