@@ -237,7 +237,7 @@ let gunlukVardiyaFiltre = "HEPSI";
 let gorevTarifeFiltreTarih = new Date().toISOString().split("T")[0];
 let gorevTarifeArama = "";
 
-function kullaniciYonetimi() {
+/*function kullaniciYonetimi() {
 
     let satirlar = "";
 
@@ -307,8 +307,8 @@ personelListesi.forEach(function (p) {
         </option>
     `;
 
-});
-function yeniKullanici() {
+}); */
+/*function yeniKullanici() {
     
 alert("Yeni kullanıcı oluşturma işlemi artık Personel Yönetimi üzerinden yapılmaktadır.");
 
@@ -399,8 +399,8 @@ gorevleriYukle(p.gorev);
         alert("Önce İnsan Kaynakları modülünden personel oluşturmalısınız.");
     }
 
-}
-function kullaniciKaydet() {
+} */
+/* function kullaniciKaydet() {
 
     const kullanici = document.getElementById("kullaniciAdi").value.trim();
     const sifre = document.getElementById("kullaniciSifre").value.trim();
@@ -563,7 +563,7 @@ function kullaniciSil(index) {
 
     kullaniciYonetimi();
 
-}
+} */
 
 function personelYonetimi() {
 
@@ -1106,14 +1106,61 @@ function personelSil(index){
         return;
     }
 
+    const sicil = personelListesi[index].sicil;
+
+    // Personeli sil
     personelListesi.splice(index,1);
+
+    // Kullanıcı hesabını da sil
+    kullanicilar = kullanicilar.filter(function(k){
+
+        return String(k.sicil) !== String(sicil);
+
+    });
 
     localStorage.setItem(
         "personeller",
         JSON.stringify(personelListesi)
     );
 
+    localStorage.setItem(
+        "kullanicilar",
+        JSON.stringify(kullanicilar)
+    );
+
+    alert("Personel ve kullanıcı hesabı silindi.");
+
     personelYonetimi();
+
+}
+function sifreSifirla(index){
+
+    if(!confirm("Şifre 1234 olarak sıfırlansın mı?")){
+        return;
+    }
+
+    const sicil = personelListesi[index].sicil;
+
+    const kullanici = kullanicilar.find(function(k){
+
+        return String(k.sicil) === String(sicil);
+
+    });
+
+    if(!kullanici){
+        alert("Kullanıcı hesabı bulunamadı.");
+        return;
+    }
+
+    kullanici.sifre = "1234";
+    kullanici.ilkGiris = true;
+
+    localStorage.setItem(
+        "kullanicilar",
+        JSON.stringify(kullanicilar)
+    );
+
+    alert("Şifre başarıyla sıfırlandı.");
 
 }
 
@@ -2222,7 +2269,7 @@ break;
             insanKaynaklari();
             break;
 
-        case "kullanicilar":
+       /* case "kullanicilar":
 
             sayfaBasligiYaz("Kullanıcı Yönetimi");
 
@@ -2232,7 +2279,7 @@ break;
             }
 
             kullaniciYonetimi();
-            break;
+            break; */
 
         case "personeller":
 
