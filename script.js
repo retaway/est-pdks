@@ -4856,3 +4856,62 @@ document.addEventListener("click", function(e){
     }
 
 });
+function ilkSifreKaydet(){
+
+    const sifre1 = document.getElementById("yeniSifre").value.trim();
+    const sifre2 = document.getElementById("yeniSifreTekrar").value.trim();
+
+    if(sifre1 === "" || sifre2 === ""){
+
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+
+    }
+
+    if(sifre1 !== sifre2){
+
+        alert("Şifreler aynı değil.");
+        return;
+
+    }
+
+    if(sifre1.length < 4){
+
+        alert("Şifre en az 4 karakter olmalıdır.");
+        return;
+
+    }
+
+    let aktifKullanici =
+        JSON.parse(localStorage.getItem("aktifKullanici"));
+
+    aktifKullanici.sifre = sifre1;
+    aktifKullanici.ilkGiris = false;
+
+    localStorage.setItem(
+        "aktifKullanici",
+        JSON.stringify(aktifKullanici)
+    );
+
+    const index = kullanicilar.findIndex(function(k){
+
+        return k.kullanici === aktifKullanici.kullanici;
+
+    });
+
+    if(index !== -1){
+
+        kullanicilar[index] = aktifKullanici;
+
+        localStorage.setItem(
+            "kullanicilar",
+            JSON.stringify(kullanicilar)
+        );
+
+    }
+
+    alert("Şifreniz başarıyla değiştirildi.");
+
+    window.location.href = "panel.html";
+
+}
