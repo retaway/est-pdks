@@ -1656,7 +1656,8 @@ function dashboardVerileri() {
 
     const toplamPersonel = personelListesi.length;
 
-    const aktifPersonel = personelListesi.filter(
+   const aktifPersonelSayisi =
+    personelListesi.filter(
         p => p.durum === "Aktif"
     ).length;
 
@@ -1666,14 +1667,14 @@ function dashboardVerileri() {
 
     const degisimKodu = degisimKodlariListesi.length;
 
-    return {
+   return {
 
-        toplamPersonel,
-        aktifPersonel,
-        pasifPersonel,
-        degisimKodu
+    toplamPersonel,
+    aktifPersonel: aktifPersonelSayisi,
+    pasifPersonel,
+    degisimKodu
 
-    };
+};
 
 }
 function dashboardOlustur() {
