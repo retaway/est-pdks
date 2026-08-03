@@ -1,129 +1,347 @@
-/*==========================
-  ORGANİZASYON YAPISI
-==========================*/
-
 const organizasyonYapisi = {
 
-    "GENEL YÖNETİM": [
-        "GENEL MÜDÜR",
-        "YÖNETİCİ ASİSTANI",
-        "İSTATİSTİK VE VERİ ANALİZ UZMANI",
-        "BASIN VE HALKLA İLİŞKİLER SORUMLUSU",
-        "DESTEK HİZMETLERİ SORUMLUSU",
-        "MAKAM ŞOFÖRÜ",
-        "HALKLA İLİŞKİLER",
-        "GENEL MÜDÜRLÜK / ŞOFÖR"
+    /*==================================
+      GENEL YÖNETİM
+    ==================================*/
+
+    "GENEL YÖNETİM": {
+
+        "GENEL MÜDÜRLÜK": [
+            "GENEL MÜDÜR",
+            "YÖNETİCİ ASİSTANI"
+        ],
+
+        "KURUMSAL İLETİŞİM": [
+            "BASIN VE HALKLA İLİŞKİLER SORUMLUSU",
+            "HALKLA İLİŞKİLER"
+        ],
+
+        "VERİ VE RAPORLAMA": [
+            "İSTATİSTİK VE VERİ ANALİZ UZMANI"
+        ],
+
+        "DESTEK HİZMETLERİ": [
+            "DESTEK HİZMETLERİ SORUMLUSU",
+            "MAKAM ŞOFÖRÜ",
+            "GENEL MÜDÜRLÜK / ŞOFÖR"
+        ]
+
+    },
+
+
+
+    /*==================================
+      KALİTE MÜDÜRLÜĞÜ
+    ==================================*/
+
+    "KALİTE MÜDÜRLÜĞÜ": {
+
+        "MÜDÜRLÜK": [
+            "KALİTE MÜDÜRÜ"
+        ],
+
+        "KALİTE YÖNETİMİ": [
+            "KALİTE SORUMLUSU",
+            "KALİTE ELEMANI"
+        ],
+
+        "EĞİTİM": [
+            "EĞİTİM SORUMLUSU"
+        ],
+
+        "TEKNİK EMNİYET": [
+            "TEKNİK EMNİYET SORUMLUSU",
+            "TEKNİK EMNİYET ELEMANI"
+        ]
+
+    },
+
+
+
+    /*==================================
+      SATINALMA MÜDÜRLÜĞÜ
+    ==================================*/
+
+    "SATINALMA MÜDÜRLÜĞÜ": {
+
+        "MÜDÜRLÜK": [
+            "SATINALMA MÜDÜRÜ"
+        ],
+
+        "SATINALMA": [
+            "SATINALMA SORUMLUSU"
+        ],
+
+        "AMBAR ŞEFLİĞİ": [
+            "AMBAR ŞEFİ",
+            "AMBAR FORMENİ",
+            "AMBAR ELEMANI"
+        ]
+
+    },
+
+
+
+    /*==================================
+      MALİ İŞLER MÜDÜRLÜĞÜ
+    ==================================*/
+
+    "MALİ İŞLER MÜDÜRLÜĞÜ": {
+
+        "MÜDÜRLÜK": [
+            "MUHASEBE MÜDÜRÜ"
+        ],
+
+        "MUHASEBE": [
+            "MUHASEBE ELEMANI",
+            "BÜFE-BİLET ÖN MUHASEBE ELEMANI"
+        ],
+
+        "MUTEMETLİK": [
+            "MUTEMET"
+        ]
+
+    },
+
+
+
+    /*==================================
+      LOJİSTİK ve DESTEK HİZMETLERİ
+    ==================================*/
+
+    "LOJİSTİK ve DESTEK HİZMETLERİ": {
+
+        "LOJİSTİK": [
+            "LOJİSTİK VE DESTEK HİZMETLERİ ŞEFİ"
+        ],
+
+        "DESTEK HİZMETLERİ": [
+            "BÜRO ELEMANI"
+        ]
+
+    },
+/*==================================
+  PERSONEL VE İDARİ İŞLER MÜDÜRLÜĞÜ
+==================================*/
+
+"PERSONEL VE İDARİ İŞLER MÜDÜRLÜĞÜ": {
+
+    "MÜDÜRLÜK": [
+        "PERSONEL VE İDARİ İŞLER MÜDÜRÜ",
+        "PERSONEL VE İDARİ İŞLER ASİSTANI"
     ],
 
-    "KALİTE MÜDÜRLÜĞÜ": [
-        "KALİTE MÜDÜRÜ",
-        "KALİTE SORUMLUSU",
-        "EĞİTİM SORUMLUSU",
-        "TEKNİK EMNİYET SORUMLUSU",
-        "KALİTE ELEMANI",
-        "TEKNİK EMNİYET ELEMANI"
-    ],
-
-    "SATINALMA MÜDÜRLÜĞÜ": [
-        "SATINALMA MÜDÜRÜ",
-        "AMBAR ŞEFİ",
-        "SATINALMA SORUMLUSU",
-        "AMBAR ELEMANI",
-        "AMBAR FORMENİ"
-    ],
-
-    "MALİ İŞLER MÜDÜRLÜĞÜ": [
-        "MUHASEBE MÜDÜRÜ",
-        "MUHASEBE ELEMANI",
-        "BÜFE-BİLET ÖN MUHASEBE ELEMANI",
-        "MUTEMET"
-    ],
-
-    "LOJİSTİK ve DESTEK HİZMETLERİ": [
-        "LOJİSTİK VE DESTEK HİZMETLERİ ŞEFİ",
+    "İNSAN KAYNAKLARI": [
         "BÜRO ELEMANI"
     ],
 
-    "PERSONEL VE İDARİ İŞLER MÜDÜRLÜĞÜ": [
-        "PERSONEL VE İDARİ İŞLER MÜDÜRÜ",
-        "PERSONEL VE İDARİ İŞLER ASİSTANI",
-        "BÜRO ELEMANI",
-        "HALKLA İLİŞKİLER ASİSTANI",
-        "KAYIP EŞYA ELEMANI",
-        "HEMŞİRE",
-        "DESTEK HİZMETLERİ SORUMLUSU",
-        "BİLET KONTROL ELEMANI",
-        "ŞOFÖR",
-        "TEMİZLİK ELEMANI",
-        "OLS OPERATÖRÜ",
+    "HALKLA İLİŞKİLER": [
+        "HALKLA İLİŞKİLER ASİSTANI"
+    ],
+
+    "KAYIP EŞYA": [
+        "KAYIP EŞYA ELEMANI"
+    ],
+
+    "SAĞLIK HİZMETLERİ": [
+        "HEMŞİRE"
+    ],
+
+    "DESTEK HİZMETLERİ": [
+        "DESTEK HİZMETLERİ SORUMLUSU"
+    ],
+
+    "BİLET KONTROL": [
+        "BİLET KONTROL ELEMANI"
+    ],
+
+    "ULAŞIM": [
+        "ŞOFÖR"
+    ],
+
+    "TEMİZLİK": [
+        "TEMİZLİK ELEMANI"
+    ],
+
+    "OLS": [
+        "OLS OPERATÖRÜ"
+    ],
+
+    "YEMEKHANE": [
         "ÇAY OCAĞI PERSONELİ",
-        "YEMEKHANE PERSONELİ",
-        "DURAK GÜVENLİK",
-        "DANIŞMA GÖREVLİSİ",
+        "YEMEKHANE PERSONELİ"
+    ],
+
+    "GÜVENLİK": [
         "GÜVENLİK VARDİYA AMİRİ",
+        "DURAK GÜVENLİK",
         "DEPO GÜVENLİK",
         "ESKART BAŞVURU MERKEZİ GÜVENLİK"
     ],
 
-    "ARAÇLAR MÜDÜRLÜĞÜ": [
-        "ARAÇLAR MÜHENDİSİ",
-        "MEKANİK BAKIM ELEMANI",
-        "ELEKTRİK ELEKTRONİK BAKIM FORMENİ",
-        "ELEKTRİK ELEKTRONİK",
-        "BOYA KAPORTA ELEMANI",
-        "GÜNLÜK BAKIM ELEMANI",
-        "MEKANİK BAKIM FORMENİ",
-        "ELEKTRONİK BAKIM ELEMANI",
-        "GÜNLÜK BAKIM FORMENİ",
-        "ELEKTRİK BAKIM ELEMANI",
-        "BAKIM VE DÖKÜMANTASYON SORUMLUSU",
-        "ELEKTRONİK BAKIM FORMENİ"
+    "DANIŞMA": [
+        "DANIŞMA GÖREVLİSİ"
+    ]
+
+},
+
+
+/*==================================
+  ARAÇLAR MÜDÜRLÜĞÜ
+==================================*/
+
+"ARAÇLAR MÜDÜRLÜĞÜ": {
+
+    "MÜDÜRLÜK": [
+        "ARAÇLAR MÜHENDİSİ"
     ],
 
-    "SABİT TESİSLER MÜDÜRLÜĞÜ": [
+    "MEKANİK BAKIM": [
+        "MEKANİK BAKIM FORMENİ",
+        "MEKANİK BAKIM ELEMANI"
+    ],
+
+    "ELEKTRİK BAKIM": [
+        "ELEKTRİK BAKIM ELEMANI"
+    ],
+
+    "ELEKTRİK ELEKTRONİK": [
+        "ELEKTRİK ELEKTRONİK BAKIM FORMENİ",
+        "ELEKTRİK ELEKTRONİK"
+    ],
+
+    "ELEKTRONİK": [
+        "ELEKTRONİK BAKIM FORMENİ",
+        "ELEKTRONİK BAKIM ELEMANI"
+    ],
+
+    "GÜNLÜK BAKIM": [
+        "GÜNLÜK BAKIM FORMENİ",
+        "GÜNLÜK BAKIM ELEMANI"
+    ],
+
+    "BOYA KAPORTA": [
+        "BOYA KAPORTA ELEMANI"
+    ],
+
+    "PLANLAMA VE DOKÜMANTASYON": [
+        "BAKIM VE DÖKÜMANTASYON SORUMLUSU"
+    ]
+
+},
+
+
+/*==================================
+  SABİT TESİSLER MÜDÜRLÜĞÜ
+==================================*/
+
+"SABİT TESİSLER MÜDÜRLÜĞÜ": {
+
+    "MÜDÜRLÜK": [
         "SABİT TESİSLER MÜDÜRÜ",
         "ELEKTRİK MÜHENDİSİ",
-        "ELEKTRONİK VE HABERLEŞME MÜHENDİSİ",
+        "ELEKTRONİK VE HABERLEŞME MÜHENDİSİ"
+    ],
+
+    "SİNYALİZASYON VE HABERLEŞME ŞEFLİĞİ": [
         "SİNYALİZASYON VE HABERLEŞME FORMENİ",
-        "SİNYALİZASYON VE HABERLEŞME ELEMANI",
+        "SİNYALİZASYON VE HABERLEŞME ELEMANI"
+    ],
+
+    "GÜÇ / SCADA / KATANER": [
         "GÜÇ- KATANER FORMENİ",
         "GÜÇ- KATANER ELEMANI",
-        "HAT BAKIM FORMENİ",
-        "HAT BAKIM ELEMANI",
+        "SCADA SORUMLUSU",
+        "KATANER SORUMLUSU"
+    ],
+
+    "HAT VE BİNALAR ŞEFLİĞİ": [
         "HAT VE BİNALAR ŞEFİ",
         "HAT VE BİNALAR ELEMANI",
-        "SCADA SORUMLUSU",
-        "KATANER SORUMLUSU",
-        "BAKIM PLANLAMA VE DÖKÜMANTASYON SORUMLUSU"
+        "HAT BAKIM FORMENİ",
+        "HAT BAKIM ELEMANI"
     ],
 
-    "YÖNETİM BİLGİ SİSTEMLERİ MÜDÜRLÜĞÜ": [
+    "PLANLAMA VE DOKÜMANTASYON": [
+        "BAKIM PLANLAMA VE DÖKÜMANTASYON SORUMLUSU"
+    ]
+
+},
+  /*==================================
+  YÖNETİM BİLGİ SİSTEMLERİ MÜDÜRLÜĞÜ
+==================================*/
+
+"YÖNETİM BİLGİ SİSTEMLERİ MÜDÜRLÜĞÜ": {
+
+    "MÜDÜRLÜK": [
         "YÖNETİM BİLGİ SİSTEMLERİ MÜDÜRÜ",
-        "YÖNETİM BİLGİ SİSTEMLERİ ASİSTANI",
-        "ELEKTRONİK BİLET SİSTEMLERİ ŞEFİ",
-        "BİLET SİSTEMİ SORUMLUSU",
-        "BİLET SİSTEMİ MUTABAKAT VE RAPOR SORUMLUSU",
+        "YÖNETİM BİLGİ SİSTEMLERİ ASİSTANI"
+    ],
+
+    "BİLGİ İŞLEM ŞEFLİĞİ": [
         "BİLGİ İŞLEM ŞEFİ",
         "BİLGİ İŞLEM ELEMANI",
-        "VERİ GİRİŞ ELEMANI",
-        "GİŞE SORUMLUSU",
-        "GİŞE ELEMANI",
-        "ESKART BAŞVURU MERKEZİ SORUMLUSU",
-        "ESKART BAŞVURU MERKEZİ ELEMANI",
-        "BAKIM VE DÖKÜMANTASYON SORUMLUSU",
-        "BİLGİSAYAR KAMERA SİSTEM HİZMET VE ARIZA TAKİP ELEMANLARI"
+        "VERİ GİRİŞ ELEMANI"
     ],
 
-    "İŞLETİM MÜDÜRLÜĞÜ": [
-        "İŞLETİM MÜDÜRÜ",
-        "SÜRÜCÜ ŞEFİ",
-        "MEDYA VE İLETİŞİM SORUMLUSU",
-        "İŞLETİM PLANLAMA VE DÖKÜMANTASYON",
-        "SCADA KONTROLÖRÜ",
-        "TCC PERSONELİ",
-        "TRAFİK KONTROL VARDİYA SORUMLUSU",
-        "VATMAN",
-        "SÜRÜCÜ VARDİYA AMİRİ"
+    "ELEKTRONİK BİLET SİSTEMLERİ": [
+        "ELEKTRONİK BİLET SİSTEMLERİ ŞEFİ",
+        "BİLET SİSTEMİ SORUMLUSU",
+        "BİLET SİSTEMİ MUTABAKAT VE RAPOR SORUMLUSU"
+    ],
+
+    "ESKART BAŞVURU MERKEZİ": [
+        "ESKART BAŞVURU MERKEZİ SORUMLUSU",
+        "ESKART BAŞVURU MERKEZİ ELEMANI"
+    ],
+
+    "GİŞELER": [
+        "GİŞE SORUMLUSU",
+        "GİŞE ELEMANI"
+    ],
+
+    "PLANLAMA VE DOKÜMANTASYON": [
+        "BAKIM VE DÖKÜMANTASYON SORUMLUSU"
+    ],
+
+    "KAMERA VE SİSTEMLER": [
+        "BİLGİSAYAR KAMERA SİSTEM HİZMET VE ARIZA TAKİP ELEMANLARI"
     ]
+
+},
+
+
+/*==================================
+  İŞLETİM MÜDÜRLÜĞÜ
+==================================*/
+
+"İŞLETİM MÜDÜRLÜĞÜ": {
+
+    "MÜDÜRLÜK": [
+        "İŞLETİM MÜDÜRÜ"
+    ],
+
+    "SÜRÜCÜ ŞEFLİĞİ": [
+        "SÜRÜCÜ ŞEFİ",
+        "SÜRÜCÜ VARDİYA AMİRİ",
+        "BÜRO PERSONELİ",
+        "VATMAN"
+    ],
+
+    "TRAFİK KONTROL MERKEZİ": [
+        "TCC VARDİYA SORUMLUSU",
+        "SCADA KONTROLÖRÜ",
+        "TCC PERSONELİ"
+    ],
+
+    "MEDYA VE İLETİŞİM": [
+        "MEDYA VE İLETİŞİM SORUMLUSU"
+    ],
+
+    "PLANLAMA VE DOKÜMANTASYON": [
+        "İŞLETİM PLANLAMA VE DOKÜMANTASYON"
+    ]
+
+}
 
 };
