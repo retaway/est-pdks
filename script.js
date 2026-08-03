@@ -4952,7 +4952,7 @@ function dashboardGrafik() {
     });
 
 }
-function girisYap(){
+function girisYap() {
 
     const kullanici = document.getElementById("kullaniciAdi").value.trim();
     const sifre = document.getElementById("sifre").value.trim();
@@ -4965,14 +4965,23 @@ function girisYap(){
     });
 
     if(!bulunan){
+
         alert("Kullanıcı adı veya şifre hatalı!");
         return;
+
     }
 
-    localStorage.setItem(
-        "aktifKullanici",
-        JSON.stringify(bulunan)
-    );
+    // Aktif kullanıcıyı kaydet
+    localStorage.setItem("aktifKullanici", JSON.stringify({
+
+        kullanici : bulunan.kullanici,
+        adSoyad   : bulunan.adSoyad,
+        gorev     : bulunan.gorev,
+        mudurluk  : bulunan.mudurluk,
+        birim     : bulunan.birim,
+        rol       : bulunan.rol
+
+    }));
 
     if(bulunan.ilkGiris){
 
