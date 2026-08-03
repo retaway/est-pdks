@@ -22,7 +22,17 @@ let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
 
 let aktifKullanici =
 JSON.parse(localStorage.getItem("aktifKullanici")) || null;
+let aktifPersonel = null;
 
+if (aktifKullanici) {
+
+    aktifPersonel = personelListesi.find(function(p){
+
+        return String(p.sicil) === String(aktifKullanici.sicil);
+
+    });
+
+}
 let kullanicilar =
 JSON.parse(localStorage.getItem("kullanicilar")) || [
 
@@ -1083,19 +1093,13 @@ function kullaniciOtomatikOlustur(personel){
 
     kullanicilar.push({
 
-        kullanici: kullaniciAdi,
+    kullanici: kullaniciAdi,
+    sifre: "1234",
+    ilkGiris: true,
+    adSoyad: personel.ad + " " + personel.soyad,
+    sicil: personel.sicil
 
-        sifre: "1234",
-
-        ilkGiris: true,
-
-        adSoyad: personel.ad + " " + personel.soyad,
-
-        rol: rolBelirle(personel.gorev),
-
-        sicil: personel.sicil
-
-    });
+});
 
     localStorage.setItem(
         "kullanicilar",
@@ -1578,6 +1582,9 @@ function yetkiVarMi(...roller) {
     return roller.includes(aktifKullanici.rol);
 
 }
+// Kullanıcı Yönetimi modülü kaldırıldığı için
+// şimdilik kullanılmıyor.
+// Daha sonra tamamen kaldırılacaktır.
 function rolBelirle(gorev) {
 
     switch (gorev) {
