@@ -1781,19 +1781,19 @@ function dashboardAdmin(){
     <div class="panel-name">
 
         <div class="info-item">
-            <span>🏢 Müdürlük</span>
-            <strong>${aktifPersonel ? aktifPersonel.mudurluk : "Sistem Yönetimi"}</strong>
-        </div>
+    <span class="info-label">🏢 Müdürlük</span>
+    <strong class="info-value">${aktifPersonel ? aktifPersonel.mudurluk : "Sistem Yönetimi"}</strong>
+</div>
 
-        <div class="info-item">
-            <span>📍 Birim</span>
-            <strong>${aktifPersonel ? aktifPersonel.birim : "-"}</strong>
-        </div>
+<div class="info-item">
+    <span class="info-label">📍 Birim</span>
+    <strong class="info-value">${aktifPersonel ? aktifPersonel.birim : "-"}</strong>
+</div>
 
-        <div class="info-item">
-            <span>👤 Görev</span>
-            <strong>${aktifPersonel ? aktifPersonel.gorev : "Sistem Yöneticisi"}</strong>
-        </div>
+<div class="info-item">
+    <span class="info-label">👤 Görev</span>
+    <strong class="info-value">${aktifPersonel ? aktifPersonel.gorev : "Sistem Yöneticisi"}</strong>
+</div>
 
     </div>
 
