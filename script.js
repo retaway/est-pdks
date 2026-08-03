@@ -899,6 +899,22 @@ function yeniPersonel(index = null) {
 </button>
     </div>
     `;
+    const mudurlukSelect = document.getElementById("mudurluk");
+
+mudurlukSelect.innerHTML = '<option value="">Müdürlük Seçiniz</option>';
+
+Object.keys(organizasyonYapisi).forEach(function(mudurluk){
+
+    mudurlukSelect.innerHTML += `
+        <option value="${mudurluk}"
+        ${mudurluk === p.mudurluk ? "selected" : ""}>
+            ${mudurluk}
+        </option>
+    `;
+
+});
+
+gorevleriYukle(p.gorev);
 }
 function gorevleriYukle(seciliGorev = ""){
 
