@@ -1764,6 +1764,16 @@ function dashboardAdmin(){
 
     const d = dashboardVerileri();
 
+    const aktifKullanici =
+        JSON.parse(localStorage.getItem("aktifKullanici"));
+
+    const aktifPersonel =
+        personelListesi.find(function(p){
+
+            return String(p.sicil) === String(aktifKullanici.sicil);
+
+        });
+
     document.getElementById("icerik").innerHTML = `
 <div class="dashboard-header">
 
