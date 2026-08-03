@@ -1781,9 +1781,15 @@ document.getElementById("icerik").innerHTML = `
 
 <div class="panel-name">
 
-    📍 ${aktifPersonel ? aktifPersonel.mudurluk : "SİSTEM YÖNETİCİSİ"}
-    •
-    ${aktifPersonel ? aktifPersonel.gorev : "ADMIN"}
+    🏢 ${aktifPersonel ? aktifPersonel.mudurluk : "SİSTEM YÖNETİCİSİ"}
+
+    <br>
+
+    📍 ${aktifPersonel ? aktifPersonel.birim : "SİSTEM"}
+
+    <br>
+
+    👤 ${aktifPersonel ? aktifPersonel.gorev : "ADMIN"}
 
 </div>
 
@@ -2303,6 +2309,7 @@ document.getElementById("icerik").innerHTML = `
 dashboardGrafik();
 sistemSaati();
 panelBasligiGetir();
+havaDurumuGetir();
     
 }
 function panelBasligiGetir() {
@@ -5115,5 +5122,90 @@ function birimDegisti(){
         `;
 
     });
+
+}
+/*==========================
+    HAVA DURUMU
+==========================*/
+
+async function havaDurumuGetir() {
+
+    const alan = document.getElementById("havaDurumu");
+
+    if (!alan) return;
+
+    try {
+
+        // Eskişehir
+        const lat = 39.7767;
+        const lon = 30.5206;
+
+        const cevap = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=Europe/Istanbul`
+        );
+
+        const veri = await cevap.json();
+
+        const sicaklik = Math.round(veri.current.temperature_2m);
+
+        const kod = veri.current.weather_code;
+
+        let durum = "Açık";
+
+        switch (kod) {
+
+            case 0:
+                durum = "☀️ Açık";
+                break;
+
+            case 1:
+            case 2:
+                durum = "🌤 Az Bulutlu";
+                break;
+
+            case 3:
+                durum = "☁️ Bulutlu";
+                break;
+
+            case 45:
+            case 48:
+                durum = "🌫 Sisli";
+                break;
+
+            case 51:
+            case 53:
+            case 55:
+                durum = "🌦 Çiseleme";
+                break;
+
+            case 61:
+            case 63:
+            case 65:
+                durum = "🌧 Yağmurlu";
+                break;
+
+            case 71:
+            case 73:
+            case 75:
+                durum = "❄️ Karlı";
+                break;
+
+            case 95:
+                durum = "⛈ Fırtına";
+                break;
+
+            default:
+                durum = "🌤";
+        }
+
+        alan.textContent = `Eskişehir • ${sicaklik}°C • ${durum}`;
+
+    } catch (e) {
+
+        alan.textContent = "Hava durumu alınamadı.";
+
+        console.error(e);
+
+    }
 
 }
