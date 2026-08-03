@@ -1760,6 +1760,11 @@ function sistemSaati() {
     window.sistemSaatTimer = setInterval(guncelle, 1000);
 
 }
+function dashboardAdmin(){
+
+    const d = dashboardVerileri();
+
+    document.getElementById("icerik").innerHTML = `
 <div class="dashboard-header">
 
     <div class="welcome-panel">
