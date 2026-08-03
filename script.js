@@ -1774,13 +1774,17 @@ document.getElementById("icerik").innerHTML = `
 
         <div class="welcome-left">
 
-           <h2>
+<h2>
     👋 Hoş Geldiniz,
     <strong>${aktifKullanici.adSoyad}</strong>
 </h2>
 
 <div class="panel-name">
-   📍 ${rolAdiGetir(aktifKullanici.rol)} • ${aktifKullanici.adSoyad}
+
+    📍 ${aktifPersonel ? aktifPersonel.mudurluk : "SİSTEM YÖNETİCİSİ"}
+    •
+    ${aktifPersonel ? aktifPersonel.gorev : "ADMIN"}
+
 </div>
 
             <div class="welcome-divider"></div>
