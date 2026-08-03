@@ -366,8 +366,6 @@
 
     height:90px;
 
-    background:#fff;
-
     display:flex;
 
     justify-content:space-between;
@@ -376,9 +374,11 @@
 
     padding:0 35px;
 
-    border-bottom:1px solid #e8edf4;
+    background:linear-gradient(90deg,#08192f,#12386b);
 
-    box-shadow:0 8px 24px rgba(15,23,42,.06);
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 10px 25px rgba(15,23,42,.25);
 
     z-index:950;
 
@@ -408,7 +408,7 @@
 
     margin-top:6px;
 
-    color:#7b8798;
+    color:#c7d8ee;
 
     font-size:14px;
 
@@ -1718,13 +1718,6 @@ button:hover{
 
 }
 
-.duyuru-item:hover{
-
-    background:#eef4ff;
-
-    transform:translateX(5px);
-
-}
 
 .duyuru-item i{
 
@@ -1883,7 +1876,7 @@ button:hover{
 
     border-radius:18px;
 
-    padding:24px 30px;
+    padding:18px 26px;
 
     box-shadow:0 8px 24px rgba(15,23,42,.08);
 
@@ -1905,7 +1898,7 @@ button:hover{
 
     margin:0;
 
-    font-size:30px;
+    font-size:24px;
 
     font-weight:700;
 
@@ -1921,13 +1914,13 @@ button:hover{
 
 .panel-name{
 
-    margin-top:18px;
+    margin-top:12px;
 
     display:flex;
 
     flex-direction:column;
 
-    gap:10px;
+    gap:6px;
 
     font-size:16px;
 
@@ -1947,7 +1940,9 @@ button:hover{
 
 .welcome-right{
 
-    flex:2;
+    flex:1.2;
+   
+    min-width:330px;
 
     background:#f8fafc;
 
@@ -1973,13 +1968,32 @@ button:hover{
 
 .duyuru-item{
 
-    padding:12px 0;
+    display:flex;
+    align-items:center;
 
-    border-bottom:1px solid #e5e7eb;
+    padding:12px 14px;
+
+    margin-bottom:10px;
+
+    background:#ffffff;
+
+    border:1px solid #e7edf5;
+
+    border-radius:12px;
 
     font-size:14px;
 
     color:#475569;
+
+    transition:.25s;
+
+}
+
+.duyuru-item:hover{
+
+    background:#eef4ff;
+
+    transform:translateX(5px);
 
 }
 
