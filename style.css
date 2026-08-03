@@ -831,3 +831,19 @@ textarea:focus{
 .login-options a:hover{
     text-decoration:underline;
 }
+.login-logo{
+
+    width:110px;
+    display:block;
+    margin:0 auto 20px;
+
+}
+
+.login-text{
+
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+    line-height:22px;
+
+}
