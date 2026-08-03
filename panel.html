@@ -128,57 +128,61 @@
 
 <div class="main">
 
-<div class="topbar">
+    <div class="topbar">
 
-   <div class="topbar-left">
+        <div class="topbar-left">
 
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-    </button>
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
 
-  <div class="header-logo">
+            <div class="header-logo">
+                <div class="header-title">
+                    <h2>ESTRAM EKYS</h2>
+                    <span>Kurumsal Yönetim Sistemi</span>
+                </div>
+            </div>
 
-    <div class="header-title">
-        <h2>ESTRAM EKYS</h2>
-        <span>Kurumsal Yönetim Sistemi</span>
-    </div>
+        </div> <!-- topbar-left SONU -->
 
-</div>
+        <div class="topbar-right">
 
-<div class="topbar-right">
+            <button class="bildirimBtn"
+                    onclick="sayfaGoster('bildirimler')">
+                <i class="fas fa-bell"></i>
+            </button>
 
-    <button
-        class="bildirimBtn"
-        onclick="sayfaGoster('bildirimler')">
+            <div class="user">
 
-        <i class="fas fa-bell"></i>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
 
-    </button>
+                <div class="user-text">
+                    <strong id="kullaniciAdi">
+                        Sistem Yöneticisi
+                    </strong>
 
-    <div class="user">
+                    <span id="kullaniciGorev">
+                        Yönetici
+                    </span>
+                </div>
 
-        <div class="user-avatar">
-            <i class="fas fa-user"></i>
-        </div>
+                <i class="fas fa-chevron-down user-arrow"></i>
 
-        <div class="user-text">
+            </div>
 
-            <strong id="kullaniciAdi">
-                Sistem Yöneticisi
-            </strong>
+        </div> <!-- topbar-right SONU -->
 
-            <span id="kullaniciGorev">
-                Yönetici
-            </span>
+    </div> <!-- topbar SONU -->
 
-        </div>
+    <div id="icerik"></div>
 
-        <i class="fas fa-chevron-down user-arrow"></i>
+    <footer class="ekys-footer">
+        ...
+    </footer>
 
-    </div>
-
-</div>
-
+</div> <!-- main SONU -->
 <div id="icerik"></div>
 <footer class="ekys-footer">
 <div class="footer-item">
