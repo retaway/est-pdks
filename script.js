@@ -5251,3 +5251,14 @@ function toggleTree(id, el){
     el.classList.toggle("open");
 
 }
+function toggleMenu(id){
+
+    const menu=document.getElementById(id);
+
+    const parent=event.currentTarget;
+
+    menu.classList.toggle("open");
+
+    parent.classList.toggle("open");
+
+}
