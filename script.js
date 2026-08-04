@@ -1549,16 +1549,6 @@ if(!vardiyaTarihi) return;
     vardiya.personeller.push(kayit);
 
 });
-
-    if(personel){
-
-        kayit.sicil = personel.sicil;
-
-    }
-
-    vardiya.personeller.push(kayit);
-
-});
             let vardiya = yeniGunlukVardiyaOlustur(vardiyaTarihi);
 
 vardiya.personeller = [];
