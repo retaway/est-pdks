@@ -12,11 +12,96 @@ if (!personelListesi) {
 
 }
 let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
-let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let gunlukVardiyaArsivi =
 JSON.parse(localStorage.getItem("gunlukVardiyaArsivi")) || [];
+function gunlukVardiyaArsiviKaydet(){
+
+    localStorage.setItem(
+        "gunlukVardiyaArsivi",
+        JSON.stringify(gunlukVardiyaArsivi)
+    );
+
+}
+
+function gunlukVardiyaBul(tarih){
+
+    return gunlukVardiyaArsivi.find(function(v){
+
+        return v.tarih === tarih;
+
+    });
+
+}
+function personelGunlukVardiyasiGetir(sicil,tarih){
+
+    const vardiya = gunlukVardiyaBul(tarih);
+
+    if(!vardiya){
+
+        return null;
+
+    }
+
+    return vardiya.personeller.find(function(p){
+
+        return String(p.sicil) === String(sicil);
+
+    }) || null;
+
+}
+function yarininTarihi(){
+
+    const d = new Date();
+
+    d.setDate(d.getDate()+1);
+
+    return d.toISOString().split("T")[0];
+
+}
+function yeniGunlukVardiyaOlustur(tarih){
+
+    let vardiya = gunlukVardiyaBul(tarih);
+
+    if(vardiya){
+
+        return vardiya;
+
+    }
+
+    vardiya = {
+
+        tarih:tarih,
+
+        durum:"TASLAK",
+
+        yayinlayan:"",
+
+        yayinTarihi:"",
+
+        personeller:[]
+
+    };
+
+    gunlukVardiyaArsivi.push(vardiya);
+
+    gunlukVardiyaArsiviKaydet();
+
+    return vardiya;
+
+}
+let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
+let vatmanDegisimTalepleri =
+JSON.parse(localStorage.getItem("vatmanDegisimTalepleri")) || [];
+function vatmanDegisimKaydet(){
+
+    localStorage.setItem(
+        "vatmanDegisimTalepleri",
+        JSON.stringify(vatmanDegisimTalepleri)
+    );
+
+}
 let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
@@ -1385,7 +1470,23 @@ function tarifeler() {
     </table>
     `;
 }
+function vardiyaKaydiniOlustur(satir){
 
+    return{
+
+        gorevKodu : String(satir[0] || "").trim(),
+
+        gorevAdi  : String(satir[1] || "").trim(),
+
+        adSoyad   : String(satir[2] || "").trim(),
+
+        sicil     : "",
+
+        durum     : "ATANDI"
+
+    };
+
+}
 function excelSec() {
     const fileInput = document.getElementById("excelDosya");
     if (!fileInput) return;
@@ -1393,6 +1494,12 @@ function excelSec() {
     fileInput.click();
     fileInput.onchange = function () {
         const dosya = this.files[0];
+        const vardiyaTarihi = prompt(
+    "Yüklediğiniz vardiyanın tarihi (YYYY-AA-GG)\n\nÖrnek : 2026-08-05",
+    new Date(Date.now()+86400000).toISOString().split("T")[0]
+);
+
+if(!vardiyaTarihi) return;
         if (!dosya) return;
 
         tarifeDosyasi = dosya;
@@ -1404,6 +1511,66 @@ function excelSec() {
             const sayfa = workbook.Sheets[workbook.SheetNames[0]];
 
             tarifeVerileri = XLSX.utils.sheet_to_json(sayfa, { header: 1 });
+     tarifeVerileri.forEach(function(satir){
+
+    if(!satir[0]) return;
+
+    if(String(satir[0]).trim() === "") return;
+
+    const gorevKodu = String(satir[0]).trim();
+
+    if(!/^\d{5}$/.test(gorevKodu)) return;
+
+    const kayit = vardiyaKaydiniOlustur(satir);
+
+    const personel = personelListesi.find(function(p){
+
+        return (
+            (p.ad + " " + p.soyad)
+            .toUpperCase()
+            .trim() ===
+            kayit.adSoyad
+            .toUpperCase()
+            .trim()
+        );
+
+    });
+
+    if(personel){
+
+        kayit.sicil = personel.sicil;
+
+    }
+
+    vardiya.personeller.push(kayit);
+
+});
+
+    if(personel){
+
+        kayit.sicil = personel.sicil;
+
+    }
+
+    vardiya.personeller.push(kayit);
+
+});
+            let vardiya = yeniGunlukVardiyaOlustur(vardiyaTarihi);
+
+vardiya.personeller = [];
+
+vardiya.durum = "TASLAK";
+
+vardiya.yayinTarihi = new Date().toLocaleString();
+
+vardiya.yayinlayan =
+aktifKullanici ? aktifKullanici.sicil : "";
+            gunlukVardiyaArsiviKaydet();
+
+alert(
+    vardiyaTarihi +
+    " tarihli günlük vardiya sisteme aktarıldı."
+);
 
             document.getElementById("tarifeListe").innerHTML = `
                 <tr>
@@ -2636,35 +2803,82 @@ function vardiyaFiltreDegistir(filtre) {
     gunlukVardiya();
 }
 
-function vardiyaDurumuBul(personel, bugun) {
+function vardiyaDurumuBul(personel, tarih) {
+
+    // 1- Önce İK kayıtlarına bak
     const ikKaydi = personelDurumlari.find(function (k) {
+
         return String(k.sicil) === String(personel.sicil) &&
-            (!k.baslangic || k.baslangic <= bugun) &&
-            (!k.bitis || k.bitis >= bugun);
+            (!k.baslangic || k.baslangic <= tarih) &&
+            (!k.bitis || k.bitis >= tarih);
+
     });
 
+    // 2- Günlük vardiya arşivini bul
+    const gunlukKayit = personelGunlukVardiyasiGetir(
+        personel.sicil,
+        tarih
+    );
+
+    // 3- İK kaydı varsa (izin, rapor vb.)
     if (ikKaydi) {
+
         return {
+
             durum: ikKaydi.durum || "ATANMADI",
-            gorevKodu: ikKaydi.gorevKodu || "-"
+
+            gorevKodu: gunlukKayit ? gunlukKayit.gorevKodu : "-",
+
+            platform: gunlukKayit ? gunlukKayit.platform : "-",
+
+            tarife: gunlukKayit ? gunlukKayit.tarife : "-",
+
+            baslangic: gunlukKayit ? gunlukKayit.baslangic : "-",
+
+            bitis: gunlukKayit ? gunlukKayit.bitis : "-"
+
         };
+
     }
 
-    const vardiyaKaydi = gunlukVardiyalar.find(function (v) {
-        return String(v.sicil) === String(personel.sicil) && v.tarih === bugun;
-    });
+    // 4- Günlük vardiya varsa
+    if (gunlukKayit) {
 
-    if (vardiyaKaydi) {
         return {
-            durum: vardiyaKaydi.durum || "ATANDI",
-            gorevKodu: vardiyaKaydi.gorevKodu || "-"
+
+            durum: "ATANDI",
+
+            gorevKodu: gunlukKayit.gorevKodu,
+
+            platform: gunlukKayit.platform,
+
+            tarife: gunlukKayit.tarife,
+
+            baslangic: gunlukKayit.baslangic,
+
+            bitis: gunlukKayit.bitis
+
         };
+
     }
 
+    // 5- Hiç kayıt yoksa
     return {
+
         durum: "ATANMADI",
-        gorevKodu: "-"
+
+        gorevKodu: "-",
+
+        platform: "-",
+
+        tarife: "-",
+
+        baslangic: "-",
+
+        bitis: "-"
+
     };
+
 }
 function personelIsBasiTarihi(sicil, tarih) {
 
@@ -2692,7 +2906,7 @@ function gunlukVardiya() {
         arama = aramaKutusu.value.toLowerCase().trim();
     }
 
-    const bugun = new Date().toISOString().split("T")[0];
+    const tarih = yarininTarihi();
     let satirlar = "";
     
     const vatmanlar = personelleriGetir("Vatman");
@@ -2705,27 +2919,50 @@ function gunlukVardiya() {
             return;
         }
 
-        const bilgi = vardiyaDurumuBul(personel, bugun);
+       const bilgi = personelGunlukVardiyasiGetir(
+    personel.sicil,
+    tarih
+);
 
-        if (gunlukVardiyaFiltre !== "HEPSI" && bilgi.durum !== gunlukVardiyaFiltre) {
-            return;
-        }
+   const durumBilgisi =
+bilgi
+? bilgi.durum
+: "ATANMADI";
 
-     let gorev = bilgi.gorevKodu;
+if (
+    gunlukVardiyaFiltre !== "HEPSI" &&
+    durumBilgisi !== gunlukVardiyaFiltre
+){
+    return;
+}
+
+let gorev = "-";
+
+if(bilgi){
+
+    gorev =
+    bilgi.gorevKodu +
+    " - " +
+    bilgi.gorevAdi;
+
+}
 let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
+const degisim = degisimEtiketiBul(
+    personel.sicil,
+    tarih
+);
 
-const degisim = degisimEtiketiBul(personel.sicil, bugun);
+const isBasi = personelIsBasiTarihi(
+    personel.sicil,
+    tarih
+);
 
 const satirRengi =
     degisim !== "-"
         ? 'style="background:#fff8cc;"'
         : "";
 
-const isBasi = personelIsBasiTarihi(
-    personel.sicil,
-    bugun
-);
-  switch (bilgi.durum) {
+switch (durumBilgisi) {
 
     case "ATANDI":
         durum = '<span style="color:green;font-weight:bold;">🟢 ATANDI</span>';
@@ -2787,23 +3024,27 @@ const isBasi = personelIsBasiTarihi(
             ? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
             : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
-        satirlar += `
+   satirlar += `
 <tr ${satirRengi}>
     <td>${personel.sicil}</td>
     <td>${personel.ad} ${personel.soyad}</td>
-    <td>${gorev}</td>
+    <td>${bilgi ? bilgi.gorevKodu : "-"}</td>
+    <td>${bilgi ? bilgi.platform : "-"}</td>
+    <td>${bilgi ? bilgi.tarife : "-"}</td>
+    <td>${bilgi ? bilgi.baslangic : "-"}</td>
+    <td>${bilgi ? bilgi.bitis : "-"}</td>
     <td>${durum}</td>
     <td>${isBasi}</td>
     <td>${degisim}</td>
     <td>${duzenleButonu}</td>
 </tr>
-        `;
+`;
     });
 
     if (satirlar === "") {
         satirlar = `
         <tr>
-            <td colspan="7" style="text-align:center;">
+            <td colspan="11" style="text-align:center;">
                 Kayıt bulunamadı.
             </td>
         </tr>
@@ -2853,10 +3094,14 @@ const isBasi = personelIsBasiTarihi(
 
         <table class="tablo">
             <thead>
-       <tr>
+    <tr>
     <th>Sicil</th>
     <th>Ad Soyad</th>
     <th>Görev Kodu</th>
+    <th>Platform</th>
+    <th>Tarife</th>
+    <th>Başlangıç</th>
+    <th>Bitiş</th>
     <th>Durum</th>
     <th>İş Başı</th>
     <th>Değişim</th>
@@ -3238,6 +3483,230 @@ function yeniGorevTarifeDegisimi() {
     `;
 
 }
+    function vatmanDegisimTalebi() {
+
+    if (!aktifKullanici) {
+        alert("Aktif kullanıcı bulunamadı.");
+        return;
+    }
+
+    const tarih = yarininTarihi();
+
+    const benimVardiyam = personelGunlukVardiyasiGetir(
+        aktifKullanici.sicil,
+        tarih
+    );
+
+    if (!benimVardiyam) {
+
+        document.getElementById("icerik").innerHTML = `
+            <h2>🚋 Vatman Görev Değişim Talebi</h2>
+
+            <div class="form-kart">
+
+                <p>
+                    ${tarih} tarihine ait göreviniz henüz yayınlanmamıştır.
+                </p>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+    let personeller = '<option value="">Vatman Seçiniz</option>';
+
+    const vatmanlar = personelleriGetir("Vatman")
+        .sort(function(a,b){
+
+            return (a.ad + " " + a.soyad)
+            .localeCompare(
+                b.ad + " " + b.soyad,
+                "tr"
+            );
+
+        });
+
+    vatmanlar.forEach(function(p){
+
+        if(String(p.sicil) === String(aktifKullanici.sicil))
+            return;
+
+        personeller += `
+            <option value="${p.sicil}">
+                ${p.ad} ${p.soyad}
+            </option>
+        `;
+
+    });
+
+    document.getElementById("icerik").innerHTML = `
+
+<h2>🚋 Vatman Görev Değişim Talebi</h2>
+
+<div class="form-kart">
+
+<label>Tarih</label>
+
+<input
+type="date"
+id="degisimTarih"
+value="${tarih}"
+readonly>
+
+<label>Benim Görevim</label>
+
+<input
+type="text"
+readonly
+value="${benimVardiyam.gorevKodu} - ${benimVardiyam.gorevAdi}">
+
+<label>Değişmek İstediğim Vatman</label>
+
+<select
+id="degisecekVatman"
+onchange="degisecekVatmanSecildi()">
+
+${personeller}
+
+</select>
+
+<label>Seçilen Vatmanın Görevi</label>
+
+<input
+type="text"
+id="karsiGorev"
+readonly
+value="-">
+
+<label>Açıklama</label>
+
+<textarea
+id="degisimAciklama"
+rows="4"></textarea>
+
+<br>
+
+<button
+onclick="vatmanDegisimTalebiKaydet()">
+
+📨 Talep Gönder
+
+</button>
+
+<button
+onclick="gunlukVardiya()">
+
+⬅ Geri
+
+</button>
+
+</div>
+
+`;
+
+}
+    function vatmanDegisimTalebiKaydet(){
+
+    const tarih =
+    document.getElementById("degisimTarih").value;
+
+    const karsiSicil =
+    document.getElementById("degisecekVatman").value;
+
+    const aciklama =
+    document.getElementById("degisimAciklama").value.trim();
+
+    if(!karsiSicil){
+
+        alert("Lütfen değişmek istediğiniz vatmanı seçiniz.");
+        return;
+
+    }
+
+    const benimVardiyam =
+    personelGunlukVardiyasiGetir(
+        aktifKullanici.sicil,
+        tarih
+    );
+
+    const karsiVardiya =
+    personelGunlukVardiyasiGetir(
+        karsiSicil,
+        tarih
+    );
+
+    if(!benimVardiyam || !karsiVardiya){
+
+        alert("Görev bilgisi bulunamadı.");
+        return;
+
+    }
+
+  const talep = {
+
+    id: Date.now(),
+
+    tarih: tarih,
+
+    talepEdenSicil: aktifKullanici.sicil,
+
+    degisenSicil: karsiSicil,
+
+    vardiyaAmiriOnay: false,
+
+    surucuSefiOnay: false,
+
+    durum: "BEKLIYOR",
+
+    yayinlandi: false,
+
+    yayinTarihi: ""
+
+};
+    vatmanDegisimTalepleri.push(talep);
+
+    vatmanDegisimKaydet();
+
+    alert("Görev değişim talebiniz oluşturuldu.");
+
+    gunlukVardiya();
+
+}
+    function degisecekVatmanSecildi(){
+
+    const sicil =
+    document.getElementById("degisecekVatman").value;
+
+    if(!sicil){
+
+        document.getElementById("karsiGorev").value="-";
+        return;
+
+    }
+
+    const bilgi =
+    personelGunlukVardiyasiGetir(
+        sicil,
+        yarininTarihi()
+    );
+
+    if(!bilgi){
+
+        document.getElementById("karsiGorev").value =
+        "Görev bulunamadı";
+
+        return;
+
+    }
+
+    document.getElementById("karsiGorev").value =
+        bilgi.gorevKodu +
+        " - " +
+        bilgi.gorevAdi;
+
+}
 function gorevTarifeDegisimiKaydet() {
     const tarih = document.getElementById("degisimTarihi").value;
     const talepEdenSicil = document.getElementById("talepEdenPersonelSicil").value;
@@ -3508,6 +3977,77 @@ function degisimEtiketiBul(sicil, bugun) {
     if (!kayit) return "-";
 
     return `🔁 ${kayit.talepEdenPersonel} → ${kayit.degisenPersonel}`;
+}
+    function degisimListeleriniYayinla(){
+
+    let yayinlanan = 0;
+
+    vatmanDegisimTalepleri.forEach(function(talep){
+
+        if(
+            talep.surucuSefiOnay &&
+            !talep.yayinlandi
+        ){
+
+            talep.yayinlandi = true;
+
+            talep.yayinTarihi =
+            new Date().toLocaleString("tr-TR");
+
+            yayinlanan++;
+
+            bildirimEkle(
+
+                "GOREV",
+
+                "Yeni Göreviniz Yayınlandı",
+
+                "Yarınki görev planınız güncellenmiştir.",
+
+                "VATMAN",
+
+                talep.id,
+
+                talep.talepEdenSicil
+
+            );
+
+            bildirimEkle(
+
+                "GOREV",
+
+                "Yeni Göreviniz Yayınlandı",
+
+                "Yarınki görev planınız güncellenmiştir.",
+
+                "VATMAN",
+
+                talep.id,
+
+                talep.degisenSicil
+
+            );
+
+        }
+
+    });
+
+    localStorage.setItem(
+
+        "vatmanDegisimTalepleri",
+
+        JSON.stringify(vatmanDegisimTalepleri)
+
+    );
+
+    alert(
+
+        yayinlanan +
+
+        " adet görev değişimi yayınlandı."
+
+    );
+
 }
 function izinler() {
 
@@ -4730,31 +5270,44 @@ function bildirimOlustur(tip, personel, hedef) {
     );
 
 }
-function bildirimEkle(tur, baslik, aciklama, hedef = "GENEL") {
+function bildirimEkle(
 
-  bildirimler.unshift({
+    tur,
+    baslik,
+    aciklama,
+    hedef = "GENEL",
+    talepId = null,
+    hedefSicil = ""
 
-    id: Date.now(),
+) {
 
-    tarih: new Date().toLocaleString("tr-TR"),
+    bildirimler.unshift({
 
-    tur: tur,
+        id: Date.now(),
 
-    baslik: baslik,
+        tarih: new Date().toLocaleString("tr-TR"),
 
-    aciklama: aciklama,
+        tur: tur,
 
-    hedef: hedef,
+        baslik: baslik,
 
-    okundu: false,
+        aciklama: aciklama,
 
-    durum: "BEKLİYOR",
+        hedef: hedef,
 
-    islemYapan: "",
+        hedefSicil: hedefSicil,
 
-    islemTarihi: ""
+        talepId: talepId,
 
-});
+        okundu: false,
+
+        durum: "BEKLİYOR",
+
+        islemYapan: "",
+
+        islemTarihi: ""
+
+    });
 
     localStorage.setItem(
         "bildirimler",
@@ -4914,16 +5467,244 @@ function bildirimSil(index){
     bildirimlerSayfasi();
 
 }
+    function gorevleriDegistir(talep){
+
+    const vardiya =
+    gunlukVardiyaBul(talep.tarih);
+
+    if(!vardiya) return;
+
+    const p1 =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)===String(talep.talepEdenSicil);
+
+    });
+
+    const p2 =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)===String(talep.degisenSicil);
+
+    });
+
+    if(!p1 || !p2){
+
+        alert("Görev kayıtları bulunamadı.");
+
+        return;
+
+    }
+
+    const gecici = {
+
+        gorevKodu : p1.gorevKodu,
+
+        gorevAdi  : p1.gorevAdi,
+
+        platform  : p1.platform,
+
+        tarife    : p1.tarife,
+
+        baslangic : p1.baslangic,
+
+        bitis     : p1.bitis
+
+    };
+
+    p1.gorevKodu = p2.gorevKodu;
+    p1.gorevAdi  = p2.gorevAdi;
+    p1.platform  = p2.platform;
+    p1.tarife    = p2.tarife;
+    p1.baslangic = p2.baslangic;
+    p1.bitis     = p2.bitis;
+
+    p2.gorevKodu = gecici.gorevKodu;
+    p2.gorevAdi  = gecici.gorevAdi;
+    p2.platform  = gecici.platform;
+    p2.tarife    = gecici.tarife;
+    p2.baslangic = gecici.baslangic;
+    p2.bitis     = gecici.bitis;
+
+    gunlukVardiyaArsiviKaydet();
+
+    talep.durum = "TAMAMLANDI";
+
+    localStorage.setItem(
+
+        "vatmanDegisimTalepleri",
+
+        JSON.stringify(vatmanDegisimTalepleri)
+
+    );
+
+    bildirimEkle(
+
+        "DEGISIM",
+
+        "Görev Değişimi Tamamlandı",
+
+        "Görev değişiminiz onaylandı ve vardiyanız güncellendi.",
+
+        "VATMAN",
+
+        talep.id,
+
+        talep.talepEdenSicil
+
+    );
+
+    bildirimEkle(
+
+        "DEGISIM",
+
+        "Görev Değişimi Tamamlandı",
+
+        "Görev değişiminiz onaylandı ve vardiyanız güncellendi.",
+
+        "VATMAN",
+
+        talep.id,
+
+        talep.degisenSicil
+
+    );
+
+    bildirimEkle(
+
+        "DEGISIM",
+
+        "Görev Değişimi",
+
+        "Görev değişimi başarıyla sisteme işlendi.",
+
+        "VARDIYA_AMIRI",
+
+        talep.id
+
+    );
+
+}
+    function degisimTalebiBul(id){
+
+    return vatmanDegisimTalepleri.find(function(t){
+
+        return Number(t.id) === Number(id);
+
+    });
+
+}
+  function degisimTalebiOnayla(talepId){
+
+    const talep = degisimTalebiBul(talepId);
+
+    if(!talep) return;
+
+    if(aktifKullanici.rol==="VARDIYA_AMIRI"){
+
+        talep.vardiyaAmiriOnay = true;
+
+        localStorage.setItem(
+            "vatmanDegisimTalepleri",
+            JSON.stringify(vatmanDegisimTalepleri)
+        );
+
+        const talepEden = personelListesi.find(function(p){
+            return String(p.sicil)===String(talep.talepEdenSicil);
+        });
+
+        const degisen = personelListesi.find(function(p){
+            return String(p.sicil)===String(talep.degisenSicil);
+        });
+
+        bildirimEkle(
+
+            "DEGISIM",
+
+            "Görev Değişimi",
+
+            "Vardiya Amiri görev değişim talebinizi onayladı.",
+
+            "VATMAN",
+
+            talep.id,
+
+            talep.talepEdenSicil
+
+        );
+
+        bildirimEkle(
+
+            "DEGISIM",
+
+            "Görev Değişimi",
+
+            "Vardiya Amiri görev değişimini onayladı.",
+
+            "VATMAN",
+
+            talep.id,
+
+            talep.degisenSicil
+
+        );
+
+        bildirimEkle(
+
+            "DEGISIM",
+
+            "Sürücü Şefi Onayı",
+
+            talepEden.ad + " " + talepEden.soyad +
+
+            " ile " +
+
+            degisen.ad + " " + degisen.soyad +
+
+            " arasındaki görev değişimi onay bekliyor.",
+
+            "SURUCU_SEFI",
+
+            talep.id
+
+        );
+
+    }
+
+    else if(aktifKullanici.rol==="SURUCU_SEFI"){
+
+        talep.surucuSefiOnay = true;
+
+        localStorage.setItem(
+            "vatmanDegisimTalepleri",
+            JSON.stringify(vatmanDegisimTalepleri)
+        );
+
+        gorevleriDegistir(talep);
+
+    }
+
+}
 function bildirimOnayla(index) {
 
-    bildirimler[index].durum = "ONAYLANDI";
+    if(bildirimler[index].talepId){
 
-    bildirimler[index].okundu = true;
+        degisimTalebiOnayla(
 
-    bildirimler[index].islemYapan =
+            bildirimler[index].talepId
+
+        );
+
+    }
+
+    bildirimler[index].durum="ONAYLANDI";
+
+    bildirimler[index].okundu=true;
+
+    bildirimler[index].islemYapan=
         aktifKullanici ? aktifKullanici.adSoyad : "";
 
-    bildirimler[index].islemTarihi =
+    bildirimler[index].islemTarihi=
         new Date().toLocaleString("tr-TR");
 
     localStorage.setItem(
@@ -4934,7 +5715,6 @@ function bildirimOnayla(index) {
     bildirimlerSayfasi();
 
 }
-
 function bildirimReddet(index) {
 
     bildirimler[index].durum = "REDDEDILDI";
