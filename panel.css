@@ -27,7 +27,7 @@
 }
 .sidebar.open{
 
-    width:250px;
+    width:320px;
 
     box-shadow:12px 0 35px rgba(0,0,0,.30);
 
@@ -2122,9 +2122,9 @@ button:hover{
 
     margin-left:auto;
 
-    font-size:12px;
+    font-size:15px;
 
-    opacity:.7;
+    opacity:.9;
 
     transition:.25s;
 
