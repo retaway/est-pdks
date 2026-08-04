@@ -2048,17 +2048,107 @@ button:hover{
     color:#475569;
 
 }
+/*==========================
+      TREE V2
+==========================*/
+
+.tree-parent{
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.tree-parent:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.tree-parent.open{
+
+    background:rgba(37,99,235,.18);
+
+}
+
+.tree-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.tree-folder{
+
+    width:20px;
+
+    color:#ffd166;
+
+    transition:.25s;
+
+}
+
+.tree-parent.open .tree-folder{
+
+    color:#ffe08a;
+
+}
+
+.tree-parent span{
+
+    font-size:15px;
+
+    font-weight:700;
+
+}
+
+.tree-ok{
+
+    margin-left:auto;
+
+    font-size:12px;
+
+    opacity:.7;
+
+    transition:.25s;
+
+}
+
+.tree-parent.open .tree-ok{
+
+    transform:rotate(90deg);
+
+    opacity:1;
+
+}
+
 .tree-submenu{
 
     display:none;
 
-    margin:0 0 10px 22px;
+    margin:0 0 10px 36px;
 
     padding:6px 0 6px 18px;
 
     list-style:none;
 
-    border-left:2px solid rgba(255,255,255,.15);
+    border-left:2px solid rgba(255,255,255,.12);
 
 }
 
@@ -2080,6 +2170,8 @@ button:hover{
 
     gap:10px;
 
+    min-height:42px;
+
     margin:3px 0;
 
     padding:10px 14px 10px 24px;
@@ -2096,9 +2188,9 @@ button:hover{
 
 .tree-submenu li:hover{
 
-    background:rgba(255,255,255,.08);
+    background:rgba(255,255,255,.10);
 
-    transform:translateX(4px);
+    transform:translateX(6px);
 
 }
 
@@ -2112,7 +2204,7 @@ button:hover{
 
     top:20px;
 
-    width:12px;
+    width:14px;
 
     border-top:2px solid rgba(255,255,255,.18);
 
@@ -2124,56 +2216,62 @@ button:hover{
 
     font-size:14px;
 
-    color:#8ec5ff;
+    color:#79b8ff;
 
 }
 
-.tree-parent{
+/* Mini Sidebar */
 
-    position:relative;
+.sidebar:not(.open) .tree-submenu{
 
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    font-weight:700;
-
-    border-radius:12px;
-
-    transition:.25s;
+    display:none !important;
 
 }
 
-.tree-parent:hover{
+.sidebar:not(.open) .tree-parent{
 
-    background:rgba(255,255,255,.08);
+    justify-content:center;
 
-}
-
-.tree-parent.open{
-
-    background:rgba(37,99,235,.18);
+    padding:16px 0;
 
 }
 
-.tree-ok{
+.sidebar:not(.open) .tree-parent span{
 
-    margin-left:auto;
-
-    font-size:12px;
-
-    opacity:.7;
-
-    transition:.25s;
+    display:none;
 
 }
 
-.tree-parent.open .tree-ok{
+.sidebar:not(.open) .tree-folder{
 
-    transform:rotate(180deg);
+    margin:0;
 
-    opacity:1;
+    font-size:20px;
+
+}
+
+.sidebar:not(.open) .tree-ok{
+
+    display:none;
+
+}
+
+@keyframes treeOpen{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-6px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
 
 }
