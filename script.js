@@ -3139,60 +3139,102 @@ document.getElementById("icerik").innerHTML = `
 `;
     }
 function yeniGorevTarifeDegisimi() {
+
     let personelSecenekleri = '<option value="">Personel seçiniz</option>';
 
-let siraliPersoneller = [...personelListesi].sort(function(a,b){
-    const adA = `${a.ad} ${a.soyad}`.toLowerCase();
-    const adB = `${b.ad} ${b.soyad}`.toLowerCase();
-    return adA.localeCompare(adB, "tr");
-});
+    const siraliPersoneller = personelListesi
 
-siraliPersoneller.forEach(function (p) {
-    personelSecenekleri += `
-        <option value="${p.sicil}">${p.sicil} - ${p.ad} ${p.soyad}</option>
-    `;
-});
+        .filter(function(p){
+
+            return (
+                (p.mudurluk || "").toUpperCase() === "İŞLETİM MÜDÜRLÜĞÜ" &&
+                (p.birim || "").toUpperCase() === "SÜRÜCÜ ŞEFLİĞİ" &&
+                (p.gorev || "").toUpperCase() === "VATMAN" &&
+                p.durum === "Aktif"
+            );
+
+        })
+
+        .sort(function(a,b){
+
+            return `${a.ad} ${a.soyad}`.localeCompare(
+                `${b.ad} ${b.soyad}`,
+                "tr",
+                { sensitivity:"base" }
+            );
+
+        });
+
+    siraliPersoneller.forEach(function(p){
+
+        personelSecenekleri += `
+            <option value="${p.sicil}">
+                ${p.sicil} - ${p.ad} ${p.soyad}
+            </option>
+        `;
+
+    });
 
     document.getElementById("icerik").innerHTML = `
+
         <h2>➕ Yeni Görev / Tarife Değişimi</h2>
 
         <div class="form-kart">
+
             <label>Tarih</label>
-            <input id="degisimTarihi" type="date" value="${new Date().toISOString().split("T")[0]}">
+
+            <input
+                id="degisimTarihi"
+                type="date"
+                value="${new Date().toISOString().split("T")[0]}">
 
             <label>Değişim Talep Eden Personel</label>
+
             <select id="talepEdenPersonelSicil">
                 ${personelSecenekleri}
             </select>
 
             <label>Tarifesi</label>
+
             <input
                 id="talepEdenTarife"
                 type="text"
                 placeholder="Örn: 01011 / Sabah / A Hat">
 
-            <label>Değişen Personel</label>
+            <label>Tarifesi Değişen Personel</label>
+
             <select id="degisenPersonelSicil">
                 ${personelSecenekleri}
             </select>
 
             <label>Tarifesi</label>
+
             <input
                 id="degisenTarife"
                 type="text"
                 placeholder="Örn: 02015 / Öğle / B Hat">
 
             <label>Neden</label>
+
             <textarea
                 id="degisimNeden"
                 rows="3"
                 placeholder="Örn: Zorunlu Değişiklik, Vatman Değişim Talebi, Diğer"></textarea>
 
             <br><br>
-            <button onclick="gorevTarifeDegisimiKaydet()">💾 Kaydet</button>
-            <button onclick="gorevTarifeDegisimleri()">⬅ Geri</button>
+
+            <button onclick="gorevTarifeDegisimiKaydet()">
+                💾 Kaydet
+            </button>
+
+            <button onclick="gorevTarifeDegisimleri()">
+                ⬅ Geri
+            </button>
+
         </div>
+
     `;
+
 }
 function gorevTarifeDegisimiKaydet() {
     const tarih = document.getElementById("degisimTarihi").value;
