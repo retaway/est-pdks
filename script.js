@@ -672,55 +672,92 @@ function personelYonetimi() {
 
 }
 
-function personeller() { 
+function personeller() {
+
+    const gorevSirasi = {
+        "Sürücü Şefi": 1,
+        "Sürücü Vardiya Amiri": 2,
+        "Büro Personeli": 3,
+        "Vatman": 4
+    };
+
+    const liste = personelListesi
+        .map((personel, index) => ({ ...personel, index }))
+        .filter(personel =>
+            personel.mudurluk === "İşletim Müdürlüğü" &&
+            personel.birim === "Sürücü Şefliği" &&
+            gorevSirasi[personel.gorev] !== undefined
+        )
+        .sort((a, b) => {
+
+            if (gorevSirasi[a.gorev] !== gorevSirasi[b.gorev]) {
+                return gorevSirasi[a.gorev] - gorevSirasi[b.gorev];
+            }
+
+            return (a.ad + " " + a.soyad)
+                .localeCompare(
+                    b.ad + " " + b.soyad,
+                    "tr",
+                    { sensitivity: "base" }
+                );
+
+        });
+
     let satirlar = "";
 
-    personelListesi.forEach(function(personel, index){
+    liste.forEach(function(personel){
+
         satirlar += `
         <tr>
             <td>${personel.sicil}</td>
             <td>${personel.ad} ${personel.soyad}</td>
-            <td>${personel.telefon}</td>
-            <td>${personel.email}</td>
+            <td>${personel.telefon || "-"}</td>
+            <td>${personel.email || "-"}</td>
             <td>${personel.gorev}</td>
             <td>${personel.durum === "Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
-           <td>
+            <td>
 
-    <button
-        onclick="personelKarti(${index})"
-        title="Personel Kartı">
-        📂
-    </button>
+                <button
+                    onclick="personelKarti(${personel.index})"
+                    title="Personel Kartı">
+                    📂
+                </button>
 
-    <button
-        onclick="personelAta(${index})"
-        title="Görev Atamaları">
-        📅
-    </button>
+                <button
+                    onclick="personelAta(${personel.index})"
+                    title="Görev Atamaları">
+                    📅
+                </button>
 
-</td>
-        </tr>
-        `;
-    });
-
-    if (satirlar === "") {
-        satirlar = `
-        <tr>
-            <td colspan="7" style="text-align:center;">
-                Henüz personel eklenmedi.
             </td>
         </tr>
         `;
+
+    });
+
+    if(satirlar === ""){
+
+        satirlar = `
+        <tr>
+            <td colspan="7" style="text-align:center;">
+                Sürücü Şefliğinde personel bulunamadı.
+            </td>
+        </tr>
+        `;
+
     }
 
     document.getElementById("icerik").innerHTML = `
-        <h2>👷 Personeller</h2>
+        <h2>👷 Sürücü Şefliği Personelleri</h2>
+
         <div class="toolbar">
-            <button disabled title="Personel kayıtları İnsan Kaynakları tarafından yönetilir.">
-                👥 Personeller İK Modülünden Yönetilir
+            <button disabled>
+                👥 Personeller İnsan Kaynakları Modülünden Yönetilir
             </button>
         </div>
+
         <table class="tablo">
+
             <thead>
                 <tr>
                     <th>Sicil</th>
@@ -732,11 +769,14 @@ function personeller() {
                     <th>İşlem</th>
                 </tr>
             </thead>
+
             <tbody>
                 ${satirlar}
             </tbody>
+
         </table>
     `;
+
 }
 function insanKaynaklari() {
 
