@@ -2066,122 +2066,48 @@ button:hover{
     font-weight:300;
 
 }
-/*==================================
-        TREE MENU
-==================================*/
+.tree-submenu{
 
-.tree-item{
+    display:none;
 
-    margin:0;
+    margin:0 0 8px 22px;
+
     padding:0;
-
-}
-
-.tree-toggle{
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    margin:5px 8px;
-    padding:14px 18px;
-
-    color:#fff;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-}
-
-.tree-toggle:hover{
-
-    background:rgba(255,255,255,.08);
-
-}
-
-.tree-arrow{
-
-    width:14px;
-
-    transition:.25s;
-
-}
-
-.tree-toggle.open .tree-arrow{
-
-    transform:rotate(90deg);
-
-}
-
-.tree-menu{
 
     list-style:none;
 
-    margin:0;
+}
 
-    padding-left:18px;
-
-    max-height:0;
-
-    overflow:hidden;
+.tree-submenu.open{
 
     display:block;
 
-    transition:max-height .30s ease;
+}
+
+.tree-submenu li{
+
+    margin:3px 0;
+
+    padding-left:12px;
 
 }
 
-.tree-menu.open{
+.tree-parent{
 
-    max-height:500px;
-
-}
-
-.tree-menu li{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    margin:4px 8px;
-
-    padding:12px 16px;
-
-    border-radius:10px;
-
-    cursor:pointer;
-
-    transition:.20s;
+    position:relative;
 
 }
 
-.tree-menu li:hover{
+.tree-ok{
 
-    background:rgba(255,255,255,.08);
+    margin-left:auto;
+
+    transition:.25s;
 
 }
 
-@keyframes treeOpen{
+.tree-parent.open .tree-ok{
 
-    from{
-
-        opacity:0;
-
-        transform:translateY(-5px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:none;
-
-    }
+    transform:rotate(180deg);
 
 }
