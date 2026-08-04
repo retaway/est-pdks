@@ -675,31 +675,41 @@ function personelYonetimi() {
 function personeller() {
 
     const gorevSirasi = {
-        "Sürücü Şefi": 1,
-        "Sürücü Vardiya Amiri": 2,
-        "Büro Personeli": 3,
-        "Vatman": 4
+        "SÜRÜCÜ ŞEFİ": 1,
+        "SÜRÜCÜ VARDİYA AMİRİ": 2,
+        "BÜRO PERSONELİ": 3,
+        "VATMAN": 4
     };
 
     const liste = personelListesi
         .map((personel, index) => ({ ...personel, index }))
-        .filter(personel =>
-            personel.mudurluk === "İşletim Müdürlüğü" &&
-            personel.birim === "Sürücü Şefliği" &&
-            gorevSirasi[personel.gorev] !== undefined
-        )
+        .filter(personel => {
+
+            const mudurluk = (personel.mudurluk || "").toUpperCase();
+            const birim = (personel.birim || "").toUpperCase();
+            const gorev = (personel.gorev || "").toUpperCase();
+
+            return (
+                mudurluk === "İŞLETİM MÜDÜRLÜĞÜ" &&
+                birim === "SÜRÜCÜ ŞEFLİĞİ" &&
+                gorevSirasi[gorev] !== undefined
+            );
+
+        })
         .sort((a, b) => {
 
-            if (gorevSirasi[a.gorev] !== gorevSirasi[b.gorev]) {
-                return gorevSirasi[a.gorev] - gorevSirasi[b.gorev];
+            const gorevA = (a.gorev || "").toUpperCase();
+            const gorevB = (b.gorev || "").toUpperCase();
+
+            if (gorevSirasi[gorevA] !== gorevSirasi[gorevB]) {
+                return gorevSirasi[gorevA] - gorevSirasi[gorevB];
             }
 
-            return (a.ad + " " + a.soyad)
-                .localeCompare(
-                    b.ad + " " + b.soyad,
-                    "tr",
-                    { sensitivity: "base" }
-                );
+            return `${a.ad} ${a.soyad}`.localeCompare(
+                `${b.ad} ${b.soyad}`,
+                "tr",
+                { sensitivity: "base" }
+            );
 
         });
 
@@ -735,7 +745,7 @@ function personeller() {
 
     });
 
-    if(satirlar === ""){
+    if (satirlar === "") {
 
         satirlar = `
         <tr>
@@ -748,17 +758,21 @@ function personeller() {
     }
 
     document.getElementById("icerik").innerHTML = `
+
         <h2>👷 Sürücü Şefliği Personelleri</h2>
 
         <div class="toolbar">
-            <button disabled>
+
+            <button disabled title="Personel kayıtları İnsan Kaynakları tarafından yönetilir.">
                 👥 Personeller İnsan Kaynakları Modülünden Yönetilir
             </button>
+
         </div>
 
         <table class="tablo">
 
             <thead>
+
                 <tr>
                     <th>Sicil</th>
                     <th>Ad Soyad</th>
@@ -768,13 +782,17 @@ function personeller() {
                     <th>Durum</th>
                     <th>İşlem</th>
                 </tr>
+
             </thead>
 
             <tbody>
+
                 ${satirlar}
+
             </tbody>
 
         </table>
+
     `;
 
 }
