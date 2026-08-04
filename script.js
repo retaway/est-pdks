@@ -14,6 +14,8 @@ if (!personelListesi) {
 let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 let degisimLoglari =
 JSON.parse(localStorage.getItem("degisimLoglari")) || [];
+let manuelDegisimLoglari =
+JSON.parse(localStorage.getItem("manuelDegisimLoglari")) || [];
 let gunlukVardiyaArsivi =
 JSON.parse(localStorage.getItem("gunlukVardiyaArsivi")) || [];
 function gunlukVardiyaArsiviKaydet(){
@@ -2672,7 +2674,11 @@ break;
             sayfaBasligiYaz("Günlük Vardiya");
             gunlukVardiya();
             break;
-
+            
+        case "surucuVardiyaAmiriPaneli":
+        surucuVardiyaAmiriPaneli();
+        break;
+            
         case "personelDegisimleri":
         personelDegisimleri();
         break;
@@ -6668,5 +6674,1330 @@ function degisimLoglariniGetir(talepId){
         return String(log.talepId)===String(talepId);
 
     });
+
+}
+function surucuVardiyaAmiriPaneli(){
+
+    const bugun = new Date().toISOString().split("T")[0];
+    const ozet =
+operasyonOzeti(bugun);
+
+    document.getElementById("icerik").innerHTML = `
+
+<h2>🚦 Sürücü Vardiya Amiri Paneli</h2>
+<div
+style="
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:12px;
+margin:20px 0;
+">
+
+<div class="kart">
+<h3>🟢</h3>
+<b>${ozet.atandi}</b><br>
+Atanan
+</div>
+
+<div class="kart">
+<h3>🟡</h3>
+<b>${ozet.izinli}</b><br>
+İzinli
+</div>
+
+<div class="kart">
+<h3>🔴</h3>
+<b>${ozet.rapor}</b><br>
+Raporlu
+</div>
+
+<div class="kart">
+<h3>⚫</h3>
+<b>${ozet.gelmedi}</b><br>
+Gelmedi
+</div>
+
+<div class="kart">
+<h3>👥</h3>
+<b>${ozet.yedek}</b><br>
+Yedek
+</div>
+
+<div class="kart">
+<h3>🔄</h3>
+<b>${ozet.degisim}</b><br>
+Bekleyen
+</div>
+
+</div>
+<div class="toolbar"
+style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+
+<label><b>Tarih</b></label>
+
+<input
+type="date"
+id="operasyonTarih"
+value="${bugun}"
+onchange="surucuVardiyaAmiriListele()">
+
+<button onclick="operasyonYeniGorev()">
+➕ Yeni Görev
+</button>
+
+<button onclick="yedekHavuzuAc()">
+👥 Yedek Havuzu
+</button>
+
+<button onclick="degisimListeleriniYayinla()">
+📢 Günlük Vardiyayı Yayınla
+</button>
+
+</div>
+function yedekAta(sicil){
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const yedek =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil);
+
+    });
+
+    if(!yedek){
+
+        alert("Yedek personel bulunamadı.");
+
+        return;
+
+    }
+
+    let secenekler = "";
+
+    vardiya.personeller.forEach(function(k){
+
+        if(
+
+            k.durum=="RAPOR" ||
+
+            k.durum=="YILLIK İZİN" ||
+
+            k.durum=="MAZERET İZNİ" ||
+
+            k.durum=="GÖREVE GELMEDİ"
+
+        ){
+
+            secenekler += `
+
+<option value="${k.sicil}">
+
+${k.adSoyad}
+
+(${k.durum})
+
+</option>
+
+`;
+
+        }
+
+    });
+
+    document.getElementById("icerik").innerHTML = `
+
+<h2>👥 Yedek Personel Ata</h2>
+
+<div class="kart">
+
+<p>
+
+Yedeğin yerine geçeceği personeli seçiniz.
+
+</p>
+
+<select id="eksikPersonel">
+
+${secenekler}
+
+</select>
+
+<br><br>
+
+<button onclick="yedekAtamayiTamamla('${sicil}')">
+
+✅ Atamayı Tamamla
+
+</button>
+
+<button onclick="yedekHavuzuAc()">
+
+⬅ Vazgeç
+
+</button>
+
+</div>
+
+`;
+
+}
+function yedekAtamayiTamamla(yedekSicil){
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const hedefSicil =
+    document.getElementById("eksikPersonel").value;
+
+    const yedek =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(yedekSicil);
+
+    });
+
+    const hedef =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(hedefSicil);
+
+    });
+
+    if(!yedek || !hedef){
+
+        alert("Personeller bulunamadı.");
+
+        return;
+
+    }
+
+    yedek.gorevKodu = hedef.gorevKodu;
+    yedek.gorevAdi = hedef.gorevAdi;
+    yedek.platform = hedef.platform;
+    yedek.tarife = hedef.tarife;
+    yedek.baslangic = hedef.baslangic;
+    yedek.bitis = hedef.bitis;
+
+    yedek.durum = "ATANDI";
+
+    hedef.gorevKodu = "";
+    hedef.gorevAdi = "";
+    hedef.platform = "";
+    hedef.tarife = "";
+    hedef.baslangic = "";
+    hedef.bitis = "";
+
+    gunlukVardiyaArsiviKaydet();
+
+    manuelDegisimLogKaydet({
+
+        tip:"YEDEK_ATAMA",
+
+        tarih:tarih,
+
+        islemTarihi:new Date().toLocaleString("tr-TR"),
+
+        yapan:
+        aktifKullanici
+        ? aktifKullanici.adSoyad
+        : "",
+
+        asilPersonel:hedef.adSoyad,
+
+        yedekPersonel:yedek.adSoyad,
+
+        gorev:yedek.gorevKodu
+
+    });
+
+    alert("Yedek personel başarıyla atandı.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+
+<br>
+
+<div id="operasyonTablosu"></div>
+
+`;
+
+    surucuVardiyaAmiriListele();
+
+}
+function surucuVardiyaAmiriListele(){
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    let satirlar = "";
+
+    if(!vardiya){
+
+        satirlar = `
+
+<tr>
+
+<td colspan="9" style="text-align:center;">
+
+Bu tarihe ait vardiya bulunamadı.
+
+</td>
+
+</tr>
+
+`;
+
+    }else{
+
+        vardiya.personeller.forEach(function(kayit){
+
+            satirlar += `
+
+<tr>
+
+<td>${kayit.sicil}</td>
+
+<td>${kayit.adSoyad}</td>
+
+<td>${kayit.gorevKodu}</td>
+
+<td>${kayit.platform}</td>
+
+<td>${kayit.tarife}</td>
+
+<td>${kayit.baslangic}</td>
+
+<td>${kayit.bitis}</td>
+
+<td>${kayit.durum}</td>
+
+<td>
+
+<button
+onclick="operasyonDuzenle('${kayit.sicil}')"
+title="Düzenle">
+
+✏️
+
+</button>
+
+<button
+onclick="operasyonDegistir('${kayit.sicil}')"
+title="Görev Değiştir">
+
+🔄
+
+</button>
+
+<button
+onclick="operasyonIzin('${kayit.sicil}')"
+title="İzin">
+
+📝
+
+</button>
+
+<button
+onclick="operasyonRapor('${kayit.sicil}')"
+title="Rapor">
+
+🚑
+
+</button>
+
+<button
+onclick="operasyonGelmedi('${kayit.sicil}')"
+title="Göreve Gelmedi">
+
+🚫
+
+</button>
+
+<button
+onclick="operasyonSil('${kayit.sicil}')"
+title="Görevi Sil">
+
+🗑️
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+        });
+
+    }
+
+    document.getElementById("operasyonTablosu").innerHTML = `
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Sicil</th>
+<th>Ad Soyad</th>
+<th>Görev Kodu</th>
+<th>Platform</th>
+<th>Tarife</th>
+<th>Başlangıç</th>
+<th>Bitiş</th>
+<th>Durum</th>
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
+
+}
+function operasyonDuzenle(sicil){
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const kayit =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)===String(sicil);
+
+    });
+
+    if(!kayit){
+
+        alert("Kayıt bulunamadı.");
+
+        return;
+
+    }
+
+    document.getElementById("icerik").innerHTML=`
+
+<h2>✏️ Vardiya Düzenle</h2>
+
+<div class="kart">
+
+<label>Görev Kodu</label>
+
+<input
+id="duzenleGorevKodu"
+value="${kayit.gorevKodu}">
+
+<label>Platform</label>
+
+<input
+id="duzenlePlatform"
+value="${kayit.platform}">
+
+<label>Tarife</label>
+
+<input
+id="duzenleTarife"
+value="${kayit.tarife}">
+
+<label>Başlangıç</label>
+
+<input
+id="duzenleBaslangic"
+value="${kayit.baslangic}">
+
+<label>Bitiş</label>
+
+<input
+id="duzenleBitis"
+value="${kayit.bitis}">
+
+<label>Durum</label>
+
+<select id="duzenleDurum">
+
+<option
+${kayit.durum=="ATANDI"?"selected":""}>
+ATANDI
+</option>
+
+<option
+${kayit.durum=="YILLIK İZİN"?"selected":""}>
+YILLIK İZİN
+</option>
+
+<option
+${kayit.durum=="MAZERET İZNİ"?"selected":""}>
+MAZERET İZNİ
+</option>
+
+<option
+${kayit.durum=="RAPOR"?"selected":""}>
+RAPOR
+</option>
+
+<option
+${kayit.durum=="HAFTA TATİLİ"?"selected":""}>
+HAFTA TATİLİ
+</option>
+
+</select>
+
+<br><br>
+
+<button
+onclick="operasyonKaydet('${sicil}')">
+
+💾 Kaydet
+
+</button>
+
+<button
+onclick="surucuVardiyaAmiriPaneli()">
+
+⬅ Geri
+
+</button>
+
+</div>
+
+`;
+
+}
+function operasyonKaydet(sicil){
+
+    const tarih =
+    document.getElementById("operasyonTarih")
+    ? document.getElementById("operasyonTarih").value
+    : new Date().toISOString().split("T")[0];
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const kayit =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil);
+
+    });
+
+    if(!kayit) return;
+
+    kayit.gorevKodu =
+    document.getElementById("duzenleGorevKodu").value;
+
+    kayit.platform =
+    document.getElementById("duzenlePlatform").value;
+
+    kayit.tarife =
+    document.getElementById("duzenleTarife").value;
+
+    kayit.baslangic =
+    document.getElementById("duzenleBaslangic").value;
+
+    kayit.bitis =
+    document.getElementById("duzenleBitis").value;
+
+    kayit.durum =
+    document.getElementById("duzenleDurum").value;
+
+    gunlukVardiyaArsiviKaydet();
+
+    alert("Vardiya güncellendi.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+
+function operasyonDegistir(sicil){
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    let secenekler = "";
+
+    vardiya.personeller.forEach(function(k){
+
+        if(String(k.sicil)!==String(sicil)){
+
+            secenekler += `
+
+<option value="${k.sicil}">
+
+${k.adSoyad}
+
+(${k.gorevKodu})
+
+</option>
+
+`;
+
+        }
+
+    });
+
+    document.getElementById("icerik").innerHTML = `
+
+<h2>🔄 Manuel Görev Değiştir</h2>
+
+<div class="kart">
+
+<p>
+
+Karşılıklı görev değiştirilecek personeli seçiniz.
+
+</p>
+
+<select id="hedefPersonel">
+
+${secenekler}
+
+</select>
+
+<br><br>
+
+<button onclick="operasyonDegisimKaydet('${sicil}')">
+
+🔄 Görevleri Değiştir
+
+</button>
+
+<button onclick="surucuVardiyaAmiriPaneli()">
+
+⬅ Vazgeç
+
+</button>
+
+</div>
+
+`;
+
+}
+function operasyonDegisimKaydet(sicil1){
+if(
+
+!confirm(
+
+"Bu iki personelin görevleri karşılıklı değiştirilecek.\n\nDevam etmek istiyor musunuz?"
+
+)
+
+){
+
+    return;
+
+}
+    const tarih =
+    document.getElementById("operasyonTarih")
+    ? document.getElementById("operasyonTarih").value
+    : new Date().toISOString().split("T")[0];
+
+    const sicil2 =
+    document.getElementById("hedefPersonel").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const p1 =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil1);
+
+    });
+
+    const p2 =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil2);
+
+    });
+
+    if(!p1 || !p2){
+
+        alert("Personeller bulunamadı.");
+
+        return;
+
+    }
+
+    const gecici = {
+
+        gorevKodu : p1.gorevKodu,
+        gorevAdi : p1.gorevAdi,
+        platform : p1.platform,
+        tarife : p1.tarife,
+        baslangic : p1.baslangic,
+        bitis : p1.bitis
+
+    };
+
+    p1.gorevKodu = p2.gorevKodu;
+    p1.gorevAdi = p2.gorevAdi;
+    p1.platform = p2.platform;
+    p1.tarife = p2.tarife;
+    p1.baslangic = p2.baslangic;
+    p1.bitis = p2.bitis;
+
+    p2.gorevKodu = gecici.gorevKodu;
+    p2.gorevAdi = gecici.gorevAdi;
+    p2.platform = gecici.platform;
+    p2.tarife = gecici.tarife;
+    p2.baslangic = gecici.baslangic;
+    p2.bitis = gecici.bitis;
+
+    manuelDegisimLogKaydet({
+
+    tarih : tarih,
+
+    islemTarihi :
+    new Date().toLocaleString("tr-TR"),
+
+    yapan :
+
+    aktifKullanici
+    ? aktifKullanici.adSoyad
+    : "",
+
+    yapanSicil :
+
+    aktifKullanici
+    ? aktifKullanici.sicil
+    : "",
+
+    personel1 : {
+
+        sicil : p1.sicil,
+
+        adSoyad : p1.adSoyad
+
+    },
+
+    personel2 : {
+
+        sicil : p2.sicil,
+
+        adSoyad : p2.adSoyad
+
+    },
+
+    eskiGorev1 : gecici.gorevKodu,
+
+    yeniGorev1 : p1.gorevKodu,
+
+    eskiGorev2 : p2.gorevKodu,
+
+    yeniGorev2 : gecici.gorevKodu,
+
+    tip : "MANUEL_GOREV_DEGISIKLIGI"
+
+});
+    gunlukVardiyaArsiviKaydet();
+
+    alert("Görev değişikliği tamamlandı.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+function manuelDegisimLogKaydet(log){
+
+    manuelDegisimLoglari.unshift(log);
+
+    localStorage.setItem(
+
+        "manuelDegisimLoglari",
+
+        JSON.stringify(manuelDegisimLoglari)
+
+    );
+
+}
+
+function operasyonYeniGorev(){
+
+    document.getElementById("icerik").innerHTML=`
+
+<h2>➕ Yeni Görev Oluştur</h2>
+
+<div class="kart">
+
+<label>Personel</label>
+
+<select id="yeniPersonel">
+
+${personelListesi
+.filter(p=>p.gorev==="Vatman")
+.map(function(p){
+
+return `<option value="${p.sicil}">
+${p.ad} ${p.soyad}
+</option>`;
+
+}).join("")}
+
+</select>
+
+<label>Görev Kodu</label>
+
+<input id="yeniGorevKodu">
+
+<label>Görev Adı</label>
+
+<input id="yeniGorevAdi">
+
+<label>Platform</label>
+
+<input id="yeniPlatform">
+
+<label>Tarife</label>
+
+<input id="yeniTarife">
+
+<label>Başlangıç</label>
+
+<input type="time" id="yeniBaslangic">
+
+<label>Bitiş</label>
+
+<input type="time" id="yeniBitis">
+
+<br><br>
+
+<button onclick="yeniGorevKaydet()">
+
+💾 Kaydet
+
+</button>
+
+<button onclick="surucuVardiyaAmiriPaneli()">
+
+⬅ Vazgeç
+
+</button>
+
+</div>
+
+`;
+
+}
+function yeniGorevKaydet(){
+
+    const tarih =
+    document.getElementById("operasyonTarih")
+    ? document.getElementById("operasyonTarih").value
+    : new Date().toISOString().split("T")[0];
+
+    const vardiya =
+    yeniGunlukVardiyaOlustur(tarih);
+
+    const sicil =
+    document.getElementById("yeniPersonel").value;
+
+    const personel =
+    personelListesi.find(function(p){
+
+        return String(p.sicil)==String(sicil);
+
+    });
+
+    vardiya.personeller.push({
+
+        sicil:sicil,
+
+        adSoyad:personel.ad+" "+personel.soyad,
+
+        gorevKodu:
+        document.getElementById("yeniGorevKodu").value,
+
+        gorevAdi:
+        document.getElementById("yeniGorevAdi").value,
+
+        platform:
+        document.getElementById("yeniPlatform").value,
+
+        tarife:
+        document.getElementById("yeniTarife").value,
+
+        baslangic:
+        document.getElementById("yeniBaslangic").value,
+
+        bitis:
+        document.getElementById("yeniBitis").value,
+
+        durum:"ATANDI"
+
+    });
+
+    gunlukVardiyaArsiviKaydet();
+
+    alert("Yeni görev eklendi.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+function operasyonIzin(sicil){
+
+    document.getElementById("icerik").innerHTML = `
+
+<h2>📝 Personel İzin İşlemi</h2>
+
+<div class="kart">
+
+<label>İzin Türü</label>
+
+<select id="izinTuru">
+
+<option>YILLIK İZİN</option>
+
+<option>MAZERET İZNİ</option>
+
+<option>SENDİKAL İZİN</option>
+
+<option>ÜCRETLİ İZİN</option>
+
+<option>ÜCRETSİZ İZİN</option>
+
+</select>
+
+<br><br>
+
+<button onclick="izinKaydet('${sicil}')">
+
+💾 Kaydet
+
+</button>
+
+<button onclick="surucuVardiyaAmiriPaneli()">
+
+⬅ Vazgeç
+
+</button>
+
+</div>
+
+`;
+
+}
+function izinKaydet(sicil){
+
+    const tarih =
+    document.getElementById("operasyonTarih")
+    ? document.getElementById("operasyonTarih").value
+    : new Date().toISOString().split("T")[0];
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const kayit =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil);
+
+    });
+
+    if(!kayit) return;
+
+    kayit.durum =
+    document.getElementById("izinTuru").value;
+
+    kayit.gorevKodu = "";
+
+    kayit.gorevAdi = "";
+
+    kayit.platform = "";
+
+    kayit.tarife = "";
+
+    kayit.baslangic = "";
+
+    kayit.bitis = "";
+
+    gunlukVardiyaArsiviKaydet();
+
+    alert("Personel izinli olarak işaretlendi.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+function operasyonRapor(sicil){
+
+    if(!confirm("Personel raporlu olarak işaretlensin mi?")){
+
+        return;
+
+    }
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const kayit =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil);
+
+    });
+
+    if(!kayit) return;
+
+    kayit.durum = "RAPOR";
+
+    kayit.gorevKodu = "";
+
+    kayit.gorevAdi = "";
+
+    kayit.platform = "";
+
+    kayit.tarife = "";
+
+    kayit.baslangic = "";
+
+    kayit.bitis = "";
+
+    gunlukVardiyaArsiviKaydet();
+
+    alert("Personel raporlu olarak işaretlendi.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+
+function operasyonGelmedi(sicil){
+
+    if(!confirm("Personel göreve gelmedi olarak işaretlensin mi?")){
+
+        return;
+
+    }
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    const kayit =
+    vardiya.personeller.find(function(k){
+
+        return String(k.sicil)==String(sicil);
+
+    });
+
+    if(!kayit) return;
+
+    kayit.durum = "GÖREVE GELMEDİ";
+
+    kayit.gorevKodu = "";
+
+    kayit.gorevAdi = "";
+
+    kayit.platform = "";
+
+    kayit.tarife = "";
+
+    kayit.baslangic = "";
+
+    kayit.bitis = "";
+
+    gunlukVardiyaArsiviKaydet();
+
+    alert("Personel göreve gelmedi olarak işaretlendi.");
+
+    surucuVardiyaAmiriPaneli();
+
+}
+
+function operasyonSil(sicil){
+
+    if(!confirm("Bu personelin bugünkü görevi silinsin mi?")){
+
+        return;
+
+    }
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya) return;
+
+    vardiya.personeller =
+    vardiya.personeller.filter(function(k){
+
+        return String(k.sicil)!==String(sicil);
+
+    });
+
+    gunlukVardiyaArsiviKaydet();
+
+    surucuVardiyaAmiriListele();
+
+}
+function musaitVatmanlariGetir(tarih){
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya){
+
+        return [];
+
+    }
+
+    return vardiya.personeller.filter(function(k){
+
+        return (
+
+            k.durum==="MÜSAİT" ||
+
+            k.gorevKodu==="YEDEK"
+
+        );
+
+    });
+
+}
+function yedekHavuzuAc(){
+
+    const tarih =
+    document.getElementById("operasyonTarih").value;
+
+    const liste =
+    musaitVatmanlariGetir(tarih);
+
+    let satirlar="";
+
+    liste.forEach(function(k){
+
+        satirlar+=`
+
+<tr>
+
+<td>${k.sicil}</td>
+
+<td>${k.adSoyad}</td>
+
+<td>${k.gorevKodu}</td>
+
+<td>
+
+<button onclick="yedekAta('${k.sicil}')">
+
+✅ Ata
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+    });
+
+    document.getElementById("icerik").innerHTML=`
+
+<h2>
+
+👥 Yedek Personel Havuzu
+
+</h2>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Sicil</th>
+
+<th>Personel</th>
+
+<th>Durum</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+<button
+onclick="surucuVardiyaAmiriPaneli()">
+
+⬅ Geri
+
+</button>
+
+`;
+
+}
+function yedekAta(sicil){
+
+    alert(
+
+    sicil+
+
+    " yedek atama ekranı hazırlanıyor."
+
+    );
+
+}
+function operasyonOzeti(tarih){
+
+    const vardiya =
+    gunlukVardiyaBul(tarih);
+
+    if(!vardiya){
+
+        return{
+
+            atandi:0,
+
+            izinli:0,
+
+            rapor:0,
+
+            gelmedi:0,
+
+            yedek:0,
+
+            degisim:0
+
+        };
+
+    }
+
+    const sonuc={
+
+        atandi:0,
+
+        izinli:0,
+
+        rapor:0,
+
+        gelmedi:0,
+
+        yedek:0,
+
+        degisim:0
+
+    };
+
+    vardiya.personeller.forEach(function(k){
+
+        switch(k.durum){
+
+            case "ATANDI":
+
+                sonuc.atandi++;
+
+                break;
+
+            case "RAPOR":
+
+                sonuc.rapor++;
+
+                break;
+
+            case "GÖREVE GELMEDİ":
+
+                sonuc.gelmedi++;
+
+                break;
+
+            case "YILLIK İZİN":
+
+            case "MAZERET İZNİ":
+
+            case "ÜCRETLİ İZİN":
+
+            case "ÜCRETSİZ İZİN":
+
+            case "SENDİKAL İZİN":
+
+                sonuc.izinli++;
+
+                break;
+
+        }
+
+        if(
+
+            k.gorevKodu==="YEDEK" ||
+
+            k.durum==="MÜSAİT"
+
+        ){
+
+            sonuc.yedek++;
+
+        }
+
+    });
+
+    sonuc.degisim =
+    vatmanDegisimTalepleri.filter(function(t){
+
+        return t.tarih===tarih &&
+               !t.yayinlandi;
+
+    }).length;
+
+    return sonuc;
 
 }
