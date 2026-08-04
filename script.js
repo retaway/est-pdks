@@ -7024,6 +7024,7 @@ ${secenekler}
 `;
 
 }
+
 function yedekAtamayiTamamla(yedekSicil){
 
     const tarih =
