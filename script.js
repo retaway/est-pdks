@@ -4249,7 +4249,191 @@ function puantaj() {
 
     `;
 }
+function puantajOlustur() {
 
+    const ay = Number(document.getElementById("puantajAy").value);
+    const yil = Number(document.getElementById("puantajYil").value);
+
+    let satirlar = "";
+
+    const vatmanlar = personelleriGetir("Vatman");
+
+    vatmanlar.forEach(function (personel) {
+
+        satirlar += `
+
+<tr>
+
+<td>${personel.sicil}</td>
+
+<td>${personel.ad} ${personel.soyad}</td>
+
+<td id="calisma_${personel.sicil}">0</td>
+
+<td id="yillik_${personel.sicil}">0</td>
+
+<td id="mazeret_${personel.sicil}">0</td>
+
+<td id="ucretli_${personel.sicil}">0</td>
+
+<td id="ucretsiz_${personel.sicil}">0</td>
+
+<td id="ucretliSaatlik_${personel.sicil}">0</td>
+
+<td id="ucretsizSaatlik_${personel.sicil}">0</td>
+
+<td id="sendikal_${personel.sicil}">0</td>
+
+<td id="dogum_${personel.sicil}">0</td>
+
+<td id="babalik_${personel.sicil}">0</td>
+
+<td id="kadinlarGunu_${personel.sicil}">0</td>
+
+<td id="dugun_${personel.sicil}">0</td>
+
+<td id="rapor_${personel.sicil}">0</td>
+
+<td id="gelmedi_${personel.sicil}">0</td>
+
+<td id="mesai_${personel.sicil}">0</td>
+
+</tr>
+
+`;
+
+    });
+
+    document.getElementById("puantajTablo").innerHTML = `
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Sicil</th>
+
+<th>Personel</th>
+
+<th>Çalışma</th>
+<th>Yıllık</th>
+<th>Mazeret</th>
+<th>Ücretli</th>
+<th>Ücretsiz</th>
+<th>Ücretli Saatlik</th>
+<th>Ücretsiz Saatlik</th>
+<th>Sendikal</th>
+<th>Doğum</th>
+<th>Babalık</th>
+<th>Kadınlar Günü</th>
+<th>Düğün</th>
+<th>Rapor</th>
+<th>Gelmedi</th>
+<th>Mesai</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
+
+    puantajHesapla(yil, ay);
+
+}
+function puantajHesapla(yil, ay){
+
+    const arsiv = gunlukVardiyaArsivi || [];
+
+    arsiv.forEach(function(vardiya){
+
+        const tarih = new Date(vardiya.tarih);
+
+        if(
+            tarih.getFullYear() !== yil ||
+            (tarih.getMonth()+1) !== ay
+        ){
+            return;
+        }
+
+        vardiya.personeller.forEach(function(kayit){
+
+            const sicil = kayit.sicil;
+
+            if(!sicil) return;
+
+            switch(kayit.durum){
+
+                case "ATANDI":
+
+                    document.getElementById("calisma_"+sicil).textContent =
+                        Number(document.getElementById("calisma_"+sicil).textContent)+1;
+
+                    break;
+
+                case "RAPOR":
+
+                    document.getElementById("rapor_"+sicil).textContent =
+                        Number(document.getElementById("rapor_"+sicil).textContent)+1;
+
+                    break;
+
+                case "GÖREVE GELMEDİ":
+
+                    document.getElementById("gelmedi_"+sicil).textContent =
+                        Number(document.getElementById("gelmedi_"+sicil).textContent)+1;
+
+                    break;
+
+                    case "YILLIK İZİN":
+                        document.getElementById("yillik_"+sicil).textContent++;
+                        break;
+                    
+                    case "MAZERET İZNİ":
+                        document.getElementById("mazeret_"+sicil).textContent++;
+                        break;
+                    
+                    case "ÜCRETLİ İZİN":
+                        document.getElementById("ucretli_"+sicil).textContent++;
+                        break;
+
+                case "YILLIK İZİN":
+                case "MAZERET İZNİ":
+                case "ÜCRETLİ İZİN":
+                case "ÜCRETSİZ İZİN":
+                case "ÜCRETLİ SAATLİK İZİN":
+                case "ÜCRETSİZ SAATLİK İZİN":
+                case "SENDİKAL İZİN":
+                case "DOĞUM İZNİ":
+                case "BABALIK İZNİ":
+                case "KADINLAR GÜNÜ İZNİ":
+                case "DÜĞÜN İZNİ":
+
+    document.getElementById("izin_"+sicil).textContent =
+        Number(document.getElementById("izin_"+sicil).textContent)+1;
+
+    break;
+
+                    document.getElementById("izin_"+sicil).textContent =
+                        Number(document.getElementById("izin_"+sicil).textContent)+1;
+
+                    break;
+
+            }
+
+        });
+
+    });
+
+}
 function yillikIzinHakHesapla(iseGiris) {
 
     if (!iseGiris) return 0;
@@ -7580,19 +7764,29 @@ function operasyonIzin(sicil){
 
 <div class="kart">
 
-<label>İzin Türü</label>
-
 <select id="izinTuru">
 
 <option>YILLIK İZİN</option>
 
 <option>MAZERET İZNİ</option>
 
-<option>SENDİKAL İZİN</option>
-
 <option>ÜCRETLİ İZİN</option>
 
 <option>ÜCRETSİZ İZİN</option>
+
+<option>ÜCRETLİ SAATLİK İZİN</option>
+
+<option>ÜCRETSİZ SAATLİK İZİN</option>
+
+<option>SENDİKAL İZİN</option>
+
+<option>DOĞUM İZNİ</option>
+
+<option>BABALIK İZNİ</option>
+
+<option>KADINLAR GÜNÜ İZNİ</option>
+
+<option>DÜĞÜN İZNİ</option>
 
 </select>
 
