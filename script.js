@@ -13,6 +13,8 @@ if (!personelListesi) {
 }
 let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
 let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
+let gunlukVardiyaArsivi =
+JSON.parse(localStorage.getItem("gunlukVardiyaArsivi")) || [];
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
 let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
