@@ -140,6 +140,41 @@
     </li>
 
 </ul>
+        <li class="tree-parent" onclick="toggleMenu('planlamaMenu', this)">
+    <div class="tree-left">
+        <i class="fas fa-clipboard-list tree-folder"></i>
+        <span>Planlama ve Dökümantasyon</span>
+    </div>
+
+    <i class="fas fa-chevron-right tree-ok"></i>
+</li>
+
+<ul id="planlamaMenu" class="tree-submenu">
+
+    <li onclick="sayfaGoster('planlama')">
+        <i class="fas fa-folder-open"></i>
+        <span>Doküman Yönetimi</span>
+    </li>
+
+</ul>
+
+<li class="tree-parent" onclick="toggleMenu('iletisimMenu', this)">
+    <div class="tree-left">
+        <i class="fas fa-comments tree-folder"></i>
+        <span>Sosyal Medya ve İletişim</span>
+    </div>
+
+    <i class="fas fa-chevron-right tree-ok"></i>
+</li>
+
+<ul id="iletisimMenu" class="tree-submenu">
+
+    <li onclick="sayfaGoster('sosyalMedya')">
+        <i class="fas fa-bullhorn"></i>
+        <span>Sosyal Medya</span>
+    </li>
+
+</ul>
         <li class="menu-title">
             PERSONEL
         </li>
