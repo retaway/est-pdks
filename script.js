@@ -106,7 +106,8 @@ function vatmanDegisimKaydet(){
     );
 
 }
-let personelDegisimleri = JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
+let personelDegisimKayitlari =
+JSON.parse(localStorage.getItem("personelDegisimleri")) || [];
 let gorevTarifeDegisiklikleri = JSON.parse(localStorage.getItem("gorevTarifeDegisiklikleri")) || [];
 let personelDurumlari = JSON.parse(localStorage.getItem("personelDurumlari")) || [];
 let bildirimler = JSON.parse(localStorage.getItem("bildirimler")) || [];
