@@ -5242,3 +5242,12 @@ async function havaDurumuGetir() {
     }
 
 }
+function toggleTree(id, el){
+
+    const menu=document.getElementById(id);
+
+    menu.classList.toggle("open");
+
+    el.classList.toggle("open");
+
+}
