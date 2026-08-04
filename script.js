@@ -673,7 +673,7 @@ function personelYonetimi() {
 }
 
 function personeller() {
-
+console.log(personelListesi);
     const gorevSirasi = {
         "Sürücü Şefi": 1,
         "Sürücü Vardiya Amiri": 2,
