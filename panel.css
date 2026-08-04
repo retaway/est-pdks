@@ -180,17 +180,35 @@
 
 .menu-title{
 
-    padding:18px;
+    padding:26px 20px 12px;
 
-    color:#dbeafe;
+    color:#f8fafc;
 
-    font-size:11px;
+    font-size:14px;
 
-    font-weight:700;
+    font-weight:800;
 
-    letter-spacing:2px;
+    letter-spacing:2.5px;
+
+    text-transform:uppercase;
+
+    opacity:.95;
 
     user-select:none;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    margin-top:12px;
+
+}
+
+.menu-title:first-child{
+
+    border-top:none;
+
+    margin-top:0;
+
+    padding-top:18px;
 
 }
 
