@@ -12,6 +12,8 @@ if (!personelListesi) {
 
 }
 let degisimKodlariListesi = JSON.parse(localStorage.getItem("degisimKodlari")) || [];
+let degisimLoglari =
+JSON.parse(localStorage.getItem("degisimLoglari")) || [];
 let gunlukVardiyaArsivi =
 JSON.parse(localStorage.getItem("gunlukVardiyaArsivi")) || [];
 function gunlukVardiyaArsiviKaydet(){
@@ -2671,6 +2673,10 @@ break;
             gunlukVardiya();
             break;
 
+        case "personelDegisimleri":
+        personelDegisimleri();
+        break;
+            
         case "izinler":
             sayfaBasligiYaz("İzinler");
             izinler();
@@ -3990,7 +3996,15 @@ function degisimEtiketiBul(sicil, bugun) {
         ){
 
             talep.yayinlandi = true;
+degisimLogEkle(
 
+    talep.id,
+
+    "YAYIN",
+
+    "Görev değişimi personele yayınlandı."
+
+);
             talep.yayinTarihi =
             new Date().toLocaleString("tr-TR");
 
@@ -5698,6 +5712,19 @@ function bildirimOnayla(index) {
     }
 
     bildirimler[index].durum="ONAYLANDI";
+    if(bildirimler[index].talepId){
+
+    degisimLogEkle(
+
+        bildirimler[index].talepId,
+
+        "ONAY",
+
+        "Talep onaylandı."
+
+    );
+
+}
 
     bildirimler[index].okundu=true;
 
@@ -5718,7 +5745,19 @@ function bildirimOnayla(index) {
 function bildirimReddet(index) {
 
     bildirimler[index].durum = "REDDEDILDI";
+if(bildirimler[index].talepId){
 
+    degisimLogEkle(
+
+        bildirimler[index].talepId,
+
+        "RED",
+
+        "Talep reddedildi."
+
+    );
+
+}
     bildirimler[index].okundu = true;
 
     bildirimler[index].islemYapan =
@@ -6148,5 +6187,486 @@ function toggleMenu(id, element){
         folder.classList.toggle("fa-folder-open");
 
     }
+
+}
+function personelDegisimleri(){
+
+    let satirlar="";
+
+    if(vatmanDegisimTalepleri.length===0){
+
+        satirlar=`
+        <tr>
+
+            <td colspan="8"
+                style="text-align:center;">
+
+                Henüz görev değişim talebi bulunmuyor.
+
+            </td>
+
+        </tr>
+        `;
+
+    }
+
+    else{
+
+        vatmanDegisimTalepleri.forEach(function(talep,index){
+
+            const p1=
+            personelListesi.find(function(p){
+
+                return String(p.sicil)===String(talep.talepEdenSicil);
+
+            });
+
+            const p2=
+            personelListesi.find(function(p){
+
+                return String(p.sicil)===String(talep.degisenSicil);
+
+            });
+
+            satirlar+=`
+
+            <tr>
+
+                <td>${talep.tarih}</td>
+
+                <td>
+
+                    ${p1 ? p1.ad+" "+p1.soyad : "-"}
+
+                </td>
+
+                <td>
+
+                    ${p2 ? p2.ad+" "+p2.soyad : "-"}
+
+                </td>
+
+                <td>
+
+                    ${
+                        talep.vardiyaAmiriOnay
+                        ? "🟢 Onaylandı"
+                        : "🟡 Bekliyor"
+                    }
+
+                </td>
+
+                <td>
+
+                    ${
+                        talep.surucuSefiOnay
+                        ? "🟢 Onaylandı"
+                        : "🟡 Bekliyor"
+                    }
+
+                </td>
+
+                <td>
+
+                    ${
+                        talep.yayinlandi
+                        ? "🟢 Yayınlandı"
+                        : "⚪ Bekliyor"
+                    }
+
+                </td>
+
+                <td>
+
+                    ${talep.durum}
+
+                </td>
+
+                <td>
+
+                    <button
+                    onclick="degisimDetay(${index})">
+
+                    👁 Detay
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+    }
+
+    document.getElementById("icerik").innerHTML=`
+
+    <h2>
+
+    🔄 Personel Değişimleri
+
+    </h2>
+
+    <div
+    class="toolbar"
+    style="margin-bottom:15px;">
+
+        <button
+        onclick="degisimListeleriniYayinla()">
+
+        📢 Değişim Listelerini Yayınla
+
+        </button>
+
+    </div>
+
+    <table class="tablo">
+
+        <thead>
+
+            <tr>
+
+                <th>Tarih</th>
+
+                <th>Talep Eden</th>
+
+                <th>Karşı Personel</th>
+
+                <th>V.Amiri</th>
+
+                <th>S.Şefi</th>
+
+                <th>Yayın</th>
+
+                <th>Durum</th>
+
+                <th>İşlem</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            ${satirlar}
+
+        </tbody>
+
+    </table>
+
+    `;
+
+}
+function degisimDetay(index){
+
+    const talep = vatmanDegisimTalepleri[index];
+
+    if(!talep){
+        return;
+    }
+
+    const talepEden = personelListesi.find(function(p){
+        return String(p.sicil) === String(talep.talepEdenSicil);
+    });
+
+    const degisen = personelListesi.find(function(p){
+        return String(p.sicil) === String(talep.degisenSicil);
+    });
+
+    const talepEdenSayisi =
+    aylikDegisimSayisi(
+        talep.talepEdenSicil,
+        talep.tarih
+    );
+
+    const degisenSayisi =
+    aylikDegisimSayisi(
+        talep.degisenSicil,
+        talep.tarih
+    );
+
+    const vardiya = gunlukVardiyaBul(talep.tarih);
+
+    let gorev1 = "-";
+    let gorev2 = "-";
+
+    if(vardiya){
+
+        const p1 = vardiya.personeller.find(function(k){
+            return String(k.sicil) === String(talep.talepEdenSicil);
+        });
+
+        const p2 = vardiya.personeller.find(function(k){
+            return String(k.sicil) === String(talep.degisenSicil);
+        });
+
+        if(p1){
+            gorev1 = p1.gorevKodu + " - " + p1.gorevAdi;
+        }
+
+        if(p2){
+            gorev2 = p2.gorevKodu + " - " + p2.gorevAdi;
+        }
+
+    }
+const loglar =
+degisimLoglariniGetir(talep.id);
+
+let logSatirlari="";
+
+if(loglar.length===0){
+
+    logSatirlari=`
+
+    <tr>
+
+        <td colspan="5">
+
+        Henüz işlem geçmişi bulunmuyor.
+
+        </td>
+
+    </tr>
+
+    `;
+
+}
+
+else{
+
+    loglar.forEach(function(log){
+
+        logSatirlari+=`
+
+        <tr>
+
+            <td>${log.tarih}</td>
+
+            <td>${log.kullanici}</td>
+
+            <td>${log.rol}</td>
+
+            <td>${log.islem}</td>
+
+            <td>${log.aciklama}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+    document.getElementById("icerik").innerHTML = `
+
+<h2>🔄 Görev Değişim Detayı</h2>
+
+<div class="kart">
+
+<p><b>Tarih :</b> ${talep.tarih}</p>
+
+<hr>
+
+<p>
+
+<b>Talep Eden :</b><br>
+
+${talepEden ? talepEden.ad + " " + talepEden.soyad : "-"}
+
+<br>
+
+<small style="color:#666;">
+Bu ay <b>${talepEdenSayisi}</b> kez görev değişimi yaptı.
+</small>
+
+</p>
+
+<p>
+
+<b>Görevi :</b>
+
+${gorev1}
+
+</p>
+
+<hr>
+
+<p>
+
+<b>Karşı Personel :</b><br>
+
+${degisen ? degisen.ad + " " + degisen.soyad : "-"}
+
+<br>
+
+<small style="color:#666;">
+Bu ay <b>${degisenSayisi}</b> kez görev değişimi yaptı.
+</small>
+
+</p>
+
+<p>
+
+<b>Görevi :</b>
+
+${gorev2}
+
+</p>
+
+<hr>
+
+<p>
+
+<b>Vardiya Amiri :</b>
+
+${talep.vardiyaAmiriOnay
+? "🟢 Onayladı"
+: "🟡 Bekliyor"}
+
+</p>
+
+<p>
+
+<b>Sürücü Şefi :</b>
+
+${talep.surucuSefiOnay
+? "🟢 Onayladı"
+: "🟡 Bekliyor"}
+
+</p>
+
+<p>
+
+<b>Yayın Durumu :</b>
+
+${talep.yayinlandi
+? "🟢 Yayınlandı"
+: "⚪ Yayın Bekliyor"}
+
+</p>
+
+${
+talep.yayinlandi
+?
+`<p>
+<b>Yayın Tarihi :</b>
+${talep.yayinTarihi}
+</p>`
+:
+""
+}
+
+<br>
+<hr>
+
+<h3>
+
+📜 İşlem Geçmişi
+
+</h3>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Tarih</th>
+
+<th>Kullanıcı</th>
+
+<th>Rol</th>
+
+<th>İşlem</th>
+
+<th>Açıklama</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${logSatirlari}
+
+</tbody>
+
+</table>
+
+<br>
+<button onclick="personelDegisimleri()">
+
+⬅ Listeye Dön
+
+</button>
+
+</div>
+
+`;
+
+}
+function aylikDegisimSayisi(sicil, tarih){
+
+    const ay = tarih.substring(0,7);
+
+    return vatmanDegisimTalepleri.filter(function(t){
+
+        if(!t.yayinlandi){
+            return false;
+        }
+
+        if(!t.tarih.startsWith(ay)){
+            return false;
+        }
+
+        return (
+            String(t.talepEdenSicil)===String(sicil) ||
+            String(t.degisenSicil)===String(sicil)
+        );
+
+    }).length;
+
+}
+function degisimLogEkle(talepId, islem, aciklama){
+
+    degisimLoglari.push({
+
+        id: Date.now(),
+
+        talepId: talepId,
+
+        tarih: new Date().toLocaleString("tr-TR"),
+
+        kullanici:
+            aktifKullanici
+            ? aktifKullanici.adSoyad
+            : "-",
+
+        rol:
+            aktifKullanici
+            ? aktifKullanici.rol
+            : "-",
+
+        islem: islem,
+
+        aciklama: aciklama
+
+    });
+
+    localStorage.setItem(
+        "degisimLoglari",
+        JSON.stringify(degisimLoglari)
+    );
+
+}
+function degisimLoglariniGetir(talepId){
+
+    return degisimLoglari.filter(function(log){
+
+        return String(log.talepId)===String(talepId);
+
+    });
 
 }
