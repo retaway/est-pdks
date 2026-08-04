@@ -2048,33 +2048,17 @@ button:hover{
     color:#475569;
 
 }
-
-.welcome-footer span{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:6px;
-
-}
-
-.ayrac{
-
-    color:#cbd5e1;
-
-    font-weight:300;
-
-}
 .tree-submenu{
 
     display:none;
 
-    margin:0 0 8px 22px;
+    margin:0 0 10px 22px;
 
-    padding:0;
+    padding:6px 0 6px 18px;
 
     list-style:none;
+
+    border-left:2px solid rgba(255,255,255,.15);
 
 }
 
@@ -2082,13 +2066,65 @@ button:hover{
 
     display:block;
 
+    animation:treeOpen .25s ease;
+
 }
 
 .tree-submenu li{
 
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
     margin:3px 0;
 
-    padding-left:12px;
+    padding:10px 14px 10px 24px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    color:#dbeafe;
+
+    transition:.20s;
+
+}
+
+.tree-submenu li:hover{
+
+    background:rgba(255,255,255,.08);
+
+    transform:translateX(4px);
+
+}
+
+.tree-submenu li::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:-20px;
+
+    top:20px;
+
+    width:12px;
+
+    border-top:2px solid rgba(255,255,255,.18);
+
+}
+
+.tree-submenu li i{
+
+    width:18px;
+
+    font-size:14px;
+
+    color:#8ec5ff;
 
 }
 
@@ -2096,11 +2132,39 @@ button:hover{
 
     position:relative;
 
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-weight:700;
+
+    border-radius:12px;
+
+    transition:.25s;
+
+}
+
+.tree-parent:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.tree-parent.open{
+
+    background:rgba(37,99,235,.18);
+
 }
 
 .tree-ok{
 
     margin-left:auto;
+
+    font-size:12px;
+
+    opacity:.7;
 
     transition:.25s;
 
@@ -2109,5 +2173,7 @@ button:hover{
 .tree-parent.open .tree-ok{
 
     transform:rotate(180deg);
+
+    opacity:1;
 
 }
