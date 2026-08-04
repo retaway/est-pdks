@@ -6583,11 +6583,11 @@ function degisimDetay(index){
         });
 
         if(p1){
-            gorev1 = p1.gorevKodu + " - " + p1.gorevAdi;
+            gorev1 = p1.gorevKodu || "-";
         }
 
         if(p2){
-            gorev2 = p2.gorevKodu + " - " + p2.gorevAdi;
+            gorev2 = p2.gorevKodu || "-";
         }
 
     }
