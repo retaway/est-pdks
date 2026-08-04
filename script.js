@@ -671,9 +671,55 @@ function personelYonetimi() {
     console.log("HTML yazıldı.");
 
 }
+function personelVerileriniGuncelle() {
+
+    personelListesi.forEach(function(p){
+
+        if(
+            p.mudurluk === "İşletme Müdürlüğü" ||
+            p.mudurluk === "İŞLETME MÜDÜRLÜĞÜ"
+        ){
+            p.mudurluk = "İşletim Müdürlüğü";
+        }
+
+        if(p.birim === "SÜRÜCÜ ŞEFLİĞİ"){
+            p.birim = "Sürücü Şefliği";
+        }
+
+        if(p.birim === "TRAFİK KONTROL MERKEZİ"){
+            p.birim = "Trafik Kontrol Merkezi";
+        }
+
+        if(p.gorev === "SÜRÜCÜ ŞEFİ"){
+            p.gorev = "Sürücü Şefi";
+        }
+
+        if(p.gorev === "SÜRÜCÜ VARDİYA AMİRİ"){
+            p.gorev = "Sürücü Vardiya Amiri";
+        }
+
+        if(p.gorev === "VATMAN"){
+            p.gorev = "Vatman";
+        }
+
+        if(p.gorev === "BÜRO PERSONELİ"){
+            p.gorev = "Büro Personeli";
+        }
+
+        if(p.gorev === "TCC PERSONELİ"){
+            p.gorev = "TCC Personeli";
+        }
+
+    });
+
+    localStorage.setItem("personeller", JSON.stringify(personelListesi));
+
+    console.log("Personel kayıtları güncellendi.");
+
+}
 
 function personeller() {
-console.log(personelListesi);
+
     const gorevSirasi = {
         "Sürücü Şefi": 1,
         "Sürücü Vardiya Amiri": 2,
