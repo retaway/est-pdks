@@ -2122,17 +2122,21 @@ button:hover{
 
     margin:0;
 
-    padding-left:22px;
+    padding-left:18px;
 
-    display:none;
+    max-height:0;
+
+    overflow:hidden;
+
+    display:block;
+
+    transition:max-height .30s ease;
 
 }
 
 .tree-menu.open{
 
-    display:block;
-
-    animation:treeOpen .20s ease;
+    max-height:500px;
 
 }
 
