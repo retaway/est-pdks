@@ -5251,14 +5251,121 @@ function toggleTree(id, el){
     el.classList.toggle("open");
 
 }
-function toggleMenu(id){
+function toggleMenu(id, element){
 
-    const menu=document.getElementById(id);
+    const menu = document.getElementById(id);
 
-    const parent=event.currentTarget;
+    const folder = element.querySelector(".tree-folder");
 
     menu.classList.toggle("open");
+    element.classList.toggle("open");
 
-    parent.classList.toggle("open");
+    if(folder){
+
+        folder.classList.toggle("fa-folder");
+        folder.classList.toggle("fa-folder-open");
+
+    }
+
+}
+/*==========================
+      TREE V2
+==========================*/
+
+.tree-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.tree-folder{
+
+    color:#ffd166;
+
+    width:20px;
+
+    transition:.25s;
+
+}
+
+.tree-parent.open .tree-folder{
+
+    color:#ffe08a;
+
+}
+
+.tree-parent{
+
+    justify-content:space-between;
+
+    padding:14px 18px;
+
+}
+
+.tree-parent span{
+
+    font-size:15px;
+
+    font-weight:700;
+
+}
+
+.tree-submenu{
+
+    margin-left:36px;
+
+    padding-left:18px;
+
+    border-left:2px solid rgba(255,255,255,.12);
+
+}
+
+.tree-submenu li{
+
+    min-height:42px;
+
+    border-radius:10px;
+
+}
+
+.tree-submenu li::before{
+
+    width:14px;
+
+}
+
+.tree-submenu li:hover{
+
+    background:rgba(255,255,255,.10);
+
+    transform:translateX(6px);
+
+}
+
+.tree-submenu li i{
+
+    color:#79b8ff;
+
+}
+
+.tree-parent.open{
+
+    background:rgba(37,99,235,.18);
+
+}
+
+.tree-ok{
+
+    transition:.25s;
+
+}
+
+.tree-parent.open .tree-ok{
+
+    transform:rotate(90deg);
 
 }
