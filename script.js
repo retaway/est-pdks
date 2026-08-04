@@ -6929,6 +6929,7 @@ onchange="surucuVardiyaAmiriListele()">
 </button>
 
 </div>
+}
 function yedekAta(sicil){
 
     const tarih =
