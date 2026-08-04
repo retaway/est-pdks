@@ -55,13 +55,23 @@
             <span>İnsan Kaynakları</span>
         </li>
 
-        <li class="menu-title">
-            OPERASYON
-        </li>
+     <li class="menu-title">
+    İŞLETİM MÜDÜRLÜĞÜ
+</li>
+
+<li class="tree-item">
+
+    <div class="tree-toggle" onclick="toggleTree('surucuTree', this)">
+        <i class="fas fa-chevron-right tree-arrow"></i>
+        <i class="fas fa-train-tram"></i>
+        <span>Sürücü Şefliği</span>
+    </div>
+
+    <ul id="surucuTree" class="tree-menu">
 
         <li onclick="sayfaGoster('personeller')">
-            <i class="fas fa-train-tram"></i>
-            <span>Sürücü Şefliği</span>
+            <i class="fas fa-users"></i>
+            <span>Personeller</span>
         </li>
 
         <li onclick="sayfaGoster('degisimKodlari')">
@@ -84,6 +94,53 @@
             <span>Görev / Tarife Değişimleri</span>
         </li>
 
+    </ul>
+
+</li>
+
+<li class="tree-item">
+
+    <div class="tree-toggle" onclick="toggleTree('tkmTree', this)">
+        <i class="fas fa-chevron-right tree-arrow"></i>
+        <i class="fas fa-tower-broadcast"></i>
+        <span>Trafik Kontrol Merkezi</span>
+    </div>
+
+    <ul id="tkmTree" class="tree-menu">
+
+        <li onclick="sayfaGoster('tkmPersoneller')">
+            <i class="fas fa-users"></i>
+            <span>Personeller</span>
+        </li>
+
+        <li onclick="sayfaGoster('tkmGunlukVardiya')">
+            <i class="fas fa-calendar-days"></i>
+            <span>Günlük Vardiya</span>
+        </li>
+
+        <li onclick="sayfaGoster('tkmPersonelDegisimi')">
+            <i class="fas fa-right-left"></i>
+            <span>Görev / Tarife Değişimleri</span>
+        </li>
+
+        <li onclick="sayfaGoster('tkmTarifeler')">
+            <i class="fas fa-table"></i>
+            <span>Tarifeler</span>
+        </li>
+
+        <li onclick="sayfaGoster('isletimRaporlari')">
+            <i class="fas fa-chart-column"></i>
+            <span>İşletim Raporları</span>
+        </li>
+
+        <li onclick="sayfaGoster('depoCikisFormlari')">
+            <i class="fas fa-file-lines"></i>
+            <span>Depo Çıkış Formları</span>
+        </li>
+
+    </ul>
+
+</li>
         <li class="menu-title">
             PERSONEL
         </li>
