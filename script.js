@@ -7105,11 +7105,17 @@ function yedekAtamayiTamamla(yedekSicil){
 
 <br>
 
+<button onclick="degisimListeleriniYayinla()">
+📢 Günlük Vardiyayı Yayınla
+</button>
+
+</div>
+
 <div id="operasyonTablosu"></div>
 
 `;
 
-    surucuVardiyaAmiriListele();
+surucuVardiyaAmiriListele();
 
 }
 function surucuVardiyaAmiriListele(){
