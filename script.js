@@ -5369,3 +5369,32 @@ function toggleMenu(id, element){
     transform:rotate(90deg);
 
 }
+/* Mini modda alt menüleri gizle */
+
+.sidebar:not(.open) .tree-submenu{
+    display:none !important;
+}
+
+.sidebar:not(.open) .tree-parent .tree-ok{
+    display:none;
+}
+
+.sidebar:not(.open) .tree-parent{
+
+    justify-content:center;
+
+}
+
+.sidebar:not(.open) .tree-parent span{
+
+    display:none;
+
+}
+
+.sidebar:not(.open) .tree-folder{
+
+    margin:0;
+
+    font-size:20px;
+
+}
