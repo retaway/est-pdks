@@ -3207,21 +3207,24 @@ switch (durumBilgisi) {
 ? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
 : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
-   satirlar += `
-<tr ${satirRengi}>
-    <td>${personel.sicil}</td>
-    <td>${personel.ad} ${personel.soyad}</td>
-    <td>${bilgi ? bilgi.gorevKodu : "-"}</td>
-    <td>${bilgi ? bilgi.platform : "-"}</td>
-    <td>${bilgi ? bilgi.tarife : "-"}</td>
-    <td>${bilgi ? bilgi.baslangic : "-"}</td>
-    <td>${bilgi ? bilgi.bitis : "-"}</td>
-    <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
-    <td>${isBasi}</td>
-    <td>${degisim}</td>
-    <td>${duzenleButonu}</td>
-</tr>
+izinDurumuYansit(p); // izin kontrolü
+
+satirlar += `
+    <tr>
+        <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
+        <td>${p.sicil}</td>
+        <td>${p.ad} ${p.soyad}</td>
+        <td>${p.gorevKodu || "-"}</td>
+        <td>${p.gorevAdi || "-"}</td>
+        <td>${p.platform || "-"}</td>
+        <td>${p.tarife || "-"}</td>
+        <td>${p.baslangic || "-"}</td>
+        <td>${p.bitis || "-"}</td>
+        <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
+        <td>${degisim}</td>
+    </tr>
 `;
+
     });
 
     if (satirlar === "") {
