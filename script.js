@@ -206,7 +206,11 @@ function personelleriGetir(gorev = null, sadeceAktif = true) {
             return false;
         }
 
-        if (gorev && personel.gorev !== gorev) {
+        if (
+            gorev &&
+            String(personel.gorev || "").trim().toUpperCase() !==
+            String(gorev).trim().toUpperCase()
+        ) {
             return false;
         }
 
