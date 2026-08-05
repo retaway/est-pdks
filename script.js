@@ -3216,7 +3216,7 @@ switch (durumBilgisi) {
     <td>${bilgi ? bilgi.tarife : "-"}</td>
     <td>${bilgi ? bilgi.baslangic : "-"}</td>
     <td>${bilgi ? bilgi.bitis : "-"}</td>
-    <td>${durum}</td>
+    <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
     <td>${isBasi}</td>
     <td>${degisim}</td>
     <td>${duzenleButonu}</td>
@@ -3975,42 +3975,64 @@ function vardiyaArsivDetay(index){
         const degisim = degisimEtiketiBul(p.sicil, vardiya.tarih); // 🔄 değişim entegrasyonu
 
         satirlar += `
-            <tr>
-                <td>${p.sicil}</td>
-                <td>${p.ad} ${p.soyad}</td>
-                <td>${p.gorevKodu || "-"}</td>
-                <td>${p.gorevAdi || "-"}</td>
-                <td>${p.platform || "-"}</td>
-                <td>${p.tarife || "-"}</td>
-                <td>${p.baslangic || "-"}</td>
-                <td>${p.bitis || "-"}</td>
-                <td>${p.durum}</td>
-                <td>${degisim}</td> <!-- yeni sütun -->
-            </tr>
-        `;
+    <tr>
+        <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
+        <td>${p.sicil}</td>
+        <td>${p.ad} ${p.soyad}</td>
+        <td>${p.gorevKodu || "-"}</td>
+        <td>${p.gorevAdi || "-"}</td>
+        <td>${p.platform || "-"}</td>
+        <td>${p.tarife || "-"}</td>
+        <td>${p.baslangic || "-"}</td>
+        <td>${p.bitis || "-"}</td>
+        <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
+        <td>${degisim}</td>
+    </tr>
+`;
+
     });
 
     document.getElementById("icerik").innerHTML = `
         <h2>📅 ${vardiya.tarih} Vardiya Detayı</h2>
         <table class="tablo">
             <thead>
-                <tr>
-                    <th>Sicil</th>
-                    <th>Ad Soyad</th>
-                    <th>Görev Kodu</th>
-                    <th>Görev Adı</th>
-                    <th>Platform</th>
-                    <th>Tarife</th>
-                    <th>Başlangıç</th>
-                    <th>Bitiş</th>
-                    <th>Durum</th>
-                    <th>Değişim</th> <!-- yeni başlık -->
-                </tr>
-            </thead>
+    <tr>
+        <th><input type="checkbox" onclick="tumunuSec(this)"></th>
+        <th>Sicil</th>
+        <th>Ad Soyad</th>
+        <th>Görev Kodu</th>
+        <th>Görev Adı</th>
+        <th>Platform</th>
+        <th>Tarife</th>
+        <th>Başlangıç</th>
+        <th>Bitiş</th>
+        <th>Durum</th>
+        <th>Değişim</th>
+    </tr>
+</thead>
+
             <tbody>${satirlar}</tbody>
         </table>
         <button onclick="vardiyaArsivEkrani()">⬅️ Arşive Dön</button>
     `;
+}
+function tumunuSec(cb){
+    document.querySelectorAll(".secim").forEach(x=>{
+        x.checked = cb.checked;
+    });
+}
+
+function topluAtama(gorevKodu, tarife){
+    document.querySelectorAll(".secim:checked").forEach(cb=>{
+        let sicil = cb.value;
+        let personel = vardiyaPersoneller.find(p=>p.sicil==sicil);
+        if(personel){
+            personel.gorevKodu = gorevKodu;
+            personel.tarife = tarife;
+            personel.durum = "🟢 ATANDI";
+        }
+    });
+    guncelVardiyaTablosu(); // tabloyu yeniden çiz
 }
 
 function vardiyaArsivEkrani() {
