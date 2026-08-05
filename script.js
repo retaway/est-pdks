@@ -3977,7 +3977,9 @@ function vardiyaArsivDetay(index){
     vardiya.personeller.forEach(function(p){
         const degisim = degisimEtiketiBul(p.sicil, vardiya.tarih); // 🔄 değişim entegrasyonu
 
-        satirlar += `
+  degisimYansit(p); // değişim kontrolü
+
+satirlar += `
     <tr>
         <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
         <td>${p.sicil}</td>
@@ -3989,9 +3991,10 @@ function vardiyaArsivDetay(index){
         <td>${p.baslangic || "-"}</td>
         <td>${p.bitis || "-"}</td>
         <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
-        <td>${degisim}</td>
+        <td>${p.degisim}</td>
     </tr>
 `;
+
 
     });
 
@@ -4019,6 +4022,15 @@ function vardiyaArsivDetay(index){
         <button onclick="vardiyaArsivEkrani()">⬅️ Arşive Dön</button>
     `;
 }
+function degisimEtiketiBul(sicil, tarih){
+    // Örnek: personelDegisimleri array’inde kayıtlar tutuluyor
+    let kayit = personelDegisimleri.find(d => d.sicil == sicil && d.tarih == tarih);
+    if(kayit){
+        return kayit.kod + " → " + kayit.yeniKod;
+    }
+    return null;
+}
+
 function tumunuSec(cb){
     document.querySelectorAll(".secim").forEach(x=>{
         x.checked = cb.checked;
@@ -4366,85 +4378,48 @@ function degisimEtiketiBul(sicil, bugun) {
 
     return `🔁 ${kayit.talepEdenPersonel} → ${kayit.degisenPersonel}`;
 }
-    function degisimListeleriniYayinla(){
+   function degisimListeleriniYayinla(){
 
     let yayinlanan = 0;
 
     vatmanDegisimTalepleri.forEach(function(talep){
 
-        if(
-            talep.surucuSefiOnay &&
-            !talep.yayinlandi
-        ){
+        if(talep.surucuSefiOnay && !talep.yayinlandi){
 
             talep.yayinlandi = true;
-degisimLogEkle(
 
-    talep.id,
+            degisimLogEkle(
+                talep.id,
+                "YAYIN",
+                "Görev değişimi personele yayınlandı."
+            );
 
-    "YAYIN",
-
-    "Görev değişimi personele yayınlandı."
-
-);
-            talep.yayinTarihi =
-            new Date().toLocaleString("tr-TR");
-
+            talep.yayinTarihi = new Date().toLocaleString("tr-TR");
             yayinlanan++;
 
-            bildirimEkle(
+            // Bildirim entegrasyonu
+            let vardiya = { tarih: talep.yayinTarihi }; 
 
-                "GOREV",
+            // Talep eden vatman için
+            let personel1 = { ad: talep.talepEdenAd, soyad: talep.talepEdenSoyad, sicil: talep.talepEdenSicil };
+            vardiyaBildirimOlustur("DEGISIM", vardiya, personel1);
 
-                "Yeni Göreviniz Yayınlandı",
-
-                "Yarınki görev planınız güncellenmiştir.",
-
-                "VATMAN",
-
-                talep.id,
-
-                talep.talepEdenSicil
-
-            );
-
-            bildirimEkle(
-
-                "GOREV",
-
-                "Yeni Göreviniz Yayınlandı",
-
-                "Yarınki görev planınız güncellenmiştir.",
-
-                "VATMAN",
-
-                talep.id,
-
-                talep.degisenSicil
-
-            );
+            // Değişen vatman için
+            let personel2 = { ad: talep.degisenAd, soyad: talep.degisenSoyad, sicil: talep.degisenSicil };
+            vardiyaBildirimOlustur("DEGISIM", vardiya, personel2);
 
         }
 
     });
 
-    localStorage.setItem(
+    localStorage.setItem("vatmanDegisimTalepleri", JSON.stringify(vatmanDegisimTalepleri));
 
-        "vatmanDegisimTalepleri",
+    alert(yayinlanan + " adet görev değişimi yayınlandı.");
 
-        JSON.stringify(vatmanDegisimTalepleri)
-
-    );
-
-    alert(
-
-        yayinlanan +
-
-        " adet görev değişimi yayınlandı."
-
-    );
-
+    // 🔔 ikonunu güncelle
+    bildirimIkonGuncelle();
 }
+
 function izinler() {
 
     let satirlar = "";
@@ -4573,6 +4548,15 @@ Henüz izin kaydı bulunmuyor.
 
     `;
 
+}
+function degisimYansit(p){
+    // degisimEtiketiBul: senin değişim kayıtlarını kontrol eden fonksiyon olacak
+    let degisim = degisimEtiketiBul(p.sicil, aktifVardiya.tarih);
+    if(degisim){
+        p.degisim = degisim;
+    } else {
+        p.degisim = "-";
+    }
 }
 
 function puantaj() {
