@@ -810,9 +810,8 @@ function personeller() {
 
     let satirlar = "";
 
-    liste.forEach(function(personel){
-
-        satirlar += `
+   liste.forEach(function(personel){
+    satirlar += `
         <tr>
             <td>${personel.sicil}</td>
             <td>${personel.ad} ${personel.soyad}</td>
@@ -821,24 +820,15 @@ function personeller() {
             <td>${personel.gorev}</td>
             <td>${personel.durum === "Aktif" ? "🟢 Aktif" : "🔴 Pasif"}</td>
             <td>
-
                 <button
                     onclick="personelKarti(${personel.index})"
                     title="Personel Kartı">
                     📂
                 </button>
-
-                <button
-                    onclick="personelAta(${personel.index})"
-                    title="Görev Atamaları">
-                    📅
-                </button>
-
             </td>
         </tr>
-        `;
-
-    });
+    `;
+});
 
     if (satirlar === "") {
 
@@ -1576,6 +1566,195 @@ alert(
 
         reader.readAsArrayBuffer(dosya);
     };
+}
+function degisimLoglariEkrani() {
+    let satirlar = "";
+
+    degisimLoglari.forEach(function(log, index){
+        satirlar += `
+            <tr>
+                <td>${log.tarih}</td>
+                <td>${log.sicil}</td>
+                <td>${log.adSoyad}</td>
+                <td>${log.kod}</td>
+                <td>${log.aciklama || "-"}</td>
+                <td>
+                    <button onclick="degisimLogSil(${index})">🗑️ Sil</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    if(satirlar === ""){
+        satirlar = `<tr><td colspan="6" style="text-align:center;">Henüz değişim kaydı yok.</td></tr>`;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>📜 Günlük Değişim Logları</h2>
+        <div class="form-kart">
+            <label>Tarih</label>
+            <input type="date" id="logTarih" value="${new Date().toISOString().split("T")[0]}">
+
+            <label>Personel Sicil</label>
+            <input type="text" id="logSicil" placeholder="Örn: 1006">
+
+            <label>Kod</label>
+            <select id="logKod">
+                ${degisimKodlariListesi.map(k => `<option value="${k}">${k}</option>`).join("")}
+            </select>
+
+            <label>Açıklama</label>
+            <input type="text" id="logAciklama" placeholder="Opsiyonel açıklama">
+
+            <button onclick="degisimLogEkle()">➕ Kaydet</button>
+        </div>
+
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Kod</th>
+                    <th>Açıklama</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>${satirlar}</tbody>
+        </table>
+    `;
+}
+
+function degisimLogEkle(){
+    const tarih = document.getElementById("logTarih").value;
+    const sicil = document.getElementById("logSicil").value.trim();
+    const kod = document.getElementById("logKod").value;
+    const aciklama = document.getElementById("logAciklama").value.trim();
+
+    const personel = personelListesi.find(p => p.sicil === sicil);
+
+    if(!personel){ alert("Geçerli bir personel sicili giriniz."); return; }
+
+    degisimLoglari.push({
+        tarih,
+        sicil,
+        adSoyad: personel.ad + " " + personel.soyad,
+        kod,
+        aciklama
+    });
+
+    localStorage.setItem("degisimLoglari", JSON.stringify(degisimLoglari));
+    degisimLoglariEkrani();
+}
+
+function degisimLogSil(index){
+    if(!confirm("Bu log kaydı silinsin mi?")) return;
+    degisimLoglari.splice(index,1);
+    localStorage.setItem("degisimLoglari", JSON.stringify(degisimLoglari));
+    degisimLoglariEkrani();
+}
+function degisimLogEkle(){
+    const tarih = document.getElementById("logTarih").value;
+    const sicil = document.getElementById("logSicil").value.trim();
+    const kod = document.getElementById("logKod").value;
+    const aciklama = document.getElementById("logAciklama").value.trim();
+
+    const personel = personelListesi.find(p => p.sicil === sicil);
+
+    if(!personel){ 
+        alert("Geçerli bir personel sicili giriniz."); 
+        return; 
+    }
+
+    const yeniLog = {
+        tarih,
+        sicil,
+        adSoyad: personel.ad + " " + personel.soyad,
+        kod,
+        aciklama
+    };
+
+    degisimLoglari.push(yeniLog);
+    localStorage.setItem("degisimLoglari", JSON.stringify(degisimLoglari));
+
+    // Bildirim sadece eklemede
+    bildirimEkle(
+        "SÜRÜCÜ ŞEFLİĞİ",
+        "Görev Değişimi",
+        `${yeniLog.adSoyad} (${yeniLog.sicil}) için ${yeniLog.kod} koduyla değişim kaydı yapıldı.`,
+        "VARDIYA_AMIRI"
+    );
+
+    alert("Değişim kaydı eklendi ve bildirim gönderildi.");
+    degisimLoglariEkrani();
+}
+
+function degisimLogSil(index){
+    if(!confirm("Bu log kaydı silinsin mi?")) return;
+    degisimLoglari.splice(index,1);
+    localStorage.setItem("degisimLoglari", JSON.stringify(degisimLoglari));
+    alert("Log kaydı silindi.");
+    degisimLoglariEkrani();
+}
+function degisimLoglariEkrani(filtre = {}) {
+    let satirlar = "";
+
+    const filtreliLoglar = degisimLoglari.filter(log => {
+        if(filtre.tarih && log.tarih !== filtre.tarih) return false;
+        if(filtre.sicil && !log.sicil.includes(filtre.sicil)) return false;
+        if(filtre.kod && log.kod !== filtre.kod) return false;
+        return true;
+    });
+
+    filtreliLoglar.forEach(function(log, index){
+        satirlar += `
+            <tr>
+                <td>${log.tarih}</td>
+                <td>${log.sicil}</td>
+                <td>${log.adSoyad}</td>
+                <td>${log.kod}</td>
+                <td>${log.aciklama || "-"}</td>
+                <td>
+                    <button onclick="degisimLogSil(${index})">🗑️ Sil</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    if(satirlar === ""){
+        satirlar = `<tr><td colspan="6" style="text-align:center;">Filtreye uygun kayıt bulunamadı.</td></tr>`;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>📜 Günlük Değişim Logları</h2>
+        <div class="form-kart">
+            <label>Tarih</label>
+            <input type="date" id="filtreTarih" onchange="degisimLoglariEkrani({tarih:this.value})">
+
+            <label>Sicil</label>
+            <input type="text" id="filtreSicil" placeholder="Örn: 1006" onkeyup="degisimLoglariEkrani({sicil:this.value})">
+
+            <label>Kod</label>
+            <select id="filtreKod" onchange="degisimLoglariEkrani({kod:this.value})">
+                <option value="">Hepsi</option>
+                ${degisimKodlariListesi.map(k => `<option value="${k}">${k}</option>`).join("")}
+            </select>
+        </div>
+
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Kod</th>
+                    <th>Açıklama</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>${satirlar}</tbody>
+        </table>
+    `;
 }
 
 function tarifeAc() {
@@ -3752,6 +3931,145 @@ onclick="gunlukVardiya()">
         bilgi.gorevAdi;
 
 }
+function vardiyaArsivEkrani() {
+    let satirlar = "";
+
+    gunlukVardiyaArsivi.forEach(function(v, index){
+        satirlar += `
+            <tr>
+                <td>${v.tarih}</td>
+                <td>${v.personeller.length} personel</td>
+                <td>${v.durum}</td>
+                <td>
+                    <button onclick="vardiyaArsivDetay(${index})">📂 Detay</button>
+                </td>
+            </tr>
+        `;
+    });
+
+    if(satirlar === ""){
+        satirlar = `<tr><td colspan="4" style="text-align:center;">Henüz arşiv yok.</td></tr>`;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>📦 Vardiya Arşivi</h2>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Personel Sayısı</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>${satirlar}</tbody>
+        </table>
+    `;
+}
+
+function vardiyaArsivDetay(index){
+    const vardiya = gunlukVardiyaArsivi[index];
+    let satirlar = "";
+
+    vardiya.personeller.forEach(function(p){
+        const degisim = degisimEtiketiBul(p.sicil, vardiya.tarih); // 🔄 değişim entegrasyonu
+
+        satirlar += `
+            <tr>
+                <td>${p.sicil}</td>
+                <td>${p.ad} ${p.soyad}</td>
+                <td>${p.gorevKodu || "-"}</td>
+                <td>${p.gorevAdi || "-"}</td>
+                <td>${p.platform || "-"}</td>
+                <td>${p.tarife || "-"}</td>
+                <td>${p.baslangic || "-"}</td>
+                <td>${p.bitis || "-"}</td>
+                <td>${p.durum}</td>
+                <td>${degisim}</td> <!-- yeni sütun -->
+            </tr>
+        `;
+    });
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>📅 ${vardiya.tarih} Vardiya Detayı</h2>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Sicil</th>
+                    <th>Ad Soyad</th>
+                    <th>Görev Kodu</th>
+                    <th>Görev Adı</th>
+                    <th>Platform</th>
+                    <th>Tarife</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+                    <th>Durum</th>
+                    <th>Değişim</th> <!-- yeni başlık -->
+                </tr>
+            </thead>
+            <tbody>${satirlar}</tbody>
+        </table>
+        <button onclick="vardiyaArsivEkrani()">⬅️ Arşive Dön</button>
+    `;
+}
+
+function vardiyaArsivEkrani() {
+    const baslangic = document.getElementById("arsivBaslangic")?.value || "";
+    const bitis = document.getElementById("arsivBitis")?.value || "";
+    const arama = document.getElementById("arsivArama")?.value.toLowerCase().trim() || "";
+
+    let satirlar = "";
+
+    gunlukVardiyaArsivi.filter(function(v){
+        // Tarih aralığı filtresi
+        if(baslangic && v.tarih < baslangic) return false;
+        if(bitis && v.tarih > bitis) return false;
+
+        // Personel arama filtresi
+        if(arama !== ""){
+            const metin = v.personeller.map(p => p.sicil + " " + p.ad + " " + p.soyad).join(" ").toLowerCase();
+            if(!metin.includes(arama)) return false;
+        }
+
+        return true;
+    }).forEach(function(v, index){
+        satirlar += `
+            <tr>
+                <td>${v.tarih}</td>
+                <td>${v.personeller.length} personel</td>
+                <td>${v.durum}</td>
+                <td><button onclick="vardiyaArsivDetay(${index})">📂 Detay</button></td>
+            </tr>
+        `;
+    });
+
+    if(satirlar === ""){
+        satirlar = `<tr><td colspan="4" style="text-align:center;">Filtreye uygun kayıt bulunamadı.</td></tr>`;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>📦 Vardiya Arşivi</h2>
+        <div class="toolbar" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+            <label>Başlangıç</label>
+            <input type="date" id="arsivBaslangic" onchange="vardiyaArsivEkrani()">
+            <label>Bitiş</label>
+            <input type="date" id="arsivBitis" onchange="vardiyaArsivEkrani()">
+            <input type="text" id="arsivArama" placeholder="🔍 Sicil veya Ad Soyad Ara..." onkeyup="vardiyaArsivEkrani()" style="width:250px;">
+        </div>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Personel Sayısı</th>
+                    <th>Durum</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>${satirlar}</tbody>
+        </table>
+    `;
+}
+
 function gorevTarifeDegisimiKaydet() {
     const tarih = document.getElementById("degisimTarihi").value;
     const talepEdenSicil = document.getElementById("talepEdenPersonelSicil").value;
@@ -5997,6 +6315,100 @@ if(bildirimler[index].talepId){
     bildirimlerSayfasi();
 
 }
+function vardiyaBildirimOlustur(tur, vardiya, personel = null){
+    let baslik = "";
+    let mesaj = "";
+
+    if(tur === "YAYIN"){
+        baslik = "Yeni Vardiya Yayınlandı";
+        mesaj = vardiya.tarih + " tarihli vardiya yayınlandı.";
+    }
+    else if(tur === "DEGISIM" && personel){
+        baslik = "Vardiya Değişimi";
+        mesaj = personel.ad + " " + personel.soyad + " için vardiya değişikliği yapıldı.";
+    }
+    else if(tur === "IPTAL"){
+        baslik = "Vardiya İptal Edildi";
+        mesaj = vardiya.tarih + " tarihli vardiya iptal edildi.";
+    }
+
+    bildirimler.push({
+        tur: "VARDIYA",
+        baslik: baslik,
+        mesaj: mesaj,
+        tarih: new Date().toISOString(),
+        ilgiliTarih: vardiya.tarih,
+        sicil: personel ? personel.sicil : null,
+        okundu: false   // 🔵 yeni alan
+    });
+
+    localStorage.setItem("bildirimler", JSON.stringify(bildirimler));
+}
+
+function bildirimleriGoster() {
+    if (!aktifKullanici) return;
+
+    let rol = aktifKullanici.rol;
+    let sicil = aktifKullanici.sicil;
+
+    // Rol bazlı filtreleme
+    let filtreliBildirimler = bildirimler.filter(function(b){
+        if (rol === "ADMIN") return true;
+        if (rol === "IK" && b.tur === "İZİN") return true;
+        if (rol === "SURUCU_SEFI" && b.tur === "VARDIYA") return true;
+        if (rol === "VARDIYA_AMIRI" && b.tur === "VARDIYA") return true;
+        if (rol === "VATMAN" && b.tur === "VARDIYA" && b.sicil === sicil) return true;
+        return false;
+    });
+
+    let satirlar = "";
+    filtreliBildirimler.forEach(function(b, i){
+        satirlar += `
+            <tr style="${b.okundu ? '' : 'font-weight:bold;'}">
+                <td>${b.tarih}</td>
+                <td>${b.baslik}</td>
+                <td>${b.mesaj}</td>
+                <td>
+                    ${b.okundu ? "✔️" : `<button onclick="bildirimOkundu(${i})">Okundu</button>`}
+                </td>
+            </tr>
+        `;
+    });
+
+    if(satirlar === ""){
+        satirlar = `<tr><td colspan="4" style="text-align:center;">Bildirim bulunamadı.</td></tr>`;
+    }
+
+    document.getElementById("icerik").innerHTML = `
+        <h2>🔔 Bildirimler</h2>
+        <table class="tablo">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Başlık</th>
+                    <th>Mesaj</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>${satirlar}</tbody>
+        </table>
+    `;
+}
+function bildirimOkundu(index){
+    bildirimler[index].okundu = true;
+    localStorage.setItem("bildirimler", JSON.stringify(bildirimler));
+    bildirimleriGoster();
+    bildirimIkonGuncelle(); // okundu sonrası ikon güncellenir
+}
+function bildirimIkonGuncelle(){
+    const okunmamis = bildirimler.filter(b => !b.okundu).length;
+    const ikon = document.getElementById("bildirimIkon");
+
+    if(ikon){
+        ikon.innerHTML = `🔔 ${okunmamis > 0 ? '<span class="badge">'+okunmamis+'</span>' : ''}`;
+    }
+}
+
 function okunmamisBildirimSayisi(hedef = null) {
 
     return bildirimler.filter(function(b){
