@@ -6402,12 +6402,13 @@ function bildirimOkundu(index){
 }
 function bildirimIkonGuncelle(){
     const okunmamis = bildirimler.filter(b => !b.okundu).length;
-    const ikon = document.getElementById("bildirimIkon");
+    const badge = document.getElementById("bildirimBadge");
 
-    if(ikon){
-        ikon.innerHTML = `🔔 ${okunmamis > 0 ? '<span class="badge">'+okunmamis+'</span>' : ''}`;
+    if(badge){
+        badge.textContent = okunmamis > 0 ? okunmamis : "";
     }
 }
+
 
 function okunmamisBildirimSayisi(hedef = null) {
 
