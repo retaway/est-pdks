@@ -6929,6 +6929,13 @@ onchange="surucuVardiyaAmiriListele()">
 </button>
 
 </div>
+
+<div id="operasyonTablosu"></div>
+
+`;
+
+surucuVardiyaAmiriListele();
+
 }
 function yedekAta(sicil){
 
