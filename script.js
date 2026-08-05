@@ -28,7 +28,7 @@ function gunlukVardiyaArsiviKaydet(){
 }
 function gunlukVardiyaBul(tarih){
 
-    return gunlukVardiyalar.find(function(v){
+    return gunlukVardiyaArsivi.find(function(v){
 
         return String(v.tarih) === String(tarih);
 
