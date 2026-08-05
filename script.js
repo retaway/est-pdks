@@ -3199,6 +3199,23 @@ if (!personel) {
     alert("Personel bulunamadı.");
     return;
 }    const gorevKodu = document.getElementById("gorevKodu").value;
+    const degisimKodu = degisimKodlariListesi.find(function(k){
+
+    return k.kod === gorevKodu;
+
+});
+
+if(!degisimKodu){
+    alert("Seçilen görev kodu bulunamadı.");
+    return;
+}
+
+const gorev = degisimKodu.gorevler[0];
+
+if(!gorev){
+    alert("Bu değişim koduna görev tanımlanmamış.");
+    return;
+}
     const notKutusu = document.getElementById("not");
 
     if (gorevKodu == "") {
@@ -3247,21 +3264,35 @@ const ayniKod = vardiya.personeller.find(function(v){
   if (kayit) {
 
     kayit.gorevKodu = gorevKodu;
-    kayit.not = notKutusu ? notKutusu.value : "";
-    kayit.durum = "ATANDI";
+kayit.gorevAdi = degisimKodu.aciklama;
+kayit.platform = gorev.platform;
+kayit.tarife = gorev.tarife;
+kayit.baslangic = gorev.baslangic;
+kayit.bitis = gorev.bitis;
+kayit.not = notKutusu ? notKutusu.value : "";
+kayit.durum = "ATANDI";
 
 } else {
 
-    vardiya.personeller.push({
+vardiya.personeller.push({
 
-        sicil: personel.sicil,
-        ad: personel.ad,
-        soyad: personel.soyad,
-        gorevKodu: gorevKodu,
-        durum: "ATANDI",
-        not: notKutusu ? notKutusu.value : ""
+    sicil: personel.sicil,
+    ad: personel.ad,
+    soyad: personel.soyad,
 
-    });
+    gorevKodu: gorevKodu,
+    gorevAdi: degisimKodu.aciklama,
+
+    platform: gorev.platform,
+    tarife: gorev.tarife,
+    baslangic: gorev.baslangic,
+    bitis: gorev.bitis,
+
+    durum: "ATANDI",
+
+    not: notKutusu ? notKutusu.value : ""
+
+});
 
 }
 
