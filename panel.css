@@ -2310,3 +2310,15 @@ button:hover{
     }
 
 }
+.durum-atanmadi {
+    color: red;
+    font-weight: bold;
+}
+.durum-atandi {
+    color: green;
+    font-weight: bold;
+}
+.durum-izin {
+    color: orange;
+    font-weight: bold;
+}
