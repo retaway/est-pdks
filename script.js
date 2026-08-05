@@ -8649,3 +8649,10 @@ function operasyonOzeti(tarih){
     return sonuc;
 
 }
+function izinDurumuYansit(p){
+    // Eğer personelin izin bilgisi varsa durumunu güncelle
+    if(p.izinTuru){ 
+        // izinTuru: "Ücretli İzin", "Ücretsiz İzin", "Rapor", "Hafta Tatili" vb.
+        p.durum = "🟡 " + p.izinTuru;
+    }
+}
