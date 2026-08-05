@@ -3207,26 +3207,21 @@ switch (durumBilgisi) {
 ? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
 : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
-personeller.forEach(function(p){
-    izinDurumuYansit(p);   // önce izin kontrolü
-    degisimYansit(p);      // sonra değişim kontrolü
-
-    satirlar += `
-        <tr>
-            <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
-            <td>${p.sicil}</td>
-            <td>${p.ad} ${p.soyad}</td>
-            <td>${p.gorevKodu || "-"}</td>
-            <td>${p.gorevAdi || "-"}</td>
-            <td>${p.platform || "-"}</td>
-            <td>${p.tarife || "-"}</td>
-            <td>${p.baslangic || "-"}</td>
-            <td>${p.bitis || "-"}</td>
-            <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
-            <td>${p.degisim}</td>
-        </tr>
-    `;
-});
+satirlar += `
+<tr ${satirRengi}>
+    <td>${personel.sicil}</td>
+    <td>${personel.ad} ${personel.soyad}</td>
+    <td>${gorev}</td>
+    <td>${bilgi?.platform || "-"}</td>
+    <td>${bilgi?.tarife || "-"}</td>
+    <td>${bilgi?.baslangic || "-"}</td>
+    <td>${bilgi?.bitis || "-"}</td>
+    <td>${durum}</td>
+    <td>${isBasi}</td>
+    <td>${degisim}</td>
+    <td>${duzenleButonu}</td>
+</tr>
+`;
 
 
 
@@ -3288,7 +3283,7 @@ personeller.forEach(function(p){
     <tr>
     <th>Sicil</th>
     <th>Ad Soyad</th>
-    <th>Görev Kodu</th>
+    <th>Görev</th>
     <th>Platform</th>
     <th>Tarife</th>
     <th>Başlangıç</th>
