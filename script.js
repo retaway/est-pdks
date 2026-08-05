@@ -3022,10 +3022,13 @@ switch (durumBilgisi) {
         break;
 }
 
-        const duzenleButonu =
-            (bilgi.durum === "ATANDI" || bilgi.durum === "ATANMADI")
-            ? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
-            : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
+       const duzenleButonu =
+(
+    durumBilgisi === "ATANDI" ||
+    durumBilgisi === "ATANMADI"
+)
+? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
+: `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
    satirlar += `
 <tr ${satirRengi}>
