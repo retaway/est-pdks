@@ -3805,11 +3805,11 @@ gorevTarifeDegisiklikleri.push({
 
 });
 
-    const talepEdenVardiya = gunlukVardiyalar.find(v =>
+    const talepEdenVardiya = gunlukVardiyaArsivi.find(v =>
         String(v.sicil) === String(talepEdenSicil) && String(v.tarih) === String(tarih)
     );
 
-    const degisenVardiya = gunlukVardiyalar.find(v =>
+    const degisenVardiya = gunlukVardiyaArsivi.find(v =>
         String(v.sicil) === String(degisenSicil) && String(v.tarih) === String(tarih)
     );
 
@@ -3899,7 +3899,7 @@ function gunSonuRaporu() {
         return String(k.tarih) === String(bugun);
     });
 
-    const bugunkuVardiyaKayitlari = gunlukVardiyalar.filter(function (v) {
+    const bugunkuVardiyaKayitlari = gunlukVardiyaArsivi.filter(function (v) {
         return String(v.tarih) === String(bugun);
     });
 
@@ -7194,7 +7194,7 @@ Bu tarihe ait vardiya bulunamadı.
 
 <td>${kayit.sicil}</td>
 
-<td>${kayit.adSoyad}</td>
+<td>${kayit.ad} ${kayit.soyad}</td>
 
 <td>${kayit.gorevKodu}</td>
 
