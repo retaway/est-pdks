@@ -37,12 +37,15 @@ function gunlukVardiyaBul(tarih){
 }
 function personelGunlukVardiyasiGetir(sicil, tarih){
 
-    return gunlukVardiyalar.find(function(v){
+    const vardiya = gunlukVardiyaBul(tarih);
 
-        return (
-            String(v.sicil) === String(sicil) &&
-            String(v.tarih) === String(tarih)
-        );
+    if(!vardiya){
+        return null;
+    }
+
+    return vardiya.personeller.find(function(p){
+
+        return String(p.sicil) === String(sicil);
 
     }) || null;
 
@@ -3219,38 +3222,50 @@ alert(
     }
 
     // Aynı görev kodu başka birine verilmiş mi?
-    const ayniKod = gunlukVardiyalar.find(v =>
-        v.tarih === bugun &&
+  const vardiya = yeniGunlukVardiyaOlustur(bugun);
+
+const ayniKod = vardiya.personeller.find(function(v){
+
+    return (
         v.gorevKodu === gorevKodu &&
-        v.sicil !== personel.sicil
+        String(v.sicil) !== String(personel.sicil)
     );
+
+});
 
     if (ayniKod) {
         alert("Bu görev kodu başka bir personele atanmış.");
         return;
     }
 
-    const kayit = gunlukVardiyalar.find(v =>
-        v.tarih === bugun &&
-        v.sicil === personel.sicil
-    );
+    const kayit = vardiya.personeller.find(function(v){
 
-    if (kayit) {
-        kayit.gorevKodu = gorevKodu;
-        kayit.not = notKutusu ? notKutusu.value : "";
-    } else {
-        gunlukVardiyalar.push({
-            tarih: bugun,
-            sicil: personel.sicil,
-            gorevKodu: gorevKodu,
-            not: notKutusu ? notKutusu.value : ""
-        });
-    }
+    return String(v.sicil) === String(personel.sicil);
 
-    localStorage.setItem(
-        "gunlukVardiyalar",
-        JSON.stringify(gunlukVardiyalar)
-    );
+});
+
+  if (kayit) {
+
+    kayit.gorevKodu = gorevKodu;
+    kayit.not = notKutusu ? notKutusu.value : "";
+    kayit.durum = "ATANDI";
+
+} else {
+
+    vardiya.personeller.push({
+
+        sicil: personel.sicil,
+        ad: personel.ad,
+        soyad: personel.soyad,
+        gorevKodu: gorevKodu,
+        durum: "ATANDI",
+        not: notKutusu ? notKutusu.value : ""
+
+    });
+
+}
+
+gunlukVardiyaArsiviKaydet();
 
     alert("Görev başarıyla atandı.");
     gunlukVardiya();
