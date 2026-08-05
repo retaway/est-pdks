@@ -3207,23 +3207,28 @@ switch (durumBilgisi) {
 ? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
 : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
-izinDurumuYansit(p); // izin kontrolü
+personeller.forEach(function(p){
+    izinDurumuYansit(p);   // önce izin kontrolü
+    degisimYansit(p);      // sonra değişim kontrolü
 
-satirlar += `
-    <tr>
-        <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
-        <td>${p.sicil}</td>
-        <td>${p.ad} ${p.soyad}</td>
-        <td>${p.gorevKodu || "-"}</td>
-        <td>${p.gorevAdi || "-"}</td>
-        <td>${p.platform || "-"}</td>
-        <td>${p.tarife || "-"}</td>
-        <td>${p.baslangic || "-"}</td>
-        <td>${p.bitis || "-"}</td>
-        <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
-        <td>${degisim}</td>
-    </tr>
-`;
+    satirlar += `
+        <tr>
+            <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
+            <td>${p.sicil}</td>
+            <td>${p.ad} ${p.soyad}</td>
+            <td>${p.gorevKodu || "-"}</td>
+            <td>${p.gorevAdi || "-"}</td>
+            <td>${p.platform || "-"}</td>
+            <td>${p.tarife || "-"}</td>
+            <td>${p.baslangic || "-"}</td>
+            <td>${p.bitis || "-"}</td>
+            <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
+            <td>${p.degisim}</td>
+        </tr>
+    `;
+});
+
+
 
     });
 
@@ -4550,14 +4555,15 @@ Henüz izin kaydı bulunmuyor.
 
 }
 function degisimYansit(p){
-    // degisimEtiketiBul: senin değişim kayıtlarını kontrol eden fonksiyon olacak
-    let degisim = degisimEtiketiBul(p.sicil, aktifVardiya.tarih);
-    if(degisim){
-        p.degisim = degisim;
+    // personelDegisimleri: değişim kayıtlarını tuttuğun liste
+    let kayit = personelDegisimleri.find(d => d.sicil == p.sicil && d.tarih == aktifVardiya.tarih);
+    if(kayit){
+        p.degisim = kayit.kod + " → " + kayit.yeniKod;
     } else {
         p.degisim = "-";
     }
 }
+
 
 function puantaj() {
 
