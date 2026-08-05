@@ -26,7 +26,15 @@ function gunlukVardiyaArsiviKaydet(){
     );
 
 }
+function gunlukVardiyaBul(tarih){
 
+    return gunlukVardiyalar.find(function(v){
+
+        return String(v.tarih) === String(tarih);
+
+    }) || null;
+
+}
 function personelGunlukVardiyasiGetir(sicil, tarih){
 
     return gunlukVardiyalar.find(function(v){
