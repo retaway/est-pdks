@@ -27,32 +27,19 @@ function gunlukVardiyaArsiviKaydet(){
 
 }
 
-function gunlukVardiyaBul(tarih){
+/*function personelGunlukVardiyasiGetir(sicil, tarih){
 
-    return gunlukVardiyaArsivi.find(function(v){
+    return gunlukVardiyalar.find(function(v){
 
-        return v.tarih === tarih;
-
-    });
-
-}
-function personelGunlukVardiyasiGetir(sicil,tarih){
-
-    const vardiya = gunlukVardiyaBul(tarih);
-
-    if(!vardiya){
-
-        return null;
-
-    }
-
-    return vardiya.personeller.find(function(p){
-
-        return String(p.sicil) === String(sicil);
+        return (
+            String(v.sicil) === String(sicil) &&
+            String(v.tarih) === String(tarih)
+        );
 
     }) || null;
 
-}
+}*/
+
 function yarininTarihi(){
 
     const d = new Date();
@@ -93,7 +80,8 @@ function yeniGunlukVardiyaOlustur(tarih){
     return vardiya;
 
 }
-let gunlukVardiyalar = JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
+let gunlukVardiyalar =
+JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
 let vatmanDegisimTalepleri =
@@ -3187,11 +3175,9 @@ function vardiyaDuzenle(sicil){
 
 function vardiyaKaydet(sicil){
 
-    const personel = personelleriGetir("Vatman").find(function(p){
-
-        return String(p.sicil) === String(sicil);
-
-    });
+  const personel = personelleriGetir("VATMAN").find(function(p){
+    return String(p.sicil) === String(sicil);
+});
 
     if (!personel){
         alert("Personel bulunamadı.");
@@ -3209,7 +3195,7 @@ if (!personel) {
         return;
     }
 
-    const bugun = new Date().toISOString().split("T")[0];
+    const bugun = yarininTarihi();
     const mevcutDurum = vardiyaDurumuBul(personel, bugun);
 
     // İK'dan gelen özel durum varsa görev atamasını engelle
