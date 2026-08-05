@@ -998,11 +998,6 @@ function personelDetay(index) {
             <p><b>Telefon :</b> ${p.telefon || "-"}</p>
             <p><b>E-Posta :</b> ${p.email || "-"}</p>
 
-            <hr>
-
-           const izin = izinHakkiGetir(p.sicil);
-
-            <hr>
 
             <h3>📅 Görev İşlemleri</h3>
 
