@@ -2997,9 +2997,9 @@ function degisimDurum(index){
     localStorage.setItem("degisimKodlari", JSON.stringify(degisimKodlariListesi));
     degisimKodlari();
 }
-function vardiyaFiltreDegistir(filtre) {
+function vardiyaFiltreDegistir(filtre){
     gunlukVardiyaFiltre = filtre;
-    gunlukVardiya();
+    gunlukSurucuVardiyaPlani();
 }
 
 function vardiyaDurumuBul(personel, tarih) {
@@ -3136,8 +3136,7 @@ if (
     return;
 }
 
-const gorevBilgisi =
-gorev.gorevNo || "-";
+let gorevBilgisi = gorev.gorevNo || "-";
 let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
 
 const degisim =
@@ -3163,52 +3162,52 @@ switch (durumBilgisi) {
 
     case "YILLIK İZİN":
         durum = '<span style="color:#d4a017;font-weight:bold;">🟡 YILLIK İZİN</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "MAZERET İZNİ":
         durum = '<span style="color:#ff9800;font-weight:bold;">🟠 MAZERET İZNİ</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "SENDİKAL İZİN":
         durum = '<span style="color:#009688;font-weight:bold;">🟢 SENDİKAL İZİN</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "ÜCRETSİZ İZİN":
         durum = '<span style="color:orange;font-weight:bold;">🟠 ÜCRETSİZ İZİN</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "ÜCRETLİ İZİN":
         durum = '<span style="color:blue;font-weight:bold;">🔵 ÜCRETLİ İZİN</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "DOĞUM İZNİ":
         durum = '<span style="color:purple;font-weight:bold;">🟣 DOĞUM İZNİ</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "BABALIK İZNİ":
         durum = '<span style="color:#3f51b5;font-weight:bold;">🔵 BABALIK İZNİ</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "RAPOR":
         durum = '<span style="color:red;font-weight:bold;">🔴 RAPOR</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "HAFTA TATİLİ":
         durum = '<span style="color:gray;font-weight:bold;">⚪ HAFTA TATİLİ</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 
     case "GÖREVE GELMEDİ":
         durum = '<span style="color:black;font-weight:bold;">⚫ GÖREVE GELMEDİ</span>';
-        gorev = "-";
+        gorevBilgisi = "-";
         break;
 }
 
@@ -3232,7 +3231,7 @@ satirlar += `
 <tr ${satirRengi}>
     <td>${gorev.sicil || "-"}</td>
     <td>${gorev.personelAdi || "-"}</td>
-    <td>${gorev.gorevNo || "-"}</td>
+    <td>${gorevBilgisi}</td>
     <td>${gorev.platform || "-"}</td>
     <td>${gorev.tarife || "-"}</td>
     <td>${gorev.servisGelis || "-"}</td>
