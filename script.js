@@ -43,7 +43,7 @@ function personelGunlukVardiyasiGetir(sicil, tarih){
         return null;
     }
 
-    return vardiya.personeller.find(function(p){
+    return (vardiya.gorevler || []).find(function(p){
 
         return String(p.sicil) === String(sicil);
 
@@ -106,10 +106,10 @@ function yeniGunlukVardiyaOlustur(tarih){
     return vardiya;
 
 }
-let gunlukVardiyalar =
+/*let gunlukVardiyalar =
 JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
-let tarifeVerileri = [];
+let tarifeVerileri = [];*/
 
 // Günlük Sürücü Vardiya Planı
 let gunlukPlanDosyasi = null;
@@ -1482,188 +1482,259 @@ function tarifeler() {
     </table>
     `;
 }
-function vardiyaKaydiniOlustur(satir){
+/*(function vardiyaKaydiniOlustur(satir){
 
-    return{
+    return {
 
         gorevKodu : String(satir[0] || "").trim(),
 
         gorevAdi  : String(satir[1] || "").trim(),
 
-        adSoyad   : String(satir[2] || "").trim(),
-
         sicil     : "",
 
         durum     : "ATANDI"
 
-    };
+    };*/
 
 }
-function excelSec() {
-    const fileInput = document.getElementById("excelDosya");
-    if (!fileInput) return;
+function excelSec(){
+
+    const fileInput =
+    document.getElementById("excelDosya");
+
+    if(!fileInput) return;
+
+    fileInput.value = "";
 
     fileInput.click();
-    fileInput.onchange = function () {
-        const dosya = this.files[0];
-        const vardiyaTarihi = prompt(
-    "Yüklediğiniz vardiyanın tarihi (YYYY-AA-GG)\n\nÖrnek : 2026-08-05",
-    new Date(Date.now()+86400000).toISOString().split("T")[0]
-);
 
-if(!vardiyaTarihi) return;
-        if (!dosya) return;
+    fileInput.onchange = function(){
+
+        const dosya = this.files[0];
+
+        if(!dosya) return;
 
         tarifeDosyasi = dosya;
+
         const reader = new FileReader();
 
-        reader.onload = function (e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: "array" });
-            const sayfa = workbook.Sheets[workbook.SheetNames[0]];
+        reader.onload = function(e){
 
-            tarifeVerileri = XLSX.utils.sheet_to_json(sayfa, { header: 1 });
-     tarifeVerileri.forEach(function(satir){
+            const data =
+            new Uint8Array(e.target.result);
 
-    if(!satir[0]) return;
+            const workbook =
+            XLSX.read(data,{type:"array"});
 
-    if(String(satir[0]).trim() === "") return;
+            const sayfa =
+            workbook.Sheets[
+                workbook.SheetNames[0]
+            ];
 
-    const gorevKodu = String(satir[0]).trim();
-
-    if(!/^\d{5}$/.test(gorevKodu)) return;
-
-    const kayit = vardiyaKaydiniOlustur(satir);
-
-    const personel = personelListesi.find(function(p){
-
-        return (
-            (p.ad + " " + p.soyad)
-            .toUpperCase()
-            .trim() ===
-            kayit.adSoyad
-            .toUpperCase()
-            .trim()
-        );
-
-    });
-
-    if(personel){
-
-        kayit.sicil = personel.sicil;
-
-    }
-
-    vardiya.personeller.push(kayit);
-
-});
-            let vardiya = yeniGunlukVardiyaOlustur(vardiyaTarihi);
-
-vardiya.personeller = [];
-
-vardiya.durum = "TASLAK";
-
-vardiya.yayinTarihi = new Date().toLocaleString();
-
-vardiya.yayinlayan =
-aktifKullanici ? aktifKullanici.sicil : "";
-            gunlukVardiyaArsiviKaydet();
-
-alert(
-    vardiyaTarihi +
-    " tarihli günlük vardiya sisteme aktarıldı."
-);
+            tarifeVerileri =
+            XLSX.utils.sheet_to_json(
+                sayfa,
+                {header:1}
+            );
 
             document.getElementById("tarifeListe").innerHTML = `
-                <tr>
-                    <td>${dosya.name}</td>
-                    <td>${new Date().toLocaleString()}</td>
-                    <td>✅ Aktif</td>
-                </tr>
-            `;
+
+<tr>
+
+<td>${dosya.name}</td>
+
+<td>${new Date().toLocaleString("tr-TR")}</td>
+
+<td>✅ Aktif</td>
+
+</tr>
+
+`;
+
+            alert("Tarife dosyası başarıyla yüklendi.");
+
         };
 
         reader.readAsArrayBuffer(dosya);
+
     };
+
 }
 function degisimLoglariEkrani() {
+
     let satirlar = "";
 
     degisimLoglari.forEach(function(log, index){
+
         satirlar += `
+
             <tr>
                 <td>${log.tarih}</td>
                 <td>${log.sicil}</td>
-                <td>${log.adSoyad}</td>
+                <td>${log.ad || ""} ${log.soyad || ""}</td>
                 <td>${log.kod}</td>
                 <td>${log.aciklama || "-"}</td>
                 <td>
                     <button onclick="degisimLogSil(${index})">🗑️ Sil</button>
                 </td>
             </tr>
+
         `;
+
     });
 
     if(satirlar === ""){
-        satirlar = `<tr><td colspan="6" style="text-align:center;">Henüz değişim kaydı yok.</td></tr>`;
+
+        satirlar = `
+
+            <tr>
+
+                <td colspan="6" style="text-align:center;">
+
+                    Henüz değişim kaydı yok.
+
+                </td>
+
+            </tr>
+
+        `;
+
     }
 
     document.getElementById("icerik").innerHTML = `
+
         <h2>📜 Günlük Değişim Logları</h2>
+
         <div class="form-kart">
+
             <label>Tarih</label>
-            <input type="date" id="logTarih" value="${new Date().toISOString().split("T")[0]}">
+
+            <input
+                type="date"
+                id="logTarih"
+                value="${new Date().toISOString().split("T")[0]}">
 
             <label>Personel Sicil</label>
-            <input type="text" id="logSicil" placeholder="Örn: 1006">
+
+            <input
+                type="text"
+                id="logSicil"
+                placeholder="Örn: 1006">
 
             <label>Kod</label>
+
             <select id="logKod">
-                ${degisimKodlariListesi.map(k => `<option value="${k}">${k}</option>`).join("")}
+
+                ${degisimKodlariListesi.map(function(k){
+
+                    return `
+                        <option value="${k.kod}">
+                            ${k.kod} - ${k.aciklama}
+                        </option>
+                    `;
+
+                }).join("")}
+
             </select>
 
             <label>Açıklama</label>
-            <input type="text" id="logAciklama" placeholder="Opsiyonel açıklama">
 
-            <button onclick="degisimLogEkle()">➕ Kaydet</button>
+            <input
+                type="text"
+                id="logAciklama"
+                placeholder="Opsiyonel açıklama">
+
+            <button onclick="degisimLogEkle()">
+
+                ➕ Kaydet
+
+            </button>
+
         </div>
 
         <table class="tablo">
+
             <thead>
+
                 <tr>
+
                     <th>Tarih</th>
                     <th>Sicil</th>
                     <th>Ad Soyad</th>
                     <th>Kod</th>
                     <th>Açıklama</th>
                     <th>İşlem</th>
+
                 </tr>
+
             </thead>
-            <tbody>${satirlar}</tbody>
+
+            <tbody>
+
+                ${satirlar}
+
+            </tbody>
+
         </table>
+
     `;
+
 }
-
 function degisimLogEkle(){
-    const tarih = document.getElementById("logTarih").value;
-    const sicil = document.getElementById("logSicil").value.trim();
-    const kod = document.getElementById("logKod").value;
-    const aciklama = document.getElementById("logAciklama").value.trim();
 
-    const personel = personelListesi.find(p => p.sicil === sicil);
+    const tarih =
+    document.getElementById("logTarih").value;
 
-    if(!personel){ alert("Geçerli bir personel sicili giriniz."); return; }
+    const sicil =
+    document.getElementById("logSicil").value.trim();
 
-    degisimLoglari.push({
-        tarih,
-        sicil,
-        adSoyad: personel.ad + " " + personel.soyad,
-        kod,
-        aciklama
+    const kod =
+    document.getElementById("logKod").value;
+
+    const aciklama =
+    document.getElementById("logAciklama").value.trim();
+
+    const personel =
+    personelListesi.find(function(p){
+
+        return String(p.sicil) === String(sicil);
+
     });
 
-    localStorage.setItem("degisimLoglari", JSON.stringify(degisimLoglari));
+    if(!personel){
+
+        alert("Geçerli bir personel sicili giriniz.");
+
+        return;
+
+    }
+
+    degisimLoglari.push({
+
+        tarih : tarih,
+
+        sicil : sicil,
+
+        ad : personel.ad,
+
+        soyad : personel.soyad,
+
+        kod : kod,
+
+        aciklama : aciklama
+
+    });
+
+    localStorage.setItem(
+
+        "degisimLoglari",
+
+        JSON.stringify(degisimLoglari)
+
+    );
+
     degisimLoglariEkrani();
+
 }
 
 function degisimLogSil(index){
@@ -1673,39 +1744,74 @@ function degisimLogSil(index){
     degisimLoglariEkrani();
 }
 function degisimLogEkle(){
-    const tarih = document.getElementById("logTarih").value;
-    const sicil = document.getElementById("logSicil").value.trim();
-    const kod = document.getElementById("logKod").value;
-    const aciklama = document.getElementById("logAciklama").value.trim();
 
-    const personel = personelListesi.find(p => p.sicil === sicil);
+    const tarih =
+    document.getElementById("logTarih").value;
 
-    if(!personel){ 
-        alert("Geçerli bir personel sicili giriniz."); 
-        return; 
+    const sicil =
+    document.getElementById("logSicil").value.trim();
+
+    const kod =
+    document.getElementById("logKod").value;
+
+    const aciklama =
+    document.getElementById("logAciklama").value.trim();
+
+    const personel =
+    personelListesi.find(function(p){
+
+        return String(p.sicil) === String(sicil);
+
+    });
+
+    if(!personel){
+
+        alert("Geçerli bir personel sicili giriniz.");
+
+        return;
+
     }
 
     const yeniLog = {
-        tarih,
-        sicil,
-        adSoyad: personel.ad + " " + personel.soyad,
-        kod,
-        aciklama
+
+        tarih : tarih,
+
+        sicil : sicil,
+
+        ad : personel.ad,
+
+        soyad : personel.soyad,
+
+        kod : kod,
+
+        aciklama : aciklama
+
     };
 
     degisimLoglari.push(yeniLog);
-    localStorage.setItem("degisimLoglari", JSON.stringify(degisimLoglari));
+
+    localStorage.setItem(
+        "degisimLoglari",
+        JSON.stringify(degisimLoglari)
+    );
 
     // Bildirim sadece eklemede
     bildirimEkle(
+
         "SÜRÜCÜ ŞEFLİĞİ",
+
         "Görev Değişimi",
-        `${yeniLog.adSoyad} (${yeniLog.sicil}) için ${yeniLog.kod} koduyla değişim kaydı yapıldı.`,
+
+        `${yeniLog.ad} ${yeniLog.soyad} (${yeniLog.sicil}) için ${yeniLog.kod} koduyla değişim kaydı yapıldı.`,
+
         "VARDIYA_AMIRI"
+
     );
 
     alert("Değişim kaydı eklendi ve bildirim gönderildi.");
+
     degisimLoglariEkrani();
+
 }
 
 function degisimLogSil(index){
@@ -1715,65 +1821,165 @@ function degisimLogSil(index){
     alert("Log kaydı silindi.");
     degisimLoglariEkrani();
 }
-function degisimLoglariEkrani(filtre = {}) {
+function degisimLoglariEkrani(filtre = {}){
+
     let satirlar = "";
 
-    const filtreliLoglar = degisimLoglari.filter(log => {
-        if(filtre.tarih && log.tarih !== filtre.tarih) return false;
-        if(filtre.sicil && !log.sicil.includes(filtre.sicil)) return false;
-        if(filtre.kod && log.kod !== filtre.kod) return false;
+    const filtreliLoglar =
+    degisimLoglari.filter(function(log){
+
+        if(
+            filtre.tarih &&
+            log.tarih !== filtre.tarih
+        ){
+            return false;
+        }
+
+        if(
+            filtre.sicil &&
+            !String(log.sicil).includes(filtre.sicil)
+        ){
+            return false;
+        }
+
+        if(
+            filtre.kod &&
+            log.kod !== filtre.kod
+        ){
+            return false;
+        }
+
         return true;
+
     });
 
-    filtreliLoglar.forEach(function(log, index){
+    filtreliLoglar.forEach(function(log,index){
+
         satirlar += `
-            <tr>
-                <td>${log.tarih}</td>
-                <td>${log.sicil}</td>
-                <td>${log.adSoyad}</td>
-                <td>${log.kod}</td>
-                <td>${log.aciklama || "-"}</td>
-                <td>
-                    <button onclick="degisimLogSil(${index})">🗑️ Sil</button>
-                </td>
-            </tr>
-        `;
+
+<tr>
+
+<td>${log.tarih}</td>
+
+<td>${log.sicil}</td>
+
+<td>${log.ad} ${log.soyad}</td>
+
+<td>${log.kod}</td>
+
+<td>${log.aciklama || "-"}</td>
+
+<td>
+
+<button onclick="degisimLogSil(${index})">
+
+🗑️ Sil
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
     });
 
     if(satirlar === ""){
-        satirlar = `<tr><td colspan="6" style="text-align:center;">Filtreye uygun kayıt bulunamadı.</td></tr>`;
+
+        satirlar = `
+
+<tr>
+
+<td colspan="6" style="text-align:center;">
+
+Filtreye uygun kayıt bulunamadı.
+
+</td>
+
+</tr>
+
+`;
+
     }
 
     document.getElementById("icerik").innerHTML = `
-        <h2>📜 Günlük Değişim Logları</h2>
-        <div class="form-kart">
-            <label>Tarih</label>
-            <input type="date" id="filtreTarih" onchange="degisimLoglariEkrani({tarih:this.value})">
 
-            <label>Sicil</label>
-            <input type="text" id="filtreSicil" placeholder="Örn: 1006" onkeyup="degisimLoglariEkrani({sicil:this.value})">
+<h2>📜 Günlük Değişim Logları</h2>
 
-            <label>Kod</label>
-            <select id="filtreKod" onchange="degisimLoglariEkrani({kod:this.value})">
-                <option value="">Hepsi</option>
-                ${degisimKodlariListesi.map(k => `<option value="${k}">${k}</option>`).join("")}
-            </select>
-        </div>
+<div class="form-kart">
 
-        <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Tarih</th>
-                    <th>Sicil</th>
-                    <th>Ad Soyad</th>
-                    <th>Kod</th>
-                    <th>Açıklama</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
-            <tbody>${satirlar}</tbody>
-        </table>
-    `;
+<label>Tarih</label>
+
+<input
+type="date"
+id="filtreTarih"
+onchange="degisimLoglariEkrani({tarih:this.value})">
+
+<label>Sicil</label>
+
+<input
+type="text"
+id="filtreSicil"
+placeholder="Örn: 1006"
+onkeyup="degisimLoglariEkrani({sicil:this.value})">
+
+<label>Kod</label>
+
+<select
+id="filtreKod"
+onchange="degisimLoglariEkrani({kod:this.value})">
+
+<option value="">Hepsi</option>
+
+${
+degisimKodlariListesi.map(function(k){
+
+    return `
+<option value="${k.kod}">
+${k.kod} - ${k.aciklama}
+</option>
+`;
+
+}).join("")
+}
+
+</select>
+
+</div>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Tarih</th>
+
+<th>Sicil</th>
+
+<th>Ad Soyad</th>
+
+<th>Kod</th>
+
+<th>Açıklama</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
+
 }
 
 function tarifeAc() {
@@ -2209,7 +2415,7 @@ function dashboardAdmin(){
 
 <div>
     👤 <strong>Görev:</strong>
-    ${aktifPersonel ? aktifPersonel.gorev : aktifKullanici.gorev}
+${aktifPersonel ? aktifPersonel.gorev : (aktifKullanici?.gorev || "-")}
 </div>
 
     </div>
@@ -3009,15 +3215,21 @@ function vardiyaDurumuBul(personel, tarih) {
 
         return String(k.sicil) === String(personel.sicil) &&
             (!k.baslangic || k.baslangic <= tarih) &&
-            (!k.bitis || k.bitis >= tarih);
+            (!k.bitis || k.bitis >= tarih) &&
+            k.durum !== "İPTAL EDİLDİ";
 
     });
 
-    // 2- Günlük vardiya arşivini bul
-    const gunlukKayit = personelGunlukVardiyasiGetir(
-        personel.sicil,
-        tarih
-    );
+    // 2- Günlük vardiyayı bul
+    const vardiya = gunlukVardiyaBul(tarih);
+
+    const gunlukKayit = vardiya
+        ? vardiya.gorevler.find(function (g) {
+
+            return String(g.sicil) === String(personel.sicil);
+
+        })
+        : null;
 
     // 3- İK kaydı varsa (izin, rapor vb.)
     if (ikKaydi) {
@@ -3026,15 +3238,15 @@ function vardiyaDurumuBul(personel, tarih) {
 
             durum: ikKaydi.durum || "ATANMADI",
 
-            gorevKodu: gunlukKayit ? gunlukKayit.gorevKodu : "-",
+            gorevNo: gunlukKayit ? gunlukKayit.gorevNo : "-",
 
-            platform: gunlukKayit ? gunlukKayit.platform : "-",
+            gorev: gunlukKayit ? gunlukKayit.gorev : "-",
 
-            tarife: gunlukKayit ? gunlukKayit.tarife : "-",
+            servisGelis: gunlukKayit ? gunlukKayit.servisGelis : "-",
 
-            baslangic: gunlukKayit ? gunlukKayit.baslangic : "-",
+            gorevBaslangic: gunlukKayit ? gunlukKayit.gorevBaslangic : "-",
 
-            bitis: gunlukKayit ? gunlukKayit.bitis : "-"
+            gorevBitis: gunlukKayit ? gunlukKayit.gorevBitis : "-"
 
         };
 
@@ -3045,17 +3257,17 @@ function vardiyaDurumuBul(personel, tarih) {
 
         return {
 
-            durum: "ATANDI",
+            durum: gunlukKayit.durum || "ATANDI",
 
-            gorevKodu: gunlukKayit.gorevKodu,
+            gorevNo: gunlukKayit.gorevNo || "-",
 
-            platform: gunlukKayit.platform,
+            gorev: gunlukKayit.gorev || "-",
 
-            tarife: gunlukKayit.tarife,
+            servisGelis: gunlukKayit.servisGelis || "-",
 
-            baslangic: gunlukKayit.baslangic,
+            gorevBaslangic: gunlukKayit.gorevBaslangic || "-",
 
-            bitis: gunlukKayit.bitis
+            gorevBitis: gunlukKayit.gorevBitis || "-"
 
         };
 
@@ -3066,15 +3278,15 @@ function vardiyaDurumuBul(personel, tarih) {
 
         durum: "ATANMADI",
 
-        gorevKodu: "-",
+        gorevNo: "-",
 
-        platform: "-",
+        gorev: "-",
 
-        tarife: "-",
+        servisGelis: "-",
 
-        baslangic: "-",
+        gorevBaslangic: "-",
 
-        bitis: "-"
+        gorevBitis: "-"
 
     };
 
@@ -3136,8 +3348,8 @@ if (
     return;
 }
 
-let gorevBilgisi = gorev.gorevNo || "-";
-let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
+let gorevBilgisi = gorev.gorevNo || gorev.gorevKodu || "-";
+    let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
 
 const degisim =
 gorev.degistirildi
@@ -3232,9 +3444,9 @@ satirlar += `
     <td>${gorev.sicil || "-"}</td>
     <td>${gorev.personelAdi || "-"}</td>
     <td>${gorevBilgisi}</td>
-    <td>${gorev.platform || "-"}</td>
-    <td>${gorev.tarife || "-"}</td>
+    <td>${gorev.gorev || "-"}</td>
     <td>${gorev.servisGelis || "-"}</td>
+    <td>${gorev.gorevBaslangic || "-"}</td>
     <td>${gorev.gorevBitis || "-"}</td>
     <td>${durum}</td>
     <td>${degisim}</td>
@@ -3339,17 +3551,17 @@ Bu ekrandan Günlük Sürücü Vardiya Planı yüklenir, gün içerisindeki oper
 
         <table class="tablo">
             <thead>
-    <tr>
-  <th>Sicil</th>
-<th>Personel</th>
-<th>Görev No</th>
-<th>Platform</th>
-<th>Tarife</th>
-<th>Servis Geliş</th>
-<th>Görev Bitiş</th>
-<th>Durum</th>
-<th>Değişiklik</th>
-<th>İşlem</th>
+ <tr>
+    <th>Sicil</th>
+    <th>Personel</th>
+    <th>Görev No</th>
+    <th>Görev</th>
+    <th>Servis Geliş</th>
+    <th>Görev Başlangıç</th>
+    <th>Görev Bitiş</th>
+    <th>Durum</th>
+    <th>Değişiklik</th>
+    <th>İşlem</th>
 </tr>
             </thead>
             <tbody>
@@ -3433,17 +3645,13 @@ gunlukSurucuVardiyaPlani();
 }
 function excelSatiriniVardiyayaAktar(satir, vardiya){
 
-    const adSoyad =
-    temizMetin(
-        satir["İSİM"]
-    );
+    const adSoyad = temizMetin(satir["İSİM"]);
 
-    if(adSoyad===""){
+    if(adSoyad === ""){
         return;
     }
 
-    const personel =
-    personelBul(adSoyad);
+    const personel = personelBul(adSoyad);
 
     if(!personel){
 
@@ -3456,44 +3664,48 @@ function excelSatiriniVardiyayaAktar(satir, vardiya){
 
     }
 
-const gorev = {
+    const gorev = {
 
-    id: crypto.randomUUID(),
+        id: crypto.randomUUID ? crypto.randomUUID() : Date.now() + "_" + Math.random(),
 
-    sicil: personel.sicil,
+        sicil: personel.sicil,
 
-    personelAdi: personel.ad + " " + personel.soyad,
+        ad: personel.ad,
 
-    gorevNo: temizMetin(satir["GÖREV NO"]),
+        soyad: personel.soyad,
 
-    gorev: temizMetin(satir["GÖREV"]),
+        gorevNo: temizMetin(satir["GÖREV NO"]),
 
-    servisGelis: temizMetin(satir["Servis Geliş"]),
+        gorev: temizMetin(satir["GÖREV"]),
 
-    cikistaHazirlik: temizMetin(satir["Çıkışta Hazırlık"]),
+        servisGelis: temizMetin(satir["Servis Geliş"]),
 
-    depoCikis: temizMetin(satir["Depo Çıkış"]),
+        cikistaHazirlik: temizMetin(satir["Çıkışta Hazırlık"]),
 
-    gorevBaslangic: temizMetin(satir["Görev Başlangıç"]),
+        depoCikis: temizMetin(satir["Depo Çıkış"]),
 
-    aracTeslim: temizMetin(satir["ARAÇ TESLİM"]),
+        gorevBaslangic: temizMetin(satir["Görev Başlangıç"]),
 
-    gorevBitis: temizMetin(satir["Görev Bitiş"]),
+        aracTeslim: temizMetin(satir["ARAÇ TESLİM"]),
 
-    depoya: temizMetin(satir["Depo'ya"]),
+        gorevBitis: temizMetin(satir["Görev Bitiş"]),
 
-    donusteHazirlik: temizMetin(satir["Dönüşte Hazırlık"]),
+        depoya: temizMetin(satir["Depo'ya"]),
 
-    servisCikis: temizMetin(satir["Servis Çıkış"]),
+        donusteHazirlik: temizMetin(satir["Dönüşte Hazırlık"]),
 
-    durum: "ATANDI",
+        servisCikis: temizMetin(satir["Servis Çıkış"]),
 
-    degistirildi: false,
+        durum: "ATANDI",
 
-    degisiklikler: []
+        degistirildi: false,
 
-};
-vardiya.gorevler.push(gorev);
+        degisiklikler: []
+
+    };
+
+    vardiya.gorevler.push(gorev);
+
 }
 function temizMetin(metin){
 
@@ -3508,194 +3720,256 @@ function temizMetin(metin){
 }
 function personelBul(adSoyad){
 
+    const aranan = temizMetin(adSoyad);
+
     return personelListesi.find(function(p){
 
-        return temizMetin(
+        const ad =
+            temizMetin(
+                p.ad + " " + p.soyad
+            );
 
-            p.ad + " " + p.soyad
+        const tamAd =
+            temizMetin(
+                p.adSoyad || ""
+            );
 
-        )===adSoyad;
+        return (
+            ad === aranan ||
+            tamAd === aranan
+        );
 
     }) || null;
 
 }
 function vardiyaDuzenle(sicil){
 
-    const personel = personelleriGetir("Vatman").find(function(p){
+    const personel = personelleriGetir("VATMAN").find(function(p){
 
         return String(p.sicil) === String(sicil);
 
     });
 
-    if (!personel){
+    if(!personel){
+
         alert("Personel bulunamadı.");
         return;
+
     }
-    let secenekler = '<option value="">Görev Kodu Seçiniz</option>';
 
-    degisimKodlariListesi.forEach(function(kod){
+    document.getElementById("icerik").innerHTML = `
 
-        secenekler += `
-            <option value="${kod.kod}">
-                ${kod.kod} - ${kod.aciklama}
-            </option>
-        `;
-
-    });
-
-  document.getElementById("icerik").innerHTML = `
-
-<h2>📋 Günlük Vardiya Atama</h2>
+<h2>📋 Günlük Vardiya Düzenle</h2>
 
 <div class="form-kart">
 
-    <p><b>Sicil :</b> ${personel.sicil}</p>
+<p><b>Sicil :</b> ${personel.sicil}</p>
 
-    <p><b>Ad Soyad :</b> ${personel.ad} ${personel.soyad}</p>
+<p><b>Ad Soyad :</b> ${personel.ad} ${personel.soyad}</p>
 
-    <label>Görev Kodu</label>
+<label>Görev No</label>
 
-    <select id="gorevKodu">
-        ${secenekler}
-    </select>
+<input
+type="text"
+id="gorevNo"
+placeholder="Görev No">
 
-    <label>Not</label>
-    <textarea
-        id="not"
-        rows="3"
-        placeholder="Açıklama giriniz..."></textarea>
+<label>Görev</label>
 
-    <br><br>
+<input
+type="text"
+id="gorev"
+placeholder="Görev">
+
+<label>Servis Geliş</label>
+
+<input
+type="time"
+id="servisGelis">
+
+<label>Görev Başlangıç</label>
+
+<input
+type="time"
+id="gorevBaslangic">
+
+<label>Görev Bitiş</label>
+
+<input
+type="time"
+id="gorevBitis">
+
+<label>Not</label>
+
+<textarea
+id="not"
+rows="3"
+placeholder="Açıklama giriniz..."></textarea>
+
+<br><br>
 
 <button onclick="vardiyaKaydet('${personel.sicil}')">
-💾 Kaydet
-    </button>
 
-    <button onclick="gunlukSurucuVardiyaPlani()">
-        ⬅ Geri
-    </button>
+💾 Kaydet
+
+</button>
+
+<button onclick="gunlukSurucuVardiyaPlani()">
+
+⬅ Geri
+
+</button>
 
 </div>
 
 `;
-}
 
+}
 function vardiyaKaydet(sicil){
 
-  const personel = personelleriGetir("VATMAN").find(function(p){
-    return String(p.sicil) === String(sicil);
-});
+    const personel = personelleriGetir("VATMAN").find(function(p){
 
-    if (!personel){
+        return String(p.sicil) === String(sicil);
+
+    });
+
+    if(!personel){
+
         alert("Personel bulunamadı.");
         return;
+
     }
 
-if (!personel) {
-    alert("Personel bulunamadı.");
-    return;
-}    const gorevKodu = document.getElementById("gorevKodu").value;
-    const degisimKodu = degisimKodlariListesi.find(function(k){
+    const gorevNo =
+        document.getElementById("gorevNo").value.trim();
 
-    return k.kod === gorevKodu;
+    const gorev =
+        document.getElementById("gorev").value.trim();
 
-});
+    const servisGelis =
+        document.getElementById("servisGelis").value;
 
-if(!degisimKodu){
-    alert("Seçilen görev kodu bulunamadı.");
-    return;
-}
+    const gorevBaslangic =
+        document.getElementById("gorevBaslangic").value;
 
-const gorev = degisimKodu.gorevler[0];
+    const gorevBitis =
+        document.getElementById("gorevBitis").value;
 
-if(!gorev){
-    alert("Bu değişim koduna görev tanımlanmamış.");
-    return;
-}
-    const notKutusu = document.getElementById("not");
+    const notKutusu =
+        document.getElementById("not");
 
-    if (gorevKodu == "") {
-        alert("Görev kodu seçiniz.");
+    if(gorevNo === ""){
+
+        alert("Görev No giriniz.");
         return;
+
     }
 
     const bugun = yarininTarihi();
-    const mevcutDurum = vardiyaDurumuBul(personel, bugun);
 
-    // İK'dan gelen özel durum varsa görev atamasını engelle
-    if (
+    const mevcutDurum =
+        vardiyaDurumuBul(personel, bugun);
+
+    // İK'dan gelen özel durum varsa görev atanamaz
+    if(
+
         mevcutDurum.durum !== "ATANMADI" &&
         mevcutDurum.durum !== "ATANDI"
-    ) {
-alert(
-    personel.ad + " " + personel.soyad +
-    " bugün '" + mevcutDurum.durum +
-    "' durumundadır.\n\nBu personele vardiya atanamaz."
-);        return;
-    }
 
-    // Aynı görev kodu başka birine verilmiş mi?
-  const vardiya = yeniGunlukVardiyaOlustur(bugun);
+    ){
 
-const ayniKod = vardiya.personeller.find(function(v){
+        alert(
 
-    return (
-        v.gorevKodu === gorevKodu &&
-        String(v.sicil) !== String(personel.sicil)
-    );
+            personel.ad + " " + personel.soyad +
+            " bugün '" + mevcutDurum.durum +
+            "' durumundadır.\n\nBu personele vardiya atanamaz."
 
-});
+        );
 
-    if (ayniKod) {
-        alert("Bu görev kodu başka bir personele atanmış.");
         return;
+
     }
 
-    const kayit = vardiya.personeller.find(function(v){
+    const vardiya =
+        yeniGunlukVardiyaOlustur(bugun);
 
-    return String(v.sicil) === String(personel.sicil);
+    // Aynı görev numarası başka personele verilmiş mi?
+    const ayniGorev = vardiya.gorevler.find(function(v){
 
-});
+        return (
 
-  if (kayit) {
+            String(v.gorevNo) === String(gorevNo) &&
+            String(v.sicil) !== String(personel.sicil)
 
-    kayit.gorevKodu = gorevKodu;
-kayit.gorevAdi = degisimKodu.aciklama;
-kayit.platform = gorev.platform;
-kayit.tarife = gorev.tarife;
-kayit.baslangic = gorev.baslangic;
-kayit.bitis = gorev.bitis;
-kayit.not = notKutusu ? notKutusu.value : "";
-kayit.durum = "ATANDI";
+        );
 
-} else {
+    });
 
-vardiya.personeller.push({
+    if(ayniGorev){
 
-    sicil: personel.sicil,
-    ad: personel.ad,
-    soyad: personel.soyad,
+        alert("Bu görev numarası başka bir personele atanmış.");
+        return;
 
-    gorevKodu: gorevKodu,
-    gorevAdi: degisimKodu.aciklama,
+    }
 
-    platform: gorev.platform,
-    tarife: gorev.tarife,
-    baslangic: gorev.baslangic,
-    bitis: gorev.bitis,
+    const kayit =
+        vardiya.gorevler.find(function(v){
 
-    durum: "ATANDI",
+            return String(v.sicil) === String(personel.sicil);
 
-    not: notKutusu ? notKutusu.value : ""
+        });
 
-});
+    if(kayit){
 
-}
+        kayit.gorevNo = gorevNo;
+        kayit.gorev = gorev;
+        kayit.servisGelis = servisGelis;
+        kayit.gorevBaslangic = gorevBaslangic;
+        kayit.gorevBitis = gorevBitis;
+        kayit.not = notKutusu ? notKutusu.value.trim() : "";
+        kayit.durum = "ATANDI";
 
-gunlukVardiyaArsiviKaydet();
+    }else{
+
+        vardiya.gorevler.push({
+
+            id: crypto.randomUUID(),
+
+            sicil: personel.sicil,
+
+            personelAdi:
+                personel.ad + " " + personel.soyad,
+
+            gorevNo: gorevNo,
+
+            gorev: gorev,
+
+            servisGelis: servisGelis,
+
+            gorevBaslangic: gorevBaslangic,
+
+            gorevBitis: gorevBitis,
+
+            durum: "ATANDI",
+
+            degistirildi: false,
+
+            degisiklikler: [],
+
+            not: notKutusu
+                ? notKutusu.value.trim()
+                : ""
+
+        });
+
+    }
+
+    gunlukVardiyaArsiviKaydet();
 
     alert("Görev başarıyla atandı.");
+
     gunlukSurucuVardiyaPlani();
+
 }
 function personelDurumuKaydet(sicil, baslangic, bitis, durum, not = "") {
 
@@ -3929,61 +4203,99 @@ function yeniGorevTarifeDegisimi() {
     `;
 
 }
-    function vatmanDegisimTalebi() {
+ function vatmanDegisimTalebi() {
 
-    if (!aktifKullanici) {
+    if(!aktifKullanici){
+
         alert("Aktif kullanıcı bulunamadı.");
         return;
+
     }
 
     const tarih = yarininTarihi();
 
-    const benimVardiyam = personelGunlukVardiyasiGetir(
-        aktifKullanici.sicil,
-        tarih
-    );
+    const vardiya = gunlukVardiyaBul(tarih);
 
-    if (!benimVardiyam) {
+    if(!vardiya){
 
         document.getElementById("icerik").innerHTML = `
-            <h2>🚋 Vatman Görev Değişim Talebi</h2>
 
-            <div class="form-kart">
+<h2>🚋 Vatman Görev Değişim Talebi</h2>
 
-                <p>
-                    ${tarih} tarihine ait göreviniz henüz yayınlanmamıştır.
-                </p>
+<div class="form-kart">
 
-            </div>
-        `;
+<p>
+
+${tarih} tarihine ait vardiya henüz oluşturulmamıştır.
+
+</p>
+
+</div>
+
+`;
 
         return;
 
     }
 
-    let personeller = '<option value="">Vatman Seçiniz</option>';
+    const benimVardiyam = vardiya.gorevler.find(function(g){
 
-    const vatmanlar = personelleriGetir("Vatman")
+        return String(g.sicil) === String(aktifKullanici.sicil);
+
+    });
+
+    if(!benimVardiyam){
+
+        document.getElementById("icerik").innerHTML = `
+
+<h2>🚋 Vatman Görev Değişim Talebi</h2>
+
+<div class="form-kart">
+
+<p>
+
+${tarih} tarihine ait göreviniz henüz yayınlanmamıştır.
+
+</p>
+
+</div>
+
+`;
+
+        return;
+
+    }
+
+    let personeller = `
+<option value="">Vatman Seçiniz</option>
+`;
+
+    const vatmanlar = personelleriGetir("VATMAN")
         .sort(function(a,b){
 
             return (a.ad + " " + a.soyad)
-            .localeCompare(
-                b.ad + " " + b.soyad,
-                "tr"
-            );
+                .localeCompare(
+                    b.ad + " " + b.soyad,
+                    "tr"
+                );
 
         });
 
     vatmanlar.forEach(function(p){
 
-        if(String(p.sicil) === String(aktifKullanici.sicil))
+        if(String(p.sicil) === String(aktifKullanici.sicil)){
             return;
+        }
 
         personeller += `
-            <option value="${p.sicil}">
-                ${p.ad} ${p.soyad}
-            </option>
-        `;
+
+<option value="${p.sicil}">
+
+${p.ad} ${p.soyad}
+
+</option>
+
+`;
 
     });
 
@@ -4006,7 +4318,7 @@ readonly>
 <input
 type="text"
 readonly
-value="${benimVardiyam.gorevKodu} - ${benimVardiyam.gorevAdi}">
+value="${benimVardiyam.gorevNo || "-"} - ${benimVardiyam.gorev || "-"}">
 
 <label>Değişmek İstediğim Vatman</label>
 
@@ -4032,7 +4344,7 @@ value="-">
 id="degisimAciklama"
 rows="4"></textarea>
 
-<br>
+<br><br>
 
 <button
 onclick="vatmanDegisimTalebiKaydet()">
@@ -4120,126 +4432,270 @@ onclick="gunlukSurucuVardiyaPlani()">
     gunlukSurucuVardiyaPlani();
 
 }
-    function degisecekVatmanSecildi(){
+  function degisecekVatmanSecildi() {
 
     const sicil =
-    document.getElementById("degisecekVatman").value;
+        document.getElementById("degisecekVatman").value;
 
-    if(!sicil){
+    if (!sicil) {
 
-        document.getElementById("karsiGorev").value="-";
+        document.getElementById("karsiGorev").value = "-";
         return;
 
     }
 
     const bilgi =
-    personelGunlukVardiyasiGetir(
-        sicil,
-        yarininTarihi()
-    );
+        personelGunlukVardiyasiGetir(
+            sicil,
+            yarininTarihi()
+        );
 
-    if(!bilgi){
+    if (!bilgi) {
 
         document.getElementById("karsiGorev").value =
-        "Görev bulunamadı";
+            "Görev bulunamadı";
 
         return;
 
     }
 
     document.getElementById("karsiGorev").value =
-        bilgi.gorevKodu +
+        (bilgi.gorevNo || "-") +
         " - " +
-        bilgi.gorevAdi;
+        (bilgi.gorev || bilgi.gorevAdi || "-");
 
 }
+
 function vardiyaArsivEkrani() {
+
     let satirlar = "";
 
-    gunlukVardiyaArsivi.forEach(function(v, index){
+    gunlukVardiyaArsivi.forEach(function (vardiya, index) {
+
         satirlar += `
-            <tr>
-                <td>${v.tarih}</td>
-                <td>${v.personeller.length} personel</td>
-                <td>${v.durum}</td>
-                <td>
-                    <button onclick="vardiyaArsivDetay(${index})">📂 Detay</button>
-                </td>
-            </tr>
-        `;
+
+<tr>
+
+<td>${vardiya.tarih}</td>
+
+<td>${(vardiya.gorevler || []).length}</td>
+
+<td>${vardiya.durum || "-"}</td>
+
+<td>
+
+<button onclick="vardiyaArsivDetay(${index})">
+
+📂 Detay
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
     });
 
-    if(satirlar === ""){
-        satirlar = `<tr><td colspan="4" style="text-align:center;">Henüz arşiv yok.</td></tr>`;
+    if (satirlar === "") {
+
+        satirlar = `
+
+<tr>
+
+<td colspan="4" style="text-align:center;">
+
+Henüz arşiv bulunmuyor.
+
+</td>
+
+</tr>
+
+`;
+
     }
 
     document.getElementById("icerik").innerHTML = `
-        <h2>📦 Vardiya Arşivi</h2>
-        <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Tarih</th>
-                    <th>Personel Sayısı</th>
-                    <th>Durum</th>
-                    <th>İşlem</th>
-                </tr>
-            </thead>
-            <tbody>${satirlar}</tbody>
-        </table>
-    `;
-}
 
-function vardiyaArsivDetay(index){
-    const vardiya = gunlukVardiyaArsivi[index];
-    let satirlar = "";
+<h2>📦 Günlük Vardiya Arşivi</h2>
 
-    vardiya.personeller.forEach(function(p){
-        const degisim = degisimEtiketiBul(p.sicil, vardiya.tarih); // 🔄 değişim entegrasyonu
+<table class="tablo">
 
-  degisimYansit(p); // değişim kontrolü
+<thead>
 
-satirlar += `
-    <tr>
-        <td><input type="checkbox" class="secim" value="${p.sicil}"></td>
-        <td>${p.sicil}</td>
-        <td>${p.ad} ${p.soyad}</td>
-        <td>${p.gorevKodu || "-"}</td>
-        <td>${p.gorevAdi || "-"}</td>
-        <td>${p.platform || "-"}</td>
-        <td>${p.tarife || "-"}</td>
-        <td>${p.baslangic || "-"}</td>
-        <td>${p.bitis || "-"}</td>
-        <td class="${p.durum.includes('ATANDI') ? 'durum-atandi' : (p.durum.includes('İZİN') ? 'durum-izin' : 'durum-atanmadi')}">${p.durum}</td>
-        <td>${p.degisim}</td>
-    </tr>
+<tr>
+
+<th>Tarih</th>
+<th>Görev Sayısı</th>
+<th>Durum</th>
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
 `;
 
+}
+
+function vardiyaArsivDetay(index) {
+
+    const vardiya =
+        gunlukVardiyaArsivi[index];
+
+    if (!vardiya) {
+
+        alert("Vardiya bulunamadı.");
+        return;
+
+    }
+
+    let satirlar = "";
+
+    (vardiya.gorevler || []).forEach(function (gorev) {
+
+        degisimYansit(gorev);
+
+        satirlar += `
+
+<tr>
+
+<td>
+
+<input
+type="checkbox"
+class="secim"
+value="${gorev.sicil}">
+
+</td>
+
+<td>${gorev.sicil || "-"}</td>
+
+<td>${gorev.personelAdi || "-"}</td>
+
+<td>${gorev.gorevNo || "-"}</td>
+
+<td>${gorev.gorev || "-"}</td>
+
+<td>${gorev.platform || "-"}</td>
+
+<td>${gorev.tarife || "-"}</td>
+
+<td>${gorev.servisGelis || "-"}</td>
+
+<td>${gorev.gorevBitis || "-"}</td>
+
+<td class="${
+    gorev.durum === "ATANDI"
+        ? "durum-atandi"
+        : gorev.durum.includes("İZİN")
+        ? "durum-izin"
+        : "durum-atanmadi"
+}">
+
+${gorev.durum || "-"}
+
+</td>
+
+<td>
+
+${gorev.degistirildi ? "🟡 Değiştirildi" : "-"}
+
+</td>
+
+</tr>
+
+`;
 
     });
 
+    if (satirlar === "") {
+
+        satirlar = `
+
+<tr>
+
+<td colspan="11" style="text-align:center;">
+
+Kayıt bulunamadı.
+
+</td>
+
+</tr>
+
+`;
+
+    }
+
     document.getElementById("icerik").innerHTML = `
-        <h2>📅 ${vardiya.tarih} Vardiya Detayı</h2>
-        <table class="tablo">
-            <thead>
-    <tr>
-        <th><input type="checkbox" onclick="tumunuSec(this)"></th>
-        <th>Sicil</th>
-        <th>Ad Soyad</th>
-        <th>Görev Kodu</th>
-        <th>Görev Adı</th>
-        <th>Platform</th>
-        <th>Tarife</th>
-        <th>Başlangıç</th>
-        <th>Bitiş</th>
-        <th>Durum</th>
-        <th>Değişim</th>
-    </tr>
+
+<h2>📅 ${vardiya.tarih} Günlük Vardiya Detayı</h2>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>
+
+<input
+type="checkbox"
+onclick="tumunuSec(this)">
+
+</th>
+
+<th>Sicil</th>
+
+<th>Personel</th>
+
+<th>Görev No</th>
+
+<th>Görev</th>
+
+<th>Platform</th>
+
+<th>Tarife</th>
+
+<th>Servis Geliş</th>
+
+<th>Görev Bitiş</th>
+
+<th>Durum</th>
+
+<th>Değişiklik</th>
+
+</tr>
+
 </thead>
 
-            <tbody>${satirlar}</tbody>
-        </table>
-        <button onclick="vardiyaArsivEkrani()">⬅️ Arşive Dön</button>
-    `;
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+<br>
+
+<button onclick="vardiyaArsivEkrani()">
+
+⬅ Arşive Dön
+
+</button>
+
+`;
+
 }
 function degisimEtiketiBul(sicil, tarih){
     // Örnek: personelDegisimleri array’inde kayıtlar tutuluyor
@@ -4256,19 +4712,45 @@ function tumunuSec(cb){
     });
 }
 
-function topluAtama(gorevKodu, tarife){
-    document.querySelectorAll(".secim:checked").forEach(cb=>{
-        let sicil = cb.value;
-        let personel = vardiyaPersoneller.find(p=>p.sicil==sicil);
-        if(personel){
-            personel.gorevKodu = gorevKodu;
-            personel.tarife = tarife;
-            personel.durum = "🟢 ATANDI";
-        }
-    });
-    guncelVardiyaTablosu(); // tabloyu yeniden çiz
-}
+function topluAtama(gorevNo, tarife) {
 
+    const tarih = yarininTarihi();
+
+    const vardiya =
+        gunlukSurucuVardiyaPlaniBul(tarih);
+
+    if (!vardiya) {
+
+        alert("Günlük vardiya bulunamadı.");
+        return;
+
+    }
+
+    document
+        .querySelectorAll(".secim:checked")
+        .forEach(function (cb) {
+
+            const gorev =
+                vardiya.gorevler.find(function (k) {
+
+                    return String(k.sicil) === String(cb.value);
+
+                });
+
+            if (!gorev) return;
+
+            gorev.gorevNo = gorevNo;
+            gorev.tarife = tarife;
+            gorev.durum = "ATANDI";
+            gorev.degistirildi = true;
+
+        });
+
+    gunlukVardiyaArsiviKaydet();
+
+    gunlukSurucuVardiyaPlani();
+
+}
 function vardiyaArsivEkrani() {
     const baslangic = document.getElementById("arsivBaslangic")?.value || "";
     const bitis = document.getElementById("arsivBitis")?.value || "";
@@ -4327,98 +4809,210 @@ function vardiyaArsivEkrani() {
 }
 
 function gorevTarifeDegisimiKaydet() {
-    const tarih = document.getElementById("degisimTarihi").value;
-    const talepEdenSicil = document.getElementById("talepEdenPersonelSicil").value;
-    const talepEdenTarife = document.getElementById("talepEdenTarife").value.trim();
-    const degisenSicil = document.getElementById("degisenPersonelSicil").value;
-    const degisenTarife = document.getElementById("degisenTarife").value.trim();
-    const neden = document.getElementById("degisimNeden").value.trim();
 
-    if (!tarih || !talepEdenSicil || !talepEdenTarife || !degisenSicil || !degisenTarife || !neden) {
+    const tarih =
+        document.getElementById("degisimTarihi").value;
+
+    const talepEdenSicil =
+        document.getElementById("talepEdenPersonelSicil").value;
+
+    const talepEdenTarife =
+        document.getElementById("talepEdenTarife").value.trim();
+
+    const degisenSicil =
+        document.getElementById("degisenPersonelSicil").value;
+
+    const degisenTarife =
+        document.getElementById("degisenTarife").value.trim();
+
+    const neden =
+        document.getElementById("degisimNeden").value.trim();
+
+    if (
+        !tarih ||
+        !talepEdenSicil ||
+        !talepEdenTarife ||
+        !degisenSicil ||
+        !degisenTarife ||
+        !neden
+    ) {
+
         alert("Lütfen tüm alanları doldurun.");
         return;
+
     }
 
-    if (talepEdenSicil === degisenSicil) {
-        alert("Değişim talep eden ve değişen personel aynı olamaz.");
+    if (String(talepEdenSicil) === String(degisenSicil)) {
+
+        alert("Değişim yapılacak personeller aynı olamaz.");
         return;
+
     }
 
-    const talepEdenPersonel = personelListesi.find(p => String(p.sicil) === String(talepEdenSicil));
-    const degisenPersonel = personelListesi.find(p => String(p.sicil) === String(degisenSicil));
+    const talepEdenPersonel =
+        personelListesi.find(function (p) {
+
+            return String(p.sicil) === String(talepEdenSicil);
+
+        });
+
+    const degisenPersonel =
+        personelListesi.find(function (p) {
+
+            return String(p.sicil) === String(degisenSicil);
+
+        });
 
     if (!talepEdenPersonel || !degisenPersonel) {
+
         alert("Personel bulunamadı.");
         return;
-    }
-gorevTarifeDegisiklikleri.push({
 
-    id: Date.now(),
-
-    tarih: tarih,
-
-    saat: new Date().toLocaleTimeString("tr-TR", {
-        hour: "2-digit",
-        minute: "2-digit"
-    }),
-
-    talepEdenSicil: talepEdenPersonel.sicil,
-    talepEdenPersonel: `${talepEdenPersonel.ad} ${talepEdenPersonel.soyad}`,
-    talepEdenTarife: talepEdenTarife,
-
-    degisenSicil: degisenPersonel.sicil,
-    degisenPersonel: `${degisenPersonel.ad} ${degisenPersonel.soyad}`,
-    degisenTarife: degisenTarife,
-
-    neden: neden
-
-});
-
-    const talepEdenVardiya = gunlukVardiyaArsivi.find(v =>
-        String(v.sicil) === String(talepEdenSicil) && String(v.tarih) === String(tarih)
-    );
-
-    const degisenVardiya = gunlukVardiyaArsivi.find(v =>
-        String(v.sicil) === String(degisenSicil) && String(v.tarih) === String(tarih)
-    );
-
-    if (talepEdenVardiya) {
-        talepEdenVardiya.gorevKodu = talepEdenTarife;
-        talepEdenVardiya.not = (talepEdenVardiya.not ? talepEdenVardiya.not + " | " : "") + `Tarife değişimi: ${neden}`;
     }
 
-    if (degisenVardiya) {
-        degisenVardiya.gorevKodu = degisenTarife;
-        degisenVardiya.not = (degisenVardiya.not ? degisenVardiya.not + " | " : "") + `Tarife değişimi: ${neden}`;
-    }
+    gorevTarifeDegisiklikleri.push({
 
-    localStorage.setItem("gorevTarifeDegisiklikleri", JSON.stringify(gorevTarifeDegisiklikleri));
-    localStorage.setItem("gunlukVardiyalar", JSON.stringify(gunlukVardiyalar));
+        id: Date.now(),
 
-    alert("Görev / tarife değişimi kaydedildi.");
-    gorevTarifeDegisimleri();
-}
- function gorevTarifeDegisimiSil(id) {
+        tarih: tarih,
 
-    if (!confirm("Bu görev / tarife değişimi silinsin mi?")) {
-        return;
-    }
+        saat: new Date().toLocaleTimeString("tr-TR", {
 
-    gorevTarifeDegisiklikleri = gorevTarifeDegisiklikleri.filter(function(kayit) {
-        return kayit.id !== id;
+            hour: "2-digit",
+            minute: "2-digit"
+
+        }),
+
+        talepEdenSicil: talepEdenPersonel.sicil,
+
+        talepEdenPersonel:
+            talepEdenPersonel.ad +
+            " " +
+            talepEdenPersonel.soyad,
+
+        talepEdenTarife: talepEdenTarife,
+
+        degisenSicil: degisenPersonel.sicil,
+
+        degisenPersonel:
+            degisenPersonel.ad +
+            " " +
+            degisenPersonel.soyad,
+
+        degisenTarife: degisenTarife,
+
+        neden: neden
+
     });
+
+    const vardiya =
+        gunlukVardiyaBul(tarih);
+
+    if (vardiya) {
+
+        const talepEdenKayit =
+            vardiya.gorevler.find(function (k) {
+
+                return String(k.sicil) === String(talepEdenSicil);
+
+            });
+
+        const degisenKayit =
+            vardiya.gorevler.find(function (k) {
+
+                return String(k.sicil) === String(degisenSicil);
+
+            });
+
+        if (talepEdenKayit) {
+
+            talepEdenKayit.tarife = talepEdenTarife;
+
+            talepEdenKayit.degistirildi = true;
+
+            talepEdenKayit.not =
+                (talepEdenKayit.not
+                    ? talepEdenKayit.not + " | "
+                    : "") +
+                "Tarife değişimi: " +
+                neden;
+
+        }
+
+        if (degisenKayit) {
+
+            degisenKayit.tarife = degisenTarife;
+
+            degisenKayit.degistirildi = true;
+
+            degisenKayit.not =
+                (degisenKayit.not
+                    ? degisenKayit.not + " | "
+                    : "") +
+                "Tarife değişimi: " +
+                neden;
+
+        }
+
+        gunlukVardiyaArsiviKaydet();
+
+    }
 
     localStorage.setItem(
         "gorevTarifeDegisiklikleri",
         JSON.stringify(gorevTarifeDegisiklikleri)
     );
 
-    gorevTarifeDegisimleri();
-}
-function gunSonuRaporu() {
-    const bugun = new Date().toISOString().split("T")[0];
+    alert("Görev / tarife değişimi kaydedildi.");
 
-    const toplamPersonel = personelListesi.length;
+    gorevTarifeDegisimleri();
+
+}
+function gorevTarifeDegisimiSil(id) {
+
+    if (!confirm("Bu görev / tarife değişimi silinsin mi?")) {
+
+        return;
+
+    }
+
+    const oncekiAdet =
+        gorevTarifeDegisiklikleri.length;
+
+    gorevTarifeDegisiklikleri =
+        gorevTarifeDegisiklikleri.filter(function (kayit) {
+
+            return String(kayit.id) !== String(id);
+
+        });
+
+    if (gorevTarifeDegisiklikleri.length === oncekiAdet) {
+
+        alert("Silinecek kayıt bulunamadı.");
+        return;
+
+    }
+
+    localStorage.setItem(
+
+        "gorevTarifeDegisiklikleri",
+
+        JSON.stringify(gorevTarifeDegisiklikleri)
+
+    );
+
+    alert("Görev / tarife değişimi silindi.");
+
+    gorevTarifeDegisimleri();
+
+}
+function gunSonuRaporu(){
+
+    const bugun =
+    new Date().toISOString().split("T")[0];
+
+    const toplamPersonel =
+    personelListesi.length;
 
     let atandiSayisi = 0;
     let atanmadiSayisi = 0;
@@ -4430,159 +5024,269 @@ function gunSonuRaporu() {
     let haftaTatiliSayisi = 0;
     let goreveGelmediSayisi = 0;
 
-    personelListesi.forEach(function (personel) {
-        const bilgi = vardiyaDurumuBul(personel, bugun);
+    const vardiya =
+    gunlukVardiyaBul(bugun);
 
-        switch (bilgi.durum) {
-            case "ATANDI":
-                atandiSayisi++;
-                break;
-            case "YILLIK İZİN":
-                yillikIzinSayisi++;
-                break;
-            case "ÜCRETLİ İZİN":
-                ucretliIzinSayisi++;
-                break;
-            case "ÜCRETSİZ İZİN":
-                ucretsizIzinSayisi++;
-                break;
-            case "DOĞUM İZNİ":
-                dogumIzniSayisi++;
-                break;
-            case "RAPOR":
-                raporSayisi++;
-                break;
-            case "HAFTA TATİLİ":
-                haftaTatiliSayisi++;
-                break;
-            case "GÖREVE GELMEDİ":
-                goreveGelmediSayisi++;
-                break;
-            default:
-                atanmadiSayisi++;
-                break;
-        }
+    if(vardiya){
+
+        vardiya.gorevler.forEach(function(gorev){
+
+            switch(gorev.durum){
+
+                case "ATANDI":
+                    atandiSayisi++;
+                    break;
+
+                case "YILLIK İZİN":
+                    yillikIzinSayisi++;
+                    break;
+
+                case "ÜCRETLİ İZİN":
+                    ucretliIzinSayisi++;
+                    break;
+
+                case "ÜCRETSİZ İZİN":
+                    ucretsizIzinSayisi++;
+                    break;
+
+                case "DOĞUM İZNİ":
+                    dogumIzniSayisi++;
+                    break;
+
+                case "RAPOR":
+                    raporSayisi++;
+                    break;
+
+                case "HAFTA TATİLİ":
+                    haftaTatiliSayisi++;
+                    break;
+
+                case "GÖREVE GELMEDİ":
+                    goreveGelmediSayisi++;
+                    break;
+
+                default:
+                    atanmadiSayisi++;
+                    break;
+
+            }
+
+        });
+
+    }
+
+    atanmadiSayisi =
+    toplamPersonel - atandiSayisi
+                   - yillikIzinSayisi
+                   - ucretliIzinSayisi
+                   - ucretsizIzinSayisi
+                   - dogumIzniSayisi
+                   - raporSayisi
+                   - haftaTatiliSayisi
+                   - goreveGelmediSayisi;
+
+    const bugunkuDegisimler =
+    gorevTarifeDegisiklikleri.filter(function(k){
+
+        return String(k.tarih) === bugun;
+
     });
 
-    const bugunkuDegisimler = gorevTarifeDegisiklikleri.filter(function (k) {
-        return String(k.tarih) === String(bugun);
-    });
-
-    const bugunkuVardiyaKayitlari = gunlukVardiyaArsivi.filter(function (v) {
-        return String(v.tarih) === String(bugun);
-    });
-
-    const degisimSatirlari = bugunkuDegisimler.length > 0
-        ? bugunkuDegisimler.map(function (k) {
-            return `
-            <tr>
-                <td>${k.tarih}</td>
-                <td>${k.talepEdenPersonel}</td>
-                <td>${k.talepEdenTarife}</td>
-                <td>${k.degisenPersonel}</td>
-                <td>${k.degisenTarife}</td>
-                <td>${k.neden}</td>
-            </tr>
-            `;
-        }).join("")
-        : `
-        <tr>
-            <td colspan="7" style="text-align:center;">Bugün görev / tarife değişimi yok.</td>
-        </tr>
-        `;
-
-    const vardiyaNotSatirlari = bugunkuVardiyaKayitlari.filter(function (v) {
-        return v.not && v.not.trim() !== "";
-    }).map(function (v) {
-        const personel = personelListesi.find(p => String(p.sicil) === String(v.sicil));
-        const adSoyad = personel ? `${personel.ad} ${personel.soyad}` : v.sicil;
+    const degisimSatirlari =
+    bugunkuDegisimler.length
+    ?
+    bugunkuDegisimler.map(function(k){
 
         return `
-        <tr>
-            <td>${v.sicil}</td>
-            <td>${adSoyad}</td>
-            <td>${v.gorevKodu || "-"}</td>
-            <td>${v.not}</td>
-        </tr>
-        `;
-    }).join("") || `
-        <tr>
-            <td colspan="4" style="text-align:center;">Bugün vardiya notu yok.</td>
-        </tr>
-    `;
+
+<tr>
+
+<td>${k.tarih}</td>
+
+<td>${k.talepEdenPersonel}</td>
+
+<td>${k.talepEdenTarife}</td>
+
+<td>${k.degisenPersonel}</td>
+
+<td>${k.degisenTarife}</td>
+
+<td>${k.neden || "-"}</td>
+
+</tr>
+
+`;
+
+    }).join("")
+    :
+`
+<tr>
+
+<td colspan="6" style="text-align:center;">
+
+Bugün görev / tarife değişimi yok.
+
+</td>
+
+</tr>
+`;
+
+    let vardiyaNotSatirlari = "";
+
+    if(vardiya){
+
+        vardiya.gorevler
+        .filter(function(g){
+
+            return g.not && g.not.trim() !== "";
+
+        })
+        .forEach(function(g){
+
+            vardiyaNotSatirlari += `
+
+<tr>
+
+<td>${g.sicil}</td>
+
+<td>${g.personelAdi}</td>
+
+<td>${g.gorevNo || "-"}</td>
+
+<td>${g.not}</td>
+
+</tr>
+
+`;
+
+        });
+
+    }
+
+    if(vardiyaNotSatirlari===""){
+
+        vardiyaNotSatirlari=`
+
+<tr>
+
+<td colspan="4" style="text-align:center;">
+
+Bugün vardiya notu yok.
+
+</td>
+
+</tr>
+
+`;
+
+    }
 
     document.getElementById("icerik").innerHTML = `
-        <h2>📄 Gün Sonu Raporu</h2>
 
-        <div style="
-            display:grid;
-            grid-template-columns:repeat(2, minmax(0, 1fr));
-            gap:12px;
-            margin-bottom:16px;
-        ">
-            <div class="kart"><h3>${toplamPersonel}</h3><p>Toplam Personel</p></div>
-            <div class="kart"><h3>${atandiSayisi}</h3><p>Atanan</p></div>
+<h2>📄 Gün Sonu Raporu</h2>
 
-            <div class="kart"><h3>${atanmadiSayisi}</h3><p>Atanmayan</p></div>
-            <div class="kart"><h3>${yillikIzinSayisi}</h3><p>Yıllık İzin</p></div>
+<div style="
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px;
+margin-bottom:16px;
+">
 
-            <div class="kart"><h3>${ucretliIzinSayisi}</h3><p>Ücretli İzin</p></div>
-            <div class="kart"><h3>${ucretsizIzinSayisi}</h3><p>Ücretsiz İzin</p></div>
+<div class="kart"><h3>${toplamPersonel}</h3><p>Toplam Personel</p></div>
+<div class="kart"><h3>${atandiSayisi}</h3><p>Atanan</p></div>
 
-            <div class="kart"><h3>${dogumIzniSayisi}</h3><p>Doğum İzni</p></div>
-            <div class="kart"><h3>${raporSayisi}</h3><p>Rapor</p></div>
+<div class="kart"><h3>${atanmadiSayisi}</h3><p>Atanmayan</p></div>
+<div class="kart"><h3>${yillikIzinSayisi}</h3><p>Yıllık İzin</p></div>
 
-            <div class="kart"><h3>${haftaTatiliSayisi}</h3><p>Hafta Tatili</p></div>
-            <div class="kart"><h3>${goreveGelmediSayisi}</h3><p>Göreve Gelmedi</p></div>
+<div class="kart"><h3>${ucretliIzinSayisi}</h3><p>Ücretli İzin</p></div>
+<div class="kart"><h3>${ucretsizIzinSayisi}</h3><p>Ücretsiz İzin</p></div>
 
-            <div class="kart" style="grid-column:1 / -1;">
-                <h3>${bugunkuDegisimler.length}</h3>
-                <p>Görev / Tarife Değişimi</p>
-            </div>
-        </div>
+<div class="kart"><h3>${dogumIzniSayisi}</h3><p>Doğum İzni</p></div>
+<div class="kart"><h3>${raporSayisi}</h3><p>Rapor</p></div>
 
-        <div class="form-kart">
-            <p><b>Tarih:</b> ${bugun}</p>
-        </div>
+<div class="kart"><h3>${haftaTatiliSayisi}</h3><p>Hafta Tatili</p></div>
+<div class="kart"><h3>${goreveGelmediSayisi}</h3><p>Göreve Gelmedi</p></div>
 
-        <h3>🔄 Görev / Tarife Değişimleri</h3>
-        <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Tarih</th>
-                    <th>Değişim Talep Eden Personel</th>
-                    <th>Tarifesi</th>
-                    <th>Değişen Personel</th>
-                    <th>Tarifesi</th>
-                    <th>Neden</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${degisimSatirlari}
-            </tbody>
-        </table>
+<div class="kart" style="grid-column:1/-1;">
 
-        <br>
+<h3>${bugunkuDegisimler.length}</h3>
 
-        <h3>📝 Vardiya Notları</h3>
-        <table class="tablo">
-            <thead>
-                <tr>
-                    <th>Sicil</th>
-                    <th>Ad Soyad</th>
-                    <th>Görev Kodu</th>
-                    <th>Not</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${vardiyaNotSatirlari}
-            </tbody>
-        </table>
+<p>Görev / Tarife Değişimi</p>
 
-        <br>
+</div>
 
-        <button onclick="gunlukSurucuVardiyaPlani()">⬅ Günlük Sürücü Vardiya Planı</button>
-    `;
+</div>
+
+<div class="form-kart">
+
+<p><b>Tarih:</b> ${bugun}</p>
+
+</div>
+
+<h3>🔄 Görev / Tarife Değişimleri</h3>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Tarih</th>
+<th>Talep Eden</th>
+<th>Tarife</th>
+<th>Değişen</th>
+<th>Tarife</th>
+<th>Neden</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${degisimSatirlari}
+
+</tbody>
+
+</table>
+
+<br>
+
+<h3>📝 Vardiya Notları</h3>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Sicil</th>
+<th>Ad Soyad</th>
+<th>Görev No</th>
+<th>Not</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${vardiyaNotSatirlari}
+
+</tbody>
+
+</table>
+
+<br>
+
+<button onclick="gunlukSurucuVardiyaPlani()">
+
+⬅ Günlük Sürücü Vardiya Planı
+
+</button>
+
+`;
+
 }
 function degisimEtiketiBul(sicil, bugun) {
     const kayit = gorevTarifeDegisiklikleri.find(function (d) {
@@ -4944,70 +5648,74 @@ function puantajHesapla(yil, ay){
             return;
         }
 
-        vardiya.personeller.forEach(function(kayit){
-
+(vardiya.gorevler || []).forEach(function(kayit){
+    
             const sicil = kayit.sicil;
 
             if(!sicil) return;
 
-            switch(kayit.durum){
+       switch (kayit.durum) {
 
-                case "ATANDI":
+   case "ATANDI":
 
-                    document.getElementById("calisma_"+sicil).textContent =
-                        Number(document.getElementById("calisma_"+sicil).textContent)+1;
+    const calismaHucre =
+        document.getElementById("calisma_" + sicil);
 
-                    break;
+    if (calismaHucre) {
 
-                case "RAPOR":
+        calismaHucre.textContent =
+            Number(calismaHucre.textContent) + 1;
 
-                    document.getElementById("rapor_"+sicil).textContent =
-                        Number(document.getElementById("rapor_"+sicil).textContent)+1;
-
-                    break;
-
-                case "GÖREVE GELMEDİ":
-
-                    document.getElementById("gelmedi_"+sicil).textContent =
-                        Number(document.getElementById("gelmedi_"+sicil).textContent)+1;
-
-                    break;
-
-                    case "YILLIK İZİN":
-                        document.getElementById("yillik_"+sicil).textContent++;
-                        break;
-                    
-                    case "MAZERET İZNİ":
-                        document.getElementById("mazeret_"+sicil).textContent++;
-                        break;
-                    
-                    case "ÜCRETLİ İZİN":
-                        document.getElementById("ucretli_"+sicil).textContent++;
-                        break;
-
-                case "YILLIK İZİN":
-                case "MAZERET İZNİ":
-                case "ÜCRETLİ İZİN":
-                case "ÜCRETSİZ İZİN":
-                case "ÜCRETLİ SAATLİK İZİN":
-                case "ÜCRETSİZ SAATLİK İZİN":
-                case "SENDİKAL İZİN":
-                case "DOĞUM İZNİ":
-                case "BABALIK İZNİ":
-                case "KADINLAR GÜNÜ İZNİ":
-                case "DÜĞÜN İZNİ":
-
-    document.getElementById("izin_"+sicil).textContent =
-        Number(document.getElementById("izin_"+sicil).textContent)+1;
+    }
 
     break;
 
-                    document.getElementById("izin_"+sicil).textContent =
-                        Number(document.getElementById("izin_"+sicil).textContent)+1;
+    case "RAPOR":
+        document.getElementById("rapor_" + sicil).textContent =
+            Number(document.getElementById("rapor_" + sicil).textContent) + 1;
+        break;
 
-                    break;
+    case "GÖREVE GELMEDİ":
+        document.getElementById("gelmedi_" + sicil).textContent =
+            Number(document.getElementById("gelmedi_" + sicil).textContent) + 1;
+        break;
 
-            }
+    case "YILLIK İZİN":
+        document.getElementById("yillik_" + sicil).textContent =
+            Number(document.getElementById("yillik_" + sicil).textContent) + 1;
+
+        document.getElementById("izin_" + sicil).textContent =
+            Number(document.getElementById("izin_" + sicil).textContent) + 1;
+        break;
+
+    case "MAZERET İZNİ":
+        document.getElementById("mazeret_" + sicil).textContent =
+            Number(document.getElementById("mazeret_" + sicil).textContent) + 1;
+
+        document.getElementById("izin_" + sicil).textContent =
+            Number(document.getElementById("izin_" + sicil).textContent) + 1;
+        break;
+
+    case "ÜCRETLİ İZİN":
+        document.getElementById("ucretli_" + sicil).textContent =
+            Number(document.getElementById("ucretli_" + sicil).textContent) + 1;
+
+        document.getElementById("izin_" + sicil).textContent =
+            Number(document.getElementById("izin_" + sicil).textContent) + 1;
+        break;
+
+    case "ÜCRETSİZ İZİN":
+    case "ÜCRETLİ SAATLİK İZİN":
+    case "ÜCRETSİZ SAATLİK İZİN":
+    case "SENDİKAL İZİN":
+    case "DOĞUM İZNİ":
+    case "BABALIK İZNİ":
+    case "KADINLAR GÜNÜ İZNİ":
+    case "DÜĞÜN İZNİ":
+        document.getElementById("izin_" + sicil).textContent =
+            Number(document.getElementById("izin_" + sicil).textContent) + 1;
+        break;
+}
 
         });
 
@@ -5578,51 +6286,85 @@ function ikBilgilendir(index) {
     izinler();
 
 }
-function izinOnayla(index) {
+function izinOnayla(index){
 
-    if (!confirm("İzin talebi onaylansın mı?")) {
+    if(!confirm("İzin talebi onaylansın mı?")){
+
         return;
+
     }
 
-    personelDurumlari[index].durum = "ONAYLANDI";
-    personelDurumlari[index].onaylayanVardiyaAmiri =
-        aktifKullanici || "";
+    const izin = personelDurumlari[index];
 
-    personelDurumlari[index].vardiyaAmiriOnayTarihi =
+    if(!izin){
+
+        alert("İzin kaydı bulunamadı.");
+
+        return;
+
+    }
+
+    izin.durum = "ONAYLANDI";
+
+    izin.onaylayanVardiyaAmiri = {
+
+        sicil: aktifKullanici?.sicil || "",
+
+        adSoyad: aktifKullanici?.adSoyad || ""
+
+    };
+
+    izin.vardiyaAmiriOnayTarihi =
         new Date().toISOString();
 
-    const personel = personelListesi.find(function(p){
+    const personel =
+    personelListesi.find(function(p){
 
         return String(p.sicil) ===
-               String(personelDurumlari[index].sicil);
+               String(izin.sicil);
 
     });
 
     const adSoyad = personel
         ? personel.ad + " " + personel.soyad
-        : personelDurumlari[index].sicil;
+        : izin.sicil;
 
     localStorage.setItem(
+
         "personelDurumlari",
+
         JSON.stringify(personelDurumlari)
+
     );
 
     bildirimOlustur(
+
         "IZIN_ONAY",
+
         adSoyad,
+
         "VATMAN"
+
     );
 
     bildirimOlustur(
+
         "IZIN_ONAY",
+
         adSoyad,
+
         "SURUCU_SEFLIGI"
+
     );
 
     bildirimOlustur(
+
         "IZIN_ONAY",
+
         adSoyad,
+
         "IK"
+
     );
 
     alert("İzin onaylandı.");
@@ -5630,56 +6372,85 @@ function izinOnayla(index) {
     izinler();
 
 }
-function izinReddet(index) {
+function izinReddet(index){
 
-    if (!confirm("İzin talebi reddedilsin mi?")) {
+    if(!confirm("İzin talebi reddedilsin mi?")){
+
         return;
+
     }
 
-    personelDurumlari[index].durum = "REDDEDİLDİ";
-    personelDurumlari[index].onaylayanVardiyaAmiri =
-        aktifKullanici || "";
+    const izin = personelDurumlari[index];
 
-    personelDurumlari[index].vardiyaAmiriOnayTarihi =
+    if(!izin){
+
+        alert("İzin kaydı bulunamadı.");
+
+        return;
+
+    }
+
+    izin.durum = "REDDEDİLDİ";
+
+    izin.onaylayanVardiyaAmiri = {
+
+        sicil: aktifKullanici?.sicil || "",
+
+        adSoyad: aktifKullanici?.adSoyad || ""
+
+    };
+
+    izin.vardiyaAmiriOnayTarihi =
         new Date().toISOString();
 
-    // Personeli bul
-    const personel = personelListesi.find(function(p){
+    const personel =
+    personelListesi.find(function(p){
 
         return String(p.sicil) ===
-               String(personelDurumlari[index].sicil);
+               String(izin.sicil);
 
     });
 
-    // Ad Soyad oluştur
     const adSoyad = personel
         ? personel.ad + " " + personel.soyad
-        : personelDurumlari[index].sicil;
+        : izin.sicil;
 
     localStorage.setItem(
+
         "personelDurumlari",
+
         JSON.stringify(personelDurumlari)
+
     );
 
-    // Vatmana bildir
     bildirimOlustur(
+
         "IZIN_RED",
+
         adSoyad,
+
         "VATMAN"
+
     );
 
-    // Sürücü Şefliğine bildir
     bildirimOlustur(
+
         "IZIN_RED",
+
         adSoyad,
+
         "SURUCU_SEFLIGI"
+
     );
 
-    // İK'ya bildir
     bildirimOlustur(
+
         "IZIN_RED",
+
         adSoyad,
+
         "IK"
+
     );
 
     alert("İzin reddedildi.");
@@ -5850,195 +6621,265 @@ function izinDurumRenk(durum) {
 
 function puantajOlustur() {
 
-    const ay = Number(document.getElementById("puantajAy").value);
-    const yil = Number(document.getElementById("puantajYil").value);
+    const ay =
+        Number(document.getElementById("puantajAy").value);
 
-    const gunSayisi = new Date(yil, ay, 0).getDate();
+    const yil =
+        Number(document.getElementById("puantajYil").value);
+
+    const gunSayisi =
+        new Date(yil, ay, 0).getDate();
 
     let baslik = `
-        <tr>
-            <th>Sicil</th>
-            <th>Ad Soyad</th>
-    `;
+
+<tr>
+
+<th>Sicil</th>
+
+<th>Ad Soyad</th>
+
+`;
 
     for (let i = 1; i <= gunSayisi; i++) {
+
         baslik += `<th>${i}</th>`;
+
     }
 
     baslik += `
+
 <th>Ç</th>
 <th>Yİ</th>
 <th>Mİ</th>
 <th>R</th>
-<th>HT</th>        </tr>
-    `;
+<th>HT</th>
+
+</tr>
+
+`;
 
     let satirlar = "";
-    console.log(personelListesi);
-const vatmanlar = personelleriGetir("Vatman");
 
-vatmanlar.forEach(function(personel){
-        satirlar += `
-            <tr>
+    const vatmanlar =
+        personelleriGetir("VATMAN");
 
-                <td>${personel.sicil}</td>
-
-                <td>${personel.ad} ${personel.soyad}</td>
-        `;
-
-      let toplam = 0;
-let yillikIzin = 0;
-let mazeret = 0;
-let rapor = 0;
-let haftaTatili = 0;
-for (let i = 1; i <= gunSayisi; i++) {
-
-    const tarih =
-        yil + "-" +
-        String(ay).padStart(2, "0") + "-" +
-        String(i).padStart(2, "0");
-
-    const bilgi = vardiyaDurumuBul(personel, tarih);
-
-    let kod = "-";
-
-    switch (bilgi.durum) {
-
-        case "ATANDI":
-            kod = bilgi.gorevKodu;
-            toplam++;
-            break;
-
-       case "YILLIK İZİN":
-            kod = "Yİ";
-            yillikIzin++;
-            break;
-
-      case "HAFTA TATİLİ":
-            kod = "HT";
-            haftaTatili++;
-            break;
-      
-        case "MAZERET İZNİ":
-            kod = "Mİ";
-            mazeret++;
-            break;
-
-        case "SENDİKAL İZİN":
-            kod = "Sİ";
-            break;
-
-        case "ÜCRETLİ İZİN":
-            kod = "Üİ";
-            break;
-
-        case "ÜCRETSİZ İZİN":
-            kod = "ÜS";
-            break;
-
-        case "DOĞUM İZNİ":
-            kod = "Dİ";
-            break;
-
-        case "BABALIK İZNİ":
-            kod = "Bİ";
-            break;
-
-        case "RAPOR":
-            kod = "R";
-            rapor++;
-            break;
-
-      case "KADINLAR GÜNÜ İZNİ":
-            kod = "Kİ";
-            break;
-
-        case "GÖREVE GELMEDİ":
-            kod = "GG";
-            break;
-    }
-
-    satirlar += `
-        <td style="text-align:center;">${kod}</td>
-    `;
-}
+    vatmanlar.forEach(function (personel) {
 
         satirlar += `
+
+<tr>
+
+<td>${personel.sicil}</td>
+
+<td>${personel.ad} ${personel.soyad}</td>
+
+`;
+
+        let toplam = 0;
+        let yillikIzin = 0;
+        let mazeret = 0;
+        let rapor = 0;
+        let haftaTatili = 0;
+
+        for (let i = 1; i <= gunSayisi; i++) {
+
+            const tarih =
+                yil + "-" +
+                String(ay).padStart(2, "0") + "-" +
+                String(i).padStart(2, "0");
+
+            const bilgi =
+                vardiyaDurumuBul(personel, tarih);
+
+            let kod = "-";
+
+            switch (bilgi.durum) {
+
+                case "ATANDI":
+
+                    kod = bilgi.gorevNo || "-";
+                    toplam++;
+                    break;
+
+                case "YILLIK İZİN":
+
+                    kod = "Yİ";
+                    yillikIzin++;
+                    break;
+
+                case "MAZERET İZNİ":
+
+                    kod = "Mİ";
+                    mazeret++;
+                    break;
+
+                case "SENDİKAL İZİN":
+
+                    kod = "Sİ";
+                    break;
+
+                case "ÜCRETLİ İZİN":
+
+                    kod = "Üİ";
+                    break;
+
+                case "ÜCRETSİZ İZİN":
+
+                    kod = "ÜS";
+                    break;
+
+                case "DOĞUM İZNİ":
+
+                    kod = "Dİ";
+                    break;
+
+                case "BABALIK İZNİ":
+
+                    kod = "Bİ";
+                    break;
+
+                case "RAPOR":
+
+                    kod = "R";
+                    rapor++;
+                    break;
+
+                case "HAFTA TATİLİ":
+
+                    kod = "HT";
+                    haftaTatili++;
+                    break;
+
+                case "KADINLAR GÜNÜ İZNİ":
+
+                    kod = "Kİ";
+                    break;
+
+                case "GÖREVE GELMEDİ":
+
+                    kod = "GG";
+                    break;
+
+            }
+
+            satirlar += `
+
+<td style="text-align:center;">
+
+${kod}
+
+</td>
+
+`;
+
+        }
+
+        satirlar += `
+
 <td><b>${toplam}</b></td>
+
 <td>${yillikIzin}</td>
+
 <td>${mazeret}</td>
+
 <td>${rapor}</td>
-<td>${haftaTatili}</td>        
+
+<td>${haftaTatili}</td>
+
 </tr>
-        `;
+
+`;
+
     });
 
-   document.getElementById("puantajTablo").innerHTML = `
+    document.getElementById("puantajTablo").innerHTML = `
 
 <div style="margin-bottom:15px;">
 
-    <h3 style="margin:0;">
-        ESTRAM HAFİF RAYLI SİSTEMLER
-    </h3>
+<h3 style="margin:0;">
 
-    <b>${ay}/${yil} AYLIK PUANTAJ CETVELİ</b>
+ESTRAM HAFİF RAYLI SİSTEMLER
+
+</h3>
+
+<b>${ay}/${yil} AYLIK PUANTAJ CETVELİ</b>
 
 </div>
 
 <table class="tablo">
 
-    <thead>
+<thead>
 
-        ${baslik}
+${baslik}
 
-    </thead>
+</thead>
 
-    <tbody>
+<tbody>
 
-        ${satirlar}
+${satirlar}
 
-    </tbody>
+</tbody>
 
 </table>
 
 <br><br>
 
-<table style="width:100%; border:none;">
+<table style="width:100%;border:none;">
 
-    <tr>
+<tr>
 
-        <td style="text-align:center; border:none;">
-            Hazırlayan
-            <br><br><br>
-            ____________________
-        </td>
+<td style="text-align:center;border:none;">
 
-        <td style="text-align:center; border:none;">
-            Kontrol Eden
-            <br><br><br>
-            ____________________
-        </td>
+Hazırlayan
 
-        <td style="text-align:center; border:none;">
-            Onaylayan
-            <br><br><br>
-            ____________________
-        </td>
+<br><br><br>
 
-    </tr>
+____________________
+
+</td>
+
+<td style="text-align:center;border:none;">
+
+Kontrol Eden
+
+<br><br><br>
+
+____________________
+
+</td>
+
+<td style="text-align:center;border:none;">
+
+Onaylayan
+
+<br><br><br>
+
+____________________
+
+</td>
+
+</tr>
 
 </table>
+
 `;
- 
+
 }
 
 function bildirimOlustur(tip, personel, hedef) {
 
-    const sablon = bildirimSablonlari[tip];
+    const sablon =
+        bildirimSablonlari[tip];
 
     if (!sablon) {
-        console.warn("Bildirim şablonu bulunamadı:", tip);
+
+        console.warn(
+            "Bildirim şablonu bulunamadı:",
+            tip
+        );
+
         return;
+
     }
 
     bildirimEkle(
@@ -6067,9 +6908,10 @@ function bildirimEkle(
 
     bildirimler.unshift({
 
-        id: Date.now(),
+        id: crypto.randomUUID(),
 
-        tarih: new Date().toLocaleString("tr-TR"),
+        tarih:
+            new Date().toLocaleString("tr-TR"),
 
         tur: tur,
 
@@ -6094,8 +6936,11 @@ function bildirimEkle(
     });
 
     localStorage.setItem(
+
         "bildirimler",
+
         JSON.stringify(bildirimler)
+
     );
 
 }
@@ -6251,26 +7096,26 @@ function bildirimSil(index){
     bildirimlerSayfasi();
 
 }
-    function gorevleriDegistir(talep){
+ function gorevleriDegistir(talep){
 
     const vardiya =
-    gunlukVardiyaBul(talep.tarih);
+        gunlukVardiyaBul(talep.tarih);
 
     if(!vardiya) return;
 
     const p1 =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)===String(talep.talepEdenSicil);
+            return String(k.sicil) === String(talep.talepEdenSicil);
 
-    });
+        });
 
     const p2 =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)===String(talep.degisenSicil);
+            return String(k.sicil) === String(talep.degisenSicil);
 
-    });
+        });
 
     if(!p1 || !p2){
 
@@ -6282,90 +7127,66 @@ function bildirimSil(index){
 
     const gecici = {
 
-        gorevKodu : p1.gorevKodu,
+        gorevNo      : p1.gorevNo,
 
-        gorevAdi  : p1.gorevAdi,
+        platform     : p1.platform,
 
-        platform  : p1.platform,
+        tarife       : p1.tarife,
 
-        tarife    : p1.tarife,
+        servisGelis  : p1.servisGelis,
 
-        baslangic : p1.baslangic,
-
-        bitis     : p1.bitis
+        gorevBitis   : p1.gorevBitis
 
     };
 
-    p1.gorevKodu = p2.gorevKodu;
-    p1.gorevAdi  = p2.gorevAdi;
-    p1.platform  = p2.platform;
-    p1.tarife    = p2.tarife;
-    p1.baslangic = p2.baslangic;
-    p1.bitis     = p2.bitis;
+    p1.gorevNo     = p2.gorevNo;
+    p1.platform    = p2.platform;
+    p1.tarife      = p2.tarife;
+    p1.servisGelis = p2.servisGelis;
+    p1.gorevBitis  = p2.gorevBitis;
 
-    p2.gorevKodu = gecici.gorevKodu;
-    p2.gorevAdi  = gecici.gorevAdi;
-    p2.platform  = gecici.platform;
-    p2.tarife    = gecici.tarife;
-    p2.baslangic = gecici.baslangic;
-    p2.bitis     = gecici.bitis;
+    p2.gorevNo     = gecici.gorevNo;
+    p2.platform    = gecici.platform;
+    p2.tarife      = gecici.tarife;
+    p2.servisGelis = gecici.servisGelis;
+    p2.gorevBitis  = gecici.gorevBitis;
+
+    p1.degistirildi = true;
+    p2.degistirildi = true;
 
     gunlukVardiyaArsiviKaydet();
 
     talep.durum = "TAMAMLANDI";
 
     localStorage.setItem(
-
         "vatmanDegisimTalepleri",
-
         JSON.stringify(vatmanDegisimTalepleri)
-
     );
 
     bildirimEkle(
-
         "DEGISIM",
-
         "Görev Değişimi Tamamlandı",
-
         "Görev değişiminiz onaylandı ve vardiyanız güncellendi.",
-
         "VATMAN",
-
         talep.id,
-
         talep.talepEdenSicil
-
     );
 
     bildirimEkle(
-
         "DEGISIM",
-
         "Görev Değişimi Tamamlandı",
-
         "Görev değişiminiz onaylandı ve vardiyanız güncellendi.",
-
         "VATMAN",
-
         talep.id,
-
         talep.degisenSicil
-
     );
 
     bildirimEkle(
-
         "DEGISIM",
-
         "Görev Değişimi",
-
         "Görev değişimi başarıyla sisteme işlendi.",
-
         "VARDIYA_AMIRI",
-
         talep.id
-
     );
 
 }
@@ -6469,76 +7290,111 @@ function bildirimSil(index){
     }
 
 }
-function bildirimOnayla(index) {
+function bildirimOnayla(index){
 
-    if(bildirimler[index].talepId){
+    const bildirim = bildirimler[index];
+
+    if(!bildirim){
+
+        alert("Bildirim bulunamadı.");
+
+        return;
+
+    }
+
+    if(bildirim.talepId){
 
         degisimTalebiOnayla(
 
-            bildirimler[index].talepId
+            bildirim.talepId
+
+        );
+
+        degisimLogEkle(
+
+            bildirim.talepId,
+
+            "ONAY",
+
+            "Talep onaylandı."
 
         );
 
     }
 
-    bildirimler[index].durum="ONAYLANDI";
-    if(bildirimler[index].talepId){
+    bildirim.durum = "ONAYLANDI";
 
-    degisimLogEkle(
+    bildirim.okundu = true;
 
-        bildirimler[index].talepId,
+    bildirim.islemYapan = {
 
-        "ONAY",
+        sicil: aktifKullanici?.sicil || "",
 
-        "Talep onaylandı."
+        adSoyad: aktifKullanici?.adSoyad || ""
 
-    );
+    };
 
-}
-
-    bildirimler[index].okundu=true;
-
-    bildirimler[index].islemYapan=
-        aktifKullanici ? aktifKullanici.adSoyad : "";
-
-    bildirimler[index].islemTarihi=
+    bildirim.islemTarihi =
         new Date().toLocaleString("tr-TR");
 
     localStorage.setItem(
+
         "bildirimler",
+
         JSON.stringify(bildirimler)
+
     );
 
     bildirimlerSayfasi();
 
 }
-function bildirimReddet(index) {
+function bildirimReddet(index){
 
-    bildirimler[index].durum = "REDDEDILDI";
-if(bildirimler[index].talepId){
+    const bildirim = bildirimler[index];
 
-    degisimLogEkle(
+    if(!bildirim){
 
-        bildirimler[index].talepId,
+        alert("Bildirim bulunamadı.");
 
-        "RED",
+        return;
 
-        "Talep reddedildi."
+    }
 
-    );
+    bildirim.durum = "REDDEDILDI";
 
-}
-    bildirimler[index].okundu = true;
+    if(bildirim.talepId){
 
-    bildirimler[index].islemYapan =
-        aktifKullanici ? aktifKullanici.adSoyad : "";
+        degisimLogEkle(
 
-    bildirimler[index].islemTarihi =
+            bildirim.talepId,
+
+            "RED",
+
+            "Talep reddedildi."
+
+        );
+
+    }
+
+    bildirim.okundu = true;
+
+    bildirim.islemYapan = {
+
+        sicil: aktifKullanici?.sicil || "",
+
+        adSoyad: aktifKullanici?.adSoyad || ""
+
+    };
+
+    bildirim.islemTarihi =
         new Date().toLocaleString("tr-TR");
 
     localStorage.setItem(
+
         "bildirimler",
+
         JSON.stringify(bildirimler)
+
     );
 
     bildirimlerSayfasi();
@@ -6624,38 +7480,81 @@ function bildirimleriGoster() {
     `;
 }
 function bildirimOkundu(index){
-    bildirimler[index].okundu = true;
-    localStorage.setItem("bildirimler", JSON.stringify(bildirimler));
-    bildirimleriGoster();
-    bildirimIkonGuncelle(); // okundu sonrası ikon güncellenir
-}
-function bildirimIkonGuncelle(){
-    const okunmamis = bildirimler.filter(b => !b.okundu).length;
-    const badge = document.getElementById("bildirimBadge");
 
-    if(badge){
-        badge.textContent = okunmamis > 0 ? okunmamis : "";
+    const bildirim = bildirimler[index];
+
+    if(!bildirim){
+
+        return;
+
     }
+
+    bildirim.okundu = true;
+
+    localStorage.setItem(
+
+        "bildirimler",
+
+        JSON.stringify(bildirimler)
+
+    );
+
+    bildirimleriGoster();
+
+    bildirimIkonGuncelle();
+
 }
 
+function bildirimIkonGuncelle(){
 
-function okunmamisBildirimSayisi(hedef = null) {
+    const okunmamis =
+    bildirimler.filter(function(b){
+
+        return !b.okundu;
+
+    }).length;
+
+    const badge =
+    document.getElementById("bildirimBadge");
+
+    if(!badge){
+
+        return;
+
+    }
+
+    badge.textContent =
+        okunmamis > 0
+        ? okunmamis
+        : "";
+
+}
+
+function okunmamisBildirimSayisi(hedef = null){
 
     return bildirimler.filter(function(b){
 
-        if (hedef && b.hedef !== hedef && b.hedef !== "GENEL") {
+        if(
+            hedef &&
+            b.hedef !== hedef &&
+            b.hedef !== "GENEL"
+        ){
+
             return false;
+
         }
 
-        return b.okundu === false;
+        return !b.okundu;
 
     }).length;
 
 }
-// Panele giriş kontrolü
-if (window.location.pathname.includes("panel.html")) {
 
-    if (!aktifKullanici) {
+// Panel giriş kontrolü
+
+if(window.location.pathname.includes("panel.html")){
+
+    if(!aktifKullanici){
 
         alert("Lütfen giriş yapınız.");
 
@@ -6664,25 +7563,30 @@ if (window.location.pathname.includes("panel.html")) {
     }
 
 }
-document.addEventListener("DOMContentLoaded", function () {
 
-    const bilgi = document.getElementById("kullaniciBilgisi");
+document.addEventListener("DOMContentLoaded", function(){
 
-    if (bilgi && aktifKullanici) {
+    const bilgi =
+    document.getElementById("kullaniciBilgisi");
+
+    if(bilgi && aktifKullanici){
 
         bilgi.innerHTML =
+
             "👤 " +
+
             aktifKullanici.adSoyad +
+
             "<br><small>" +
+
             rolAdiGetir(aktifKullanici.rol) +
+
             "</small>";
 
     }
 
     kullaniciBilgileriniGoster();
 
-
-    // Panel açılınca Ana Sayfa gelsin
     if(document.getElementById("icerik")){
 
         sayfaGoster("anasayfa");
@@ -6690,8 +7594,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
-let personelChart = null;
 
+let personelChart = null;
 function dashboardGrafik() {
 
     const canvas = document.getElementById("personelGrafik");
@@ -6740,37 +7644,60 @@ function dashboardGrafik() {
     });
 
 }
-function girisYap() {
+function girisYap(){
 
-    const kullanici = document.getElementById("kullaniciAdi").value.trim();
-    const sifre = document.getElementById("sifre").value.trim();
+    const kullanici =
+    document.getElementById("kullaniciAdi").value.trim();
 
-    const bulunan = kullanicilar.find(function(k){
+    const sifre =
+    document.getElementById("sifre").value.trim();
 
-        return k.kullanici === kullanici &&
-               k.sifre === sifre;
+    const bulunan =
+    kullanicilar.find(function(k){
+
+        return (
+
+            k.kullanici === kullanici &&
+
+            k.sifre === sifre
+
+        );
 
     });
 
     if(!bulunan){
 
         alert("Kullanıcı adı veya şifre hatalı!");
+
         return;
 
     }
-console.log(bulunan);
-    // Aktif kullanıcıyı kaydet
-   localStorage.setItem("aktifKullanici", JSON.stringify({
 
-    kullanici : bulunan.kullanici,
-    sicil     : bulunan.sicil,
-    adSoyad   : bulunan.adSoyad,
-    mudurluk  : bulunan.mudurluk,
-    birim     : bulunan.birim,
-    gorev     : bulunan.gorev,
-    rol       : bulunan.rol
+    const aktifKullanici = {
 
-}));
+        kullanici : bulunan.kullanici,
+
+        sicil     : bulunan.sicil,
+
+        adSoyad   : bulunan.adSoyad,
+
+        mudurluk  : bulunan.mudurluk,
+
+        birim     : bulunan.birim,
+
+        gorev     : bulunan.gorev,
+
+        rol       : bulunan.rol
+
+    };
+
+    localStorage.setItem(
+
+        "aktifKullanici",
+
+        JSON.stringify(aktifKullanici)
+
+    );
 
     if(bulunan.ilkGiris){
 
@@ -7259,20 +8186,20 @@ function degisimDetay(index){
 
     if(vardiya){
 
-        const p1 = vardiya.personeller.find(function(k){
+        const p1 = vardiya.gorevler.find(function(k){
             return String(k.sicil) === String(talep.talepEdenSicil);
         });
 
-        const p2 = vardiya.personeller.find(function(k){
+        const p2 = vardiya.gorevler.find(function(k){
             return String(k.sicil) === String(talep.degisenSicil);
         });
 
         if(p1){
-            gorev1 = p1.gorevKodu || "-";
+            gorev1 = p1.gorevNo || "-";
         }
 
         if(p2){
-            gorev2 = p2.gorevKodu || "-";
+            gorev2 = p2.gorevNo || "-";
         }
 
     }
@@ -7498,21 +8425,17 @@ function degisimLogEkle(talepId, islem, aciklama){
 
     degisimLoglari.push({
 
-        id: Date.now(),
+        id: crypto.randomUUID(),
 
         talepId: talepId,
 
         tarih: new Date().toLocaleString("tr-TR"),
 
-        kullanici:
-            aktifKullanici
-            ? aktifKullanici.adSoyad
-            : "-",
+        kullanici: aktifKullanici?.adSoyad || "-",
 
-        rol:
-            aktifKullanici
-            ? aktifKullanici.rol
-            : "-",
+        sicil: aktifKullanici?.sicil || "-",
+
+        rol: aktifKullanici?.rol || "-",
 
         islem: islem,
 
@@ -7526,24 +8449,31 @@ function degisimLogEkle(talepId, islem, aciklama){
     );
 
 }
+
 function degisimLoglariniGetir(talepId){
 
     return degisimLoglari.filter(function(log){
 
-        return String(log.talepId)===String(talepId);
+        return String(log.talepId) === String(talepId);
 
     });
 
 }
+
 function surucuVardiyaAmiriPaneli(){
 
-    const bugun = new Date().toISOString().split("T")[0];
+    const seciliTarih =
+        document.getElementById("operasyonTarih")
+        ? document.getElementById("operasyonTarih").value
+        : new Date().toISOString().split("T")[0];
+
     const ozet =
-operasyonOzeti(bugun);
+        operasyonOzeti(seciliTarih);
 
     document.getElementById("icerik").innerHTML = `
 
 <h2>🚦 Sürücü Vardiya Amiri Paneli</h2>
+
 <div
 style="
 display:grid;
@@ -7573,7 +8503,7 @@ Raporlu
 <div class="kart">
 <h3>⚫</h3>
 <b>${ozet.gelmedi}</b><br>
-Gelmedi
+Göreve Gelmedi
 </div>
 
 <div class="kart">
@@ -7589,7 +8519,9 @@ Bekleyen
 </div>
 
 </div>
-<div class="toolbar"
+
+<div
+class="toolbar"
 style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
 
 <label><b>Tarih</b></label>
@@ -7597,8 +8529,8 @@ style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
 <input
 type="date"
 id="operasyonTarih"
-value="${bugun}"
-onchange="surucuVardiyaAmiriListele()">
+value="${seciliTarih}"
+onchange="surucuVardiyaAmiriPaneli()">
 
 <button onclick="operasyonYeniGorev()">
 ➕ Yeni Görev
@@ -7618,25 +8550,25 @@ onchange="surucuVardiyaAmiriListele()">
 
 `;
 
-surucuVardiyaAmiriListele();
+    surucuVardiyaAmiriListele();
 
 }
 function yedekAta(sicil){
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih").value;
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const yedek =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil);
+            return String(k.sicil) === String(sicil);
 
-    });
+        });
 
     if(!yedek){
 
@@ -7648,17 +8580,17 @@ function yedekAta(sicil){
 
     let secenekler = "";
 
-    vardiya.personeller.forEach(function(k){
+    vardiya.gorevler.forEach(function(k){
 
         if(
 
-            k.durum=="RAPOR" ||
+            k.durum === "RAPOR" ||
 
-            k.durum=="YILLIK İZİN" ||
+            k.durum === "YILLIK İZİN" ||
 
-            k.durum=="MAZERET İZNİ" ||
+            k.durum === "MAZERET İZNİ" ||
 
-            k.durum=="GÖREVE GELMEDİ"
+            k.durum === "GÖREVE GELMEDİ"
 
         ){
 
@@ -7666,7 +8598,7 @@ function yedekAta(sicil){
 
 <option value="${k.sicil}">
 
-${k.adSoyad}
+${k.personelAdi}
 
 (${k.durum})
 
@@ -7719,29 +8651,29 @@ ${secenekler}
 function yedekAtamayiTamamla(yedekSicil){
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih").value;
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const hedefSicil =
-    document.getElementById("eksikPersonel").value;
+        document.getElementById("eksikPersonel").value;
 
     const yedek =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(yedekSicil);
+            return String(k.sicil) === String(yedekSicil);
 
-    });
+        });
 
     const hedef =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(hedefSicil);
+            return String(k.sicil) === String(hedefSicil);
 
-    });
+        });
 
     if(!yedek || !hedef){
 
@@ -7751,42 +8683,58 @@ function yedekAtamayiTamamla(yedekSicil){
 
     }
 
-    yedek.gorevKodu = hedef.gorevKodu;
-    yedek.gorevAdi = hedef.gorevAdi;
-    yedek.platform = hedef.platform;
-    yedek.tarife = hedef.tarife;
-    yedek.baslangic = hedef.baslangic;
-    yedek.bitis = hedef.bitis;
+    yedek.gorevNo          = hedef.gorevNo;
+    yedek.gorev            = hedef.gorev;
+    yedek.servisGelis      = hedef.servisGelis;
+    yedek.cikistaHazirlik  = hedef.cikistaHazirlik;
+    yedek.depoCikis        = hedef.depoCikis;
+    yedek.gorevBaslangic   = hedef.gorevBaslangic;
+    yedek.aracTeslim       = hedef.aracTeslim;
+    yedek.gorevBitis       = hedef.gorevBitis;
+    yedek.depoya           = hedef.depoya;
+    yedek.donusteHazirlik  = hedef.donusteHazirlik;
+    yedek.servisCikis      = hedef.servisCikis;
 
     yedek.durum = "ATANDI";
+    yedek.degistirildi = true;
 
-    hedef.gorevKodu = "";
-    hedef.gorevAdi = "";
-    hedef.platform = "";
-    hedef.tarife = "";
-    hedef.baslangic = "";
-    hedef.bitis = "";
+    hedef.gorevNo          = "";
+    hedef.gorev            = "";
+    hedef.servisGelis      = "";
+    hedef.cikistaHazirlik  = "";
+    hedef.depoCikis        = "";
+    hedef.gorevBaslangic   = "";
+    hedef.aracTeslim       = "";
+    hedef.gorevBitis       = "";
+    hedef.depoya           = "";
+    hedef.donusteHazirlik  = "";
+    hedef.servisCikis      = "";
+    hedef.degistirildi = true;
 
     gunlukVardiyaArsiviKaydet();
 
     manuelDegisimLogKaydet({
 
-        tip:"YEDEK_ATAMA",
+        tip: "YEDEK_ATAMA",
 
-        tarih:tarih,
+        tarih: tarih,
 
-        islemTarihi:new Date().toLocaleString("tr-TR"),
+        islemTarihi:
+            new Date().toLocaleString("tr-TR"),
 
         yapan:
-        aktifKullanici
-        ? aktifKullanici.adSoyad
-        : "",
+            aktifKullanici
+            ? aktifKullanici.adSoyad
+            : "",
 
-        asilPersonel:hedef.adSoyad,
+        asilPersonel:
+            hedef.personelAdi,
 
-        yedekPersonel:yedek.adSoyad,
+        yedekPersonel:
+            yedek.personelAdi,
 
-        gorev:yedek.gorevKodu
+        gorev:
+            yedek.gorevNo
 
     });
 
@@ -7798,14 +8746,14 @@ function yedekAtamayiTamamla(yedekSicil){
 function surucuVardiyaAmiriListele(){
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih").value;
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     let satirlar = "";
 
-    if(!vardiya){
+    if(!vardiya || !vardiya.gorevler || vardiya.gorevler.length === 0){
 
         satirlar = `
 
@@ -7823,27 +8771,27 @@ Bu tarihe ait vardiya bulunamadı.
 
     }else{
 
-        vardiya.personeller.forEach(function(kayit){
+        vardiya.gorevler.forEach(function(kayit){
 
             satirlar += `
 
 <tr>
 
-<td>${kayit.sicil}</td>
+<td>${kayit.sicil || "-"}</td>
 
-<td>${kayit.ad} ${kayit.soyad}</td>
+<td>${kayit.personelAdi || "-"}</td>
 
-<td>${kayit.gorevKodu}</td>
+<td>${kayit.gorevNo || "-"}</td>
 
-<td>${kayit.platform}</td>
+<td>${kayit.gorev || "-"}</td>
 
-<td>${kayit.tarife}</td>
+<td>${kayit.servisGelis || "-"}</td>
 
-<td>${kayit.baslangic}</td>
+<td>${kayit.gorevBaslangic || "-"}</td>
 
-<td>${kayit.bitis}</td>
+<td>${kayit.gorevBitis || "-"}</td>
 
-<td>${kayit.durum}</td>
+<td>${kayit.durum || "-"}</td>
 
 <td>
 
@@ -7914,12 +8862,12 @@ title="Görevi Sil">
 <tr>
 
 <th>Sicil</th>
-<th>Ad Soyad</th>
-<th>Görev Kodu</th>
-<th>Platform</th>
-<th>Tarife</th>
-<th>Başlangıç</th>
-<th>Bitiş</th>
+<th>Personel</th>
+<th>Görev No</th>
+<th>Görev</th>
+<th>Servis Geliş</th>
+<th>Görev Başlangıç</th>
+<th>Görev Bitiş</th>
 <th>Durum</th>
 <th>İşlem</th>
 
@@ -7941,19 +8889,19 @@ ${satirlar}
 function operasyonDuzenle(sicil){
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih").value;
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const kayit =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)===String(sicil);
+            return String(k.sicil) === String(sicil);
 
-    });
+        });
 
     if(!kayit){
 
@@ -7963,69 +8911,94 @@ function operasyonDuzenle(sicil){
 
     }
 
-    document.getElementById("icerik").innerHTML=`
+    document.getElementById("icerik").innerHTML = `
 
 <h2>✏️ Vardiya Düzenle</h2>
 
 <div class="kart">
 
-<label>Görev Kodu</label>
+<label>Görev No</label>
 
 <input
-id="duzenleGorevKodu"
-value="${kayit.gorevKodu}">
+id="duzenleGorevNo"
+value="${kayit.gorevNo || ""}">
 
-<label>Platform</label>
-
-<input
-id="duzenlePlatform"
-value="${kayit.platform}">
-
-<label>Tarife</label>
+<label>Görev</label>
 
 <input
-id="duzenleTarife"
-value="${kayit.tarife}">
+id="duzenleGorev"
+value="${kayit.gorev || ""}">
 
-<label>Başlangıç</label>
-
-<input
-id="duzenleBaslangic"
-value="${kayit.baslangic}">
-
-<label>Bitiş</label>
+<label>Servis Geliş</label>
 
 <input
-id="duzenleBitis"
-value="${kayit.bitis}">
+id="duzenleServisGelis"
+value="${kayit.servisGelis || ""}">
+
+<label>Görev Başlangıç</label>
+
+<input
+id="duzenleGorevBaslangic"
+value="${kayit.gorevBaslangic || ""}">
+
+<label>Görev Bitiş</label>
+
+<input
+id="duzenleGorevBitis"
+value="${kayit.gorevBitis || ""}">
 
 <label>Durum</label>
 
 <select id="duzenleDurum">
 
-<option
+<option value="ATANDI"
 ${kayit.durum=="ATANDI"?"selected":""}>
 ATANDI
 </option>
 
-<option
+<option value="ATANMADI"
+${kayit.durum=="ATANMADI"?"selected":""}>
+ATANMADI
+</option>
+
+<option value="YILLIK İZİN"
 ${kayit.durum=="YILLIK İZİN"?"selected":""}>
 YILLIK İZİN
 </option>
 
-<option
+<option value="MAZERET İZNİ"
 ${kayit.durum=="MAZERET İZNİ"?"selected":""}>
 MAZERET İZNİ
 </option>
 
-<option
+<option value="SENDİKAL İZİN"
+${kayit.durum=="SENDİKAL İZİN"?"selected":""}>
+SENDİKAL İZİN
+</option>
+
+<option value="ÜCRETLİ İZİN"
+${kayit.durum=="ÜCRETLİ İZİN"?"selected":""}>
+ÜCRETLİ İZİN
+</option>
+
+<option value="ÜCRETSİZ İZİN"
+${kayit.durum=="ÜCRETSİZ İZİN"?"selected":""}>
+ÜCRETSİZ İZİN
+</option>
+
+<option value="RAPOR"
 ${kayit.durum=="RAPOR"?"selected":""}>
 RAPOR
 </option>
 
-<option
+<option value="HAFTA TATİLİ"
 ${kayit.durum=="HAFTA TATİLİ"?"selected":""}>
 HAFTA TATİLİ
+</option>
+
+<option value="GÖREVE GELMEDİ"
+${kayit.durum=="GÖREVE GELMEDİ"?"selected":""}>
+GÖREVE GELMEDİ
 </option>
 
 </select>
@@ -8054,41 +9027,43 @@ onclick="surucuVardiyaAmiriPaneli()">
 function operasyonKaydet(sicil){
 
     const tarih =
-    document.getElementById("operasyonTarih")
-    ? document.getElementById("operasyonTarih").value
-    : new Date().toISOString().split("T")[0];
+        document.getElementById("operasyonTarih")
+        ? document.getElementById("operasyonTarih").value
+        : new Date().toISOString().split("T")[0];
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const kayit =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil);
+            return String(k.sicil) === String(sicil);
 
-    });
+        });
 
     if(!kayit) return;
 
-    kayit.gorevKodu =
-    document.getElementById("duzenleGorevKodu").value;
+    kayit.gorevNo =
+        document.getElementById("duzenleGorevNo").value;
 
-    kayit.platform =
-    document.getElementById("duzenlePlatform").value;
+    kayit.gorev =
+        document.getElementById("duzenleGorev").value;
 
-    kayit.tarife =
-    document.getElementById("duzenleTarife").value;
+    kayit.servisGelis =
+        document.getElementById("duzenleServisGelis").value;
 
-    kayit.baslangic =
-    document.getElementById("duzenleBaslangic").value;
+    kayit.gorevBaslangic =
+        document.getElementById("duzenleGorevBaslangic").value;
 
-    kayit.bitis =
-    document.getElementById("duzenleBitis").value;
+    kayit.gorevBitis =
+        document.getElementById("duzenleGorevBitis").value;
 
     kayit.durum =
-    document.getElementById("duzenleDurum").value;
+        document.getElementById("duzenleDurum").value;
+
+    kayit.degistirildi = true;
 
     gunlukVardiyaArsiviKaydet();
 
@@ -8101,26 +9076,26 @@ function operasyonKaydet(sicil){
 function operasyonDegistir(sicil){
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih").value;
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     let secenekler = "";
 
-    vardiya.personeller.forEach(function(k){
+    vardiya.gorevler.forEach(function(k){
 
-        if(String(k.sicil)!==String(sicil)){
+        if(String(k.sicil) !== String(sicil)){
 
             secenekler += `
 
 <option value="${k.sicil}">
 
-${k.adSoyad}
+${k.personelAdi}
 
-(${k.gorevKodu})
+(${k.gorevNo} - ${k.gorev})
 
 </option>
 
@@ -8168,125 +9143,138 @@ ${secenekler}
 
 }
 function operasyonDegisimKaydet(sicil1){
-if(
 
-!confirm(
+    if(
+        !confirm(
+            "Bu iki personelin görevleri karşılıklı değiştirilecek.\n\nDevam etmek istiyor musunuz?"
+        )
+    ){
+        return;
+    }
 
-"Bu iki personelin görevleri karşılıklı değiştirilecek.\n\nDevam etmek istiyor musunuz?"
-
-)
-
-){
-
-    return;
-
-}
     const tarih =
-    document.getElementById("operasyonTarih")
-    ? document.getElementById("operasyonTarih").value
-    : new Date().toISOString().split("T")[0];
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const sicil2 =
-    document.getElementById("hedefPersonel").value;
+        document.getElementById("hedefPersonel").value;
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const p1 =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil1);
+            return String(k.sicil) === String(sicil1);
 
-    });
+        });
 
     const p2 =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil2);
+            return String(k.sicil) === String(sicil2);
 
-    });
+        });
 
     if(!p1 || !p2){
 
         alert("Personeller bulunamadı.");
-
         return;
 
     }
 
     const gecici = {
 
-        gorevKodu : p1.gorevKodu,
-        gorevAdi : p1.gorevAdi,
-        platform : p1.platform,
-        tarife : p1.tarife,
-        baslangic : p1.baslangic,
-        bitis : p1.bitis
+        gorevNo         : p1.gorevNo,
+        gorev           : p1.gorev,
+        platform        : p1.platform,
+        tarife          : p1.tarife,
+        servisGelis     : p1.servisGelis,
+        cikistaHazirlik : p1.cikistaHazirlik,
+        depoCikis       : p1.depoCikis,
+        gorevBaslangic  : p1.gorevBaslangic,
+        aracTeslim      : p1.aracTeslim,
+        gorevBitis      : p1.gorevBitis,
+        depoya          : p1.depoya,
+        donusteHazirlik : p1.donusteHazirlik,
+        servisCikis     : p1.servisCikis
 
     };
 
-    p1.gorevKodu = p2.gorevKodu;
-    p1.gorevAdi = p2.gorevAdi;
-    p1.platform = p2.platform;
-    p1.tarife = p2.tarife;
-    p1.baslangic = p2.baslangic;
-    p1.bitis = p2.bitis;
+    p1.gorevNo         = p2.gorevNo;
+    p1.gorev           = p2.gorev;
+    p1.platform        = p2.platform;
+    p1.tarife          = p2.tarife;
+    p1.servisGelis     = p2.servisGelis;
+    p1.cikistaHazirlik = p2.cikistaHazirlik;
+    p1.depoCikis       = p2.depoCikis;
+    p1.gorevBaslangic  = p2.gorevBaslangic;
+    p1.aracTeslim      = p2.aracTeslim;
+    p1.gorevBitis      = p2.gorevBitis;
+    p1.depoya          = p2.depoya;
+    p1.donusteHazirlik = p2.donusteHazirlik;
+    p1.servisCikis     = p2.servisCikis;
 
-    p2.gorevKodu = gecici.gorevKodu;
-    p2.gorevAdi = gecici.gorevAdi;
-    p2.platform = gecici.platform;
-    p2.tarife = gecici.tarife;
-    p2.baslangic = gecici.baslangic;
-    p2.bitis = gecici.bitis;
+    p2.gorevNo         = gecici.gorevNo;
+    p2.gorev           = gecici.gorev;
+    p2.platform        = gecici.platform;
+    p2.tarife          = gecici.tarife;
+    p2.servisGelis     = gecici.servisGelis;
+    p2.cikistaHazirlik = gecici.cikistaHazirlik;
+    p2.depoCikis       = gecici.depoCikis;
+    p2.gorevBaslangic  = gecici.gorevBaslangic;
+    p2.aracTeslim      = gecici.aracTeslim;
+    p2.gorevBitis      = gecici.gorevBitis;
+    p2.depoya          = gecici.depoya;
+    p2.donusteHazirlik = gecici.donusteHazirlik;
+    p2.servisCikis     = gecici.servisCikis;
+
+    p1.degistirildi = true;
+    p2.degistirildi = true;
 
     manuelDegisimLogKaydet({
 
-    tarih : tarih,
+        tip : "MANUEL_GOREV_DEGISIKLIGI",
 
-    islemTarihi :
-    new Date().toLocaleString("tr-TR"),
+        tarih : tarih,
 
-    yapan :
+        islemTarihi :
+            new Date().toLocaleString("tr-TR"),
 
-    aktifKullanici
-    ? aktifKullanici.adSoyad
-    : "",
+        yapan :
+            aktifKullanici
+            ? aktifKullanici.adSoyad
+            : "",
 
-    yapanSicil :
+        yapanSicil :
+            aktifKullanici
+            ? aktifKullanici.sicil
+            : "",
 
-    aktifKullanici
-    ? aktifKullanici.sicil
-    : "",
+        personel1 : {
 
-    personel1 : {
+            sicil : p1.sicil,
+            adSoyad : p1.personelAdi
 
-        sicil : p1.sicil,
+        },
 
-        adSoyad : p1.adSoyad
+        personel2 : {
 
-    },
+            sicil : p2.sicil,
+            adSoyad : p2.personelAdi
 
-    personel2 : {
+        },
 
-        sicil : p2.sicil,
+        eskiGorev1 : gecici.gorevNo,
+        yeniGorev1 : p1.gorevNo,
 
-        adSoyad : p2.adSoyad
+        eskiGorev2 : p2.gorevNo,
+        yeniGorev2 : gecici.gorevNo
 
-    },
+    });
 
-    eskiGorev1 : gecici.gorevKodu,
-
-    yeniGorev1 : p1.gorevKodu,
-
-    eskiGorev2 : p2.gorevKodu,
-
-    yeniGorev2 : gecici.gorevKodu,
-
-    tip : "MANUEL_GOREV_DEGISIKLIGI"
-
-});
     gunlukVardiyaArsiviKaydet();
 
     alert("Görev değişikliği tamamlandı.");
@@ -8294,23 +9282,20 @@ if(
     surucuVardiyaAmiriPaneli();
 
 }
+
 function manuelDegisimLogKaydet(log){
 
     manuelDegisimLoglari.unshift(log);
 
     localStorage.setItem(
-
         "manuelDegisimLoglari",
-
         JSON.stringify(manuelDegisimLoglari)
-
     );
 
 }
-
 function operasyonYeniGorev(){
 
-    document.getElementById("icerik").innerHTML=`
+    document.getElementById("icerik").innerHTML = `
 
 <h2>➕ Yeni Görev Oluştur</h2>
 
@@ -8321,24 +9306,34 @@ function operasyonYeniGorev(){
 <select id="yeniPersonel">
 
 ${personelListesi
-.filter(p=>p.gorev==="Vatman")
+.filter(function(p){
+
+    return p.gorev === "VATMAN";
+
+})
 .map(function(p){
 
-return `<option value="${p.sicil}">
+    return `
+
+<option value="${p.sicil}">
+
 ${p.ad} ${p.soyad}
-</option>`;
+
+</option>
+
+`;
 
 }).join("")}
 
 </select>
 
-<label>Görev Kodu</label>
+<label>Görev No</label>
 
-<input id="yeniGorevKodu">
+<input id="yeniGorevNo">
 
-<label>Görev Adı</label>
+<label>Görev</label>
 
-<input id="yeniGorevAdi">
+<input id="yeniGorev">
 
 <label>Platform</label>
 
@@ -8348,13 +9343,13 @@ ${p.ad} ${p.soyad}
 
 <input id="yeniTarife">
 
-<label>Başlangıç</label>
+<label>Servis Geliş</label>
 
-<input type="time" id="yeniBaslangic">
+<input id="yeniServisGelis" type="time">
 
-<label>Bitiş</label>
+<label>Görev Bitiş</label>
 
-<input type="time" id="yeniBitis">
+<input id="yeniGorevBitis" type="time">
 
 <br><br>
 
@@ -8375,51 +9370,64 @@ ${p.ad} ${p.soyad}
 `;
 
 }
+
 function yeniGorevKaydet(){
 
     const tarih =
-    document.getElementById("operasyonTarih")
-    ? document.getElementById("operasyonTarih").value
-    : new Date().toISOString().split("T")[0];
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const vardiya =
-    yeniGunlukVardiyaOlustur(tarih);
+        yeniGunlukVardiyaOlustur(tarih);
 
     const sicil =
-    document.getElementById("yeniPersonel").value;
+        document.getElementById("yeniPersonel").value;
 
     const personel =
-    personelListesi.find(function(p){
+        personelListesi.find(function(p){
 
-        return String(p.sicil)==String(sicil);
+            return String(p.sicil) === String(sicil);
 
-    });
+        });
 
-    vardiya.personeller.push({
+    if(!personel){
 
-        sicil:sicil,
+        alert("Personel bulunamadı.");
+        return;
 
-        adSoyad:personel.ad+" "+personel.soyad,
+    }
 
-        gorevKodu:
-        document.getElementById("yeniGorevKodu").value,
+    vardiya.gorevler.push({
 
-        gorevAdi:
-        document.getElementById("yeniGorevAdi").value,
+        id: crypto.randomUUID(),
+
+        sicil: personel.sicil,
+
+        personelAdi: personel.ad + " " + personel.soyad,
+
+        gorevNo:
+            document.getElementById("yeniGorevNo").value,
+
+        gorev:
+            document.getElementById("yeniGorev").value,
 
         platform:
-        document.getElementById("yeniPlatform").value,
+            document.getElementById("yeniPlatform").value,
 
         tarife:
-        document.getElementById("yeniTarife").value,
+            document.getElementById("yeniTarife").value,
 
-        baslangic:
-        document.getElementById("yeniBaslangic").value,
+        servisGelis:
+            document.getElementById("yeniServisGelis").value,
 
-        bitis:
-        document.getElementById("yeniBitis").value,
+        gorevBitis:
+            document.getElementById("yeniGorevBitis").value,
 
-        durum:"ATANDI"
+        durum: "ATANDI",
+
+        degistirildi: false,
+
+        degisiklikler: []
 
     });
 
@@ -8441,25 +9449,15 @@ function operasyonIzin(sicil){
 <select id="izinTuru">
 
 <option>YILLIK İZİN</option>
-
 <option>MAZERET İZNİ</option>
-
 <option>ÜCRETLİ İZİN</option>
-
 <option>ÜCRETSİZ İZİN</option>
-
 <option>ÜCRETLİ SAATLİK İZİN</option>
-
 <option>ÜCRETSİZ SAATLİK İZİN</option>
-
 <option>SENDİKAL İZİN</option>
-
 <option>DOĞUM İZNİ</option>
-
 <option>BABALIK İZNİ</option>
-
 <option>KADINLAR GÜNÜ İZNİ</option>
-
 <option>DÜĞÜN İZNİ</option>
 
 </select>
@@ -8483,41 +9481,45 @@ function operasyonIzin(sicil){
 `;
 
 }
+
 function izinKaydet(sicil){
 
     const tarih =
-    document.getElementById("operasyonTarih")
-    ? document.getElementById("operasyonTarih").value
-    : new Date().toISOString().split("T")[0];
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const kayit =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil);
+            return String(k.sicil) === String(sicil);
 
-    });
+        });
 
     if(!kayit) return;
 
     kayit.durum =
-    document.getElementById("izinTuru").value;
+        document.getElementById("izinTuru").value;
 
-    kayit.gorevKodu = "";
-
-    kayit.gorevAdi = "";
-
+    kayit.gorevNo = "";
+    kayit.gorev = "";
     kayit.platform = "";
-
     kayit.tarife = "";
+    kayit.servisGelis = "";
+    kayit.cikistaHazirlik = "";
+    kayit.depoCikis = "";
+    kayit.gorevBaslangic = "";
+    kayit.aracTeslim = "";
+    kayit.gorevBitis = "";
+    kayit.depoya = "";
+    kayit.donusteHazirlik = "";
+    kayit.servisCikis = "";
 
-    kayit.baslangic = "";
-
-    kayit.bitis = "";
+    kayit.degistirildi = true;
 
     gunlukVardiyaArsiviKaydet();
 
@@ -8526,6 +9528,7 @@ function izinKaydet(sicil){
     surucuVardiyaAmiriPaneli();
 
 }
+
 function operasyonRapor(sicil){
 
     if(!confirm("Personel raporlu olarak işaretlensin mi?")){
@@ -8535,35 +9538,40 @@ function operasyonRapor(sicil){
     }
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const kayit =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil);
+            return String(k.sicil) === String(sicil);
 
-    });
+        });
 
     if(!kayit) return;
 
     kayit.durum = "RAPOR";
 
-    kayit.gorevKodu = "";
-
-    kayit.gorevAdi = "";
-
+    kayit.gorevNo = "";
+    kayit.gorev = "";
     kayit.platform = "";
-
     kayit.tarife = "";
+    kayit.servisGelis = "";
+    kayit.cikistaHazirlik = "";
+    kayit.depoCikis = "";
+    kayit.gorevBaslangic = "";
+    kayit.aracTeslim = "";
+    kayit.gorevBitis = "";
+    kayit.depoya = "";
+    kayit.donusteHazirlik = "";
+    kayit.servisCikis = "";
 
-    kayit.baslangic = "";
-
-    kayit.bitis = "";
+    kayit.degistirildi = true;
 
     gunlukVardiyaArsiviKaydet();
 
@@ -8572,7 +9580,6 @@ function operasyonRapor(sicil){
     surucuVardiyaAmiriPaneli();
 
 }
-
 function operasyonGelmedi(sicil){
 
     if(!confirm("Personel göreve gelmedi olarak işaretlensin mi?")){
@@ -8582,35 +9589,40 @@ function operasyonGelmedi(sicil){
     }
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
     const kayit =
-    vardiya.personeller.find(function(k){
+        vardiya.gorevler.find(function(k){
 
-        return String(k.sicil)==String(sicil);
+            return String(k.sicil) === String(sicil);
 
-    });
+        });
 
     if(!kayit) return;
 
     kayit.durum = "GÖREVE GELMEDİ";
 
-    kayit.gorevKodu = "";
-
-    kayit.gorevAdi = "";
-
+    kayit.gorevNo = "";
+    kayit.gorev = "";
     kayit.platform = "";
-
     kayit.tarife = "";
+    kayit.servisGelis = "";
+    kayit.cikistaHazirlik = "";
+    kayit.depoCikis = "";
+    kayit.gorevBaslangic = "";
+    kayit.aracTeslim = "";
+    kayit.gorevBitis = "";
+    kayit.depoya = "";
+    kayit.donusteHazirlik = "";
+    kayit.servisCikis = "";
 
-    kayit.baslangic = "";
-
-    kayit.bitis = "";
+    kayit.degistirildi = true;
 
     gunlukVardiyaArsiviKaydet();
 
@@ -8629,29 +9641,31 @@ function operasyonSil(sicil){
     }
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya) return;
 
-    vardiya.personeller =
-    vardiya.personeller.filter(function(k){
+    vardiya.gorevler =
+        vardiya.gorevler.filter(function(k){
 
-        return String(k.sicil)!==String(sicil);
+            return String(k.sicil) !== String(sicil);
 
-    });
+        });
 
     gunlukVardiyaArsiviKaydet();
 
     surucuVardiyaAmiriListele();
 
 }
+
 function musaitVatmanlariGetir(tarih){
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya){
 
@@ -8659,13 +9673,13 @@ function musaitVatmanlariGetir(tarih){
 
     }
 
-    return vardiya.personeller.filter(function(k){
+    return vardiya.gorevler.filter(function(k){
 
         return (
 
-            k.durum==="MÜSAİT" ||
+            k.durum === "MÜSAİT" ||
 
-            k.gorevKodu==="YEDEK"
+            k.gorevNo === "YEDEK"
 
         );
 
@@ -8675,24 +9689,25 @@ function musaitVatmanlariGetir(tarih){
 function yedekHavuzuAc(){
 
     const tarih =
-    document.getElementById("operasyonTarih").value;
+        document.getElementById("operasyonTarih")?.value ||
+        new Date().toISOString().split("T")[0];
 
     const liste =
-    musaitVatmanlariGetir(tarih);
+        musaitVatmanlariGetir(tarih);
 
-    let satirlar="";
+    let satirlar = "";
 
     liste.forEach(function(k){
 
-        satirlar+=`
+        satirlar += `
 
 <tr>
 
 <td>${k.sicil}</td>
 
-<td>${k.adSoyad}</td>
+<td>${k.personelAdi}</td>
 
-<td>${k.gorevKodu}</td>
+<td>${k.durum}</td>
 
 <td>
 
@@ -8710,7 +9725,25 @@ function yedekHavuzuAc(){
 
     });
 
-    document.getElementById("icerik").innerHTML=`
+    if(satirlar === ""){
+
+        satirlar = `
+
+<tr>
+
+<td colspan="4" style="text-align:center;">
+
+Uygun yedek personel bulunamadı.
+
+</td>
+
+</tr>
+
+`;
+
+    }
+
+    document.getElementById("icerik").innerHTML = `
 
 <h2>
 
@@ -8744,8 +9777,7 @@ ${satirlar}
 
 </table>
 
-<button
-onclick="surucuVardiyaAmiriPaneli()">
+<button onclick="surucuVardiyaAmiriPaneli()">
 
 ⬅ Geri
 
@@ -8754,36 +9786,33 @@ onclick="surucuVardiyaAmiriPaneli()">
 `;
 
 }
+
 function yedekAta(sicil){
 
     alert(
 
-    sicil+
+        sicil +
 
-    " yedek atama ekranı hazırlanıyor."
+        " yedek atama ekranı hazırlanıyor."
 
     );
 
 }
+
 function operasyonOzeti(tarih){
 
     const vardiya =
-    gunlukVardiyaBul(tarih);
+        gunlukVardiyaBul(tarih);
 
     if(!vardiya){
 
         return{
 
             atandi:0,
-
             izinli:0,
-
             rapor:0,
-
             gelmedi:0,
-
             yedek:0,
-
             degisim:0
 
         };
@@ -8793,62 +9822,48 @@ function operasyonOzeti(tarih){
     const sonuc={
 
         atandi:0,
-
         izinli:0,
-
         rapor:0,
-
         gelmedi:0,
-
         yedek:0,
-
         degisim:0
 
     };
 
-    vardiya.personeller.forEach(function(k){
+    vardiya.gorevler.forEach(function(k){
 
         switch(k.durum){
 
             case "ATANDI":
-
                 sonuc.atandi++;
-
                 break;
 
             case "RAPOR":
-
                 sonuc.rapor++;
-
                 break;
 
             case "GÖREVE GELMEDİ":
-
                 sonuc.gelmedi++;
-
                 break;
 
             case "YILLIK İZİN":
-
             case "MAZERET İZNİ":
-
             case "ÜCRETLİ İZİN":
-
             case "ÜCRETSİZ İZİN":
-
             case "SENDİKAL İZİN":
-
+            case "DOĞUM İZNİ":
+            case "BABALIK İZNİ":
+            case "HAFTA TATİLİ":
                 sonuc.izinli++;
-
                 break;
 
         }
 
         if(
 
-            k.gorevKodu==="YEDEK" ||
+            k.gorevNo === "YEDEK" ||
 
-            k.durum==="MÜSAİT"
+            k.durum === "MÜSAİT"
 
         ){
 
@@ -8859,20 +9874,25 @@ function operasyonOzeti(tarih){
     });
 
     sonuc.degisim =
-    vatmanDegisimTalepleri.filter(function(t){
+        vatmanDegisimTalepleri.filter(function(t){
 
-        return t.tarih===tarih &&
-               !t.yayinlandi;
+            return (
+                t.tarih === tarih &&
+                !t.yayinlandi
+            );
 
-    }).length;
+        }).length;
 
     return sonuc;
 
 }
+
 function izinDurumuYansit(p){
-    // Eğer personelin izin bilgisi varsa durumunu güncelle
-    if(p.izinTuru){ 
-        // izinTuru: "Ücretli İzin", "Ücretsiz İzin", "Rapor", "Hafta Tatili" vb.
+
+    if(p.izinTuru){
+
         p.durum = "🟡 " + p.izinTuru;
+
     }
+
 }
