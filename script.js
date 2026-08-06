@@ -2745,6 +2745,316 @@ function operasyonGorevleriniDegistir(kayit){
     alert("Operasyonel görev değişikliği başarıyla uygulandı.");
 
 }
+function gorevDegisimTaleplerim(){
+
+    document.getElementById("icerik").innerHTML = `
+
+<h2>🔄 Görev Değişim Taleplerim</h2>
+
+<div class="toolbar">
+
+<button onclick="vatmanDegisimTalebi()">
+
+➕ Yeni Talep
+
+</button>
+
+</div>
+
+<div id="degisimTalepListe"></div>
+
+`;
+
+    gorevDegisimTalepListele();
+
+}
+function gorevDegisimTalepListele(){
+
+    const benimSicil = aktifKullanici.sicil;
+
+    const liste = vatmanDegisimTalepleri.filter(function(t){
+
+        return (
+
+            String(t.talepEdenSicil)===String(benimSicil) ||
+
+            String(t.degisenSicil)===String(benimSicil)
+
+        );
+
+    });
+
+    let satirlar="";
+
+    if(liste.length===0){
+
+        satirlar=`
+
+<tr>
+
+<td colspan="5"
+
+style="text-align:center;">
+
+Henüz görev değişim talebiniz bulunmuyor.
+
+</td>
+
+</tr>
+
+`;
+
+    }else{
+
+        liste.forEach(function(t){
+
+            satirlar += `
+
+<tr>
+
+<td>${t.tarih}</td>
+
+<td>${t.durum}</td>
+
+<td>${t.aciklama || "-"}</td>
+
+<td>
+
+<button
+
+onclick="degisimTalebiDetay(
+
+degisimTalebiBul(${t.id})
+
+)">
+
+👁 Görüntüle
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+        });
+
+    }
+
+    document.getElementById("degisimTalepListe").innerHTML = `
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Tarih</th>
+
+<th>Durum</th>
+
+<th>Açıklama</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
+
+}
+
+function banaGelenDegisimTalepleri(){
+
+    const liste =
+        vatmanDegisimTalepleri.filter(function(t){
+
+            return String(t.degisenSicil)===String(aktifKullanici.sicil);
+
+        });
+
+    let satirlar="";
+
+    if(liste.length===0){
+
+        satirlar=`
+
+<tr>
+
+<td colspan="6"
+
+style="text-align:center;">
+
+Size gönderilmiş görev değişim talebi bulunmuyor.
+
+</td>
+
+</tr>
+
+`;
+
+    }else{
+
+        liste.forEach(function(t){
+
+            const talepEden =
+                personelBul(t.talepEdenSicil);
+
+            satirlar += `
+
+<tr>
+
+<td>${t.tarih}</td>
+
+<td>
+
+${talepEden?.ad || "-"}
+
+${talepEden?.soyad || ""}
+
+</td>
+
+<td>${t.aciklama || "-"}</td>
+
+<td>${t.durum}</td>
+
+<td>
+
+<button
+
+onclick="karsiVatmanOnayla(${t.id})">
+
+✅ Kabul
+
+</button>
+
+<button
+
+onclick="karsiVatmanReddet(${t.id})">
+
+❌ Reddet
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+        });
+
+    }
+
+    document.getElementById("icerik").innerHTML=`
+
+<h2>📥 Bana Gelen Görev Değişim Talepleri</h2>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Tarih</th>
+
+<th>Talep Eden</th>
+
+<th>Açıklama</th>
+
+<th>Durum</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
+
+}
+function karsiVatmanOnayla(id){
+
+    const talep =
+        degisimTalebiBul(id);
+
+    if(!talep) return;
+
+    talep.karsiVatmanOnay = true;
+
+    talep.durum = "VARDIYA_AMIRI_BEKLIYOR";
+
+    vatmanDegisimKaydet();
+
+    bildirimEkle(
+
+        "DEGISIM",
+
+        "Yeni Onay",
+
+        "Karşı vatman değişim talebini kabul etti.",
+
+        "VARDIYA_AMIRI",
+
+        talep.id
+
+    );
+
+    alert("Talep kabul edildi.");
+
+    banaGelenDegisimTalepleri();
+
+}
+function karsiVatmanReddet(id){
+
+    const talep =
+        degisimTalebiBul(id);
+
+    if(!talep) return;
+
+    talep.durum = "REDDEDILDI";
+
+    vatmanDegisimKaydet();
+
+    bildirimEkle(
+
+        "DEGISIM",
+
+        "Görev Değişim Talebi",
+
+        "Görev değişim talebiniz reddedildi.",
+
+        "VATMAN",
+
+        talep.id,
+
+        talep.talepEdenSicil
+
+    );
+
+    alert("Talep reddedildi.");
+
+    banaGelenDegisimTalepleri();
+
+}
 function dashboardVerileri() {
 
     const toplamPersonel = personelListesi.length;
@@ -8241,9 +8551,16 @@ function bildirimOkundu(index){
 
     );
 
-    bildirimleriGoster();
+   bildirim.okundu = true;
 
-    bildirimIkonGuncelle();
+localStorage.setItem(
+    "bildirimler",
+    JSON.stringify(bildirimler)
+);
+
+bildirimAc(bildirim);
+
+bildirimIkonGuncelle();
 
 }
 function bildirimAc(talepId){
@@ -8261,6 +8578,48 @@ function bildirimAc(talepId){
     degisimTalebiDetay(talep);
 
 }
+function bildirimAc(bildirim){
+
+    if(!bildirim) return;
+
+    switch(bildirim.tur){
+
+        case "DEGISIM":
+
+            if(aktifKullanici.rol==="VATMAN"){
+
+                gorevDegisimTaleplerim();
+
+            }
+
+            else if(aktifKullanici.rol==="VARDIYA_AMIRI"){
+
+                vardiyaAmiriDegisimOnaylari();
+
+            }
+
+            else if(aktifKullanici.rol==="SURUCU_SEFI"){
+
+                surucuSefiDegisimOnaylari();
+
+            }
+
+            break;
+
+        case "VARDIYA":
+
+            gunlukSurucuVardiyaPlani();
+
+            break;
+
+        default:
+
+            bildirimleriGoster();
+
+    }
+
+}
+
 function bildirimIkonGuncelle(){
 
     const okunmamis =
@@ -8568,6 +8927,16 @@ function karsiVatmanOnayla(talepId){
 
     if(!talep) return;
 
+    if(
+    talep.karsiVatmanOnay ||
+    talep.durum !== "KARSI_VATMAN_BEKLIYOR"
+){
+
+    alert("Bu talep daha önce işlem görmüş.");
+
+    return;
+
+}
     talep.karsiVatmanOnay = true;
 
     talep.durum = "VARDIYA_AMIRI_BEKLIYOR";
@@ -8598,7 +8967,16 @@ function karsiVatmanReddet(talepId){
     const talep = degisimTalebiBul(talepId);
 
     if(!talep) return;
+if(
+    talep.karsiVatmanOnay ||
+    talep.durum !== "KARSI_VATMAN_BEKLIYOR"
+){
 
+    alert("Bu talep daha önce işlem görmüş.");
+
+    return;
+
+}
     talep.durum = "REDDEDILDI";
 
     vatmanDegisimKaydet();
@@ -8622,6 +9000,112 @@ function karsiVatmanReddet(talepId){
     alert("Talep reddedildi.");
 
     bildirimleriGoster();
+
+}
+function vardiyaAmiriDegisimOnaylari(){
+
+    const liste =
+        vatmanDegisimTalepleri.filter(function(t){
+
+            return t.durum==="VARDIYA_AMIRI_BEKLIYOR";
+
+        });
+
+    let satirlar="";
+
+    if(liste.length===0){
+
+        satirlar=`
+
+<tr>
+
+<td colspan="7" style="text-align:center;">
+
+Bekleyen görev değişim talebi bulunmuyor.
+
+</td>
+
+</tr>
+
+`;
+
+    }else{
+
+        liste.forEach(function(t){
+
+            const p1 = personelBul(t.talepEdenSicil);
+
+            const p2 = personelBul(t.degisenSicil);
+
+            satirlar += `
+
+<tr>
+
+<td>${t.tarih}</td>
+
+<td>${p1?.ad || "-"} ${p1?.soyad || ""}</td>
+
+<td>${p2?.ad || "-"} ${p2?.soyad || ""}</td>
+
+<td>${t.aciklama || "-"}</td>
+
+<td>
+
+<button onclick="degisimTalebiOnayla(${t.id})">
+
+✅ Onayla
+
+</button>
+
+<button onclick="degisimTalebiReddet(${t.id})">
+
+❌ Reddet
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+        });
+
+    }
+
+    document.getElementById("icerik").innerHTML=`
+
+<h2>📋 Bekleyen Görev Değişim Talepleri</h2>
+
+<table class="tablo">
+
+<thead>
+
+<tr>
+
+<th>Tarih</th>
+
+<th>Talep Eden</th>
+
+<th>Karşı Vatman</th>
+
+<th>Açıklama</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+${satirlar}
+
+</tbody>
+
+</table>
+
+`;
 
 }
 // Panel giriş kontrolü
@@ -9584,7 +10068,8 @@ function surucuVardiyaAmiriPaneli(){
     const seciliTarih =
         document.getElementById("operasyonTarih")
         ? document.getElementById("operasyonTarih").value
-: yarininTarihi();
+        : yarininTarihi();
+
     const ozet =
         operasyonOzeti(seciliTarih);
 
@@ -9656,6 +10141,14 @@ onchange="surucuVardiyaAmiriPaneli()">
 
 <button onclick="yedekHavuzuAc()">
 👥 Yedek Havuzu
+</button>
+
+<button onclick="operasyonDegisimleri()">
+🔄 Operasyonel Görev Değişiklikleri
+</button>
+
+<button onclick="vardiyaAmiriDegisimOnaylari()">
+📋 Bekleyen Görev Değişimleri
 </button>
 
 <button onclick="degisimListeleriniYayinla()">
