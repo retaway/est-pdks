@@ -1487,21 +1487,7 @@ function tarifeler() {
     </table>
     `;
 }
-/*(function vardiyaKaydiniOlustur(satir){
 
-    return {
-
-        gorevKodu : String(satir[0] || "").trim(),
-
-        gorevAdi  : String(satir[1] || "").trim(),
-
-        sicil     : "",
-
-        durum     : "ATANDI"
-
-    };*/
-
-}
 function excelSec(){
 
     const fileInput =
