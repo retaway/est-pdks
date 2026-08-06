@@ -939,7 +939,7 @@ function surucuSefligi() {
 
         <div class="kartlar">
 
-            <div class="kart" onclick="gunlukVardiya()">
+            <div class="kart" onclick="gunlukSurucuVardiyaPlani()">
                 📅
                 <h3>Günlük Vardiya</h3>
             </div>
@@ -2857,9 +2857,9 @@ break;
             gorevTarifeDegisimleri();
             break;
 
-        case "gunlukVardiya":
+        case "gunlukSurucuVardiyaPlani":
             sayfaBasligiYaz("Sürücü Günlük Vardiya Planı");
-            gunlukVardiya();
+            gunlukSurucuVardiyaPlani();
             break;
             
         case "surucuVardiyaAmiriPaneli":
@@ -2998,7 +2998,7 @@ function degisimDurum(index){
     degisimKodlari();
 }
 function vardiyaFiltreDegistir(filtre){
-    gunlukVardiyaFiltre = filtre;
+   gunlukSurucuVardiyaPlaniFiltre = filtre;
     gunlukSurucuVardiyaPlani();
 }
 
@@ -3109,7 +3109,7 @@ function gunlukSurucuVardiyaPlani() {
     let satirlar = "";
     
    const vardiya =
-gunlukVardiyaBul(tarih);
+gunlukSurucuVardiyaPlaniBul(tarih);
 
 const gorevler =
 vardiya?.gorevler || [];
@@ -3130,8 +3130,8 @@ gorevler.forEach(function(gorev){
 gorev.durum || "ATANMADI";
 
 if (
-    gunlukVardiyaFiltre !== "HEPSI" &&
-    durumBilgisi !== gunlukVardiyaFiltre
+    gunlukSurucuVardiyaPlaniFiltre !== "HEPSI" &&
+    durumBilgisi !== gunlukSurucuVardiyaPlaniFiltre
 ){
     return;
 }
@@ -3571,7 +3571,7 @@ function vardiyaDuzenle(sicil){
 💾 Kaydet
     </button>
 
-    <button onclick="gunlukVardiya()">
+    <button onclick="gunlukSurucuVardiyaPlani()">
         ⬅ Geri
     </button>
 
@@ -4042,7 +4042,7 @@ onclick="vatmanDegisimTalebiKaydet()">
 </button>
 
 <button
-onclick="gunlukVardiya()">
+onclick="gunlukSurucuVardiyaPlani()">
 
 ⬅ Geri
 
@@ -4117,7 +4117,7 @@ onclick="gunlukVardiya()">
 
     alert("Görev değişim talebiniz oluşturuldu.");
 
-    gunlukVardiya();
+    gunlukSurucuVardiyaPlani();
 
 }
     function degisecekVatmanSecildi(){
@@ -4581,7 +4581,7 @@ function gunSonuRaporu() {
 
         <br>
 
-        <button onclick="gunlukVardiya()">⬅ Günlük Vardiya</button>
+        <button onclick="gunlukSurucuVardiyaPlani()">⬅ Günlük Sürücü Vardiya Planı</button>
     `;
 }
 function degisimEtiketiBul(sicil, bugun) {
