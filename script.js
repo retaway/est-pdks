@@ -2054,7 +2054,30 @@ function tarifeKaydet(){
     alert("Tarife başarıyla kaydedildi.");
     tarifeler();
 }
+function gunlukPlanDosyasiSec() {
 
+    const input = document.getElementById("gunlukPlanDosyasi");
+
+    if (!input) {
+
+        console.error("gunlukPlanDosyasi input'u bulunamadı.");
+
+        alert("Dosya yükleme alanı bulunamadı.");
+
+        return;
+
+    }
+
+    // Aynı dosyanın tekrar seçilebilmesi için temizle
+    input.value = "";
+
+    // Güvenlik için uzantıları tekrar tanımla
+    input.accept = ".xlsx,.xls";
+
+    // Dosya seçme penceresini aç
+    input.click();
+
+}
 function calismaPlanlari() {
     document.getElementById("icerik").innerHTML = `
     <h2>📅 Çalışma Planları</h2>
@@ -7938,49 +7961,94 @@ async function havaDurumuGetir() {
 
         switch (kod) {
 
-            case 0:
-                durum = "☀️ Açık";
-                break;
+    case 0:
+        durum = "☀️ Açık";
+        break;
 
-            case 1:
-            case 2:
-                durum = "🌤 Az Bulutlu";
-                break;
+    case 1:
+        durum = "🌤 Az Bulutlu";
+        break;
 
-            case 3:
-                durum = "☁️ Bulutlu";
-                break;
+    case 2:
+        durum = "⛅ Parçalı Bulutlu";
+        break;
 
-            case 45:
-            case 48:
-                durum = "🌫 Sisli";
-                break;
+    case 3:
+        durum = "☁️ Bulutlu";
+        break;
 
-            case 51:
-            case 53:
-            case 55:
-                durum = "🌦 Çiseleme";
-                break;
+    case 45:
+    case 48:
+        durum = "🌫 Sisli";
+        break;
 
-            case 61:
-            case 63:
-            case 65:
-                durum = "🌧 Yağmurlu";
-                break;
+    case 51:
+    case 53:
+    case 55:
+        durum = "🌦 Hafif Çiseleme";
+        break;
 
-            case 71:
-            case 73:
-            case 75:
-                durum = "❄️ Karlı";
-                break;
+    case 56:
+    case 57:
+        durum = "🧊 Donan Çiseleme";
+        break;
 
-            case 95:
-                durum = "⛈ Fırtına";
-                break;
+    case 61:
+        durum = "🌦 Hafif Yağmur";
+        break;
 
-            default:
-                durum = "🌤";
-        }
+    case 63:
+        durum = "🌧 Yağmur";
+        break;
+
+    case 65:
+        durum = "🌧 Şiddetli Yağmur";
+        break;
+
+    case 66:
+    case 67:
+        durum = "🌨 Donan Yağmur";
+        break;
+
+    case 71:
+        durum = "🌨 Hafif Kar";
+        break;
+
+    case 73:
+        durum = "❄️ Kar";
+        break;
+
+    case 75:
+        durum = "❄️ Yoğun Kar";
+        break;
+
+    case 77:
+        durum = "🌨 Kar Taneleri";
+        break;
+
+    case 80:
+    case 81:
+    case 82:
+        durum = "🌦 Sağanak";
+        break;
+
+    case 85:
+    case 86:
+        durum = "❄️ Kar Sağanağı";
+        break;
+
+    case 95:
+        durum = "⛈ Fırtına";
+        break;
+
+    case 96:
+    case 99:
+        durum = "⛈ Dolu Yağışlı Fırtına";
+        break;
+
+    default:
+        durum = "🌡 Bilinmiyor";
+}
 
         alan.textContent = `Eskişehir • ${sicaklik}°C • ${durum}`;
 
@@ -9618,30 +9686,7 @@ function operasyonRapor(sicil){
     surucuVardiyaAmiriPaneli();
 
 }
-function gunlukPlanDosyasiSec() {
 
-    const input = document.getElementById("gunlukPlanDosyasi");
-
-    if (!input) {
-
-        console.error("gunlukPlanDosyasi input'u bulunamadı.");
-
-        alert("Dosya yükleme alanı bulunamadı.");
-
-        return;
-
-    }
-
-    // Aynı dosyanın tekrar seçilebilmesi için temizle
-    input.value = "";
-
-    // Güvenlik için uzantıları tekrar tanımla
-    input.accept = ".xlsx,.xls";
-
-    // Dosya seçme penceresini aç
-    input.click();
-
-}
 function operasyonGelmedi(sicil){
 
     if(!confirm("Personel göreve gelmedi olarak işaretlensin mi?")){
