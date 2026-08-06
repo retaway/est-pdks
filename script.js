@@ -9947,8 +9947,11 @@ function operasyonOzeti(tarih){
 
     };
 
-    vardiya.gorevler.forEach(function(k){
+const gorevler = Array.isArray(vardiya.gorevler)
+    ? vardiya.gorevler
+    : [];
 
+gorevler.forEach(function(k){
         switch(k.durum){
 
             case "ATANDI":
