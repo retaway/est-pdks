@@ -3583,51 +3583,84 @@ function gunlukPlanYukle(event){
 
     reader.onload = function(e){
 
-        const data = new Uint8Array(e.target.result);
+        try{
 
-        const workbook = XLSX.read(data,{
-            type:"array"
-        });
+            const data = new Uint8Array(e.target.result);
 
-        const sayfa =
-        workbook.Sheets[
-            workbook.SheetNames[0]
-        ];
+            const workbook = XLSX.read(data,{
+                type:"array"
+            });
 
-       gunlukPlanVerileri =
-XLSX.utils.sheet_to_json(
-    sayfa,
-    {
-        range: 4,
-        defval: "",
-        raw: false
-    }
-);
+            // İlk sayfayı oku
+            const sayfa =
+                workbook.Sheets[
+                    workbook.SheetNames[0]
+                ];
 
-        const tarih = yarininTarihi();
+            if(!sayfa){
+                alert("Excel sayfası okunamadı.");
+                return;
+            }
 
-const vardiya =
-yeniGunlukVardiyaOlustur(tarih);
+            gunlukPlanVerileri =
+                XLSX.utils.sheet_to_json(
+                    sayfa,
+                    {
+                        range:4,
+                        defval:"",
+                        raw:false
+                    }
+                );
 
-vardiya.gorevler = [];
+            if(gunlukPlanVerileri.length===0){
+                alert("Excel içerisinde okunacak kayıt bulunamadı.");
+                return;
+            }
 
-gunlukPlanVerileri.forEach(function(satir){
+            const tarih = yarininTarihi();
 
-    excelSatiriniVardiyayaAktar(
-        satir,
-        vardiya
-    );
+            const vardiya =
+                yeniGunlukVardiyaOlustur(tarih);
 
-});
+            // Eski planı temizle
+            vardiya.gorevler = [];
 
-gunlukVardiyaArsiviKaydet();
+            gunlukPlanVerileri.forEach(function(satir){
 
-alert(
-    vardiya.gorevler.length +
-    " görev başarıyla oluşturuldu."
-);
+                excelSatiriniVardiyayaAktar(
+                    satir,
+                    vardiya
+                );
 
-gunlukSurucuVardiyaPlani();
+            });
+
+            vardiya.durum = "TASLAK";
+            vardiya.yayinTarihi = new Date().toLocaleString("tr-TR");
+            vardiya.yayinlayan =
+                aktifKullanici
+                    ? aktifKullanici.sicil
+                    : "";
+
+            gunlukVardiyaArsiviKaydet();
+
+            alert(
+                vardiya.gorevler.length +
+                " görev başarıyla yüklendi."
+            );
+
+            gunlukSurucuVardiyaPlani();
+
+        }
+        catch(hata){
+
+            console.error(hata);
+
+            alert(
+                "Excel okunurken hata oluştu.\n\n" +
+                hata.message
+            );
+
+        }
 
     };
 
@@ -3638,7 +3671,17 @@ function excelSatiriniVardiyayaAktar(satir, vardiya){
 
     const adSoyad = temizMetin(satir["İSİM"]);
 
+    // Boş satırları geç
     if(adSoyad === ""){
+        return;
+    }
+
+    // Hat başlıklarını geç
+    if(
+        adSoyad.includes("HAT") ||
+        adSoyad.includes("OTOGAR") ||
+        adSoyad.includes("SSK")
+    ){
         return;
     }
 
@@ -3657,9 +3700,13 @@ function excelSatiriniVardiyayaAktar(satir, vardiya){
 
     const gorev = {
 
-        id: crypto.randomUUID ? crypto.randomUUID() : Date.now() + "_" + Math.random(),
+        id: crypto.randomUUID
+            ? crypto.randomUUID()
+            : Date.now() + "_" + Math.random(),
 
         sicil: personel.sicil,
+
+        personelAdi: personel.ad + " " + personel.soyad,
 
         ad: personel.ad,
 
