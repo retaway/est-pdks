@@ -363,7 +363,7 @@ let gunlukVardiyaFiltre = "HEPSI";
 let gorevTarifeFiltreTarih = new Date().toISOString().split("T")[0];
 let gorevTarifeArama = "";
 
-/*function kullaniciYonetimi() {
+function kullaniciYonetimi() {
 
     let satirlar = "";
 
@@ -433,8 +433,8 @@ personelListesi.forEach(function (p) {
         </option>
     `;
 
-}); */
-/*function yeniKullanici() {
+}); 
+function yeniKullanici() {
     
 alert("Yeni kullanıcı oluşturma işlemi artık Personel Yönetimi üzerinden yapılmaktadır.");
 
@@ -525,8 +525,8 @@ gorevleriYukle(p.gorev);
         alert("Önce İnsan Kaynakları modülünden personel oluşturmalısınız.");
     }
 
-} */
-/* function kullaniciKaydet() {
+} 
+function kullaniciKaydet() {
 
     const kullanici = document.getElementById("kullaniciAdi").value.trim();
     const sifre = document.getElementById("kullaniciSifre").value.trim();
