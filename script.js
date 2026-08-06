@@ -28,11 +28,26 @@ function gunlukVardiyaArsiviKaydet(){
 }
 function gunlukVardiyaBul(tarih){
 
-    return gunlukVardiyaArsivi.find(function(v){
+    const vardiya = gunlukVardiyaArsivi.find(function(v){
 
         return String(v.tarih) === String(tarih);
 
-    }) || null;
+    });
+
+    if(!vardiya){
+        return null;
+    }
+
+    // Eski kayıtları yeni formata dönüştür
+    if(!Array.isArray(vardiya.gorevler)){
+        vardiya.gorevler = [];
+    }
+
+    if(!Array.isArray(vardiya.degisiklikler)){
+        vardiya.degisiklikler = [];
+    }
+
+    return vardiya;
 
 }
 function gunlukSurucuVardiyaPlaniBul(tarih){
@@ -71,39 +86,47 @@ function yeniGunlukVardiyaOlustur(tarih){
 
     if(vardiya){
 
-        return vardiya;
+        if(!Array.isArray(vardiya.gorevler)){
+            vardiya.gorevler = [];
+        }
 
+        if(!Array.isArray(vardiya.degisiklikler)){
+            vardiya.degisiklikler = [];
+        }
+
+        return vardiya;
     }
 
-   vardiya = {
+    vardiya = {
 
-    tarih: tarih,
+        tarih: tarih,
 
-    planAdi: "",
+        planAdi: "",
 
-    planDosyasi: "",
+        planDosyasi: "",
 
-    planVersiyon: 1,
+        planVersiyon: 1,
 
-    planDurumu: "TASLAK",
+        planDurumu: "TASLAK",
 
-    ilkYuklemeTarihi: "",
+        ilkYuklemeTarihi: "",
 
-    sonGuncellemeTarihi: "",
+        sonGuncellemeTarihi: "",
 
-    ilkYukleyen: "",
+        ilkYukleyen: "",
 
-    sonGuncelleyen: "",
+        sonGuncelleyen: "",
 
-    vatmanlaraGonderildi: false,
+        vatmanlaraGonderildi: false,
 
-    vatmanlaraGondermeTarihi: "",
+        vatmanlaraGondermeTarihi: "",
 
-    gorevler: [],
+        gorevler: [],
 
-    degisiklikler: []
+        degisiklikler: []
 
-};
+    };
+
     gunlukVardiyaArsivi.push(vardiya);
 
     gunlukVardiyaArsiviKaydet();
@@ -111,12 +134,6 @@ function yeniGunlukVardiyaOlustur(tarih){
     return vardiya;
 
 }
-/*let gunlukVardiyalar =
-JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
-let tarifeDosyasi = null;
-let tarifeVerileri = [];*/
-
-// Günlük Sürücü Vardiya Planı
 let gunlukPlanDosyasi = null;
 let gunlukPlanVerileri = [];
 let vatmanDegisimTalepleri =
@@ -8576,8 +8593,7 @@ function surucuVardiyaAmiriPaneli(){
     const seciliTarih =
         document.getElementById("operasyonTarih")
         ? document.getElementById("operasyonTarih").value
-        : new Date().toISOString().split("T")[0];
-
+: yarininTarihi();
     const ozet =
         operasyonOzeti(seciliTarih);
 
@@ -9913,40 +9929,34 @@ function yedekAta(sicil){
 
 function operasyonOzeti(tarih){
 
-    const vardiya =
-        gunlukVardiyaBul(tarih);
+    const vardiya = gunlukVardiyaBul(tarih);
 
     if(!vardiya){
-
-        return{
-
+        return {
             atandi:0,
             izinli:0,
             rapor:0,
             gelmedi:0,
             yedek:0,
             degisim:0
-
         };
-
     }
 
-    const sonuc={
+    const gorevler = Array.isArray(vardiya.gorevler)
+        ? vardiya.gorevler
+        : [];
 
+    const sonuc = {
         atandi:0,
         izinli:0,
         rapor:0,
         gelmedi:0,
         yedek:0,
         degisim:0
-
     };
 
-const gorevler = Array.isArray(vardiya.gorevler)
-    ? vardiya.gorevler
-    : [];
+    gorevler.forEach(function(k){
 
-gorevler.forEach(function(k){
         switch(k.durum){
 
             case "ATANDI":
@@ -9971,35 +9981,22 @@ gorevler.forEach(function(k){
             case "HAFTA TATİLİ":
                 sonuc.izinli++;
                 break;
-
         }
 
         if(
-
             k.gorevNo === "YEDEK" ||
-
             k.durum === "MÜSAİT"
-
         ){
-
             sonuc.yedek++;
-
         }
 
     });
 
-    sonuc.degisim =
-        vatmanDegisimTalepleri.filter(function(t){
-
-            return (
-                t.tarih === tarih &&
-                !t.yayinlandi
-            );
-
-        }).length;
+    sonuc.degisim = vatmanDegisimTalepleri.filter(function(t){
+        return t.tarih === tarih && !t.yayinlandi;
+    }).length;
 
     return sonuc;
-
 }
 
 function izinDurumuYansit(p){
