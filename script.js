@@ -35,6 +35,11 @@ function gunlukVardiyaBul(tarih){
     }) || null;
 
 }
+function gunlukSurucuVardiyaPlaniBul(tarih){
+
+    return gunlukVardiyaBul(tarih);
+
+}
 function personelGunlukVardiyasiGetir(sicil, tarih){
 
     const vardiya = gunlukVardiyaBul(tarih);
