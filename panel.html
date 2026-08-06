@@ -85,31 +85,37 @@
         <span>Tarifeler</span>
     </li>
 
-<li onclick="sayfaGoster('gunlukSurucuVardiyaPlani')">
-    <i class="fas fa-calendar-days"></i>
-    <span>Günlük Sürücü Vardiya Planı</span>
-</li>
-    
-<li id="menuVatmanDegisim" style="display:none;">
+    <li onclick="sayfaGoster('gunlukSurucuVardiyaPlani')">
+        <i class="fas fa-calendar-days"></i>
+        <span>Günlük Sürücü Vardiya Planı</span>
+    </li>
 
-    <a href="#"
+    <!-- SADECE VATMAN GÖRECEK -->
+    <li id="menuVatmanDegisim" style="display:none;">
+        <a href="#" onclick="gorevDegisimTaleplerim()">
+            <i class="fas fa-right-left"></i>
+            <span>Görev Değişim Taleplerim</span>
+        </a>
+    </li>
 
-       onclick="gorevDegisimTaleplerim()">
+    <!-- SADECE VARDİYA AMİRİ GÖRECEK -->
+    <li id="menuVardiyaAmiriDegisim" style="display:none;">
+        <a href="#" onclick="vardiyaAmiriDegisimOnaylari()">
+            <i class="fas fa-clipboard-check"></i>
+            <span>Bekleyen Görev Değişimleri</span>
+        </a>
+    </li>
 
-        🔄 Görev Değişim Taleplerim
-
-    </a>
-
-</li>
-    
     <li onclick="sayfaGoster('surucuVardiyaAmiriPaneli')">
-    🚦 Sürücü Vardiya Amiri Paneli
-</li>
-    
-<li onclick="sayfaGoster('personelDegisimleri')">
-    🔄 Personel Değişimleri
-</li>
-    
+        <i class="fas fa-traffic-light"></i>
+        <span>Sürücü Vardiya Amiri Paneli</span>
+    </li>
+
+    <li onclick="sayfaGoster('personelDegisimleri')">
+        <i class="fas fa-users-gear"></i>
+        <span>Personel Değişimleri</span>
+    </li>
+
     <li onclick="sayfaGoster('personelDegisimi')">
         <i class="fas fa-right-left"></i>
         <span>Görev / Tarife Değişimleri</span>
