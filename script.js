@@ -3212,15 +3212,21 @@ switch (durumBilgisi) {
         break;
 }
 
-       const duzenleButonu =
+      const duzenleButonu =
 (
     durumBilgisi === "ATANDI" ||
     durumBilgisi === "ATANMADI"
 )
+? `
 <button onclick="gorevOperasyonPaneli('${gorev.gorevNo}')">
     ⚙️ İşlem
 </button>
-: `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
+`
+: `
+<button disabled title="Bu kayıt İK durumu olarak tanımlı.">
+    👁️
+</button>
+`;
 
 satirlar += `
 <tr ${satirRengi}>
