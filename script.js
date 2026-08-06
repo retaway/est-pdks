@@ -3246,11 +3246,6 @@ function vardiyaDurumuBul(personel, tarih) {
         })
         : null;
 
-            return String(g.sicil) === String(personel.sicil);
-
-        })
-        : null;
-
     // 3- İK kaydı varsa (izin, rapor vb.)
     if (ikKaydi) {
 
