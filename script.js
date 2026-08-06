@@ -3237,8 +3237,14 @@ function vardiyaDurumuBul(personel, tarih) {
     // 2- Günlük vardiyayı bul
     const vardiya = gunlukVardiyaBul(tarih);
 
-    const gunlukKayit = vardiya
-        ? vardiya.gorevler.find(function (g) {
+    const gunlukKayit =
+    vardiya && Array.isArray(vardiya.gorevler)
+        ? vardiya.gorevler.find(function(g){
+
+            return String(g.sicil) === String(personel.sicil);
+
+        })
+        : null;
 
             return String(g.sicil) === String(personel.sicil);
 
@@ -4299,11 +4305,15 @@ ${tarih} tarihine ait vardiya henüz oluşturulmamıştır.
 
     }
 
-    const benimVardiyam = vardiya.gorevler.find(function(g){
+   const gorevler = Array.isArray(vardiya.gorevler)
+    ? vardiya.gorevler
+    : [];
 
-        return String(g.sicil) === String(aktifKullanici.sicil);
+const benimVardiyam = gorevler.find(function(g){
 
-    });
+    return String(g.sicil) === String(aktifKullanici.sicil);
+
+});
 
     if(!benimVardiyam){
 
