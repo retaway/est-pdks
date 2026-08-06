@@ -70,20 +70,35 @@ function yeniGunlukVardiyaOlustur(tarih){
 
     }
 
-    vardiya = {
+   vardiya = {
 
-        tarih:tarih,
+    tarih: tarih,
 
-        durum:"TASLAK",
+    planAdi: "",
 
-        yayinlayan:"",
+    planDosyasi: "",
 
-        yayinTarihi:"",
+    planVersiyon: 1,
 
-        personeller:[]
+    planDurumu: "TASLAK",
 
-    };
+    ilkYuklemeTarihi: "",
 
+    sonGuncellemeTarihi: "",
+
+    ilkYukleyen: "",
+
+    sonGuncelleyen: "",
+
+    vatmanlaraGonderildi: false,
+
+    vatmanlaraGondermeTarihi: "",
+
+    gorevler: [],
+
+    degisiklikler: []
+
+};
     gunlukVardiyaArsivi.push(vardiya);
 
     gunlukVardiyaArsiviKaydet();
@@ -95,6 +110,10 @@ let gunlukVardiyalar =
 JSON.parse(localStorage.getItem("gunlukVardiyalar")) || [];
 let tarifeDosyasi = null;
 let tarifeVerileri = [];
+
+// Günlük Sürücü Vardiya Planı
+let gunlukPlanDosyasi = null;
+let gunlukPlanVerileri = [];
 let vatmanDegisimTalepleri =
 JSON.parse(localStorage.getItem("vatmanDegisimTalepleri")) || [];
 function vatmanDegisimKaydet(){
@@ -2839,7 +2858,7 @@ break;
             break;
 
         case "gunlukVardiya":
-            sayfaBasligiYaz("Günlük Vardiya");
+            sayfaBasligiYaz("Sürücü Günlük Vardiya Planı");
             gunlukVardiya();
             break;
             
@@ -3078,7 +3097,7 @@ function personelIsBasiTarihi(sicil, tarih) {
     return izin.isBasi || "-";
 
 }
-function gunlukVardiya() {
+function gunlukSurucuVardiyaPlani() {
     let arama = "";
 
     const aramaKutusu = document.getElementById("arama");
@@ -3089,25 +3108,26 @@ function gunlukVardiya() {
     const tarih = yarininTarihi();
     let satirlar = "";
     
-    const vatmanlar = personelleriGetir("Vatman");
+   const vardiya =
+gunlukVardiyaBul(tarih);
 
-    vatmanlar.forEach(function (personel, index) {
+const gorevler =
+vardiya?.gorevler || [];
+
+gorevler.forEach(function(gorev){
         const metin =
-            (String(personel.sicil) + " " + personel.ad + " " + personel.soyad).toLowerCase();
+(
+    String(gorev.sicil) + " " +
+    String(gorev.personelAdi)
+)
+.toLowerCase();
 
         if (arama !== "" && !metin.includes(arama)) {
             return;
         }
 
-       const bilgi = personelGunlukVardiyasiGetir(
-    personel.sicil,
-    tarih
-);
-
-   const durumBilgisi =
-bilgi
-? bilgi.durum
-: "ATANMADI";
+  const durumBilgisi =
+gorev.durum || "ATANMADI";
 
 if (
     gunlukVardiyaFiltre !== "HEPSI" &&
@@ -3116,26 +3136,19 @@ if (
     return;
 }
 
-let gorev = "-";
-
-if(bilgi){
-
-    gorev =
-    bilgi.gorevKodu +
-    " - " +
-    bilgi.gorevAdi;
-
-}
+const gorevBilgisi =
+gorev.gorevNo || "-";
 let durum = '<span style="color:red;font-weight:bold;">🔴 ATANMADI</span>';
-const degisim = degisimEtiketiBul(
-    personel.sicil,
-    tarih
-);
 
-const isBasi = personelIsBasiTarihi(
+const degisim =
+gorev.degistirildi
+? "🟡 Değiştirildi"
+: "-";
+
+/*const isBasi = personelIsBasiTarihi(
     personel.sicil,
     tarih
-);
+);*/
 
 const satirRengi =
     degisim !== "-"
@@ -3204,20 +3217,21 @@ switch (durumBilgisi) {
     durumBilgisi === "ATANDI" ||
     durumBilgisi === "ATANMADI"
 )
-? `<button onclick="vardiyaDuzenle('${personel.sicil}')">✏️ Düzenle</button>`
+<button onclick="gorevOperasyonPaneli('${gorev.gorevNo}')">
+    ⚙️ İşlem
+</button>
 : `<button disabled title="Bu kayıt İK durumu olarak tanımlı.">👁️</button>`;
 
 satirlar += `
 <tr ${satirRengi}>
-    <td>${personel.sicil}</td>
-    <td>${personel.ad} ${personel.soyad}</td>
-    <td>${gorev}</td>
-    <td>${bilgi?.platform || "-"}</td>
-    <td>${bilgi?.tarife || "-"}</td>
-    <td>${bilgi?.baslangic || "-"}</td>
-    <td>${bilgi?.bitis || "-"}</td>
+    <td>${gorev.sicil || "-"}</td>
+    <td>${gorev.personelAdi || "-"}</td>
+    <td>${gorev.gorevNo || "-"}</td>
+    <td>${gorev.platform || "-"}</td>
+    <td>${gorev.tarife || "-"}</td>
+    <td>${gorev.servisGelis || "-"}</td>
+    <td>${gorev.gorevBitis || "-"}</td>
     <td>${durum}</td>
-    <td>${isBasi}</td>
     <td>${degisim}</td>
     <td>${duzenleButonu}</td>
 </tr>
@@ -3230,7 +3244,7 @@ satirlar += `
     if (satirlar === "") {
         satirlar = `
         <tr>
-            <td colspan="11" style="text-align:center;">
+            <td colspan="10" style="text-align:center;">
                 Kayıt bulunamadı.
             </td>
         </tr>
@@ -3238,60 +3252,99 @@ satirlar += `
     }
 
     document.getElementById("icerik").innerHTML = `
-        <h2>📅 Günlük Vardiya</h2>
+       <h2>📅 Günlük Sürücü Vardiya Planı</h2>
+       <div class="sayfa-aciklama">
 
-   <div class="toolbar" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+Bu ekrandan Günlük Sürücü Vardiya Planı yüklenir, gün içerisindeki operasyonel değişiklikler yönetilir ve güncel plan vatmanlarla paylaşılır.
+
+</div>
+
+<div class="toolbar" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:15px;">
+
+    <button class="btn btn-primary"
+        onclick="gunlukPlanDosyasiSec()">
+        📂 Günlük Plan Yükle
+    </button>
+
+    <input
+        type="file"
+        id="gunlukPlanDosyasi"
+        accept=".xlsx,.xls"
+        style="display:none"
+        onchange="gunlukPlanYukle(event)">
+
+    <button class="btn btn-success"
+        onclick="gunlukPlanKaydet()">
+        💾 Değişiklikleri Kaydet
+    </button>
+
+    <button class="btn btn-warning"
+        onclick="vatmanlaraPlanGonder()">
+        📢 Vatmanlara Gönder
+    </button>
+
+    <button class="btn"
+        onclick="gunlukPlanPdfOlustur()">
+        📄 PDF
+    </button>
+
+    <button class="btn"
+        onclick="gunlukPlanExcelIndir()">
+        📥 Excel
+    </button>
 
     <input
         type="text"
         id="arama"
         placeholder="🔍 Sicil veya Ad Soyad Ara..."
         value="${arama}"
-        onkeyup="gunlukVardiya()"
-        style="width:300px;">
+        onkeyup="gunlukSurucuVardiyaPlani()"
+        style="margin-left:auto;width:280px;">
 
-    <button onclick="vardiyaFiltreDegistir('HEPSI')">Hepsi</button>
+</div>
+<div class="toolbar" style="margin-bottom:15px;display:flex;flex-wrap:wrap;gap:8px;">
 
-    <button onclick="vardiyaFiltreDegistir('ATANDI')">Atananlar</button>
+<button onclick="vardiyaFiltreDegistir('HEPSI')">Hepsi</button>
 
-    <button onclick="vardiyaFiltreDegistir('ATANMADI')">Atanmayanlar</button>
+<button onclick="vardiyaFiltreDegistir('ATANDI')">Atananlar</button>
 
-    <button onclick="vardiyaFiltreDegistir('YILLIK İZİN')">Yıllık İzin</button>
+<button onclick="vardiyaFiltreDegistir('ATANMADI')">Atanmayanlar</button>
 
-    <button onclick="vardiyaFiltreDegistir('MAZERET İZNİ')">Mazeret İzni</button>
+<button onclick="vardiyaFiltreDegistir('YILLIK İZİN')">Yıllık İzin</button>
 
-    <button onclick="vardiyaFiltreDegistir('SENDİKAL İZİN')">Sendikal İzin</button>
+<button onclick="vardiyaFiltreDegistir('MAZERET İZNİ')">Mazeret</button>
 
-    <button onclick="vardiyaFiltreDegistir('ÜCRETLİ İZİN')">Ücretli İzin</button>
+<button onclick="vardiyaFiltreDegistir('SENDİKAL İZİN')">Sendikal</button>
 
-    <button onclick="vardiyaFiltreDegistir('ÜCRETSİZ İZİN')">Ücretsiz İzin</button>
+<button onclick="vardiyaFiltreDegistir('ÜCRETLİ İZİN')">Ücretli</button>
 
-    <button onclick="vardiyaFiltreDegistir('DOĞUM İZNİ')">Doğum İzni</button>
+<button onclick="vardiyaFiltreDegistir('ÜCRETSİZ İZİN')">Ücretsiz</button>
 
-    <button onclick="vardiyaFiltreDegistir('BABALIK İZNİ')">Babalık İzni</button>
+<button onclick="vardiyaFiltreDegistir('DOĞUM İZNİ')">Doğum</button>
 
-    <button onclick="vardiyaFiltreDegistir('RAPOR')">Rapor</button>
+<button onclick="vardiyaFiltreDegistir('BABALIK İZNİ')">Babalık</button>
 
-    <button onclick="vardiyaFiltreDegistir('HAFTA TATİLİ')">Hafta Tatili</button>
+<button onclick="vardiyaFiltreDegistir('RAPOR')">Rapor</button>
 
-    <button onclick="vardiyaFiltreDegistir('GÖREVE GELMEDİ')">Göreve Gelmedi</button>
+<button onclick="vardiyaFiltreDegistir('HAFTA TATİLİ')">Hafta Tatili</button>
+
+<button onclick="vardiyaFiltreDegistir('GÖREVE GELMEDİ')">Gelmedi</button>
 
 </div>
 
         <table class="tablo">
             <thead>
     <tr>
-    <th>Sicil</th>
-    <th>Ad Soyad</th>
-    <th>Görev</th>
-    <th>Platform</th>
-    <th>Tarife</th>
-    <th>Başlangıç</th>
-    <th>Bitiş</th>
-    <th>Durum</th>
-    <th>İş Başı</th>
-    <th>Değişim</th>
-    <th>İşlem</th>
+  <th>Sicil</th>
+<th>Personel</th>
+<th>Görev No</th>
+<th>Platform</th>
+<th>Tarife</th>
+<th>Servis Geliş</th>
+<th>Görev Bitiş</th>
+<th>Durum</th>
+<th>Değişiklik</th>
+<th>İşlem</th>
 </tr>
             </thead>
             <tbody>
@@ -3299,6 +3352,167 @@ satirlar += `
             </tbody>
         </table>
     `;
+} 
+function gorevOperasyonPaneli(gorevNo){
+
+    alert(
+        "Görev Operasyon Paneli\n\n" +
+        "Görev No : " + gorevNo
+    );
+
+}
+function gunlukPlanYukle(event){
+
+    const dosya = event.target.files[0];
+
+    if(!dosya){
+        return;
+    }
+
+    gunlukPlanDosyasi = dosya;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        const data = new Uint8Array(e.target.result);
+
+        const workbook = XLSX.read(data,{
+            type:"array"
+        });
+
+        const sayfa =
+        workbook.Sheets[
+            workbook.SheetNames[0]
+        ];
+
+       gunlukPlanVerileri =
+XLSX.utils.sheet_to_json(
+    sayfa,
+    {
+        range: 4,
+        defval: "",
+        raw: false
+    }
+);
+
+        const tarih = yarininTarihi();
+
+const vardiya =
+yeniGunlukVardiyaOlustur(tarih);
+
+vardiya.gorevler = [];
+
+gunlukPlanVerileri.forEach(function(satir){
+
+    excelSatiriniVardiyayaAktar(
+        satir,
+        vardiya
+    );
+
+});
+
+gunlukVardiyaArsiviKaydet();
+
+alert(
+    vardiya.gorevler.length +
+    " görev başarıyla oluşturuldu."
+);
+
+gunlukSurucuVardiyaPlani();
+
+    };
+
+    reader.readAsArrayBuffer(dosya);
+
+}
+function excelSatiriniVardiyayaAktar(satir, vardiya){
+
+    const adSoyad =
+    temizMetin(
+        satir["İSİM"]
+    );
+
+    if(adSoyad===""){
+        return;
+    }
+
+    const personel =
+    personelBul(adSoyad);
+
+    if(!personel){
+
+        console.warn(
+            "Personel bulunamadı:",
+            adSoyad
+        );
+
+        return;
+
+    }
+
+const gorev = {
+
+    id: crypto.randomUUID(),
+
+    sicil: personel.sicil,
+
+    personelAdi: personel.ad + " " + personel.soyad,
+
+    gorevNo: temizMetin(satir["GÖREV NO"]),
+
+    gorev: temizMetin(satir["GÖREV"]),
+
+    servisGelis: temizMetin(satir["Servis Geliş"]),
+
+    cikistaHazirlik: temizMetin(satir["Çıkışta Hazırlık"]),
+
+    depoCikis: temizMetin(satir["Depo Çıkış"]),
+
+    gorevBaslangic: temizMetin(satir["Görev Başlangıç"]),
+
+    aracTeslim: temizMetin(satir["ARAÇ TESLİM"]),
+
+    gorevBitis: temizMetin(satir["Görev Bitiş"]),
+
+    depoya: temizMetin(satir["Depo'ya"]),
+
+    donusteHazirlik: temizMetin(satir["Dönüşte Hazırlık"]),
+
+    servisCikis: temizMetin(satir["Servis Çıkış"]),
+
+    durum: "ATANDI",
+
+    degistirildi: false,
+
+    degisiklikler: []
+
+};
+vardiya.gorevler.push(gorev);
+}
+function temizMetin(metin){
+
+    return String(metin || "")
+
+        .toLocaleUpperCase("tr")
+
+        .replace(/\s+/g," ")
+
+        .trim();
+
+}
+function personelBul(adSoyad){
+
+    return personelListesi.find(function(p){
+
+        return temizMetin(
+
+            p.ad + " " + p.soyad
+
+        )===adSoyad;
+
+    }) || null;
+
 }
 function vardiyaDuzenle(sicil){
 
@@ -3476,7 +3690,7 @@ vardiya.personeller.push({
 gunlukVardiyaArsiviKaydet();
 
     alert("Görev başarıyla atandı.");
-    gunlukVardiya();
+    gunlukSurucuVardiyaPlani();
 }
 function personelDurumuKaydet(sicil, baslangic, bitis, durum, not = "") {
 
