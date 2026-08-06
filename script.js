@@ -689,7 +689,7 @@ function kullaniciSil(index) {
 
     kullaniciYonetimi();
 
-} */
+} 
 
 function personelYonetimi() {
 
