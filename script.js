@@ -9571,6 +9571,30 @@ function operasyonRapor(sicil){
     surucuVardiyaAmiriPaneli();
 
 }
+function gunlukPlanDosyasiSec() {
+
+    const input = document.getElementById("gunlukPlanDosyasi");
+
+    if (!input) {
+
+        console.error("gunlukPlanDosyasi input'u bulunamadı.");
+
+        alert("Dosya yükleme alanı bulunamadı.");
+
+        return;
+
+    }
+
+    // Aynı dosyanın tekrar seçilebilmesi için temizle
+    input.value = "";
+
+    // Güvenlik için uzantıları tekrar tanımla
+    input.accept = ".xlsx,.xls";
+
+    // Dosya seçme penceresini aç
+    input.click();
+
+}
 function operasyonGelmedi(sicil){
 
     if(!confirm("Personel göreve gelmedi olarak işaretlensin mi?")){
